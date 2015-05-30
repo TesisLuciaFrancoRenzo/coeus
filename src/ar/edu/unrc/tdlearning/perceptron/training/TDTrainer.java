@@ -22,7 +22,7 @@ public class TDTrainer {
     /**
      * constante de tasa de aprendizaje
      */
-    protected double alpha;
+    protected double[] alpha;
 
     /**
      * turno actual
@@ -100,7 +100,7 @@ public class TDTrainer {
      * @param alpha            constante de tasa de aprendizaje
      * @param isARandomMove
      */
-    public void train(IState turnCurrentState, IState nextTurnState, double alpha, double lamdba, boolean isARandomMove) {
+    public void train(IState turnCurrentState, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove) {
         this.lambda = lamdba;
         this.alpha = alpha;
 
@@ -447,7 +447,7 @@ public class TDTrainer {
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
         if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
             // System.out.println("outputNeuronIndex:" + neuronIndexJ + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
-            return alpha * tDError.get(neuronIndexJ)
+            return alpha[layerIndexJ] * tDError.get(neuronIndexJ)
                     * computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
         } else { //FIXME cambiar alpha por beta en casos necesarios
             return IntStream
@@ -455,7 +455,7 @@ public class TDTrainer {
                     .parallel()
                     .mapToDouble(outputNeuronIndex -> {
                         // System.out.println("outputNeuronIndex:" + outputNeuronIndex + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
-                        return alpha * tDError.get(outputNeuronIndex)
+                        return alpha[layerIndexJ] * tDError.get(outputNeuronIndex)
                         * computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
                     }).sum();
         }

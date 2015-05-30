@@ -26,9 +26,14 @@ public abstract class TDLambdaLearning {
     protected final boolean accumulativePredicition;
 
     /**
-     * constante de tasa de aprendizaje
+     * constante de tasa de aprendizaje para cada capa de pesos
      */
-    private double alpha;
+    protected double[] initialAlpha;
+
+    /**
+     * tasa de aprendizaje actual para cada capa de pesos
+     */
+    protected double[] currentAlpha;
 
     /**
      * constante que se encuentra en el intervalo [0,1]
@@ -91,15 +96,15 @@ public abstract class TDLambdaLearning {
 //    }
 
     /**
-     * If we keep alpha fixed, however, these same fluctuations prevent the
-     * network from ever properly converging to the minimum - instead we end up
-     * randomly dancing around it. In order to actually reach the minimum, and
-     * stay there, we must anneal (gradually lower) the global learning rate. A
-     * simple, non-adaptive annealing schedule for this purpose is the
+     * If we keep initialAlpha fixed, however, these same fluctuations prevent
+     * the network from ever properly converging to the minimum - instead we end
+     * up randomly dancing around it. In order to actually reach the minimum,
+     * and stay there, we must anneal (gradually lower) the global learning
+     * rate. A simple, non-adaptive annealing schedule for this purpose is the
      * search-then-converge schedule. Its name derives from the fact that it
-     * keeps alpha nearly constant for the first T training patterns, allowing
-     * the network to find the general location of the minimum, before annealing
-     * it at a (very slow) pace that is known from theory to guarantee
+     * keeps initialAlpha nearly constant for the first T training patterns,
+     * allowing the network to find the general location of the minimum, before
+     * annealing it at a (very slow) pace that is known from theory to guarantee
      * convergence to the minimum. The characteristic time T of this schedule is
      * a new free parameter that must be determined by trial and error.
      * <p>
@@ -127,15 +132,30 @@ public abstract class TDLambdaLearning {
      *                                con cualquier libreria o codigo.
      * @param lamdba                  constante que se encuentra en el intervalo
      *                                [0,1]
-     * @param alpha                   constante de tasa de aprendizaje
+     * @param alpha                   Constantes de tasa de aprendizaje para
+     *                                cada capa. Si es null, se inicializa cada
+     *                                initialAlpha con la formula 1/num_neuronas
+     *                                de la capa anterior.
      * @param accumulativePredicition true si se esta utilizando el metodo
      *                                acumulativo de prediccion en TDLearning
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double alpha, double lamdba, boolean accumulativePredicition) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, boolean accumulativePredicition) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
-        this.alpha = alpha;
+        if ( alpha == null ) {
+            alpha = new double[perceptronInterface.getLayerQuantity() - 1];
+            for ( int i = 0; i < perceptronInterface.getLayerQuantity() - 1; i++ ) {
+                if ( perceptronInterface.getNeuronQuantityInLayer(i) <= 0 ) {
+                    throw new IllegalArgumentException("la capa " + i + " debe tener 1 o mas neuronas");
+                }
+                alpha[i] = 1d / perceptronInterface.getNeuronQuantityInLayer(i);
+            }
+        } else {
+            this.initialAlpha = alpha;
+        }
+        this.currentAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
+        System.arraycopy(initialAlpha, 0, this.currentAlpha, 0, alpha.length);
         this.lamdba = lamdba;
         this.perceptronInterface = perceptronInterface;
         this.accumulativePredicition = accumulativePredicition;
@@ -185,28 +205,16 @@ public abstract class TDLambdaLearning {
     }
 
     /**
-     * @return the alpha
-     */
-    public double getAlpha() {
-        return alpha;
-    }
-
-    /**
-     * @param alpha the alpha to set
-     */
-    public void setAlpha(double alpha) {
-        this.alpha = alpha;
-    }
-
-    /**
      * Entrena la Inteligencia Artificial con lo que aprende de la experiencia
      * de resolver una sola vez un {@code problem} de comienzo a fin, durante 1
      * o mas turnos hasta alñcanzar su objetivo o fracasar.
      * <p>
      * @param problem problema a resolver
      * <p>
+     * @param t       numero de problemas resueltos hasta ahora
+     * @param T       numero de problemas a resolver en total
      */
-    public void solveAndTrain(IProblem problem) {
+    public void solveAndTrainOnce(IProblem problem, int t, int T) {
         //inicializamos el problema y las variables del entrenador
         trainer = new TDTrainer(perceptronInterface);
 
