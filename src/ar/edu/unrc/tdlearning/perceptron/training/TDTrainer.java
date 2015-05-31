@@ -19,6 +19,8 @@ import java.util.stream.IntStream;
  */
 public class TDTrainer {
 
+    private double gamma;
+
     /**
      * constante de tasa de aprendizaje
      */
@@ -99,10 +101,12 @@ public class TDTrainer {
      * @param lamdba           constante que se encuentra en el intervalo [0,1]
      * @param alpha            constante de tasa de aprendizaje
      * @param isARandomMove
+     * @param gamma            tasa de descuento
      */
-    public void train(IState turnCurrentState, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove) {
+    public void train(IState turnCurrentState, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma) {
         this.lambda = lamdba;
         this.alpha = alpha;
+        this.gamma = gamma;
 
         //creamos o reciclamos caches
         if ( currentTurn == 1 ) {
@@ -210,7 +214,7 @@ public class TDTrainer {
                     // assert !nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput().isNaN();
                     tDError.set(outputNeuronIndex,
                             nextTurnState.translateRewordToNormalizedPerceptronOutputFrom(outputNeuronIndex)
-                            + nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput()
+                            + gamma * nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput()
                             - outputLayerCurrentState.getNeuron(outputNeuronIndex).getOutput()
                     );
                     assert tDError.get(outputNeuronIndex) != null && !tDError.get(outputNeuronIndex).isNaN();

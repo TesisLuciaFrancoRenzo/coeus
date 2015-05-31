@@ -25,6 +25,8 @@ import java.util.stream.IntStream;
  */
 public abstract class TDLambdaLearning {
 
+    protected double gamma;
+
     protected final boolean accumulativePredicition;
 
     /**
@@ -144,8 +146,9 @@ public abstract class TDLambdaLearning {
      *                                de la capa anterior.
      * @param accumulativePredicition true si se esta utilizando el metodo
      *                                acumulativo de prediccion en TDLearning
+     * @param gamma                   tasa de descuento
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition, double gamma) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
@@ -167,6 +170,7 @@ public abstract class TDLambdaLearning {
         System.arraycopy(initialAlpha, 0, this.currentAlpha, 0, alpha.length);
         this.learningRateAdaptation = learningRateAdaptation;
         this.lamdba = lamdba;
+        this.gamma = gamma;
         this.perceptronInterface = perceptronInterface;
         this.accumulativePredicition = accumulativePredicition;
     }

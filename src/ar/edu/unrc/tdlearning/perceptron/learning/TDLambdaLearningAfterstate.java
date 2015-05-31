@@ -36,9 +36,10 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      * @param alpha                   constante de tasa de aprendizaje
      * @param accumulativePredicition true si se esta utilizando el metodo
      *                                acumulativo de prediccion en TDLearning
+     * @param gamma                   tasa de descuento
      */
-    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition) {
-        super(perceptron, alpha, learningRateAdaptation, lamdba, accumulativePredicition);
+    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition, double gamma) {
+        super(perceptron, alpha, learningRateAdaptation, lamdba, accumulativePredicition, gamma);
     }
 
     @Override
@@ -59,10 +60,10 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
             if ( trainer.getCurrentTurn() == 1 ) {
                 //si estamos enel turno 1, creamos una traza de elegibilidad nueva
-                trainer.train(afterstate, afterStateNextTurn, currentAlpha, lamdba, isARandomMove);
+                trainer.train(afterstate, afterStateNextTurn, currentAlpha, lamdba, isARandomMove, gamma);
             } else {
                 //si no estamos en el turno 1, debemos reutilizar la traza de elegibilidad de los turnos anteriores
-                trainer.train(afterstate, afterStateNextTurn, currentAlpha, lamdba, isARandomMove);
+                trainer.train(afterstate, afterStateNextTurn, currentAlpha, lamdba, isARandomMove, gamma);
             }
         } else {
             // Si nextTurnState es un estado final, no podemos calcular el bestActionForNextTurn.
@@ -72,10 +73,10 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
             if ( trainer.getCurrentTurn() == 1 ) {
                 //si estamos enel turno 1, creamos una traza de elegibilidad nueva
-                trainer.train(afterstate, nextTurnState, currentAlpha, lamdba, isARandomMove);
+                trainer.train(afterstate, nextTurnState, currentAlpha, lamdba, isARandomMove, gamma);
             } else {
                 //si no estamos en el turno 1, debemos reutilizar la traza de elegibilidad de los turnos anteriores
-                trainer.train(afterstate, nextTurnState, currentAlpha, lamdba, isARandomMove);
+                trainer.train(afterstate, nextTurnState, currentAlpha, lamdba, isARandomMove, gamma);
             }
         }
     }
