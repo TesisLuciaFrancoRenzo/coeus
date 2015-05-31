@@ -9,6 +9,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
+import ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation;
 
 /**
  * Esta clase implementa TD lambda learning (lambda = trazas de elegibilidad),
@@ -29,12 +30,15 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      *                                con cualquier libreria o codigo.
      * @param lamdba                  constante que se encuentra en el intervalo
      *                                [0,1]
+     * @param learningRateAdaptation  formula uilizada para ir modificando las
+     *                                constantes de aprendizaje alpha a travez
+     *                                del tiempo
      * @param alpha                   constante de tasa de aprendizaje
      * @param accumulativePredicition true si se esta utilizando el metodo
      *                                acumulativo de prediccion en TDLearning
      */
-    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition) {
-        super(perceptron, alpha, lamdba, accumulativePredicition);
+    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition) {
+        super(perceptron, alpha, learningRateAdaptation, lamdba, accumulativePredicition);
     }
 
     @Override

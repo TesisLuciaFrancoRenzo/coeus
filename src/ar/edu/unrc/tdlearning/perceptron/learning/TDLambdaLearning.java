@@ -9,9 +9,11 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
+import ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation;
 import ar.edu.unrc.tdlearning.perceptron.training.TDTrainer;
 import static java.lang.Math.random;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Este método de aprendizaje de TD lambda learning necesita Trazas de
@@ -34,6 +36,7 @@ public abstract class TDLambdaLearning {
      * tasa de aprendizaje actual para cada capa de pesos
      */
     protected double[] currentAlpha;
+    private final ELearningRateAdaptation learningRateAdaptation;
 
     /**
      * constante que se encuentra en el intervalo [0,1]
@@ -132,6 +135,9 @@ public abstract class TDLambdaLearning {
      *                                con cualquier libreria o codigo.
      * @param lamdba                  constante que se encuentra en el intervalo
      *                                [0,1]
+     * @param learningRateAdaptation  formula uilizada para ir modificando las
+     *                                constantes de aprendizaje alpha a travez
+     *                                del tiempo
      * @param alpha                   Constantes de tasa de aprendizaje para
      *                                cada capa. Si es null, se inicializa cada
      *                                initialAlpha con la formula 1/num_neuronas
@@ -139,9 +145,12 @@ public abstract class TDLambdaLearning {
      * @param accumulativePredicition true si se esta utilizando el metodo
      *                                acumulativo de prediccion en TDLearning
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, boolean accumulativePredicition) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
+        }
+        if ( learningRateAdaptation == null ) {
+            throw new IllegalArgumentException("learningRateAdaptation can't be null");
         }
         if ( alpha == null ) {
             alpha = new double[perceptronInterface.getLayerQuantity() - 1];
@@ -156,6 +165,7 @@ public abstract class TDLambdaLearning {
         }
         this.currentAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
         System.arraycopy(initialAlpha, 0, this.currentAlpha, 0, alpha.length);
+        this.learningRateAdaptation = learningRateAdaptation;
         this.lamdba = lamdba;
         this.perceptronInterface = perceptronInterface;
         this.accumulativePredicition = accumulativePredicition;
@@ -212,9 +222,40 @@ public abstract class TDLambdaLearning {
      * @param problem problema a resolver
      * <p>
      * @param t       numero de problemas resueltos hasta ahora
-     * @param T       numero de problemas a resolver en total
+     * @param T       numero de problemas a resolver en total. T debe ser mayor
+     *                que cero.
      */
     public void solveAndTrainOnce(IProblem problem, int t, int T) {
+        if ( learningRateAdaptation == null ) {
+            throw new IllegalArgumentException("learningRateAdaptation can't be null");
+        }
+        if ( T <= 0 ) {
+            throw new IllegalArgumentException("T no puede ser menor o igual a cero");
+        }
+        if ( t < 0 || t > T ) {
+            throw new IllegalArgumentException("t debe ser un valor entre 0 y T");
+        }
+        //inicializamos las constantes de aprendizaje
+        switch ( this.learningRateAdaptation ) {
+            case fixed: {
+                // ignorar las actualizaciones y dejar las alphas sin modificar
+                break;
+            }
+            case annealing: {
+                //ajustamos las alphas segun el metodo de annealing µ(t) = µ(0)/(1 + t/T)
+                IntStream rangeStream = IntStream.range(0, currentAlpha.length);
+                if ( this.currentAlpha.length > 50 ) {
+                    rangeStream = rangeStream.parallel();
+                } else {
+                    rangeStream = rangeStream.sequential();
+                }
+                rangeStream.forEach(index -> {
+                    currentAlpha[index] = annealingLearningRate(this.initialAlpha[index], t, T);
+                });
+                break;
+            }
+        }
+
         //inicializamos el problema y las variables del entrenador
         trainer = new TDTrainer(perceptronInterface);
 
@@ -224,7 +265,6 @@ public abstract class TDLambdaLearning {
         while ( !turnInitialState.isTerminalState() ) {
 
             // calculamos todas las acciones posibles para el estado inicial
-            //  System.out.println("turno " + turn);
             IAction bestAction;
 
             if ( problem.randomMoveProbability() > 0 ) {
@@ -261,8 +301,6 @@ public abstract class TDLambdaLearning {
             // recordamos el nuevo estado del problema luago de aplicar todas
             // las acciones necesarias para avanzar en la solucion del problema
             turnInitialState = nextTurnState;
-
-            //turn++;
         }
     }
 
