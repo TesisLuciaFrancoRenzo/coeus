@@ -16,15 +16,15 @@ import org.junit.BeforeClass;
  */
 public class TDLambdaLearningTest {
 
-    public TDLambdaLearningTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public TDLambdaLearningTest() {
     }
 
     @Before

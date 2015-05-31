@@ -25,27 +25,85 @@ import java.util.stream.IntStream;
  */
 public abstract class TDLambdaLearning {
 
-    protected final double momentum;
+    /**
+     * If we keep initialAlpha fixed, however, these same fluctuations prevent
+     * the network from ever properly converging to the minimum - instead we end
+     * up randomly dancing around it. In order to actually reach the minimum,
+     * and stay there, we must anneal (gradually lower) the global learning
+     * rate. A simple, non-adaptive annealing schedule for this purpose is the
+     * search-then-converge schedule. Its name derives from the fact that it
+     * keeps initialAlpha nearly constant for the first T training patterns,
+     * allowing the network to find the general location of the minimum, before
+     * annealing it at a (very slow) pace that is known from theory to guarantee
+     * convergence to the minimum. The characteristic time T of this schedule is
+     * a new free parameter that must be determined by trial and error.
+     * <p>
+     * @param initialAlpha initial learning rate
+     * @param t            current T in time
+     * @param T            the characteristic time T of this schedule is a new
+     *                     free parameter that must be determined by trial and
+     *                     error
+     * <p>
+     * @return
+     */
+    public static double annealingLearningRate(double initialAlpha, int t, int T) {
+        if ( initialAlpha > 1 || initialAlpha < 0 ) {
+            throw new IllegalArgumentException("initialAlpha=" + initialAlpha + " is out of range from a valid [0..1]");
+        }
+        return initialAlpha / (1d + ((t * 1d) / (T * 1d)));
+    }
 
-    protected double gamma;
+    /**
+     * calcula un numero al azar entre los limites dados, inclusive estos.
+     * <p>
+     * @param a numero desde
+     * @param b numero hasta
+     * <p>
+     * @return aleatorio entre a y b
+     * <p>
+     */
+    public static int randomBetween(int a, int b) {
+        //TODO verificar covertura de todos los valores en un arreglo, si se elige uno de estos elementos
+        if ( a > b ) {
+            throw new IllegalArgumentException("error: b debe ser mayor que a");
+        } else if ( a == b ) {
+            return a;
+        } else {
+            int tirada = a + (int) ((double) (b - a + 1) * random());
+            return tirada;
+        }
+    }
 
+    private final ELearningRateAdaptation learningRateAdaptation;
+
+    /**
+     *
+     */
     protected final boolean accumulativePredicition;
 
+    /**
+     * tasa de aprendizaje actual para cada capa de pesos
+     */
+    protected double[] currentAlpha;
+
+    /**
+     *
+     */
+    protected double gamma;
     /**
      * constante de tasa de aprendizaje para cada capa de pesos
      */
     protected double[] initialAlpha;
 
     /**
-     * tasa de aprendizaje actual para cada capa de pesos
-     */
-    protected double[] currentAlpha;
-    private final ELearningRateAdaptation learningRateAdaptation;
-
-    /**
      * constante que se encuentra en el intervalo [0,1]
      */
     protected double lamdba;
+
+    /**
+     *
+     */
+    protected final double momentum;
 
     /**
      *
@@ -103,34 +161,6 @@ public abstract class TDLambdaLearning {
 //    }
 
     /**
-     * If we keep initialAlpha fixed, however, these same fluctuations prevent
-     * the network from ever properly converging to the minimum - instead we end
-     * up randomly dancing around it. In order to actually reach the minimum,
-     * and stay there, we must anneal (gradually lower) the global learning
-     * rate. A simple, non-adaptive annealing schedule for this purpose is the
-     * search-then-converge schedule. Its name derives from the fact that it
-     * keeps initialAlpha nearly constant for the first T training patterns,
-     * allowing the network to find the general location of the minimum, before
-     * annealing it at a (very slow) pace that is known from theory to guarantee
-     * convergence to the minimum. The characteristic time T of this schedule is
-     * a new free parameter that must be determined by trial and error.
-     * <p>
-     * @param initialAlpha initial learning rate
-     * @param t            current T in time
-     * @param T            the characteristic time T of this schedule is a new
-     *                     free parameter that must be determined by trial and
-     *                     error
-     * <p>
-     * @return
-     */
-    public static double annealingLearningRate(double initialAlpha, int t, int T) {
-        if ( initialAlpha > 1 || initialAlpha < 0 ) {
-            throw new IllegalArgumentException("initialAlpha=" + initialAlpha + " is out of range from a valid [0..1]");
-        }
-        return initialAlpha / (1d + ((t * 1d) / (T * 1d)));
-    }
-
-    /**
      *
      * @param perceptronInterface     implementacion de la interfaz entre
      *                                nuestra red neuronal y el
@@ -180,27 +210,6 @@ public abstract class TDLambdaLearning {
         this.perceptronInterface = perceptronInterface;
         this.accumulativePredicition = accumulativePredicition;
         this.momentum = momentum;
-    }
-
-    /**
-     * calcula un numero al azar entre los limites dados, inclusive estos.
-     * <p>
-     * @param a numero desde
-     * @param b numero hasta
-     * <p>
-     * @return aleatorio entre a y b
-     * <p>
-     */
-    public static int randomBetween(int a, int b) {
-        //TODO verificar covertura de todos los valores en un arreglo, si se elige uno de estos elementos
-        if ( a > b ) {
-            throw new IllegalArgumentException("error: b debe ser mayor que a");
-        } else if ( a == b ) {
-            return a;
-        } else {
-            int tirada = a + (int) ((double) (b - a + 1) * random());
-            return tirada;
-        }
     }
 
     /**
@@ -350,4 +359,5 @@ public abstract class TDLambdaLearning {
      * @currentState
      */
     protected abstract void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove);
+
 }

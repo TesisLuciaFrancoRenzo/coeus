@@ -15,18 +15,26 @@ import java.util.ArrayList;
 public class CircularCustomQueue<T> {
 
     private static final int defaultCapacity = Integer.MAX_VALUE;
-    private boolean infiniteCapacity;
-    private ArrayList<T> circularQueue;
     private final int capacity;
-    private int size = 0;
+    private ArrayList<T> circularQueue;
+    private boolean infiniteCapacity;
     private int rear = 0;
+    private int size = 0;
 
+    /**
+     *
+     */
     public CircularCustomQueue() {
         this(defaultCapacity);
     }
 
     //FIXME que pasa si es infinito?
-    public CircularCustomQueue(int capacity) {
+
+    /**
+     *
+     * @param capacity
+     */
+        public CircularCustomQueue(int capacity) {
         this.capacity = capacity;
         if ( capacity == Integer.MAX_VALUE ) {
             infiniteCapacity = true;
@@ -40,18 +48,10 @@ public class CircularCustomQueue<T> {
         }
     }
 
-    public int size() {
-        return size;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    public boolean isFull() {
-        return size == capacity;
-    }
-
+    /**
+     *
+     * @param obj
+     */
     public void enqueue(T obj) {
         if ( infiniteCapacity ) {
             circularQueue.add(obj);
@@ -65,6 +65,11 @@ public class CircularCustomQueue<T> {
         size++;
     }
 
+    /**
+     *
+     * @param index
+     * @return
+     */
     public T get(int index) {
         if ( !infiniteCapacity && index >= size ) {
             throw new IndexOutOfBoundsException();
@@ -76,8 +81,38 @@ public class CircularCustomQueue<T> {
         }
     }
 
+    /**
+     *
+     * @param index
+     * @param realSize
+     * @return
+     */
     public int getRealIndex(int index, int realSize) {
         return realSize - 1 - (size - 1 - index);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isFull() {
+        return size == capacity;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int size() {
+        return size;
     }
 
     @Override

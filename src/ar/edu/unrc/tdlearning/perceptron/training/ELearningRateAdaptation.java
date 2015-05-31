@@ -12,12 +12,12 @@ package ar.edu.unrc.tdlearning.perceptron.training;
 public enum ELearningRateAdaptation {
 
     /**
-     * Utiliza los valores de alpha fijos a travez del tiempo
-     */
-    fixed,
-    /**
      * las constantes de aprendizaje van disminuyendo a travez del tiempo
      * mediante la formula: µ(t) = µ(0)/(1 + t/T)
      */
-    annealing
+    annealing,
+    /**
+     * Utiliza los valores de alpha fijos a travez del tiempo
+     */
+    fixed
 }

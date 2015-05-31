@@ -18,9 +18,6 @@ import org.junit.Test;
  */
 public class CircularCustomQueueTest {
 
-    public CircularCustomQueueTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -29,122 +26,15 @@ public class CircularCustomQueueTest {
     public static void tearDownClass() {
     }
 
+    public CircularCustomQueueTest() {
+    }
+
     @Before
     public void setUp() {
     }
 
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of size method, of class CircularCustomQueue.
-     */
-    @Test
-    public void testSize() {
-        System.out.println("size");
-        CircularCustomQueue instance = new CircularCustomQueue();
-        int expResult = 0;
-        int result = instance.size();
-        assertEquals(expResult, result);
-
-        instance = new CircularCustomQueue();
-        instance.enqueue(1);
-        instance.enqueue(2);
-        expResult = 2;
-        result = instance.size();
-        assertEquals(expResult, result);
-
-        instance.enqueue(1);
-        instance.enqueue(2);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        instance.enqueue(2);
-        instance.enqueue(2);
-        expResult = 8;
-        result = instance.size();
-        assertEquals(expResult, result);
-
-        instance = new CircularCustomQueue(5);
-        instance.enqueue(1);
-        instance.enqueue(2);
-        expResult = 2;
-        result = instance.size();
-        assertEquals(expResult, result);
-
-        instance.enqueue(1);
-        instance.enqueue(2);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        instance.enqueue(2);
-        instance.enqueue(2);
-        expResult = 5;
-        result = instance.size();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of isEmpty method, of class CircularCustomQueue.
-     */
-    @Test
-    public void testIsEmpty() {
-        System.out.println("isEmpty");
-        CircularCustomQueue instance = new CircularCustomQueue();
-        boolean expResult = true;
-        boolean result = instance.isEmpty();
-        assertEquals(expResult, result);
-
-        instance = new CircularCustomQueue(5);
-        expResult = true;
-        result = instance.isEmpty();
-        assertEquals(expResult, result);
-
-        instance = new CircularCustomQueue();
-        instance.enqueue(1);
-        expResult = false;
-        result = instance.isEmpty();
-        assertEquals(expResult, result);
-
-        instance = new CircularCustomQueue(3);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        expResult = false;
-        result = instance.isEmpty();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of isFull method, of class CircularCustomQueue.
-     */
-    @Test
-    public void testIsFull() {
-        System.out.println("isFull");
-        CircularCustomQueue instance = new CircularCustomQueue(4);
-        boolean expResult = false;
-        boolean result = instance.isFull();
-        assertEquals(expResult, result);
-
-        instance.enqueue(1);
-        instance.enqueue(1);
-        instance.enqueue(1);
-        expResult = false;
-        result = instance.isFull();
-        assertEquals(expResult, result);
-
-        instance.enqueue(1);
-        expResult = true;
-        result = instance.isFull();
-        assertEquals(expResult, result);
-
-        instance.enqueue(1);
-        expResult = true;
-        result = instance.isFull();
-        assertEquals(expResult, result);
     }
 
     /**
@@ -251,6 +141,116 @@ public class CircularCustomQueueTest {
         index = 2;
         expResult = 2;
         result = instance.getRealIndex(index, realSize);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of isEmpty method, of class CircularCustomQueue.
+     */
+    @Test
+    public void testIsEmpty() {
+        System.out.println("isEmpty");
+        CircularCustomQueue instance = new CircularCustomQueue();
+        boolean expResult = true;
+        boolean result = instance.isEmpty();
+        assertEquals(expResult, result);
+        
+        instance = new CircularCustomQueue(5);
+        expResult = true;
+        result = instance.isEmpty();
+        assertEquals(expResult, result);
+        
+        instance = new CircularCustomQueue();
+        instance.enqueue(1);
+        expResult = false;
+        result = instance.isEmpty();
+        assertEquals(expResult, result);
+        
+        instance = new CircularCustomQueue(3);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        expResult = false;
+        result = instance.isEmpty();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of isFull method, of class CircularCustomQueue.
+     */
+    @Test
+    public void testIsFull() {
+        System.out.println("isFull");
+        CircularCustomQueue instance = new CircularCustomQueue(4);
+        boolean expResult = false;
+        boolean result = instance.isFull();
+        assertEquals(expResult, result);
+        
+        instance.enqueue(1);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        expResult = false;
+        result = instance.isFull();
+        assertEquals(expResult, result);
+        
+        instance.enqueue(1);
+        expResult = true;
+        result = instance.isFull();
+        assertEquals(expResult, result);
+        
+        instance.enqueue(1);
+        expResult = true;
+        result = instance.isFull();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of size method, of class CircularCustomQueue.
+     */
+    @Test
+    public void testSize() {
+        System.out.println("size");
+        CircularCustomQueue instance = new CircularCustomQueue();
+        int expResult = 0;
+        int result = instance.size();
+        assertEquals(expResult, result);
+        
+        instance = new CircularCustomQueue();
+        instance.enqueue(1);
+        instance.enqueue(2);
+        expResult = 2;
+        result = instance.size();
+        assertEquals(expResult, result);
+        
+        instance.enqueue(1);
+        instance.enqueue(2);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        instance.enqueue(2);
+        instance.enqueue(2);
+        expResult = 8;
+        result = instance.size();
+        assertEquals(expResult, result);
+        
+        instance = new CircularCustomQueue(5);
+        instance.enqueue(1);
+        instance.enqueue(2);
+        expResult = 2;
+        result = instance.size();
+        assertEquals(expResult, result);
+        
+        instance.enqueue(1);
+        instance.enqueue(2);
+        instance.enqueue(1);
+        instance.enqueue(1);
+        instance.enqueue(2);
+        instance.enqueue(2);
+        expResult = 5;
+        result = instance.size();
         assertEquals(expResult, result);
     }
 

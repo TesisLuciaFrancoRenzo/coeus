@@ -19,14 +19,6 @@ import java.util.stream.IntStream;
  */
 public class TDTrainer {
 
-    private double gamma;
-    private double momentum;
-
-    /**
-     * constante de tasa de aprendizaje
-     */
-    protected double[] alpha;
-
     /**
      * turno actual
      */
@@ -42,6 +34,7 @@ public class TDTrainer {
      * Quinta componente: turno (m) de la traza de eligibilidad
      */
     private List<List<List<List<Double>>>> elegibilityTraces;
+    private double gamma;
 
     /**
      * Constante que se encuentra en el intervalo [0,1]
@@ -49,6 +42,20 @@ public class TDTrainer {
     private double lambda;
 
     private final IPerceptronInterface perceptron;
+    /**
+     * constante de tasa de aprendizaje
+     */
+    protected double[] alpha;
+
+    /**
+     *
+     */
+    protected NeuralNetCache momentumCache;
+
+    /**
+     *
+     */
+    protected NeuralNetCache nextTurnStateCache;
     /**
      * Vector de errores TD para la capa de salida, comparando el turno actual
      * con el siguiente
@@ -58,14 +65,23 @@ public class TDTrainer {
      * Cache utilizada para reciclar calculos y evitar recursiones
      */
     protected NeuralNetCache turnCurrentStateCache;
-    protected NeuralNetCache nextTurnStateCache;
-    protected NeuralNetCache momentumCache;
 
+    /**
+     *
+     * @param perceptron
+     */
     public TDTrainer(IPerceptronInterface perceptron) {
         this.perceptron = perceptron;
         elegibilityTraces = null;
         currentTurn = 1;
         momentumCache = createMomentumCache();
+    }
+
+    /**
+     * @return the currentTurn
+     */
+    public int getCurrentTurn() {
+        return currentTurn;
     }
 
     /**
@@ -83,6 +99,9 @@ public class TDTrainer {
         return elegibilityTraces;
     }
 
+    /**
+     *
+     */
     public void printLastCache() {
         System.out.println("\n================= turno actual ===============================\n");
 //        turnCurrentStateCache.printDebug();
@@ -111,7 +130,6 @@ public class TDTrainer {
         this.lambda = lamdba;
         this.alpha = alpha;
         this.gamma = gamma;
-        this.momentum = momentum;
 
         //creamos o reciclamos caches
         if ( currentTurn == 1 ) {
@@ -201,58 +219,6 @@ public class TDTrainer {
         } else {
             // si es la coordenada de una neurona, devuelvo su f(net) o la entrada (si es capa de entrada)
             return ((Neuron) turnCurrentStateCache.getNeuron(layerIndex, neuronIndex)).getOutput();
-        }
-    }
-
-    /**
-     * calcula el vector de Error TD para todas las neuronas de salida
-     * <p>
-     * @param nextTurnState
-     */
-    protected void calculateTDError(IState nextTurnState) {
-        Layer outputLayerCurrentState = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex());
-        int neuronQuantityAtOutput = outputLayerCurrentState.getNeurons().size();
-
-        int outputLayer = turnCurrentStateCache.getOutputLayerIndex();
-        IntStream
-                .range(0, neuronQuantityAtOutput)
-                .parallel()
-                .forEach(outputNeuronIndex -> {
-                    //calculamos el TD error
-                    // assert !nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput().isNaN();
-                    tDError.set(outputNeuronIndex,
-                            nextTurnState.translateRewordToNormalizedPerceptronOutputFrom(outputNeuronIndex)
-                            + gamma * ((Neuron) nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex)).getOutput()
-                            - ((Neuron) outputLayerCurrentState.getNeuron(outputNeuronIndex)).getOutput()
-                    );
-                    assert tDError.get(outputNeuronIndex) != null && !tDError.get(outputNeuronIndex).isNaN();
-                });
-    }
-
-    /**
-     * Computo de la traza de elegibilidad para el estado actual
-     * <p>
-     * @param outputNeuronIndex indice de una neurona de salida
-     * @param layerIndexJ       indice de la capa de neuronas de mas hacia
-     *                          adelante
-     * @param neuronIndexJ      indice de la neurona de mas hacia adelante
-     * @param layerIndexK       indice de la capa de neuronas de mas hacia atras
-     * @param neuronIndexK      indice de la neurona de mas hacia atras
-     * <p>
-     * @return un valor correspondiente a la formula "e" de la teoria
-     */
-    protected double computeEligibilityTrace(int outputNeuronIndex, int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK) {
-
-        if ( this.lambda != 0 ) {
-            List<Double> neuronK = elegibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
-            Double newEligibilityTrace
-                    = neuronK.get(outputNeuronIndex) * lambda
-                    + delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
-
-            neuronK.set(outputNeuronIndex, newEligibilityTrace);
-            return newEligibilityTrace;
-        } else {
-            return delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
         }
     }
 
@@ -355,6 +321,47 @@ public class TDTrainer {
         return currentCache;
     }
 
+    private void createEligibilityTrace() {
+
+        // inicializamos la traza de eligibilidad si no esta inicializada
+        int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
+        /**
+         * Primer componente: indice de la capa de la neurona<br>
+         * Segunda componente: indice de la neurona<br>
+         * Tercera componente: indice de la segunda neurona involucrada en el
+         * calculo del peso, o la bias (ultimo valor del vector, si hay bias)
+         * <br>
+         * Cuarta componente: indice de la neurona de salida con respecto de la
+         * cual se esta actualizando el peso<br>
+         * Quinta componente: turno (m) de la traza de eligibilidad
+         */
+        this.elegibilityTraces = new ArrayList<>(perceptron.getLayerQuantity());
+        for ( int layerIndex = 0; layerIndex < perceptron.getLayerQuantity(); layerIndex++ ) {
+            int neuronQuantityInLayer = perceptron.getNeuronQuantityInLayer(layerIndex);
+            List<List<List<Double>>> layer = new ArrayList<>(neuronQuantityInLayer);
+            for ( int neuronIndex = 0; neuronIndex < neuronQuantityInLayer; neuronIndex++ ) {
+                List<List<Double>> neuron = null;
+                if ( layerIndex != 0 ) {
+                    int neuronQuantityInPreviousLayer = perceptron.getNeuronQuantityInLayer(layerIndex - 1);
+                    if ( perceptron.hasBias(layerIndex) ) {//TODO recordar cambiar hasbias para soportar por capa y no por perceptron
+                        neuronQuantityInPreviousLayer++;
+                    }
+                    neuron = new ArrayList<>(neuronQuantityInPreviousLayer);
+                    for ( int previousNeuronIndex = 0; previousNeuronIndex < neuronQuantityInPreviousLayer; previousNeuronIndex++ ) {
+                        List<Double> previousNeuron = new ArrayList<>(outputLayerNeuronQuantity);
+                        for ( int outputNeuronIndex = 0; outputNeuronIndex < outputLayerNeuronQuantity; outputNeuronIndex++ ) {
+                            previousNeuron.add(0d); //outputNeuron
+                        }
+                        neuron.add(previousNeuron);
+                    }
+                }
+                layer.add(neuron);
+            }
+            this.elegibilityTraces.add(layer);
+        }
+
+    }
+
     /**
      *
      */
@@ -399,45 +406,56 @@ public class TDTrainer {
         return currentCache;
     }
 
-    private void createEligibilityTrace() {
+    /**
+     * calcula el vector de Error TD para todas las neuronas de salida
+     * <p>
+     * @param nextTurnState
+     */
+    protected void calculateTDError(IState nextTurnState) {
+        Layer outputLayerCurrentState = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex());
+        int neuronQuantityAtOutput = outputLayerCurrentState.getNeurons().size();
 
-        // inicializamos la traza de eligibilidad si no esta inicializada
-        int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
-        /**
-         * Primer componente: indice de la capa de la neurona<br>
-         * Segunda componente: indice de la neurona<br>
-         * Tercera componente: indice de la segunda neurona involucrada en el
-         * calculo del peso, o la bias (ultimo valor del vector, si hay bias)
-         * <br>
-         * Cuarta componente: indice de la neurona de salida con respecto de la
-         * cual se esta actualizando el peso<br>
-         * Quinta componente: turno (m) de la traza de eligibilidad
-         */
-        this.elegibilityTraces = new ArrayList<>(perceptron.getLayerQuantity());
-        for ( int layerIndex = 0; layerIndex < perceptron.getLayerQuantity(); layerIndex++ ) {
-            int neuronQuantityInLayer = perceptron.getNeuronQuantityInLayer(layerIndex);
-            List<List<List<Double>>> layer = new ArrayList<>(neuronQuantityInLayer);
-            for ( int neuronIndex = 0; neuronIndex < neuronQuantityInLayer; neuronIndex++ ) {
-                List<List<Double>> neuron = null;
-                if ( layerIndex != 0 ) {
-                    int neuronQuantityInPreviousLayer = perceptron.getNeuronQuantityInLayer(layerIndex - 1);
-                    if ( perceptron.hasBias(layerIndex) ) {//TODO recordar cambiar hasbias para soportar por capa y no por perceptron
-                        neuronQuantityInPreviousLayer++;
-                    }
-                    neuron = new ArrayList<>(neuronQuantityInPreviousLayer);
-                    for ( int previousNeuronIndex = 0; previousNeuronIndex < neuronQuantityInPreviousLayer; previousNeuronIndex++ ) {
-                        List<Double> previousNeuron = new ArrayList<>(outputLayerNeuronQuantity);
-                        for ( int outputNeuronIndex = 0; outputNeuronIndex < outputLayerNeuronQuantity; outputNeuronIndex++ ) {
-                            previousNeuron.add(0d); //outputNeuron
-                        }
-                        neuron.add(previousNeuron);
-                    }
-                }
-                layer.add(neuron);
-            }
-            this.elegibilityTraces.add(layer);
+        int outputLayer = turnCurrentStateCache.getOutputLayerIndex();
+        IntStream
+                .range(0, neuronQuantityAtOutput)
+                .parallel()
+                .forEach(outputNeuronIndex -> {
+                    //calculamos el TD error
+                    // assert !nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput().isNaN();
+                    tDError.set(outputNeuronIndex,
+                            nextTurnState.translateRewordToNormalizedPerceptronOutputFrom(outputNeuronIndex)
+                            + gamma * ((Neuron) nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex)).getOutput()
+                            - ((Neuron) outputLayerCurrentState.getNeuron(outputNeuronIndex)).getOutput()
+                    );
+                    assert tDError.get(outputNeuronIndex) != null && !tDError.get(outputNeuronIndex).isNaN();
+                });
+    }
+
+    /**
+     * Computo de la traza de elegibilidad para el estado actual
+     * <p>
+     * @param outputNeuronIndex indice de una neurona de salida
+     * @param layerIndexJ       indice de la capa de neuronas de mas hacia
+     *                          adelante
+     * @param neuronIndexJ      indice de la neurona de mas hacia adelante
+     * @param layerIndexK       indice de la capa de neuronas de mas hacia atras
+     * @param neuronIndexK      indice de la neurona de mas hacia atras
+     * <p>
+     * @return un valor correspondiente a la formula "e" de la teoria
+     */
+    protected double computeEligibilityTrace(int outputNeuronIndex, int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK) {
+
+        if ( this.lambda != 0 ) {
+            List<Double> neuronK = elegibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
+            Double newEligibilityTrace
+                    = neuronK.get(outputNeuronIndex) * lambda
+                    + delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
+
+            neuronK.set(outputNeuronIndex, newEligibilityTrace);
+            return newEligibilityTrace;
+        } else {
+            return delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
         }
-
     }
 
     /**
@@ -482,10 +500,27 @@ public class TDTrainer {
     }
 
     /**
-     * @return the currentTurn
+     *
+     * @param layerIndexJ  indice de la capa de neuronas de mas hacia adelante
+     * @param neuronIndexJ indice de la neurona de mas hacia adelante
+     * @param layerIndexK  indice de la capa de neuronas de mas hacia atras
+     * @param neuronIndexK indice de la neurona de mas hacia atras
      */
-    public int getCurrentTurn() {
-        return currentTurn;
+    protected void updateEligibilityTraceOnly(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK) {
+        int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
+
+        //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
+        if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
+            computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+        } else {
+            IntStream
+                    .range(0, outputLayerSize)
+                    .parallel()
+                    .forEach(outputNeuronIndex -> {
+                        // System.out.println("outputNeuronIndex:" + outputNeuronIndex + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
+                        computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+                    });
+        }
     }
 
     /**
@@ -514,30 +549,6 @@ public class TDTrainer {
                         return alpha[layerIndexJ] * tDError.get(outputNeuronIndex)
                         * computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
                     }).sum();
-        }
-    }
-
-    /**
-     *
-     * @param layerIndexJ  indice de la capa de neuronas de mas hacia adelante
-     * @param neuronIndexJ indice de la neurona de mas hacia adelante
-     * @param layerIndexK  indice de la capa de neuronas de mas hacia atras
-     * @param neuronIndexK indice de la neurona de mas hacia atras
-     */
-    protected void updateEligibilityTraceOnly(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK) {
-        int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
-
-        //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
-        if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
-            computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
-        } else {
-            IntStream
-                    .range(0, outputLayerSize)
-                    .parallel()
-                    .forEach(outputNeuronIndex -> {
-                        // System.out.println("outputNeuronIndex:" + outputNeuronIndex + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
-                        computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
-                    });
         }
     }
 

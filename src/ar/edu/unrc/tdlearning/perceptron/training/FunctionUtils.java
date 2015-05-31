@@ -8,7 +8,10 @@ package ar.edu.unrc.tdlearning.perceptron.training;
 import static java.lang.Math.exp;
 import java.util.function.Function;
 
-
+/**
+ *
+ * @author Renzo
+ */
 public class FunctionUtils {
 
 

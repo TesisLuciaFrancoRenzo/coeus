@@ -32,11 +32,11 @@ public class TDTrainerTest {
      */
     public static final boolean DEBUG = false;
 
-    public static Function<Double, Double> activationFunctionOutput;
-    public static Function<Double, Double> derivatedActivationFunctionOutput;
 
     public static Function<Double, Double> activationFunctionHidden;
+    public static Function<Double, Double> activationFunctionOutput;
     public static Function<Double, Double> derivatedActivationFunctionHidden;
+    public static Function<Double, Double> derivatedActivationFunctionOutput;
 
     /**
      *
