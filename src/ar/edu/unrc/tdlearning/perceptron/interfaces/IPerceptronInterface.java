@@ -28,10 +28,10 @@ public interface IPerceptronInterface {
      * matematicos, el perceptron debe tener la misma funcion de activacion en
      * todas las capas.
      * <p>
-     * @param layerIndex
-     * <p>
+     * @param layerIndex <p>
      * @return fución de activación, cuyo parametro es "net"
      */
+//TODO: revisar el comentario. No es necesario que todas las neuronas tiengan la misma fcion de activacion???
     public Function<Double, Double> getActivationFunction(int layerIndex);
 
     /**
@@ -44,8 +44,7 @@ public interface IPerceptronInterface {
      * sigmoid.apply(value) * (1 - sigmoid.apply(value))" ya que de esta ultima
      * manera, recalulariamos 2 veces sigmoideo en lugar de una vez.
      * <p>
-     * @param layerIndex
-     * <p>
+     * @param layerIndex <p>
      * @return derivada de la fución de activación, cuyo parametro es "f(net)" y
      *         no "net"
      */
@@ -53,7 +52,7 @@ public interface IPerceptronInterface {
 
     /**
      *
-     * @return cantidad de capas que tiene el perceptron (inlcuida la capa de
+     * @return cantidad de capas que tiene el perceptron (inlcuidas las capas de
      *         entrada y de salida)
      */
     public int getLayerQuantity();

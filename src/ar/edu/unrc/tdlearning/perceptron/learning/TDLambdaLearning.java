@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 /**
  * Este método de aprendizaje de TD lambda learning necesita Trazas de
  * elegibilidad como método de asigancion de crédito temporal. Utiliza
- * Perceptrones para recordar los patrones aprendido durante la solucion del
+ * Perceptrones para recordar los patrones aprendidos durante la solucion del
  * problema
  * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini

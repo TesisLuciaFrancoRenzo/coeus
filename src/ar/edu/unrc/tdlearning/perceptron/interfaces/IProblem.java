@@ -31,7 +31,7 @@ public interface IProblem {
     /**
      * Calcula el estado intermedio del turno, que es el estado al que llega el
      * problema inmediatamente luego de aplicar la accion deterministica 'a',
-     * pero antes de aplicas las acciones no deterministicas. Al computar el
+     * pero antes de aplicar las acciones no deterministicas. Al computar el
      * afterstate se debe cargar la puntuacion parcial obtenida en
      * {@code turnInitialState} para ser utilizado en diferentes algorimos.
      * <p>

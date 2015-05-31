@@ -19,10 +19,18 @@ public interface IState {
      */
     public boolean isTerminalState();
 
+    //TODO: verificar este comentario
     /**
-     *
-     * @param outputNeuronIndex <p>
-     * @return
+     * Codifica la recompensa como salidas normalizadas del perceptron
+     * utilizado, y devuelve el valor de la neurona de salida con el indice
+     * {@code outputNeuronIndex}. Recordar normalizar las entradas y salidas del
+     * Perceptron.
+     * <p>
+     * @param outputNeuronIndex neurona de la capa de salida (la neurona 0 es la
+     *                    primera)
+     * <p>
+     * @return valor de recompensa normalizado a la neurona con el indice
+     *         {@code outputNeuronIndex}
      */
     public double translateRewordToNormalizedPerceptronOutputFrom(int outputNeuronIndex);
 

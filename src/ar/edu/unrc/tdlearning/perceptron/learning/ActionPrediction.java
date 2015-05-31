@@ -20,10 +20,11 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
      * Acción asociada a la prediccion de llegar al final del juego.
      */
     private IAction action;
+
     /**
      * Es la salida predicha del final del juego, debe ser codificada como
-     * comparable para que podamos identificar, dadas dos salidas, cual es la
-     * mejor prediccion.
+     * comparable para poder identificar, dadas dos salidas, cual es la mejor
+     * prediccion.
      */
     private IPrediction prediction;
 
@@ -32,8 +33,8 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
      * @param action     acción relacionada a {@code prediction}
      * @param prediction predicción del perceptrón si se elige la acción
      *                   {@code action}. La prediccion debe contener sumada la
-     *                   recompensa que se obtendra al moverse a dicho lugar, si
-     *                   es que se esta utilizando el metodo acumulativo de
+     *                   recompensa que se obtendra al tomar dicha accion, si es
+     *                   que se esta utilizando el metodo acumulativo de
      *                   TDlearning
      */
     public ActionPrediction(IAction action, IPrediction prediction) {
@@ -53,8 +54,9 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
         return action;
     }
 
+    //TODO: Revisar este comentario
     /**
-     * @param action the action to set
+     * @param action La acción a setear (establecer)
      */
     public void setAction(IAction action) {
         this.action = action;
@@ -67,8 +69,9 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
         return prediction;
     }
 
+    //TODO: Revisar este comentario
     /**
-     * @param prediction the prediction to set
+     * @param prediction La prediccion a setear (establecer)
      */
     public void setPrediction(IPrediction prediction) {
         this.prediction = prediction;
