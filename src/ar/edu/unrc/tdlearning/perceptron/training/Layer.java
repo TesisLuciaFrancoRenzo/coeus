@@ -14,7 +14,7 @@ import java.util.List;
  */
 class Layer {
 
-    private final List<Neuron> neurons;
+    private final List<PartialNeuron> neurons;
 
     Layer(int neuronQuantityInLayer) {
         neurons = new ArrayList<>(neuronQuantityInLayer);
@@ -28,18 +28,18 @@ class Layer {
      * @param neuronIndex <p>
      * @return the neurons
      */
-    Neuron getNeuron(int neuronIndex) {
+    PartialNeuron getNeuron(int neuronIndex) {
         return neurons.get(neuronIndex);
     }
 
     /**
      * @return the neurons
      */
-    List<Neuron> getNeurons() {
+    List<PartialNeuron> getNeurons() {
         return neurons;
     }
 
-    void setNeuron(int neuronIndex, Neuron neuron) {
+    void setNeuron(int neuronIndex, PartialNeuron neuron) {
         neurons.set(neuronIndex, neuron);
     }
 

@@ -12,23 +12,15 @@ import java.util.List;
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-class Neuron {
+class Neuron extends PartialNeuron {
 
     private final List<Double> deltas;
 
     private Double derivatedOutput;
     private Double output;
-    private final List<Double> weights;
 
     Neuron(int weightsQuantity, int outputLayerNeuronQuantity) {
-        if ( weightsQuantity > 0 ) {
-            weights = new ArrayList(weightsQuantity + 1);
-            for ( int i = 0; i < weightsQuantity + 1; i++ ) {
-                weights.add(null);
-            }
-        } else {
-            weights = null;
-        }
+        super(weightsQuantity, outputLayerNeuronQuantity);
         if ( outputLayerNeuronQuantity > 0 ) {
             deltas = new ArrayList<>(outputLayerNeuronQuantity);
             for ( int i = 0; i < outputLayerNeuronQuantity; i++ ) {
@@ -43,20 +35,6 @@ class Neuron {
         for ( int i = 0; i < deltas.size(); i++ ) {
             deltas.set(i, null);
         }
-    }
-
-    /**
-     * @return the bias, null si no tiene bias
-     */
-    Double getBias() {
-        return getWeights().get(getWeights().size() - 1);
-    }
-
-    /**
-     * @param newBias
-     */
-    void setBias(Double newBias) {
-        getWeights().set(getWeights().size() - 1, newBias);
     }
 
     Double getDelta(int outputNeuronIndex) {
@@ -98,31 +76,8 @@ class Neuron {
         this.output = output;
     }
 
-    /**
-     * @param previousLayerNeuronIndex <p>
-     * @return the weights
-     */
-    Double getWeight(int previousLayerNeuronIndex) {
-        return getWeights().get(previousLayerNeuronIndex);
-    }
-
-    /**
-     * @return the weights
-     */
-    List<Double> getWeights() {
-        return weights;
-    }
-
     void setDelta(int outputNeuronIndex, Double delta) {
         getDeltas().set(outputNeuronIndex, delta);
-    }
-
-    /**
-     * @param previousLayerNeuronIndex
-     * @param weight
-     */
-    void setWeight(int previousLayerNeuronIndex, Double weight) {
-        getWeights().set(previousLayerNeuronIndex, weight);
     }
 
 }

@@ -25,6 +25,8 @@ import java.util.stream.IntStream;
  */
 public abstract class TDLambdaLearning {
 
+    protected final double momentum;
+
     protected double gamma;
 
     protected final boolean accumulativePredicition;
@@ -147,13 +149,17 @@ public abstract class TDLambdaLearning {
      * @param accumulativePredicition true si se esta utilizando el metodo
      *                                acumulativo de prediccion en TDLearning
      * @param gamma                   tasa de descuento
+     * @param momentum                0 <= m < 1
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition, double gamma) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition, double gamma, double momentum) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
         if ( learningRateAdaptation == null ) {
             throw new IllegalArgumentException("learningRateAdaptation can't be null");
+        }
+        if ( momentum < 0 || momentum >= 1 ) {
+            throw new IllegalArgumentException("momentum debe ser 0 para desactivarlo, mayor a cero o menor a 1");
         }
         if ( alpha == null ) {
             alpha = new double[perceptronInterface.getLayerQuantity() - 1];
@@ -173,6 +179,7 @@ public abstract class TDLambdaLearning {
         this.gamma = gamma;
         this.perceptronInterface = perceptronInterface;
         this.accumulativePredicition = accumulativePredicition;
+        this.momentum = momentum;
     }
 
     /**
