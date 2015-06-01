@@ -200,10 +200,13 @@ public abstract class TDLambdaLearning {
                 alpha[i] = 1d / perceptronInterface.getNeuronQuantityInLayer(i);
             }
         } else {
+            if ( alpha.length != perceptronInterface.getLayerQuantity() - 1 ) {
+                throw new IllegalArgumentException("alpha.length debe ser igual a perceptronInterface.getLayerQuantity() - 1");
+            }
             this.initialAlpha = alpha;
         }
         this.currentAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
-        System.arraycopy(initialAlpha, 0, this.currentAlpha, 0, alpha.length);
+        System.arraycopy(alpha, 0, this.currentAlpha, 0, alpha.length);
         this.learningRateAdaptation = learningRateAdaptation;
         this.lamdba = lamdba;
         this.gamma = gamma;

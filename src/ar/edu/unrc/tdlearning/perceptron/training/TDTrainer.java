@@ -538,7 +538,7 @@ public class TDTrainer {
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
         if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
             // System.out.println("outputNeuronIndex:" + neuronIndexJ + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
-            return alpha[layerIndexJ] * tDError.get(neuronIndexJ)
+            return alpha[layerIndexK] * tDError.get(neuronIndexJ)
                     * computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
         } else { //FIXME cambiar alpha por beta en casos necesarios
             return IntStream
