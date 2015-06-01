@@ -42,7 +42,8 @@ public abstract class TDLambdaLearning {
      * @param t            current T in time
      * @param T            the characteristic time T of this schedule is a new
      *                     free parameter that must be determined by trial and
-     *                     error
+     *                     error. It specifi when the initialAlpha will become
+     *                     initialAlpha/2
      * <p>
      * @return
      */
@@ -73,18 +74,16 @@ public abstract class TDLambdaLearning {
             return tirada;
         }
     }
-
-    private final ELearningRateAdaptation learningRateAdaptation;
+    /**
+     * tasa de aprendizaje actual para cada capa de pesos
+     */
+    private double[] currentAlpha;
 
     /**
      *
      */
     protected final boolean accumulativePredicition;
-
-    /**
-     * tasa de aprendizaje actual para cada capa de pesos
-     */
-    protected double[] currentAlpha;
+    protected int annealingT;
 
     /**
      *
@@ -99,6 +98,7 @@ public abstract class TDLambdaLearning {
      * constante que se encuentra en el intervalo [0,1]
      */
     protected double lamdba;
+    protected ELearningRateAdaptation learningRateAdaptation;
 
     /**
      *
@@ -169,9 +169,6 @@ public abstract class TDLambdaLearning {
      *                                con cualquier libreria o codigo.
      * @param lamdba                  constante que se encuentra en el intervalo
      *                                [0,1]
-     * @param learningRateAdaptation  formula uilizada para ir modificando las
-     *                                constantes de aprendizaje alpha a travez
-     *                                del tiempo
      * @param alpha                   Constantes de tasa de aprendizaje para
      *                                cada capa. Si es null, se inicializa cada
      *                                initialAlpha con la formula 1/num_neuronas
@@ -181,13 +178,11 @@ public abstract class TDLambdaLearning {
      * @param gamma                   tasa de descuento
      * @param momentum                0 <= m < 1
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition, double gamma, double momentum) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
-        if ( learningRateAdaptation == null ) {
-            throw new IllegalArgumentException("learningRateAdaptation can't be null");
-        }
+
         if ( momentum < 0 || momentum >= 1 ) {
             throw new IllegalArgumentException("momentum debe ser 0 para desactivarlo, mayor a cero o menor a 1");
         }
@@ -207,7 +202,6 @@ public abstract class TDLambdaLearning {
         }
         this.currentAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
         System.arraycopy(alpha, 0, this.currentAlpha, 0, alpha.length);
-        this.learningRateAdaptation = learningRateAdaptation;
         this.lamdba = lamdba;
         this.gamma = gamma;
         this.perceptronInterface = perceptronInterface;
@@ -238,25 +232,48 @@ public abstract class TDLambdaLearning {
     }
 
     /**
+     * @return the annealingT
+     */
+    public int getAnnealingT() {
+        return annealingT;
+    }
+
+    /**
+     * @return the currentAlpha
+     */
+    public double[] getCurrentAlpha() {
+        return currentAlpha;
+    }
+
+    public void setLearningRateAdaptationToAnnealing(int annealingT) {
+        if ( annealingT < 0 ) {
+            throw new IllegalArgumentException("annealingT debe ser un valor mayor a 0");
+        }
+        this.learningRateAdaptation = ELearningRateAdaptation.annealing;
+        this.annealingT = annealingT;
+    }
+
+    public void setLearningRateAdaptationToFixed() {
+        this.learningRateAdaptation = ELearningRateAdaptation.fixed;
+        this.annealingT = 0;
+    }
+
+    /**
      * Entrena la Inteligencia Artificial con lo que aprende de la experiencia
      * de resolver una sola vez un {@code problem} de comienzo a fin, durante 1
      * o mas turnos hasta alñcanzar su objetivo o fracasar.
      * <p>
      * @param problem problema a resolver
      * <p>
-     * @param t       numero de problemas resueltos hasta ahora
-     * @param T       numero de problemas a resolver en total. T debe ser mayor
-     *                que cero.
+     * @param t       cantiad de veces qeu se ejecuto el metodo
+     *                solveAndTrainOnce
      */
-    public void solveAndTrainOnce(IProblem problem, int t, int T) {
+    public void solveAndTrainOnce(IProblem problem, int t) {
         if ( learningRateAdaptation == null ) {
             throw new IllegalArgumentException("learningRateAdaptation can't be null");
         }
-        if ( T <= 0 ) {
-            throw new IllegalArgumentException("T no puede ser menor o igual a cero");
-        }
-        if ( t < 0 || t > T ) {
-            throw new IllegalArgumentException("t debe ser un valor entre 0 y T");
+        if ( t < 0 ) {
+            throw new IllegalArgumentException("t debe ser un valor mayor a 0");
         }
         //inicializamos las constantes de aprendizaje
         switch ( this.learningRateAdaptation ) {
@@ -273,7 +290,7 @@ public abstract class TDLambdaLearning {
                     rangeStream = rangeStream.sequential();
                 }
                 rangeStream.forEach(index -> {
-                    currentAlpha[index] = annealingLearningRate(this.initialAlpha[index], t, T);
+                    currentAlpha[index] = annealingLearningRate(this.initialAlpha[index], t, annealingT);
                 });
                 break;
             }

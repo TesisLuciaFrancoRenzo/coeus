@@ -9,7 +9,6 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
-import ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation;
 
 /**
  * Esta clase implementa TD lambda learning (lambda = trazas de elegibilidad),
@@ -30,17 +29,14 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      *                                con cualquier libreria o codigo.
      * @param lamdba                  constante que se encuentra en el intervalo
      *                                [0,1]
-     * @param learningRateAdaptation  formula uilizada para ir modificando las
-     *                                constantes de aprendizaje alpha a travez
-     *                                del tiempo
      * @param alpha                   constante de tasa de aprendizaje
      * @param accumulativePredicition true si se esta utilizando el metodo
      *                                acumulativo de prediccion en TDLearning
      * @param gamma                   tasa de descuento
      * @param momentum                0 <= m < 1
      */
-    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, ELearningRateAdaptation learningRateAdaptation, double lamdba, boolean accumulativePredicition, double gamma, double momentum) {
-        super(perceptron, alpha, learningRateAdaptation, lamdba, accumulativePredicition, gamma, momentum);
+    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum) {
+        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum);
     }
 
     @Override
@@ -61,10 +57,10 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
             if ( trainer.getCurrentTurn() == 1 ) {
                 //si estamos enel turno 1, creamos una traza de elegibilidad nueva
-                trainer.train(afterstate, afterStateNextTurn, currentAlpha, lamdba, isARandomMove, gamma, momentum);
+                trainer.train(afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
             } else {
                 //si no estamos en el turno 1, debemos reutilizar la traza de elegibilidad de los turnos anteriores
-                trainer.train(afterstate, afterStateNextTurn, currentAlpha, lamdba, isARandomMove, gamma, momentum);
+                trainer.train(afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
             }
         } else {
             // Si nextTurnState es un estado final, no podemos calcular el bestActionForNextTurn.
@@ -74,10 +70,10 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
             if ( trainer.getCurrentTurn() == 1 ) {
                 //si estamos enel turno 1, creamos una traza de elegibilidad nueva
-                trainer.train(afterstate, nextTurnState, currentAlpha, lamdba, isARandomMove, gamma, momentum);
+                trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
             } else {
                 //si no estamos en el turno 1, debemos reutilizar la traza de elegibilidad de los turnos anteriores
-                trainer.train(afterstate, nextTurnState, currentAlpha, lamdba, isARandomMove, gamma, momentum);
+                trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
             }
         }
     }
