@@ -73,7 +73,7 @@ public class NeuralNetCache {
      * @return una neurona
      */
     PartialNeuron getNeuron(int layerIndex, int neuronIndex) {
-        return layers.get(layerIndex).getNeuron(neuronIndex);
+        return layers.get(layerIndex).getNeuron(neuronIndex); //FIXME sacar esto ya que es menos eficiente
     }
 
     /**

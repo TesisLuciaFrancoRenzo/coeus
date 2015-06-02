@@ -45,11 +45,16 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
     protected IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
         return () -> {
             IState afterstate = problem.computeAfterState(turnInitialState, action);
+//            if ( !afterstate.isTerminalState() ) {
             IPrediction nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
-            if ( accumulativePredicition ) {
-                nextTurnStatePrediction.addReword(afterstate.getReward());
-            }
+//                if ( accumulativePredicition ) {
+//                    nextTurnStatePrediction.addReword(afterstate.getReward());
+//                }
+            //TODO revisar teoria de esto! el error puede estar aca, borrar addReward si no se usa esto
             return new ActionPrediction(action, nextTurnStatePrediction);
+//            } else {
+//                return new ActionPrediction(action, afterstate.translateFinalStateToPrediction()); //TODO borrar esta api?
+//            }
         };
     }
 
@@ -70,7 +75,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
             // afterstate para que prediga el final del problema
             //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
-            trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
+            trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum); //TODO revisar aca, puede estar el error
         }
     }
 

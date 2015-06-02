@@ -422,9 +422,16 @@ public class TDTrainer {
                 .forEach(outputNeuronIndex -> {
                     //calculamos el TD error
                     // assert !nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput().isNaN();
-                    tDError.set(outputNeuronIndex,
+                    double nextTurnOutput;
+                    if ( !nextTurnState.isTerminalState() ) {
+                        nextTurnOutput = ((Neuron) nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex)).getOutput();
+                    } else {
+                        nextTurnOutput = nextTurnState.translateRealOutputToNormalizedPerceptronOutputFrom(outputNeuronIndex);
+                    }
+
+                    tDError.set(outputNeuronIndex, //FIXME trae errores con tangente? ya que es negativo y resta siempre las rewards
                             nextTurnState.translateRewordToNormalizedPerceptronOutputFrom(outputNeuronIndex)
-                            + gamma * ((Neuron) nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex)).getOutput()
+                            + gamma * nextTurnOutput
                             - ((Neuron) outputLayerCurrentState.getNeuron(outputNeuronIndex)).getOutput()
                     );
                     assert tDError.get(outputNeuronIndex) != null && !tDError.get(outputNeuronIndex).isNaN();

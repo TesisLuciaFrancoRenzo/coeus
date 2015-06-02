@@ -19,6 +19,19 @@ public interface IState {
      */
     public boolean isTerminalState();
 
+    /**
+     * Si se esta utilizando el metodo de prediccion por acumulacion de
+     * recompensas parciales, esta funcion debe retornar la recompensa real
+     * obtenida en el ultimo turno (no debe ser la recompesa predicha por el
+     * perceptron). Si no se utiliza el metodo acumulativo esta funcion debe
+     * retornar el valor real que representa el state como salida en lugar de
+     * utilizar el perceptron para calcularlo.
+     * <p>
+     * @param outputNeuronIndex <p>
+     * @return
+     */
+    public double translateRealOutputToNormalizedPerceptronOutputFrom(int outputNeuronIndex);
+
     //TODO: verificar este comentario
     /**
      * Codifica la recompensa como salidas normalizadas del perceptron
@@ -34,6 +47,13 @@ public interface IState {
      */
     public double translateRewordToNormalizedPerceptronOutputFrom(int outputNeuronIndex);
 
+//    /**
+//     * Utilizado para evaluar los estados terminales. La evaluacion de un IState
+//     * final debe ser el valor real y no el predicho por el perceptron.
+//     * <p>
+//     * @return
+//     */
+//    public IPrediction translateFinalStateToPrediction();
     /**
      * Codifica un Estado del Problema como entradas al perceptron utilizado, y
      * devuelve el valor de la neurona de entrada con el indice
