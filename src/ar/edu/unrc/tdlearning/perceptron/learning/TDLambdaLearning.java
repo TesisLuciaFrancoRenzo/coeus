@@ -188,12 +188,12 @@ public abstract class TDLambdaLearning {
             throw new IllegalArgumentException("momentum debe ser 0 para desactivarlo, mayor a cero o menor a 1");
         }
         if ( alpha == null ) {
-            alpha = new double[perceptronInterface.getLayerQuantity() - 1];
+            initialAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
             for ( int i = 0; i < perceptronInterface.getLayerQuantity() - 1; i++ ) {
                 if ( perceptronInterface.getNeuronQuantityInLayer(i) <= 0 ) {
                     throw new IllegalArgumentException("la capa " + i + " debe tener 1 o mas neuronas");
                 }
-                alpha[i] = 1d / perceptronInterface.getNeuronQuantityInLayer(i);
+                initialAlpha[i] = 1d / perceptronInterface.getNeuronQuantityInLayer(i);
             }
         } else {
             if ( alpha.length != perceptronInterface.getLayerQuantity() - 1 ) {
@@ -202,7 +202,7 @@ public abstract class TDLambdaLearning {
             this.initialAlpha = alpha;
         }
         this.currentAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
-        System.arraycopy(alpha, 0, this.currentAlpha, 0, alpha.length);
+        System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lamdba = lamdba;
         this.gamma = gamma;
         this.perceptronInterface = perceptronInterface;
