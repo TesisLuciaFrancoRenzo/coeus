@@ -84,6 +84,10 @@ public abstract class TDLambdaLearning {
      *
      */
     protected final boolean accumulativePredicition;
+
+    /**
+     *
+     */
     protected int annealingT;
 
     /**
@@ -99,6 +103,10 @@ public abstract class TDLambdaLearning {
      * constante que se encuentra en el intervalo [0,1]
      */
     protected double lamdba;
+
+    /**
+     *
+     */
     protected ELearningRateAdaptation learningRateAdaptation;
 
     /**
@@ -247,6 +255,10 @@ public abstract class TDLambdaLearning {
         return currentAlpha;
     }
 
+    /**
+     *
+     * @param annealingT
+     */
     public void setLearningRateAdaptationToAnnealing(int annealingT) {
         if ( annealingT < 0 ) {
             throw new IllegalArgumentException("annealingT debe ser un valor mayor a 0");
@@ -255,6 +267,9 @@ public abstract class TDLambdaLearning {
         this.annealingT = annealingT;
     }
 
+    /**
+     *
+     */
     public void setLearningRateAdaptationToFixed() {
         this.learningRateAdaptation = ELearningRateAdaptation.fixed;
         this.annealingT = 0;

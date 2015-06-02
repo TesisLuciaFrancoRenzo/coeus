@@ -15,5 +15,9 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
  */
 public interface IsolatedComputation<T> {
 
+    /**
+     *
+     * @return
+     */
     public T compute();
 }
