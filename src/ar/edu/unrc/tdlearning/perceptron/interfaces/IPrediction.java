@@ -21,4 +21,19 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
  */
 public interface IPrediction extends Comparable<IPrediction> {
 
+    /**
+     *
+     * @param reward recompensa a sumar a la prediccion. Solo util para las
+     *               predicciones acumulativas de TDLearning
+     */
+    public void addReword(IReward reward);
+
+    /**
+     * multiplica los elementos de la prediccion por un valor
+     * {@code probability}. Solo util para el lmetodo de TDLearningState
+     * <p>
+     * @param probability
+     */
+    public void multiplyBy(double probability);
+
 }

@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-//TODO borrar la clase, ya que no se usa mas
 /**
- *
+ * Utilizado para acumular Predicciones y calcular la maxima o mas prometedora
+ * de ellas
+ * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 class MaximalListConsumer implements Consumer<ActionPrediction> {

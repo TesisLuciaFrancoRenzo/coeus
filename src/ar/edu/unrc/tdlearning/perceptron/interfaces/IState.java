@@ -27,7 +27,7 @@ public interface IState {
      * Perceptron.
      * <p>
      * @param outputNeuronIndex neurona de la capa de salida (la neurona 0 es la
-     *                    primera)
+     *                          primera)
      * <p>
      * @return valor de recompensa normalizado a la neurona con el indice
      *         {@code outputNeuronIndex}
@@ -47,5 +47,13 @@ public interface IState {
      *         {@code neuronIndex}
      */
     public double translateToPerceptronInput(int neuronIndex);
+
+    /**
+     *
+     * @return recompensa obtenida en el estado actual. Si se es un estado
+     *         inicial no deberia tener recompensa, pero si es parcial deberia
+     *         poder calcularse esta recompensa parcial.
+     */
+    public IReward getReward();
 
 }

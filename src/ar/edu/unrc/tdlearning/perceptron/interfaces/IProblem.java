@@ -5,7 +5,9 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
+import ar.edu.unrc.tdlearning.perceptron.learning.StateProbability;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -79,18 +81,24 @@ public interface IProblem {
      * Prediccion realizada por el perceptron de que tan bueno es el estado
      * {@code state}.
      * <p>
-     * @param state                   estado intermedio si se utiliza
-     *                                afterstate, o inicio de estado
-     * <p>
-     * @param accumulativePredicition true si se esta utilizando el metodo
-     *                                acumulativo de prediccion en TDLearning y
-     *                                se debe sumar la recompensa parcial en la
-     *                                prediccion resultante del perceptron
+     * @param state estado intermedio si se utiliza afterstate, o inicio de
+     *              estado
      * <p>
      * @return prediccion del perceptron, sumada la recompensa parcial si es que
      *         se esta utilizando el metodo acumulativo de TDLearninig
      */
-    public IPrediction evaluateBoardWithPerceptron(IState state, boolean accumulativePredicition);
+    public IPrediction evaluateBoardWithPerceptron(IState state);
+
+    /**
+     *
+     * @param nextTurnState estado intermedio que contiene las acciones
+     *                      deterministicas tomadas hasta el momento.
+     * <p>
+     * @return lista de los estados a los que se pueden alcanzar luego de
+     *         computar las acciones no deterministicas. Cada estado debe estar
+     *         emparejado con la probabilidad de que estos estados ocurran
+     */
+    public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState nextTurnState);
 
     /**
      *

@@ -7,6 +7,7 @@ package ar.edu.unrc.tdlearning.perceptron.learning;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IPrediction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 
@@ -42,7 +43,11 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
     @Override
     protected ActionPrediction evaluate(IProblem problem, IState turnInitialState, IAction action) {
         IState afterstate = problem.computeAfterState(turnInitialState, action);
-        return new ActionPrediction(action, problem.evaluateBoardWithPerceptron(afterstate, accumulativePredicition));
+        IPrediction nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate);
+        if ( accumulativePredicition ) {
+            nextTurnStatePrediction.addReword(afterstate.getReward());
+        }
+        return new ActionPrediction(action, nextTurnStatePrediction);
     }
 
     @Override
@@ -55,26 +60,14 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
             IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
             //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
-            if ( trainer.getCurrentTurn() == 1 ) {
-                //si estamos enel turno 1, creamos una traza de elegibilidad nueva
-                trainer.train(afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
-            } else {
-                //si no estamos en el turno 1, debemos reutilizar la traza de elegibilidad de los turnos anteriores
-                trainer.train(afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
-            }
+            trainer.train(afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
         } else {
             // Si nextTurnState es un estado final, no podemos calcular el bestActionForNextTurn.
             // Teoricamente la evaluacion obtenida por el perceptronInterface en el ultimo afterstate,
             // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
             // afterstate para que prediga el final del problema
             //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
-            if ( trainer.getCurrentTurn() == 1 ) {
-                //si estamos enel turno 1, creamos una traza de elegibilidad nueva
-                trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
-            } else {
-                //si no estamos en el turno 1, debemos reutilizar la traza de elegibilidad de los turnos anteriores
-                trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
-            }
+            trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
         }
     }
 
