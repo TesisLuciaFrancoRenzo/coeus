@@ -195,7 +195,7 @@ public class TDTrainer {
                                     momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setWeight(neuronIndexK, newDiferential);
                                 }
                             } else {
-                                updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+                                updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK); //FIXME corregir esto para momentum?
                             }
                         });
                     });
