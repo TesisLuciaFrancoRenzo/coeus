@@ -87,7 +87,7 @@ public interface IProblem {
      * @return prediccion del perceptron, sumada la recompensa parcial si es que
      *         se esta utilizando el metodo acumulativo de TDLearninig
      */
-    public IPrediction evaluateBoardWithPerceptron(IState state);
+    public IsolatedComputation<IPrediction> evaluateBoardWithPerceptron(IState state);
 
     /**
      *

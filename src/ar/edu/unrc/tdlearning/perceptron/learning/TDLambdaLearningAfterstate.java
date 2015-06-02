@@ -10,6 +10,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPrediction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 
 /**
  * Esta clase implementa TD lambda learning (lambda = trazas de elegibilidad),
@@ -41,13 +42,15 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
     }
 
     @Override
-    protected ActionPrediction evaluate(IProblem problem, IState turnInitialState, IAction action) {
-        IState afterstate = problem.computeAfterState(turnInitialState, action);
-        IPrediction nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate);
-        if ( accumulativePredicition ) {
-            nextTurnStatePrediction.addReword(afterstate.getReward());
-        }
-        return new ActionPrediction(action, nextTurnStatePrediction);
+    protected IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
+        return () -> {
+            IState afterstate = problem.computeAfterState(turnInitialState, action);
+            IPrediction nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
+            if ( accumulativePredicition ) {
+                nextTurnStatePrediction.addReword(afterstate.getReward());
+            }
+            return new ActionPrediction(action, nextTurnStatePrediction);
+        };
     }
 
     @Override

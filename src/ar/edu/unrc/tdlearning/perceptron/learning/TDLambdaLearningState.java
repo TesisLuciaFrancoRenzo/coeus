@@ -9,6 +9,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class TDLambdaLearningState extends TDLambdaLearning {
     }
 
     @Override
-    protected ActionPrediction evaluate(IProblem problem, IState turnInitialState, IAction action) {
+    protected IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
         // aplicamos la accion 'bestAction' al estado actual 'currentState',
         // y obtenemos su estado de transicion deterministico.
         IState afterState = problem.computeAfterState(turnInitialState, action);

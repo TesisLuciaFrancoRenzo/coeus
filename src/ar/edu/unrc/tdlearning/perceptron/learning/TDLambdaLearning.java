@@ -9,6 +9,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation;
 import ar.edu.unrc.tdlearning.perceptron.training.TDTrainer;
 import static java.lang.Math.random;
@@ -224,8 +225,9 @@ public abstract class TDLambdaLearning {
     public synchronized IAction computeBestPossibleAction(IProblem problem, IState tempTurnInitialState) {
         List<ActionPrediction> bestActiones
                 = problem.listAllPossibleActions(tempTurnInitialState)
-                .stream() //FIXME trae problemas??? el evaluate trae problema en concurrencia? efectos colaterales?
-                .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction))
+                //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no
+                .stream()
+                .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction).compute())
                 .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
                 .getList();
         return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
@@ -284,7 +286,7 @@ public abstract class TDLambdaLearning {
             case annealing: {
                 //ajustamos las alphas segun el metodo de annealing µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
-                if ( this.currentAlpha.length > 50 ) {
+                if ( this.currentAlpha.length > 100 ) { //FIXMe hacer una constante generica para activar paralelismo
                     rangeStream = rangeStream.parallel();
                 } else {
                     rangeStream = rangeStream.sequential();
@@ -350,7 +352,8 @@ public abstract class TDLambdaLearning {
      * metodo entre varios dependiendo de la implementacion de IProblem. Por
      * ejemplo si utilizas una red neuronal esta funcion deberia devolver la
      * salida de la misma. Se debe asegurar que la ejecucion en paralelo de este
-     * metodo no cause efectos colaterales (deb ser safethread).
+     * metodo no cause efectos colaterales (deb ser safethread implementando
+     * {@code IsolatedComputation}).
      * <p>
      * @param problem          a resolver
      * @param turnInitialState estado del problema al comienzo del turno
@@ -361,7 +364,7 @@ public abstract class TDLambdaLearning {
      *         prediccion del valor final del juego si aplico {@code action} al
      *         estado {@code turnInitialState}
      */
-    protected abstract ActionPrediction evaluate(IProblem problem, IState turnInitialState, IAction action);
+    protected abstract IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action);
 
     /**
      * Metodo que implementa el entrenamiento de una red mediante la experiencia
