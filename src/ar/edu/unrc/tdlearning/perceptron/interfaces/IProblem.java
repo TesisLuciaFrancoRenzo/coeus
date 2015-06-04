@@ -91,14 +91,14 @@ public interface IProblem {
 
     /**
      *
-     * @param nextTurnState estado intermedio que contiene las acciones
-     *                      deterministicas tomadas hasta el momento.
+     * @param afterState estado intermedio que contiene las acciones
+     *                   deterministicas tomadas hasta el momento.
      * <p>
      * @return lista de los estados a los que se pueden alcanzar luego de
      *         computar las acciones no deterministicas. Cada estado debe estar
      *         emparejado con la probabilidad de que estos estados ocurran
      */
-    public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState nextTurnState);
+    public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState);
 
     /**
      *

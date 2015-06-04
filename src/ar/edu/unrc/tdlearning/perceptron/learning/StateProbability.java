@@ -31,7 +31,7 @@ public class StateProbability {
     /**
      * @return the nextTurnState
      */
-    protected IState getNextTurnState() {
+    public IState getNextTurnState() {
         return nextTurnState;
     }
 
@@ -39,7 +39,7 @@ public class StateProbability {
      * @param nextTurnState posible siguiente estado luego de calcular acciones
      *                      no deterministicas
      */
-    protected void setNextTurnState(IState nextTurnState) {
+    public void setNextTurnState(IState nextTurnState) {
         this.nextTurnState = nextTurnState;
     }
 
@@ -47,7 +47,7 @@ public class StateProbability {
      * @return probabilidad de que ocurra {@code nextTurnState} como estado
      *         efectivo en el siguiente turno
      */
-    protected double getProbability() {
+    public double getProbability() {
         return probability;
     }
 
@@ -55,7 +55,7 @@ public class StateProbability {
      * @param probability probabilidad de que se alcance el estado
      *                    {@code nextTurnState}
      */
-    protected void setProbability(double probability) {
+    public void setProbability(double probability) {
         if ( probability < 0 && probability > 1 ) {
             throw new IllegalArgumentException("probability debe estar en el rango 0<=probability<=1");
         }
