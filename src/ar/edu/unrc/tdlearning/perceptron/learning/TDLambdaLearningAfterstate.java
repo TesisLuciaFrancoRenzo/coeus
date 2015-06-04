@@ -46,9 +46,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
         return () -> {
             IState afterstate = problem.computeAfterState(turnInitialState, action);
             IPrediction nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
-            if ( accumulativePredicition ) {
-                nextTurnStatePrediction.addReword(afterstate.getReward());
-            }
+            nextTurnStatePrediction.addReword(afterstate.getReward()); //para añadir la recompensa por elegir este camino
             //TODO parece que esto deberia ir SI o si para afterstate¿?
             return new ActionPrediction(action, nextTurnStatePrediction);
         };
