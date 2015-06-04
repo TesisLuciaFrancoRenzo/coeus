@@ -45,16 +45,12 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
     protected IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
         return () -> {
             IState afterstate = problem.computeAfterState(turnInitialState, action);
-//            if ( !afterstate.isTerminalState() ) {
             IPrediction nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
-//                if ( accumulativePredicition ) {
-//                    nextTurnStatePrediction.addReword(afterstate.getReward());
-//                }
-            //TODO revisar teoria de esto! el error puede estar aca, borrar addReward si no se usa esto
+            if ( accumulativePredicition ) {
+                nextTurnStatePrediction.addReword(afterstate.getReward());
+            }
+            //TODO parece que esto deberia ir SI o si para afterstate¿?
             return new ActionPrediction(action, nextTurnStatePrediction);
-//            } else {
-//                return new ActionPrediction(action, afterstate.translateFinalStateToPrediction()); //TODO borrar esta api?
-//            }
         };
     }
 
