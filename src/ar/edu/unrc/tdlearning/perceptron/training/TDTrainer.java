@@ -42,6 +42,8 @@ public class TDTrainer {
     private double lambda;
 
     private final IPerceptronInterface perceptron;
+    private boolean replaceEligibilitiTraces;
+    private boolean resetEligibilitiTraces;
     /**
      * constante de tasa de aprendizaje
      */
@@ -172,12 +174,14 @@ public class TDTrainer {
                         .rangeClosed(0, maxIndexK)
                         .parallel()
                         .forEach(neuronIndexK -> {
+                            double oldWeight = turnCurrentStateCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
                             if ( !isARandomMove || nextTurnState.isTerminalState() ) {
                                 //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
-                                double oldWeight = turnCurrentStateCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
+
                                 double newDiferential = weightCorrection(
                                         layerIndexJ, neuronIndexJ,
-                                        layerIndexK, neuronIndexK)
+                                        layerIndexK, neuronIndexK,
+                                        oldWeight)
                                 + momentum * momentumCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
 
                                 if ( neuronIndexK == neuronQuantityInK ) {
@@ -195,7 +199,7 @@ public class TDTrainer {
                                     momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setWeight(neuronIndexK, newDiferential);
                                 }
                             } else {
-                                updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK); //FIXME corregir esto para momentum?
+                                updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, oldWeight, isARandomMove); //FIXME corregir esto para momentum?
                             }
                         });
                     });
@@ -441,25 +445,39 @@ public class TDTrainer {
     /**
      * Computo de la traza de elegibilidad para el estado actual
      * <p>
-     * @param outputNeuronIndex indice de una neurona de salida
-     * @param layerIndexJ       indice de la capa de neuronas de mas hacia
-     *                          adelante
-     * @param neuronIndexJ      indice de la neurona de mas hacia adelante
-     * @param layerIndexK       indice de la capa de neuronas de mas hacia atras
-     * @param neuronIndexK      indice de la neurona de mas hacia atras
+     * @param outputNeuronIndex  indice de una neurona de salida
+     * @param layerIndexJ        indice de la capa de neuronas de mas hacia
+     *                           adelante
+     * @param neuronIndexJ       indice de la neurona de mas hacia adelante
+     * @param layerIndexK        indice de la capa de neuronas de mas hacia
+     *                           atras
+     * @param neuronIndexK       indice de la neurona de mas hacia atras
+     * <p>
+     * @param currentWeightValue ultimo valor que tenia el peso
+     * <p>
+     * @param isRandomMove       true si el ultimo movimiento fue elegido al
+     *                           azar
      * <p>
      * @return un valor correspondiente a la formula "e" de la teoria
      */
-    protected double computeEligibilityTrace(int outputNeuronIndex, int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK) {
+    protected double computeEligibilityTrace(int outputNeuronIndex, int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, double currentWeightValue, boolean isRandomMove) {
 
         if ( this.lambda != 0 ) {
-            List<Double> neuronK = elegibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
-            Double newEligibilityTrace
-                    = neuronK.get(outputNeuronIndex) * lambda
-                    + delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
-
-            neuronK.set(outputNeuronIndex, newEligibilityTrace);
-            return newEligibilityTrace;
+            List<Double> neuronKEligibilityTrace = elegibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
+            if ( isRandomMove && resetEligibilitiTraces ) {
+                neuronKEligibilityTrace.set(outputNeuronIndex, 0d);
+                return 0d;
+            } else {
+                double newEligibilityTrace;
+                if ( currentWeightValue == 0 && replaceEligibilitiTraces ) {
+                    newEligibilityTrace = 0;
+                } else {
+                    newEligibilityTrace = neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma; //reutilizamos las viejas trazas
+                }
+                newEligibilityTrace += delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
+                neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
+                return newEligibilityTrace;
+            }
         } else {
             return delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
         }
@@ -507,46 +525,81 @@ public class TDTrainer {
     }
 
     /**
-     *
-     * @param layerIndexJ  indice de la capa de neuronas de mas hacia adelante
-     * @param neuronIndexJ indice de la neurona de mas hacia adelante
-     * @param layerIndexK  indice de la capa de neuronas de mas hacia atras
-     * @param neuronIndexK indice de la neurona de mas hacia atras
+     * @return the replaceEligibilitiTraces
      */
-    protected void updateEligibilityTraceOnly(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK) {
+    protected boolean isReplaceEligibilitiTraces() {
+        return replaceEligibilitiTraces;
+    }
+
+    /**
+     * @param replaceEligibilitiTraces the replaceEligibilitiTraces to set
+     */
+    protected void setReplaceEligibilitiTraces(boolean replaceEligibilitiTraces) {
+        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
+    }
+
+    /**
+     * @return the resetEligibilitiTraces
+     */
+    protected boolean isResetEligibilitiTraces() {
+        return resetEligibilitiTraces;
+    }
+
+    /**
+     * @param resetEligibilitiTraces the resetEligibilitiTraces to set
+     */
+    protected void setResetEligibilitiTraces(boolean resetEligibilitiTraces) {
+        this.resetEligibilitiTraces = resetEligibilitiTraces;
+    }
+
+    /**
+     *
+     * @param layerIndexJ        indice de la capa de neuronas de mas hacia
+     *                           adelante
+     * @param neuronIndexJ       indice de la neurona de mas hacia adelante
+     * @param layerIndexK        indice de la capa de neuronas de mas hacia
+     *                           atras
+     * @param neuronIndexK       indice de la neurona de mas hacia atras
+     * @param currentWeightValue ultimo valor que tenia el peso
+     * @param isRandomMove       si el ultimo movimiento fue elegido al azar
+     */
+    protected void updateEligibilityTraceOnly(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, double currentWeightValue, boolean isRandomMove) {
         int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
 
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
         if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
-            computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+            computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
         } else {
             IntStream
                     .range(0, outputLayerSize)
                     .parallel()
                     .forEach(outputNeuronIndex -> {
                         // System.out.println("outputNeuronIndex:" + outputNeuronIndex + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
-                        computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+                        computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
                     });
         }
     }
 
     /**
      *
-     * @param layerIndexJ  indice de la capa de neuronas de mas hacia adelante
-     * @param neuronIndexJ indice de la neurona de mas hacia adelante
-     * @param layerIndexK  indice de la capa de neuronas de mas hacia atras
-     * @param neuronIndexK indice de la neurona de mas hacia atras
+     * @param layerIndexJ        indice de la capa de neuronas de mas hacia
+     *                           adelante
+     * @param neuronIndexJ       indice de la neurona de mas hacia adelante
+     * @param layerIndexK        indice de la capa de neuronas de mas hacia
+     *                           atras
+     * @param neuronIndexK       indice de la neurona de mas hacia atras
+     * @param currentWeightValue ultimo valor que tenia el peso
      * <p>
      * @return
      */
-    protected double weightCorrection(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK) {
+    protected double weightCorrection(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, double currentWeightValue) {
         int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
 
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
         if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
             // System.out.println("outputNeuronIndex:" + neuronIndexJ + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
             return alpha[layerIndexK] * tDError.get(neuronIndexJ)
-                    * computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+                    * computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, false);
         } else { //FIXME cambiar alpha por beta en casos necesarios
             return IntStream
                     .range(0, outputLayerSize)
@@ -554,7 +607,7 @@ public class TDTrainer {
                     .mapToDouble(outputNeuronIndex -> {
                         // System.out.println("outputNeuronIndex:" + outputNeuronIndex + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
                         return alpha[layerIndexJ] * tDError.get(outputNeuronIndex)
-                        * computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+                        * computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, false);
                     }).sum();
         }
     }
