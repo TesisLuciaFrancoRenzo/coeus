@@ -118,20 +118,29 @@ public class TDTrainer {
      * llamarlo desde el tunro 5, y para llamarlo desde el turno 5, primero hay
      * que invocarlo desde el turno 4, etc.
      * <p>
-     * @param turnCurrentState estado del problema en el turno
-     *                         {@code currentTurn}
-     * @param nextTurnState    estado del problema en el turno que sigue de
-     *                         {@code currentTurn}
-     * @param lamdba           constante que se encuentra en el intervalo [0,1]
-     * @param alpha            constante de tasa de aprendizaje
+     * @param turnCurrentState         estado del problema en el turno
+     *                                 {@code currentTurn}
+     * @param nextTurnState            estado del problema en el turno que sigue
+     *                                 de {@code currentTurn}
+     * @param lamdba                   constante que se encuentra en el
+     *                                 intervalo [0,1]
+     * @param alpha                    constante de tasa de aprendizaje
      * @param isARandomMove
-     * @param gamma            tasa de descuento
-     * @param momentum         0 <= m < 1
+     * @param gamma                    tasa de descuento
+     * @param momentum                 0 <= m < 1
+     * @param resetEligibilitiTraces   permite resetear las trazas de
+     *                                 elegibilidad en caso de movimientos al
+     *                                 azar
+     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
+     *                                 que el peso sea 0, para que cada vez
+     *                                 tenga menos influencia en lso calculos
      */
-    public void train(IState turnCurrentState, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum) {
+    public void train(IState turnCurrentState, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.lambda = lamdba;
         this.alpha = alpha;
         this.gamma = gamma;
+        this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
 
         //creamos o reciclamos caches
         if ( currentTurn == 1 ) {

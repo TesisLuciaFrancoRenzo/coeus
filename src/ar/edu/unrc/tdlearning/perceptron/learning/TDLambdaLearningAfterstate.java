@@ -24,21 +24,27 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
 
     /**
      *
-     * @param perceptron              implementacion de la interfaz entre
-     *                                nuestra red neuronal y el
-     *                                perceptronInterface que utilizara el
-     *                                problema. Este puede estar implementado
-     *                                con cualquier libreria o codigo.
-     * @param lamdba                  constante que se encuentra en el intervalo
-     *                                [0,1]
-     * @param alpha                   constante de tasa de aprendizaje
-     * @param accumulativePredicition true si se esta utilizando el metodo
-     *                                acumulativo de prediccion en TDLearning
-     * @param gamma                   tasa de descuento
-     * @param momentum                0 <= m < 1
+     * @param perceptron               implementacion de la interfaz entre
+     *                                 nuestra red neuronal y el
+     *                                 perceptronInterface que utilizara el
+     *                                 problema. Este puede estar implementado
+     *                                 con cualquier libreria o codigo.
+     * @param lamdba                   constante que se encuentra en el
+     *                                 intervalo [0,1]
+     * @param alpha                    constante de tasa de aprendizaje
+     * @param accumulativePredicition  true si se esta utilizando el metodo
+     *                                 acumulativo de prediccion en TDLearning
+     * @param gamma                    tasa de descuento
+     * @param momentum                 0 <= m < 1
+     * @param resetEligibilitiTraces   permite resetear las trazas de
+     *                                 elegibilidad en caso de movimientos al
+     *                                 azar
+     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
+     *                                 que el peso sea 0, para que cada vez
+     *                                 tenga menos influencia en lso calculos
      */
-    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum) {
-        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum);
+    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
     @Override
@@ -62,14 +68,14 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
             IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
             //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
-            trainer.train(afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
+            trainer.train(afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
         } else {
             // Si nextTurnState es un estado final, no podemos calcular el bestActionForNextTurn.
             // Teoricamente la evaluacion obtenida por el perceptronInterface en el ultimo afterstate,
             // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
             // afterstate para que prediga el final del problema
             //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
-            trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum); //TODO revisar aca, puede estar el error
+            trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces); //TODO revisar aca, puede estar el error
         }
     }
 

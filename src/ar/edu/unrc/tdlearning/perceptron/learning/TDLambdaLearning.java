@@ -85,6 +85,8 @@ public abstract class TDLambdaLearning {
     private int explorationRateFinishDecrementing;
     private double explorationRateInitialValue;
     private int explorationRateStartDecrementing;
+    protected boolean replaceEligibilitiTraces;
+    protected boolean resetEligibilitiTraces;
 
     /**
      *
@@ -177,23 +179,29 @@ public abstract class TDLambdaLearning {
 
     /**
      *
-     * @param perceptronInterface     implementacion de la interfaz entre
-     *                                nuestra red neuronal y el
-     *                                perceptronInterface que utilizara el
-     *                                problema. Este puede estar implementado
-     *                                con cualquier libreria o codigo.
-     * @param lamdba                  constante que se encuentra en el intervalo
-     *                                [0,1]
-     * @param alpha                   Constantes de tasa de aprendizaje para
-     *                                cada capa. Si es null, se inicializa cada
-     *                                initialAlpha con la formula 1/num_neuronas
-     *                                de la capa anterior.
-     * @param accumulativePredicition true si se esta utilizando el metodo
-     *                                acumulativo de prediccion en TDLearning
-     * @param gamma                   tasa de descuento
-     * @param momentum                0 <= m < 1
+     * @param perceptronInterface      implementacion de la interfaz entre
+     *                                 nuestra red neuronal y el
+     *                                 perceptronInterface que utilizara el
+     *                                 problema. Este puede estar implementado
+     *                                 con cualquier libreria o codigo.
+     * @param lamdba                   constante que se encuentra en el
+     *                                 intervalo [0,1]
+     * @param alpha                    Constantes de tasa de aprendizaje para
+     *                                 cada capa. Si es null, se inicializa cada
+     *                                 initialAlpha con la formula
+     *                                 1/num_neuronas de la capa anterior.
+     * @param accumulativePredicition  true si se esta utilizando el metodo
+     *                                 acumulativo de prediccion en TDLearning
+     * @param gamma                    tasa de descuento
+     * @param momentum                 0 <= m < 1
+     * @param resetEligibilitiTraces   permite resetear las trazas de
+     *                                 elegibilidad en caso de movimientos al
+     *                                 azar
+     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
+     *                                 que el peso sea 0, para que cada vez
+     *                                 tenga menos influencia en lso calculos
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
@@ -222,6 +230,8 @@ public abstract class TDLambdaLearning {
         this.perceptronInterface = perceptronInterface;
         this.accumulativePredicition = accumulativePredicition;
         this.momentum = momentum;
+        this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
 
     /**

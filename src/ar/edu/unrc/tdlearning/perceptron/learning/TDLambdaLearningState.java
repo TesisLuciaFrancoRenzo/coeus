@@ -24,21 +24,27 @@ public class TDLambdaLearningState extends TDLambdaLearning {
 
     /**
      *
-     * @param perceptron              implementacion de la interfaz entre
-     *                                nuestra red neuronal y el
-     *                                perceptronInterface que utilizara el
-     *                                problema. Este puede estar implementado
-     *                                con cualquier libreria o codigo.
-     * @param lamdba                  constante que se encuentra en el intervalo
-     *                                [0,1]
-     * @param alpha                   constante de tasa de aprendizaje
-     * @param accumulativePredicition true si se esta utilizando el metodo
-     *                                acumulativo de prediccion en TDLearning
-     * @param gamma                   tasa de descuento
-     * @param momentum                0 <= m < 1
+     * @param perceptron               implementacion de la interfaz entre
+     *                                 nuestra red neuronal y el
+     *                                 perceptronInterface que utilizara el
+     *                                 problema. Este puede estar implementado
+     *                                 con cualquier libreria o codigo.
+     * @param lamdba                   constante que se encuentra en el
+     *                                 intervalo [0,1]
+     * @param alpha                    constante de tasa de aprendizaje
+     * @param accumulativePredicition  true si se esta utilizando el metodo
+     *                                 acumulativo de prediccion en TDLearning
+     * @param gamma                    tasa de descuento
+     * @param momentum                 0 <= m < 1
+     * @param resetEligibilitiTraces   permite resetear las trazas de
+     *                                 elegibilidad en caso de movimientos al
+     *                                 azar
+     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
+     *                                 que el peso sea 0, para que cada vez
+     *                                 tenga menos influencia en lso calculos
      */
-    public TDLambdaLearningState(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum) {
-        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum);
+    public TDLambdaLearningState(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
     @Override
@@ -68,7 +74,7 @@ public class TDLambdaLearningState extends TDLambdaLearning {
     @Override
     protected void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
         //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
-        trainer.train(turnInitialState, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum);
+        trainer.train(turnInitialState, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
 }
