@@ -11,6 +11,13 @@ package ar.edu.unrc.tdlearning.perceptron.training;
  */
 public enum EExplorationRateAlgorithms {
 
+    /**
+     *
+     */
     fixed,
+
+    /**
+     *
+     */
     linear
 }

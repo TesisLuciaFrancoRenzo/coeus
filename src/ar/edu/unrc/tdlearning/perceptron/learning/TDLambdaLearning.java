@@ -263,6 +263,18 @@ public abstract class TDLambdaLearning {
 
     /**
      *
+     * @param value
+     */
+    public void setExplorationRateToFixed(double value) {
+        if ( value < 0 || value > 1 ) {
+            throw new IllegalArgumentException("value debe estar en el intervalo [0,1]");
+        }
+        this.explorationRate = EExplorationRateAlgorithms.fixed;
+        this.explorationRateInitialValue = value;
+    }
+
+    /**
+     *
      * @param annealingT
      */
     public void setLearningRateAdaptationToAnnealing(int annealingT) {
@@ -271,14 +283,6 @@ public abstract class TDLambdaLearning {
         }
         this.learningRateAdaptation = ELearningRateAdaptation.annealing;
         this.annealingT = annealingT;
-    }
-
-    /**
-     *
-     */
-    public void setLearningRateAdaptationToFixed() {
-        this.learningRateAdaptation = ELearningRateAdaptation.fixed;
-        this.annealingT = 0;
     }
 
     /**
@@ -304,14 +308,10 @@ public abstract class TDLambdaLearning {
 
     /**
      *
-     * @param value
      */
-    public void setExplorationRateToFixed(double value) {
-        if ( value < 0 || value > 1 ) {
-            throw new IllegalArgumentException("value debe estar en el intervalo [0,1]");
-        }
-        this.explorationRate = EExplorationRateAlgorithms.fixed;
-        this.explorationRateInitialValue = value;
+    public void setLearningRateAdaptationToFixed() {
+        this.learningRateAdaptation = ELearningRateAdaptation.fixed;
+        this.annealingT = 0;
     }
 
     /**
