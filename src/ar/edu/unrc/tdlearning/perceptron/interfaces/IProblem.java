@@ -100,13 +100,4 @@ public interface IProblem {
      */
     public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState);
 
-    /**
-     *
-     * @return numero entre [0,1) indicando la probabilidad de elegir una accion
-     *         al azar durante le entrenamiento, en lugar de predecir la mejor.
-     *         Con esto se evita ciertos casos en que los perceptrones eligen
-     *         siempre los mismos caminos y no prueban nuevas tacticas.
-     */
-    public double randomMoveProbability();
-
 }

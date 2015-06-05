@@ -10,6 +10,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
+import ar.edu.unrc.tdlearning.perceptron.training.EExplorationRateAlgorithms;
 import ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation;
 import ar.edu.unrc.tdlearning.perceptron.training.TDTrainer;
 import static java.lang.Math.random;
@@ -79,6 +80,11 @@ public abstract class TDLambdaLearning {
      * tasa de aprendizaje actual para cada capa de pesos
      */
     private double[] currentAlpha;
+    private EExplorationRateAlgorithms explorationRate;
+    private double explorationRateFinalValue;
+    private int explorationRateFinishDecrementing;
+    private double explorationRateInitialValue;
+    private int explorationRateStartDecrementing;
 
     /**
      *
@@ -276,6 +282,40 @@ public abstract class TDLambdaLearning {
     }
 
     /**
+     *
+     * @param initialValue
+     * @param startDecrementing
+     * @param finalValue
+     * @param finishDecrementing
+     * @param t
+     */
+    public void setExplorationRate(double initialValue, int startDecrementing, double finalValue, int finishDecrementing, int t) {
+        if ( initialValue < 0 || initialValue > 1 ) {
+            throw new IllegalArgumentException("initialValue debe estar en el intervalo [0,1]");
+        }
+        if ( finalValue < 0 || finalValue > 1 ) {
+            throw new IllegalArgumentException("finalValue debe estar en el intervalo [0,1]");
+        }
+        this.explorationRate = EExplorationRateAlgorithms.linear;
+        this.explorationRateInitialValue = initialValue;
+        this.explorationRateStartDecrementing = startDecrementing;
+        this.explorationRateFinalValue = finalValue;
+        this.explorationRateFinishDecrementing = finishDecrementing;
+    }
+
+    /**
+     *
+     * @param value
+     */
+    public void setExplorationRateToFixed(double value) {
+        if ( value < 0 || value > 1 ) {
+            throw new IllegalArgumentException("value debe estar en el intervalo [0,1]");
+        }
+        this.explorationRate = EExplorationRateAlgorithms.fixed;
+        this.explorationRateInitialValue = value;
+    }
+
+    /**
      * Entrena la Inteligencia Artificial con lo que aprende de la experiencia
      * de resolver una sola vez un {@code problem} de comienzo a fin, durante 1
      * o mas turnos hasta alñcanzar su objetivo o fracasar.
@@ -288,6 +328,9 @@ public abstract class TDLambdaLearning {
     public void solveAndTrainOnce(IProblem problem, int t) {
         if ( learningRateAdaptation == null ) {
             throw new IllegalArgumentException("learningRateAdaptation can't be null");
+        }
+        if ( explorationRate == null ) {
+            throw new IllegalArgumentException("explorationRate can't be null");
         }
         if ( t < 0 ) {
             throw new IllegalArgumentException("t debe ser un valor mayor a 0");
@@ -313,6 +356,24 @@ public abstract class TDLambdaLearning {
             }
         }
 
+        double currentExplorationRate = 0;
+        //inicializamos las constantes de aprendizaje
+        switch ( this.explorationRate ) {
+            case fixed: {
+                // ignorar las actualizaciones y dejar las alphas sin modificar
+                currentExplorationRate = explorationRateInitialValue;
+                break;
+            }
+            case linear: {
+                //ajustamos las alphas segun el metodo linear entre dos puntos establecidos
+                currentExplorationRate
+                        = ((t - explorationRateStartDecrementing) / (explorationRateFinishDecrementing - explorationRateStartDecrementing))
+                        * (explorationRateFinalValue - explorationRateInitialValue)
+                        + explorationRateInitialValue;
+                break;
+            }
+        }
+
         //inicializamos el problema y las variables del entrenador
         trainer = new TDTrainer(perceptronInterface);
 
@@ -324,8 +385,8 @@ public abstract class TDLambdaLearning {
             // calculamos todas las acciones posibles para el estado inicial
             IAction bestAction;
 
-            if ( problem.randomMoveProbability() > 0 ) {
-                randomChoise = Math.random() <= problem.randomMoveProbability();
+            if ( currentExplorationRate > 0 ) {
+                randomChoise = Math.random() <= currentExplorationRate;
             }
 
             if ( !randomChoise ) {
