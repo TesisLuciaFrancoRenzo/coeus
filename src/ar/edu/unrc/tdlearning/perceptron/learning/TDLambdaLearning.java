@@ -85,8 +85,6 @@ public abstract class TDLambdaLearning {
     private int explorationRateFinishDecrementing;
     private double explorationRateInitialValue;
     private int explorationRateStartDecrementing;
-    protected boolean replaceEligibilitiTraces;
-    protected boolean resetEligibilitiTraces;
 
     /**
      *
@@ -126,6 +124,8 @@ public abstract class TDLambdaLearning {
      *
      */
     protected final IPerceptronInterface perceptronInterface;
+    protected boolean replaceEligibilitiTraces;
+    protected boolean resetEligibilitiTraces;
 
     /**
      *
