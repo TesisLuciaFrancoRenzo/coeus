@@ -357,19 +357,25 @@ public abstract class TDLambdaLearning {
         }
 
         double currentExplorationRate = 0;
-        //inicializamos las constantes de aprendizaje
+        //inicializamos el factor de exploracion
         switch ( this.explorationRate ) {
             case fixed: {
-                // ignorar las actualizaciones y dejar las alphas sin modificar
+                // factor constante
                 currentExplorationRate = explorationRateInitialValue;
                 break;
             }
             case linear: {
-                //ajustamos las alphas segun el metodo linear entre dos puntos establecidos
-                currentExplorationRate
-                        = ((t - explorationRateStartDecrementing) / (explorationRateFinishDecrementing - explorationRateStartDecrementing))
-                        * (explorationRateFinalValue - explorationRateInitialValue)
-                        + explorationRateInitialValue;
+                //factor ajustado linealmente entre dos puntos
+                if ( t < explorationRateStartDecrementing ) {
+                    currentExplorationRate = explorationRateInitialValue;
+                } else if ( t > explorationRateFinishDecrementing ) {
+                    currentExplorationRate = explorationRateFinalValue;
+                } else {
+                    currentExplorationRate
+                            = ((t - explorationRateStartDecrementing) / (explorationRateFinishDecrementing - explorationRateStartDecrementing))
+                            * (explorationRateFinalValue - explorationRateInitialValue)
+                            + explorationRateInitialValue;
+                }
                 break;
             }
         }
