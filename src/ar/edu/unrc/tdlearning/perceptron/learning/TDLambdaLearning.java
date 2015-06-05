@@ -287,9 +287,8 @@ public abstract class TDLambdaLearning {
      * @param startDecrementing
      * @param finalValue
      * @param finishDecrementing
-     * @param t
      */
-    public void setExplorationRate(double initialValue, int startDecrementing, double finalValue, int finishDecrementing, int t) {
+    public void setExplorationRate(double initialValue, int startDecrementing, double finalValue, int finishDecrementing) {
         if ( initialValue < 0 || initialValue > 1 ) {
             throw new IllegalArgumentException("initialValue debe estar en el intervalo [0,1]");
         }
