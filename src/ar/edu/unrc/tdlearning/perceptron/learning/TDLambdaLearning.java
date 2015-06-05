@@ -378,6 +378,7 @@ public abstract class TDLambdaLearning {
                 break;
             }
         }
+        assert currentExplorationRate >= 0 && currentExplorationRate <= 1;
 
         //inicializamos el problema y las variables del entrenador
         trainer = new TDTrainer(perceptronInterface);
