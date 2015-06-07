@@ -7,7 +7,7 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
 /**
  *
- * @author Franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface IReward {
 

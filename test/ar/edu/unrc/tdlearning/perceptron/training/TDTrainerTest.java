@@ -23,7 +23,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class TDTrainerTest {
 

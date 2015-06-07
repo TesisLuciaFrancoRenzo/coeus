@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
 
 /**
  *
- * @author Franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
 @Suite.SuiteClasses( {TDTrainerTest.class, CircularCustomQueueTest.class, TDLambdaLearningTest.class} )

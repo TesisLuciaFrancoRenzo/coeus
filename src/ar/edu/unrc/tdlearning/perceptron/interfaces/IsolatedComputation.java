@@ -10,7 +10,7 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
  * causan efectos colaterales en el objeto donde se estan ejecutando. Es util
  * para poder calcular el contenido en paralelo.
  * <p>
- * @author Franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  * @param <T> tipo de salida esperada de la computacion
  */
 public interface IsolatedComputation<T> {

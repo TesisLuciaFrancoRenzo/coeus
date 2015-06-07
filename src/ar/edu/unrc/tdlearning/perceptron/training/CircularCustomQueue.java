@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  * @param <T>
  */
 public class CircularCustomQueue<T> {

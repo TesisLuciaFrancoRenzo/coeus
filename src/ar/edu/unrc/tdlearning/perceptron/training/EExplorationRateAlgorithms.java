@@ -7,7 +7,7 @@ package ar.edu.unrc.tdlearning.perceptron.training;
 
 /**
  *
- * @author Franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public enum EExplorationRateAlgorithms {
 

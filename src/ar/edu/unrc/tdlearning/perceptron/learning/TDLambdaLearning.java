@@ -124,7 +124,15 @@ public abstract class TDLambdaLearning {
      *
      */
     protected final IPerceptronInterface perceptronInterface;
+
+    /**
+     *
+     */
     protected boolean replaceEligibilitiTraces;
+
+    /**
+     *
+     */
     protected boolean resetEligibilitiTraces;
 
     /**

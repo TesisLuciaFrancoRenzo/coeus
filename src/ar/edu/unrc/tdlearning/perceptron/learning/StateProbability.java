@@ -9,7 +9,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 
 /**
  *
- * @author Franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class StateProbability {
 

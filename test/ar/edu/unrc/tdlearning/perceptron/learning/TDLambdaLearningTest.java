@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 
 /**
  *
- * @author Franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class TDLambdaLearningTest {
 
