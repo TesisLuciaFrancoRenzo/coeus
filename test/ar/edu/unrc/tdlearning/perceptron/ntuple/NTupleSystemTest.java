@@ -101,17 +101,17 @@ public class NTupleSystemTest {
     /**
      * Test of calculateIndex method, of class NTupleSystem.
      */
-@Test
-public void testCalculateIndex() {
-    System.out.println("calculateIndex");
-    int nTupleIndex = 1; //numero indice de la ntupla que se va a solucitar al IState
-    int m = allSamplePointStates.size(); //Every sampling point p can have m different states
-    int expResult
-            = 2 * (int) Math.pow(m, 0) //indice de SamplePoint.c
-            + 0 * (int) Math.pow(m, 1) //indice de SamplePoint.a
-            + 1 * (int) Math.pow(m, 2); //indice de SamplePoint.b
-    int result = NTupleSystem.calculateIndex(nTupleIndex, nTuplesLenght, state, mapSamplePointStates);
-    assertEquals(expResult, result);
+    @Test
+    public void testCalculateIndex() {
+        System.out.println("calculateIndex");
+        int nTupleIndex = 1; //numero indice de la ntupla que se va a solucitar al IState
+        int m = allSamplePointStates.size(); //Every sampling point p can have m different states
+        int expResult
+                = 2 * (int) Math.pow(m, 0) //indice de SamplePoint.c
+                + 0 * (int) Math.pow(m, 1) //indice de SamplePoint.a
+                + 1 * (int) Math.pow(m, 2); //indice de SamplePoint.b
+        int result = NTupleSystem.calculateIndex(nTupleIndex, nTuplesLenght, state, mapSamplePointStates);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -125,7 +125,6 @@ public void testCalculateIndex() {
         Double expResult = FunctionUtils.sigmoid.apply(0.8 + 0.5 + 0.1);
         Double result = instance.getComputation(state).compute();
         assertEquals(expResult, result, 0.000000000000005);
-
     }
 //
 //    /**
@@ -161,6 +160,5 @@ public void testCalculateIndex() {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-    
 
 }

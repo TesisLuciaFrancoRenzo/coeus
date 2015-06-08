@@ -30,7 +30,7 @@ public class TDTrainerNTupleSystem extends TDTrainerPerceptron {
         // inicializamos la Cache o reciclamos alguna vieja
         NeuralNetCache currentCache;
         if ( oldCache == null ) {
-            currentCache = new NeuralNetCache(2);
+            currentCache = new NeuralNetCache(perceptron.getLayerQuantity());
         } else {
             currentCache = oldCache;
         }
@@ -60,14 +60,7 @@ public class TDTrainerNTupleSystem extends TDTrainerPerceptron {
                             } else {
                                 neuron = (Neuron) oldCache.getNeuron(currentLayerIndex, currentNeuronIndex);
                             }
-                            neuron.setOutput(state.translateToPerceptronInput(currentNeuronIndex));
-//                            if ( neuron.getOutput().isNaN() ) {
-//                                try { //FIXME hacer mas lindo
-//                                    throw new Exception("wrong input translation state.translateToPerceptronInput(" + currentNeuronIndex + ")= " + neuron.getOutput());
-//                                } catch ( Exception ex ) {
-//                                    Logger.getLogger(TDTrainerPerceptron.class.getName()).log(Level.SEVERE, null, ex);
-//                                }
-//                            }
+                            neuron.setOutput(1d);
                             neuron.setDerivatedOutput(null);
 
                         } else {

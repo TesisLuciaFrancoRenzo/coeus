@@ -58,6 +58,7 @@ public class TDTrainerPerceptron {
      * con el siguiente
      */
     protected List<Double> tDError;
+    protected List<Double> nextTurnOutputs;
     /**
      * Cache utilizada para reciclar calculos y evitar recursiones
      */
@@ -72,6 +73,8 @@ public class TDTrainerPerceptron {
         currentTurn = 1;
         elegibilityTraces = null;
         momentumCache = createMomentumCache(); //TODO revisar si hay que resetearlo cuando empieza una nueva partida
+        nextTurnStateCache = null;
+        turnCurrentStateCache = null;
     }
 
     /**
@@ -144,19 +147,28 @@ public class TDTrainerPerceptron {
         //creamos o reciclamos caches
         if ( currentTurn == 1 ) {
             this.turnCurrentStateCache = createCache(turnCurrentState, null);
-            this.nextTurnStateCache = createCache(nextTurnState, null);
             createEligibilityTrace();
 
             //iniciamos vector con errores
             int neuronQuantityAtOutput = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
-            this.tDError = new ArrayList<>(neuronQuantityAtOutput);
-            for ( int i = 0; i < neuronQuantityAtOutput; i++ ) {
-                tDError.add(null);
+            if ( tDError == null ) {
+                this.tDError = new ArrayList<>(neuronQuantityAtOutput);
+                for ( int i = 0; i < neuronQuantityAtOutput; i++ ) {
+                    tDError.add(null);
+                }
+            }
+            //iniciamos vector de las salidas del proximo turno
+            if ( nextTurnOutputs == null ) {
+                this.nextTurnOutputs = new ArrayList<>(neuronQuantityAtOutput);
+                for ( int i = 0; i < neuronQuantityAtOutput; i++ ) {
+                    nextTurnOutputs.add(null);
+                }
             }
         } else {
             this.turnCurrentStateCache = createCache(turnCurrentState, turnCurrentStateCache);
-            this.nextTurnStateCache = createCache(nextTurnState, nextTurnStateCache);
         }
+
+        computeNextTurnOutputs(nextTurnState);
 
         calculateTDError(nextTurnState);
 
@@ -232,6 +244,13 @@ public class TDTrainerPerceptron {
         } else {
             // si es la coordenada de una neurona, devuelvo su f(net) o la entrada (si es capa de entrada)
             return ((Neuron) turnCurrentStateCache.getNeuron(layerIndex, neuronIndex)).getOutput();
+        }
+    }
+
+    private void computeNextTurnOutputs(IState nextTurnState) {
+        this.nextTurnStateCache = createCache(nextTurnState, nextTurnStateCache);
+        for ( int i = 0; i < this.nextTurnOutputs.size(); i++ ) {
+            this.nextTurnOutputs.set(i, ((Neuron) nextTurnStateCache.getLayer(nextTurnStateCache.getOutputLayerIndex()).getNeuron(i)).getOutput());
         }
     }
 
@@ -357,7 +376,7 @@ public class TDTrainerPerceptron {
                     // assert !nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput().isNaN();
                     double nextTurnOutput;
                     if ( !nextTurnState.isTerminalState() ) {
-                        nextTurnOutput = ((Neuron) nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex)).getOutput();
+                        nextTurnOutput = this.nextTurnOutputs.get(outputNeuronIndex);
                     } else {
                         nextTurnOutput = nextTurnState.translateRealOutputToNormalizedPerceptronOutputFrom(outputNeuronIndex);
                     }
