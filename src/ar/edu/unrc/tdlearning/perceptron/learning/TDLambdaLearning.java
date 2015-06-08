@@ -398,8 +398,12 @@ public abstract class TDLambdaLearning {
         }
         assert currentExplorationRate >= 0 && currentExplorationRate <= 1;
 
-        //inicializamos el problema y las variables del entrenador
-        trainer = new TDTrainerPerceptron(perceptronInterface);
+        //inicializamos el problema y las variables del entrenador, o reutilizamos el ultimo Trainer para reciclar sus variables
+        if ( trainer == null ) {
+            trainer = new TDTrainerPerceptron(perceptronInterface);
+        } else {
+            trainer.reset();
+        }
 
         IState turnInitialState = problem.initialize();
         boolean randomChoise = false;

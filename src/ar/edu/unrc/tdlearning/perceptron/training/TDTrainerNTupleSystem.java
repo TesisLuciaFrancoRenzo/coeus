@@ -7,8 +7,6 @@ package ar.edu.unrc.tdlearning.perceptron.training;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 /**
@@ -23,7 +21,6 @@ public class TDTrainerNTupleSystem extends TDTrainerPerceptron {
      */
     public TDTrainerNTupleSystem(IPerceptronInterface perceptron) {
         super(perceptron);
-
     }
 
     @Override
@@ -64,13 +61,13 @@ public class TDTrainerNTupleSystem extends TDTrainerPerceptron {
                                 neuron = (Neuron) oldCache.getNeuron(currentLayerIndex, currentNeuronIndex);
                             }
                             neuron.setOutput(state.translateToPerceptronInput(currentNeuronIndex));
-                            if ( neuron.getOutput().isNaN() ) {
-                                try { //FIXME hacer mas lindo
-                                    throw new Exception("wrong input translation state.translateToPerceptronInput(" + currentNeuronIndex + ")= " + neuron.getOutput());
-                                } catch ( Exception ex ) {
-                                    Logger.getLogger(TDTrainerPerceptron.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
+//                            if ( neuron.getOutput().isNaN() ) {
+//                                try { //FIXME hacer mas lindo
+//                                    throw new Exception("wrong input translation state.translateToPerceptronInput(" + currentNeuronIndex + ")= " + neuron.getOutput());
+//                                } catch ( Exception ex ) {
+//                                    Logger.getLogger(TDTrainerPerceptron.class.getName()).log(Level.SEVERE, null, ex);
+//                                }
+//                            }
                             neuron.setDerivatedOutput(null);
 
                         } else {
@@ -96,7 +93,7 @@ public class TDTrainerNTupleSystem extends TDTrainerPerceptron {
                                 neuron.setWeight(previousLayerNeuronIndex,
                                         perceptron.getWeight(currentLayerIndex, currentNeuronIndex, previousLayerNeuronIndex));
                                 // devolvemmos la multiplicacion para luego sumar
-                                assert !((Neuron) currentCache.getNeuron(previousLayer, previousLayerNeuronIndex)).getOutput().isNaN();
+//                                assert !((Neuron) currentCache.getNeuron(previousLayer, previousLayerNeuronIndex)).getOutput().isNaN();
                                 return ((Neuron) currentCache.getNeuron(previousLayer, previousLayerNeuronIndex)).getOutput()
                                 * neuron.getWeight(previousLayerNeuronIndex);
                             }).sum();
@@ -105,9 +102,9 @@ public class TDTrainerNTupleSystem extends TDTrainerPerceptron {
                             }
                             neuron.setOutput(perceptron.getActivationFunction(currentLayerIndex).apply(net));
 
-                            assert !neuron.getOutput().isNaN();
+//                            assert !neuron.getOutput().isNaN();
                             neuron.setDerivatedOutput(perceptron.getDerivatedActivationFunction(currentLayerIndex).apply(neuron.getOutput()));
-                            assert !neuron.getDerivatedOutput().isNaN();
+//                            assert !neuron.getDerivatedOutput().isNaN();
                         }
                         //cargamos la nueva neurona, si es que creamos una nueva cache
                         if ( oldCache == null ) {

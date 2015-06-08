@@ -6,7 +6,8 @@
 package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
 /**
- *
+ * Se debe asegurar la implementacion de equals ya que se utilizaran en HashMaps
+ * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface SamplePointState {
