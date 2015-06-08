@@ -52,8 +52,8 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
         return () -> {
             IState afterstate = problem.computeAfterState(turnInitialState, action);
             IPrediction nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
-            nextTurnStatePrediction.addReword(afterstate.getReward()); //para añadir la recompensa por elegir este camino
-            //TODO parece que esto deberia ir SI o si para afterstate¿?
+            // nextTurnStatePrediction.addReword(afterstate.getReward()); //para añadir la recompensa por elegir este camino
+            //TODO parece que esto deberia ir SI o si para afterstate¿? parece que no va porque el learn aprende a predecir el puntaje parcial actual mas el siguiente
             return new ActionPrediction(action, nextTurnStatePrediction);
         };
     }

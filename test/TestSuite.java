@@ -5,6 +5,7 @@
  */
 
 import ar.edu.unrc.tdlearning.perceptron.learning.TDLambdaLearningTest;
+import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystemTest;
 import ar.edu.unrc.tdlearning.perceptron.training.CircularCustomQueueTest;
 import ar.edu.unrc.tdlearning.perceptron.training.TDTrainerTest;
 import org.junit.After;
@@ -19,7 +20,7 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {TDTrainerTest.class, CircularCustomQueueTest.class, TDLambdaLearningTest.class} )
+@Suite.SuiteClasses( {TDTrainerTest.class, CircularCustomQueueTest.class, TDLambdaLearningTest.class, NTupleSystemTest.class} )
 public class TestSuite {
 
     /**

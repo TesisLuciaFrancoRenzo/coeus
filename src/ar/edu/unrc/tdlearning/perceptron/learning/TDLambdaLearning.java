@@ -12,7 +12,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import ar.edu.unrc.tdlearning.perceptron.training.EExplorationRateAlgorithms;
 import ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation;
-import ar.edu.unrc.tdlearning.perceptron.training.TDTrainer;
+import ar.edu.unrc.tdlearning.perceptron.training.TDTrainerPerceptron;
 import static java.lang.Math.random;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -138,7 +138,7 @@ public abstract class TDLambdaLearning {
     /**
      *
      */
-    protected TDTrainer trainer;
+    protected TDTrainerPerceptron trainer;
 //
 //    public static Integer calculateBestEligibilityTraceLenght(Double lambda, Double threshold) {
 //        if ( lambda > 1 || lambda < 0 ) {
@@ -399,7 +399,7 @@ public abstract class TDLambdaLearning {
         assert currentExplorationRate >= 0 && currentExplorationRate <= 1;
 
         //inicializamos el problema y las variables del entrenador
-        trainer = new TDTrainer(perceptronInterface);
+        trainer = new TDTrainerPerceptron(perceptronInterface);
 
         IState turnInitialState = problem.initialize();
         boolean randomChoise = false;

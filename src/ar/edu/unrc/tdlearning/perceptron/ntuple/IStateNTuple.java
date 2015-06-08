@@ -5,8 +5,6 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
-import java.util.List;
-
 /**
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
@@ -15,10 +13,9 @@ public interface IStateNTuple {
 
     /**
      *
-     * @param nTupleIndex
-     * <p>
+     * @param nTupleIndex <p>
      * @return
      */
-    public List<SamplePointState> getNTuple(int nTupleIndex);
+    public SamplePointState[] getNTuple(int nTupleIndex);
 
 }
