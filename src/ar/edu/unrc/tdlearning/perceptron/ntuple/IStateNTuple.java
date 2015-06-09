@@ -14,7 +14,7 @@ public interface IStateNTuple {
     /**
      *
      * @param nTupleIndex <p>
-     * @return
+     * @return estado de la NTupla con el indice {@code nTupleIndex}
      */
     public SamplePointState[] getNTuple(int nTupleIndex);
 
