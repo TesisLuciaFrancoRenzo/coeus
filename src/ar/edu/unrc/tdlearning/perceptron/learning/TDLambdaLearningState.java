@@ -10,6 +10,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
+import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
 import java.util.List;
 
 /**
@@ -44,6 +45,10 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      *                                 tenga menos influencia en lso calculos
      */
     public TDLambdaLearningState(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
+    }
+
+    public TDLambdaLearningState(NTupleSystem perceptron, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 

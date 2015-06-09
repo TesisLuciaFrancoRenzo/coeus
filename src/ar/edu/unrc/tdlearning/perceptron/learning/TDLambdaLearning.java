@@ -10,8 +10,16 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
+import static ar.edu.unrc.tdlearning.perceptron.learning.ENeuralNetworkType.ntuple;
+import static ar.edu.unrc.tdlearning.perceptron.learning.ENeuralNetworkType.perceptron;
+import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
 import ar.edu.unrc.tdlearning.perceptron.training.EExplorationRateAlgorithms;
+import static ar.edu.unrc.tdlearning.perceptron.training.EExplorationRateAlgorithms.linear;
 import ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation;
+import static ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation.annealing;
+import static ar.edu.unrc.tdlearning.perceptron.training.ELearningRateAdaptation.fixed;
+import ar.edu.unrc.tdlearning.perceptron.training.ITrainer;
+import ar.edu.unrc.tdlearning.perceptron.training.TDTrainerNTupleSystem;
 import ar.edu.unrc.tdlearning.perceptron.training.TDTrainerPerceptron;
 import static java.lang.Math.random;
 import java.util.List;
@@ -85,6 +93,7 @@ public abstract class TDLambdaLearning {
     private int explorationRateFinishDecrementing;
     private double explorationRateInitialValue;
     private int explorationRateStartDecrementing;
+    private NTupleSystem nTupleSystem;
 
     /**
      *
@@ -119,6 +128,7 @@ public abstract class TDLambdaLearning {
      *
      */
     protected final double momentum;
+    private final ENeuralNetworkType neuralNetworkType;
 
     /**
      *
@@ -138,7 +148,7 @@ public abstract class TDLambdaLearning {
     /**
      *
      */
-    protected TDTrainerPerceptron trainer;
+    protected ITrainer trainer;
 //
 //    public static Integer calculateBestEligibilityTraceLenght(Double lambda, Double threshold) {
 //        if ( lambda > 1 || lambda < 0 ) {
@@ -235,7 +245,37 @@ public abstract class TDLambdaLearning {
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lamdba = lamdba;
         this.gamma = gamma;
+        this.neuralNetworkType = ENeuralNetworkType.perceptron;
         this.perceptronInterface = perceptronInterface;
+        this.nTupleSystem = null;
+        this.accumulativePredicition = accumulativePredicition;
+        this.momentum = momentum;
+        this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
+    }
+
+    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        if ( nTupleSystem == null ) {
+            throw new IllegalArgumentException("nTupleSystem can't be null");
+        }
+
+        if ( momentum < 0 || momentum >= 1 ) {
+            throw new IllegalArgumentException("momentum debe ser 0 para desactivarlo, mayor a cero o menor a 1");
+        }
+        if ( alpha == null ) {
+            initialAlpha = new double[1];
+            initialAlpha[0] = 1d / nTupleSystem.getLut().length;
+        } else {
+            initialAlpha = new double[1];
+            initialAlpha[0] = alpha;
+        }
+        this.currentAlpha = new double[1];
+        System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
+        this.lamdba = lamdba;
+        this.gamma = gamma;
+        this.neuralNetworkType = ENeuralNetworkType.perceptron;
+        this.perceptronInterface = null;
+        this.nTupleSystem = nTupleSystem;
         this.accumulativePredicition = accumulativePredicition;
         this.momentum = momentum;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
@@ -375,7 +415,7 @@ public abstract class TDLambdaLearning {
 
         double currentExplorationRate = 0;
         //inicializamos el factor de exploracion
-        switch ( this.explorationRate ) {
+        switch ( explorationRate ) {
             case fixed: {
                 // factor constante
                 currentExplorationRate = explorationRateInitialValue;
@@ -400,9 +440,22 @@ public abstract class TDLambdaLearning {
 
         //inicializamos el problema y las variables del entrenador, o reutilizamos el ultimo Trainer para reciclar sus variables
         if ( trainer == null ) {
-            trainer = new TDTrainerPerceptron(perceptronInterface);
-            if ( this.momentum > 0 ) {
+            switch ( neuralNetworkType ) {
+                case perceptron: {
+                    trainer = new TDTrainerPerceptron(perceptronInterface);
+                    break;
+                }
+                case ntuple: {
+                    trainer = new TDTrainerNTupleSystem(nTupleSystem);
+                    break;
+                }
+            }
+
+            if ( momentum > 0 ) {
                 trainer.createMomentumCache();
+            }
+            if ( lamdba > 0 ) {
+                trainer.createEligibilityCache();
             }
         } else {
             trainer.reset();

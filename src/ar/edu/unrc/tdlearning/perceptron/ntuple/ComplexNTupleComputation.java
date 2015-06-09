@@ -9,36 +9,51 @@ package ar.edu.unrc.tdlearning.perceptron.ntuple;
  *
  * @author Franco
  */
-public class ComputationWithIndex {
+public class ComplexNTupleComputation {
 
     private int[] indexes;
     private double output;
+    private double derivatedOutput;
+
+    /**
+     * @return the derivatedOutput
+     */
+    public double getDerivatedOutput() {
+        return derivatedOutput;
+    }
+
+    /**
+     * @param derivatedOutput the derivatedOutput to set
+     */
+    public void setDerivatedOutput(double derivatedOutput) {
+        this.derivatedOutput = derivatedOutput;
+    }
 
     /**
      * @return the indexes
      */
-    protected int[] getIndexes() {
+    public int[] getIndexes() {
         return indexes;
     }
 
     /**
      * @param indexes the indexes to set
      */
-    protected void setIndexes(int[] indexes) {
+    public void setIndexes(int[] indexes) {
         this.indexes = indexes;
     }
 
     /**
      * @return the output
      */
-    protected double getOutput() {
+    public double getOutput() {
         return output;
     }
 
     /**
      * @param output the output to set
      */
-    protected void setOutput(double output) {
+    public void setOutput(double output) {
         this.output = output;
     }
 }

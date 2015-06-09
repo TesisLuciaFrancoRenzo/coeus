@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.training.FunctionUtils;
 import java.util.ArrayList;
 import java.util.HashMap;

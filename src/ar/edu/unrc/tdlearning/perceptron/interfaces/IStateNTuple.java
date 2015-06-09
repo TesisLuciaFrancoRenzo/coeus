@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ar.edu.unrc.tdlearning.perceptron.ntuple;
+package ar.edu.unrc.tdlearning.perceptron.interfaces;
+
+import ar.edu.unrc.tdlearning.perceptron.ntuple.SamplePointState;
 
 /**
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public interface IStateNTuple {
+public interface IStateNTuple extends IState {
 
     /**
      *
@@ -17,5 +19,9 @@ public interface IStateNTuple {
      * @return estado de la NTupla con el indice {@code nTupleIndex}
      */
     public SamplePointState[] getNTuple(int nTupleIndex);
+
+    public double translateRealOutputToNormalizedPerceptronOutput();
+
+    public double translateRewordToNormalizedPerceptronOutput();
 
 }

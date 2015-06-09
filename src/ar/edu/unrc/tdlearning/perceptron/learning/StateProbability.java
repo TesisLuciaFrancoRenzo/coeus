@@ -5,7 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.learning;
 
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
 
 /**
  *
@@ -13,7 +13,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
  */
 public class StateProbability {
 
-    private IState nextTurnState;
+    private IStatePerceptron nextTurnState;
     private double probability;
 
     /**
@@ -23,7 +23,7 @@ public class StateProbability {
      * @param probability   probabilidad de que ocurra {@code nextTurnState}
      *                      como estado efectivo en el siguiente turno
      */
-    public StateProbability(IState nextTurnState, double probability) {
+    public StateProbability(IStatePerceptron nextTurnState, double probability) {
         this.nextTurnState = nextTurnState;
         this.probability = probability;
     }
@@ -31,7 +31,7 @@ public class StateProbability {
     /**
      * @return the nextTurnState
      */
-    public IState getNextTurnState() {
+    public IStatePerceptron getNextTurnState() {
         return nextTurnState;
     }
 
@@ -39,7 +39,7 @@ public class StateProbability {
      * @param nextTurnState posible siguiente estado luego de calcular acciones
      *                      no deterministicas
      */
-    public void setNextTurnState(IState nextTurnState) {
+    public void setNextTurnState(IStatePerceptron nextTurnState) {
         this.nextTurnState = nextTurnState;
     }
 

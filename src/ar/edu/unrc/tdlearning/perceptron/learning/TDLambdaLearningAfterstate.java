@@ -11,6 +11,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IPrediction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
+import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
 
 /**
  * Esta clase implementa TD lambda learning (lambda = trazas de elegibilidad),
@@ -44,6 +45,10 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      *                                 tenga menos influencia en lso calculos
      */
     public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
+    }
+
+    public TDLambdaLearningAfterstate(NTupleSystem perceptron, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 

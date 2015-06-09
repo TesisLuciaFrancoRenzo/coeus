@@ -112,7 +112,7 @@ public class TDTrainerTest {
 //        double lambda = 0.8;
 //        double alpha = 0.5;
 //
-//        IState stateT = new IState() {
+//        IStatePerceptron stateT = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -140,7 +140,7 @@ public class TDTrainerTest {
 //            }
 //        };
 //
-//        IState stateTp1 = new IState() {
+//        IStatePerceptron stateTp1 = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -306,7 +306,7 @@ public class TDTrainerTest {
 //        double lambda = 0.8;
 //        double alpha = 0.5;
 //
-//        IState stateT = new IState() {
+//        IStatePerceptron stateT = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -334,7 +334,7 @@ public class TDTrainerTest {
 //            }
 //        };
 //
-//        IState stateTp1 = new IState() {
+//        IStatePerceptron stateTp1 = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -499,7 +499,7 @@ public class TDTrainerTest {
 //        double lambda = 0.7;
 //        double alpha = 0.1;
 //
-//        IState stateT = new IState() {
+//        IStatePerceptron stateT = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -528,7 +528,7 @@ public class TDTrainerTest {
 //
 //        };
 //
-//        IState stateTp1 = new IState() {
+//        IStatePerceptron stateTp1 = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -696,7 +696,7 @@ public class TDTrainerTest {
 //        double input1_2 = input1Tp1; //entrada del perceptron en el tiempo t (es t+1 anterior)
 //        double input1Tp1_2 = 0.44; //entrada del perceptron en el tiempo t+1
 //
-//        IState stateT_2 = new IState() {
+//        IStatePerceptron stateT_2 = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -725,7 +725,7 @@ public class TDTrainerTest {
 //
 //        };
 //
-//        IState stateTp1_2 = new IState() {
+//        IStatePerceptron stateTp1_2 = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -829,7 +829,7 @@ public class TDTrainerTest {
 //        double input1_3 = input1Tp1_2; //entrada del perceptron en el tiempo t (es t+1 anterior)
 //        double input1Tp1_3 = 0.01; //entrada del perceptron en el tiempo t+1
 //
-//        IState stateT_3 = new IState() {
+//        IStatePerceptron stateT_3 = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {
@@ -858,7 +858,7 @@ public class TDTrainerTest {
 //
 //        };
 //
-//        IState stateTp1_3 = new IState() {
+//        IStatePerceptron stateTp1_3 = new IStatePerceptron() {
 //
 //            @Override
 //            public IReward getReward() {

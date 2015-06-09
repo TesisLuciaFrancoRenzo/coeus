@@ -5,23 +5,113 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.training;
 
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
-import java.util.ArrayList;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
+import ar.edu.unrc.tdlearning.perceptron.ntuple.ComplexNTupleComputation;
+import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
 import java.util.stream.IntStream;
 
 /**
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public class TDTrainerNTupleSystem extends TDTrainerPerceptron {
+public class TDTrainerNTupleSystem implements ITrainer {
+
+    /**
+     */
+    private double[] elegibilityTraces; //TODO optimizar, no inicializar si no se usa
+    /**
+     * constante de tasa de aprendizaje
+     */
+    protected double alpha;
+    /**
+     * turno actual
+     */
+    protected int currentTurn;
+    protected double gamma;
+
+    /**
+     * Constante que se encuentra en el intervalo [0,1]
+     */
+    protected double lambda;
+    /**
+     *
+     */
+    private double[] momentumCache;
+
+    protected final NTupleSystem nTupleSystem;
+    protected boolean replaceEligibilitiTraces;
+    protected boolean resetEligibilitiTraces;
+    /**
+     * Vector de errores TD para la capa de salida, comparando el turno actual
+     * con el siguiente
+     */
+    protected double tDError;
+    protected double nextTurnOutputs;
 
     /**
      *
-     * @param perceptron
+     * @param nTupleSystem
      */
-    public TDTrainerNTupleSystem(IPerceptronInterface perceptron) {
-        super(perceptron);
+    public TDTrainerNTupleSystem(NTupleSystem nTupleSystem) {
+        this.nTupleSystem = nTupleSystem;
+        currentTurn = 1;
+    }
+
+    @Override
+    public void createEligibilityCache() {
+        elegibilityTraces = new double[nTupleSystem.getLut().length];
+    }
+
+    @Override
+    public void createMomentumCache() {
+        momentumCache = new double[nTupleSystem.getLut().length];
+    }
+
+    /**
+     * @return the currentTurn
+     */
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    @Override
+    public void reset() {
+        currentTurn = 1;
+    }
+
+    /**
+     * Computo de la traza de elegibilidad para el estado actual
+     * <p>
+     * @param currentWeightIndex
+     * @param currentWeightValue ultimo valor que tenia el peso
+     * <p>
+     * @param derivatedOutput
+     * @param isRandomMove       true si el ultimo movimiento fue elegido al
+     *                           azar
+     * <p>
+     * @return un valor correspondiente a la formula "e" de la teoria
+     */
+    protected double computeEligibilityTrace(int currentWeightIndex, double currentWeightValue, double derivatedOutput, boolean isRandomMove) {
+
+        if ( this.lambda > 0 ) {
+            if ( isRandomMove && resetEligibilitiTraces ) {
+                this.elegibilityTraces[currentWeightIndex] = 0d;
+                return 0d;
+            } else {
+                double newEligibilityTrace;
+                if ( currentWeightValue == 0 && replaceEligibilitiTraces ) {
+                    newEligibilityTrace = 0;
+                } else {
+                    newEligibilityTrace = elegibilityTraces[currentWeightIndex] * lambda * gamma; //reutilizamos las viejas trazas
+                }
+                newEligibilityTrace += derivatedOutput;
+                elegibilityTraces[currentWeightIndex] = newEligibilityTrace;
+                return newEligibilityTrace;
+            }
+        } else {
+            return derivatedOutput;
+        }
     }
 
     /**
@@ -51,103 +141,59 @@ public class TDTrainerNTupleSystem extends TDTrainerPerceptron {
     @Override
     public void train(IState turnCurrentState, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.lambda = lamdba;
-        this.alpha = alpha;
         this.gamma = gamma;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
 
-        //creamos o reciclamos caches
+        // reciclamos caches
         if ( currentTurn == 1 ) {
-            this.turnCurrentStateCache = createCache(turnCurrentState, null);
-            createEligibilityTrace();
+            if ( lambda > 0 ) {
+                for ( int i = 0; i < this.elegibilityTraces.length; i++ ) {
+                    elegibilityTraces[i] = 0;
+                }
+            }
+        }
 
-            //iniciamos vector con errores
-            int neuronQuantityAtOutput = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
-            if ( tDError == null ) {
-                this.tDError = new ArrayList<>(neuronQuantityAtOutput);
-                for ( int i = 0; i < neuronQuantityAtOutput; i++ ) {
-                    tDError.add(null);
-                }
-            }
-            //iniciamos vector de las salidas del proximo turno
-            if ( nextTurnOutputs == null ) {
-                this.nextTurnOutputs = new ArrayList<>(neuronQuantityAtOutput);
-                for ( int i = 0; i < neuronQuantityAtOutput; i++ ) {
-                    nextTurnOutputs.add(null);
-                }
-            }
+        //computamos turnCurrentState
+        ComplexNTupleComputation turnCurrentStateOutputs = this.nTupleSystem.getComplexComputation((IStateNTuple) turnCurrentState).compute();
+        //computamos nextTurnState
+        double nextTurnStateOutput = this.nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
+
+        //calculamos el TDerror
+        double nextTurnOutput;
+        if ( !nextTurnState.isTerminalState() ) {
+            nextTurnOutput = nextTurnStateOutput;
         } else {
-            this.turnCurrentStateCache = createCache(turnCurrentState, turnCurrentStateCache);
+            nextTurnOutput = ((IStateNTuple) nextTurnState).translateRealOutputToNormalizedPerceptronOutput();
         }
+        tDError = ((IStateNTuple) nextTurnState).translateRewordToNormalizedPerceptronOutput()
+                + gamma * nextTurnOutput - turnCurrentStateOutputs.getOutput();
 
-        computeNextTurnOutputs(nextTurnState);
+        IntStream
+                .rangeClosed(0, turnCurrentStateOutputs.getIndexes().length)
+                .parallel()
+                .forEach(neuronIndexK -> {
+                    int currentWeightIndex = turnCurrentStateOutputs.getIndexes()[neuronIndexK];
+                    double oldWeight = this.nTupleSystem.getLut()[currentWeightIndex];
+                    if ( !isARandomMove || nextTurnState.isTerminalState() ) {
+                        //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
 
-        calculateTDError(nextTurnState);
+                        double newDiferential
+                        = alpha[0] * tDError
+                        * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+                        if ( momentum > 0 ) {
+                            newDiferential += momentum * momentumCache[currentWeightIndex];
+                        }
 
-        for ( int layerIndex = turnCurrentStateCache.getOutputLayerIndex(); layerIndex >= 1; layerIndex-- ) {
-            //capa de mas hacia adelante
-            int layerIndexJ = layerIndex; //varialbes efectivamente finales para los calculos funcionales
-            //capa de mas atras, pero contigua a J
-            int layerIndexK = layerIndex - 1;
-
-            int maxIndexK;
-            int neuronQuantityInK = turnCurrentStateCache.getLayer(layerIndexK).getNeurons().size();
-            if ( perceptron.hasBias(layerIndexJ) ) {
-                maxIndexK = neuronQuantityInK;
-            } else {
-                maxIndexK = neuronQuantityInK - 1;
-            }
-            IntStream
-                    .range(0, turnCurrentStateCache.getLayer(layerIndexJ).getNeurons().size())
-                    .parallel()
-                    .forEach(neuronIndexJ -> {
-                        IntStream
-                        .rangeClosed(0, maxIndexK)
-                        .parallel()
-                        .forEach(neuronIndexK -> {
-                            double oldWeight = turnCurrentStateCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
-                            if ( !isARandomMove || nextTurnState.isTerminalState() ) {
-                                //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
-
-                                double newDiferential;
-                                if ( momentum > 0 ) {
-                                    newDiferential = weightCorrection(
-                                            layerIndexJ, neuronIndexJ,
-                                            layerIndexK, neuronIndexK,
-                                            oldWeight)
-                                    + momentum * momentumCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
-                                } else {
-                                    newDiferential = weightCorrection(
-                                            layerIndexJ, neuronIndexJ,
-                                            layerIndexK, neuronIndexK,
-                                            oldWeight);
-                                }
-
-                                if ( neuronIndexK == neuronQuantityInK ) {
-                                    // si se es una bias, actualizamos la bias en la red neuronal original
-                                    perceptron.setBias(layerIndexJ,
-                                            neuronIndexJ,
-                                            oldWeight + newDiferential);
-                                    if ( momentum > 0 ) {
-                                        momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setBias(newDiferential);
-                                    }
-                                } else {
-                                    // si se es un peso, actualizamos el peso en la red neuronal original
-                                    perceptron.setWeight(layerIndexJ,
-                                            neuronIndexJ,
-                                            neuronIndexK,
-                                            oldWeight + newDiferential);
-                                    if ( momentum > 0 ) {
-                                        momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setWeight(neuronIndexK, newDiferential);
-                                    }
-                                }
-                            } else {
-                                updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, oldWeight, isARandomMove); //FIXME corregir esto para momentum?
-                            }
-                        });
-                    });
-
-        }
+                        //actualizamos el peso en la red neuronal original
+                        nTupleSystem.setWeight(currentWeightIndex, oldWeight + newDiferential);
+                        if ( momentum > 0 ) {
+                            momentumCache[currentWeightIndex] = newDiferential;
+                        }
+                    } else {
+                        computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+                    }
+                });
 
         currentTurn++;
     }
