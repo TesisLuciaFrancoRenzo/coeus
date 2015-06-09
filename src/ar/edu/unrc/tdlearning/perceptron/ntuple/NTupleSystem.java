@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  *
@@ -29,7 +31,7 @@ public class NTupleSystem {
      * @param nTupleIndex
      * @param nTuplesLenght
      * @param state
-     * @param mapSamplePointStates
+     * @param mapSamplePointStates <p>
      * @return
      */
     public static int calculateIndex(int nTupleIndex, int[] nTuplesLenght, IStateNTuple state, Map<SamplePointState, Integer> mapSamplePointStates) {
@@ -86,7 +88,7 @@ public class NTupleSystem {
 
     /**
      *
-     * @param state
+     * @param state <p>
      * @return
      */
     public IsolatedComputation<ComplexNTupleComputation> getComplexComputation(IStateNTuple state) {
@@ -109,7 +111,7 @@ public class NTupleSystem {
 
     /**
      *
-     * @param state
+     * @param state <p>
      * @return
      */
     public IsolatedComputation<Double> getComputation(IStateNTuple state) {
@@ -169,23 +171,28 @@ public class NTupleSystem {
 
     /**
      *
-     * @param weightsFile
+     * @param weightsFile <p>
      * @throws IOException
      * @throws ClassNotFoundException
      */
     public void load(File weightsFile) throws IOException, ClassNotFoundException {
-        // Read from disk using FileInputStream
+        // leemos del disco utilizando FileInputStream
         FileInputStream f_in = new FileInputStream(weightsFile);
 
-        // Read object using ObjectInputStream
-        ObjectInputStream obj_in
-                = new ObjectInputStream(f_in);
+        // descomprimimos
+        GZIPInputStream gz = new GZIPInputStream(f_in);
 
-        // Read an object
+        // leemos le objeto utilizando ObjectInputStream
+        ObjectInputStream obj_in = new ObjectInputStream(gz);
+
+        // creamos el objeto
         Object obj = obj_in.readObject();
 
+        //intentamos cargarlo en la variable correspondiente
         if ( obj instanceof double[] ) {
             this.lut = (double[]) obj;
+        } else {
+            throw new IllegalArgumentException("Formato de archivo no soportado");
         }
     }
 
@@ -199,13 +206,18 @@ public class NTupleSystem {
 
     /**
      *
-     * @param lutFile
+     * @param lutFile <p>
      * @throws IOException
      */
     public void save(File lutFile) throws IOException {
+        //definimos el stream de salida
         FileOutputStream fout = new FileOutputStream(lutFile);
-        ObjectOutputStream oos = new ObjectOutputStream(fout);
-        oos.writeObject(lut);
+        //comprimimos
+        GZIPOutputStream gz = new GZIPOutputStream(fout);
+        //escribimos el archivo el objeto
+        try ( ObjectOutputStream oos = new ObjectOutputStream(gz) ) {
+            oos.writeObject(lut);
+        }
     }
 
     /**
