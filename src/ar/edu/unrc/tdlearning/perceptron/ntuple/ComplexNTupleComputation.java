@@ -10,10 +10,10 @@ package ar.edu.unrc.tdlearning.perceptron.ntuple;
  * @author Franco
  */
 public class ComplexNTupleComputation {
+    private double derivatedOutput;
 
     private int[] indexes;
     private double output;
-    private double derivatedOutput;
 
     /**
      * @return the derivatedOutput

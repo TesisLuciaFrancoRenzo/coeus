@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IReward;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.training.FunctionUtils;
 import java.util.ArrayList;
@@ -23,10 +24,16 @@ import org.junit.Test;
  */
 public class NTupleSystemTest {
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
@@ -37,6 +44,9 @@ public class NTupleSystemTest {
 
     private final double[] weights;
 
+    /**
+     *
+     */
     public NTupleSystemTest() {
         allSamplePointStates = new ArrayList<>();
         allSamplePointStates.add(SamplePoint.a); //0
@@ -52,28 +62,53 @@ public class NTupleSystemTest {
         nTuplesLenght[0] = 1;
         nTuplesLenght[1] = 3;
         nTuplesLenght[2] = 2;
-        state = (int nTuple) -> {
-            switch ( nTuple ) {
-                case 0: {
-                    //en este ejemplo el numero indice de la ntupla que se va a solucitar al IState es irrelevante
-                    SamplePoint[] ntuple = {SamplePoint.b}; //index = 1
-                    return ntuple;
-                }
-                case 1: {
-                    //en este ejemplo el numero indice de la ntupla que se va a solucitar al IState es irrelevante
-                    SamplePoint[] ntuple = {SamplePoint.c, SamplePoint.a, SamplePoint.b}; //index = 2, 0, 1
-                    return ntuple;
-                }
-                case 2: {
-                    //en este ejemplo el numero indice de la ntupla que se va a solucitar al IState es irrelevante
-                    SamplePoint[] ntuple = {SamplePoint.a, SamplePoint.c}; //index = 0, 2
-                    return ntuple;
-                }
-                default: {
-                    return null;
+        state = new IStateNTuple() {
+
+            @Override
+            public SamplePointState[] getNTuple(int nTupleIndex) {
+                switch ( nTupleIndex ) {
+                    case 0: {
+                        //en este ejemplo el numero indice de la ntupla que se va a solucitar al IState es irrelevante
+                        SamplePoint[] ntuple = {SamplePoint.b}; //index = 1
+                        return ntuple;
+                    }
+                    case 1: {
+                        //en este ejemplo el numero indice de la ntupla que se va a solucitar al IState es irrelevante
+                        SamplePoint[] ntuple = {SamplePoint.c, SamplePoint.a, SamplePoint.b}; //index = 2, 0, 1
+                        return ntuple;
+                    }
+                    case 2: {
+                        //en este ejemplo el numero indice de la ntupla que se va a solucitar al IState es irrelevante
+                        SamplePoint[] ntuple = {SamplePoint.a, SamplePoint.c}; //index = 0, 2
+                        return ntuple;
+                    }
+                    default: {
+                        return null;
+                    }
                 }
             }
+
+            @Override
+            public IReward getReward() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public boolean isTerminalState() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public double translateRealOutputToNormalizedPerceptronOutput() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public double translateRewordToNormalizedPerceptronOutput() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
         };
+
         int[] nTupleIndexQuiantity = new int[nTuplesLenght.length];
         nTupleIndexQuiantity[0] = (int) Math.pow(allSamplePointStates.size(), nTuplesLenght[0]);
         nTupleIndexQuiantity[1] = (int) Math.pow(allSamplePointStates.size(), nTuplesLenght[1]);
@@ -91,10 +126,16 @@ public class NTupleSystemTest {
         }
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }

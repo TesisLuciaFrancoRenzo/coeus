@@ -11,6 +11,13 @@ package ar.edu.unrc.tdlearning.perceptron.learning;
  */
 public enum ENeuralNetworkType {
 
+    /**
+     *
+     */
     perceptron,
+
+    /**
+     *
+     */
     ntuple
 }

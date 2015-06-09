@@ -48,6 +48,17 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
         super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
+    /**
+     *
+     * @param perceptron
+     * @param alpha
+     * @param lamdba
+     * @param accumulativePredicition
+     * @param gamma
+     * @param momentum
+     * @param resetEligibilitiTraces
+     * @param replaceEligibilitiTraces
+     */
     public TDLambdaLearningAfterstate(NTupleSystem perceptron, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
     }

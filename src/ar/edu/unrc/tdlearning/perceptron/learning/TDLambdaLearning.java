@@ -94,6 +94,7 @@ public abstract class TDLambdaLearning {
     private double explorationRateInitialValue;
     private int explorationRateStartDecrementing;
     private NTupleSystem nTupleSystem;
+    private final ENeuralNetworkType neuralNetworkType;
 
     /**
      *
@@ -128,7 +129,6 @@ public abstract class TDLambdaLearning {
      *
      */
     protected final double momentum;
-    private final ENeuralNetworkType neuralNetworkType;
 
     /**
      *

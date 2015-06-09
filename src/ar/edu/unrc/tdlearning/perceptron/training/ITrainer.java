@@ -13,11 +13,32 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
  */
 public interface ITrainer {
 
+    /**
+     *
+     */
     public void createMomentumCache();
 
+    /**
+     *
+     */
     public void createEligibilityCache();
 
+    /**
+     *
+     */
     public void reset();
 
+    /**
+     *
+     * @param afterstate
+     * @param afterStateNextTurn
+     * @param currentAlpha
+     * @param lamdba
+     * @param aRandomMove
+     * @param gamma
+     * @param momentum
+     * @param resetEligibilitiTraces
+     * @param replaceEligibilitiTraces
+     */
     public void train(IState afterstate, IState afterStateNextTurn, double[] currentAlpha, double lamdba, boolean aRandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces);
 }

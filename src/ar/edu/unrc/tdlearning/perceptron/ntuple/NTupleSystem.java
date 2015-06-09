@@ -34,7 +34,7 @@ public class NTupleSystem {
     private final Function<Double, Double> activationFunction;
     private final Function<Double, Double> derivatedActivationFunction;
 
-    private final double[] lut;
+    private double[] lut;
     private final Map<SamplePointState, Integer> mapSamplePointStates;
     private final int[] nTuplesLenght;
     private final int[] nTuplesWeightQuantity;
@@ -63,16 +63,11 @@ public class NTupleSystem {
         this.derivatedActivationFunction = derivatedActivationFunction;
     }
 
-    public IsolatedComputation<Double> getComputation(IStateNTuple state) {
-        return () -> {
-            double sum = 0d;
-            int lastFirstIndex = 0;
-            for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
-                sum += getLut()[lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
-                lastFirstIndex += getnTuplesWeightQuantity()[v];
-            }
-            return getActivationFunction().apply(sum);
-        };
+    /**
+     * @return the activationFunction
+     */
+    public Function<Double, Double> getActivationFunction() {
+        return activationFunction;
     }
 
     public IsolatedComputation<ComplexNTupleComputation> getComplexComputation(IStateNTuple state) {
@@ -93,11 +88,16 @@ public class NTupleSystem {
         };
     }
 
-    /**
-     * @return the activationFunction
-     */
-    public Function<Double, Double> getActivationFunction() {
-        return activationFunction;
+    public IsolatedComputation<Double> getComputation(IStateNTuple state) {
+        return () -> {
+            double sum = 0d;
+            int lastFirstIndex = 0;
+            for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
+                sum += getLut()[lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
+                lastFirstIndex += getnTuplesWeightQuantity()[v];
+            }
+            return getActivationFunction().apply(sum);
+        };
     }
 
     /**
@@ -114,15 +114,15 @@ public class NTupleSystem {
         return lut;
     }
 
-    public void setWeight(int index, double value) {
-        lut[index] = value;
-    }
-
     /**
      * @return the mapSamplePointStates
      */
     public Map<SamplePointState, Integer> getMapSamplePointStates() {
         return mapSamplePointStates;
+    }
+
+    public void setWeights(double[] value) {
+        lut = value;
     }
 
     /**
@@ -137,6 +137,10 @@ public class NTupleSystem {
      */
     public int[] getnTuplesWeightQuantity() {
         return nTuplesWeightQuantity;
+    }
+
+    public void setWeight(int index, double value) {
+        lut[index] = value;
     }
 
 }

@@ -21,6 +21,10 @@ public class TDTrainerNTupleSystem implements ITrainer {
      */
     private double[] elegibilityTraces; //TODO optimizar, no inicializar si no se usa
     /**
+     *
+     */
+    private double[] momentumCache;
+    /**
      * constante de tasa de aprendizaje
      */
     protected double alpha;
@@ -34,12 +38,9 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * Constante que se encuentra en el intervalo [0,1]
      */
     protected double lambda;
-    /**
-     *
-     */
-    private double[] momentumCache;
 
     protected final NTupleSystem nTupleSystem;
+    protected double nextTurnOutputs;
     protected boolean replaceEligibilitiTraces;
     protected boolean resetEligibilitiTraces;
     /**
@@ -47,7 +48,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * con el siguiente
      */
     protected double tDError;
-    protected double nextTurnOutputs;
 
     /**
      *
@@ -78,40 +78,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
     @Override
     public void reset() {
         currentTurn = 1;
-    }
-
-    /**
-     * Computo de la traza de elegibilidad para el estado actual
-     * <p>
-     * @param currentWeightIndex
-     * @param currentWeightValue ultimo valor que tenia el peso
-     * <p>
-     * @param derivatedOutput
-     * @param isRandomMove       true si el ultimo movimiento fue elegido al
-     *                           azar
-     * <p>
-     * @return un valor correspondiente a la formula "e" de la teoria
-     */
-    protected double computeEligibilityTrace(int currentWeightIndex, double currentWeightValue, double derivatedOutput, boolean isRandomMove) {
-
-        if ( this.lambda > 0 ) {
-            if ( isRandomMove && resetEligibilitiTraces ) {
-                this.elegibilityTraces[currentWeightIndex] = 0d;
-                return 0d;
-            } else {
-                double newEligibilityTrace;
-                if ( currentWeightValue == 0 && replaceEligibilitiTraces ) {
-                    newEligibilityTrace = 0;
-                } else {
-                    newEligibilityTrace = elegibilityTraces[currentWeightIndex] * lambda * gamma; //reutilizamos las viejas trazas
-                }
-                newEligibilityTrace += derivatedOutput;
-                elegibilityTraces[currentWeightIndex] = newEligibilityTrace;
-                return newEligibilityTrace;
-            }
-        } else {
-            return derivatedOutput;
-        }
     }
 
     /**
@@ -179,8 +145,8 @@ public class TDTrainerNTupleSystem implements ITrainer {
                         //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
 
                         double newDiferential
-                        = alpha[0] * tDError
-                        * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+                                = alpha[0] * tDError
+                                * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
                         if ( momentum > 0 ) {
                             newDiferential += momentum * momentumCache[currentWeightIndex];
                         }
@@ -196,5 +162,39 @@ public class TDTrainerNTupleSystem implements ITrainer {
                 });
 
         currentTurn++;
+    }
+
+    /**
+     * Computo de la traza de elegibilidad para el estado actual
+     * <p>
+     * @param currentWeightIndex
+     * @param currentWeightValue ultimo valor que tenia el peso
+     * <p>
+     * @param derivatedOutput
+     * @param isRandomMove       true si el ultimo movimiento fue elegido al
+     *                           azar
+     * <p>
+     * @return un valor correspondiente a la formula "e" de la teoria
+     */
+    protected double computeEligibilityTrace(int currentWeightIndex, double currentWeightValue, double derivatedOutput, boolean isRandomMove) {
+        
+        if ( this.lambda > 0 ) {
+            if ( isRandomMove && resetEligibilitiTraces ) {
+                this.elegibilityTraces[currentWeightIndex] = 0d;
+                return 0d;
+            } else {
+                double newEligibilityTrace;
+                if ( currentWeightValue == 0 && replaceEligibilitiTraces ) {
+                    newEligibilityTrace = 0;
+                } else {
+                    newEligibilityTrace = elegibilityTraces[currentWeightIndex] * lambda * gamma; //reutilizamos las viejas trazas
+                }
+                newEligibilityTrace += derivatedOutput;
+                elegibilityTraces[currentWeightIndex] = newEligibilityTrace;
+                return newEligibilityTrace;
+            }
+        } else {
+            return derivatedOutput;
+        }
     }
 }
