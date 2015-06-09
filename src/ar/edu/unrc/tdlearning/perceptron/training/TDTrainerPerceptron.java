@@ -36,6 +36,10 @@ public class TDTrainerPerceptron implements ITrainer {
      * turno actual
      */
     protected int currentTurn;
+
+    /**
+     *
+     */
     protected double gamma;
 
     /**
@@ -46,14 +50,29 @@ public class TDTrainerPerceptron implements ITrainer {
      *
      */
     protected NeuralNetCache momentumCache;
+
+    /**
+     *
+     */
     protected List<Double> nextTurnOutputs;
     /**
      *
      */
     protected NeuralNetCache nextTurnStateCache;
 
+    /**
+     *
+     */
     protected final IPerceptronInterface perceptron;
+
+    /**
+     *
+     */
     protected boolean replaceEligibilitiTraces;
+
+    /**
+     *
+     */
     protected boolean resetEligibilitiTraces;
     /**
      * Vector de errores TD para la capa de salida, comparando el turno actual
@@ -199,6 +218,9 @@ public class TDTrainerPerceptron implements ITrainer {
         currentTurn = 1;
     }
     
+    /**
+     *
+     */
     public void resetEligibilityCache() {
         //FIXME esta seccion se puede hacer cuando se actualiza por ultima vez en el ultimo turno??
         int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
@@ -436,6 +458,10 @@ public class TDTrainerPerceptron implements ITrainer {
         }
     }
 
+    /**
+     *
+     * @param nextTurnState
+     */
     protected void computeNextTurnOutputs(IStatePerceptron nextTurnState) {
         this.nextTurnStateCache = createCache(nextTurnState, nextTurnStateCache);
         for ( int i = 0; i < this.nextTurnOutputs.size(); i++ ) {
@@ -613,6 +639,9 @@ public class TDTrainerPerceptron implements ITrainer {
         this.resetEligibilitiTraces = resetEligibilitiTraces;
     }
 
+    /**
+     *
+     */
     protected void sinchornizeCaches() {
 
     }

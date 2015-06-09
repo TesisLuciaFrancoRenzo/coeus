@@ -7,6 +7,12 @@ package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +24,14 @@ import java.util.function.Function;
  */
 public class NTupleSystem {
 
+    /**
+     *
+     * @param nTupleIndex
+     * @param nTuplesLenght
+     * @param state
+     * @param mapSamplePointStates
+     * @return
+     */
     public static int calculateIndex(int nTupleIndex, int[] nTuplesLenght, IStateNTuple state, Map<SamplePointState, Integer> mapSamplePointStates) {
         SamplePointState[] ntuple = state.getNTuple(nTupleIndex);
         int index = 0;
@@ -70,6 +84,11 @@ public class NTupleSystem {
         return activationFunction;
     }
 
+    /**
+     *
+     * @param state
+     * @return
+     */
     public IsolatedComputation<ComplexNTupleComputation> getComplexComputation(IStateNTuple state) {
         return () -> {
             double sum = 0d;
@@ -88,6 +107,11 @@ public class NTupleSystem {
         };
     }
 
+    /**
+     *
+     * @param state
+     * @return
+     */
     public IsolatedComputation<Double> getComputation(IStateNTuple state) {
         return () -> {
             double sum = 0d;
@@ -121,6 +145,10 @@ public class NTupleSystem {
         return mapSamplePointStates;
     }
 
+    /**
+     *
+     * @param value
+     */
     public void setWeights(double[] value) {
         lut = value;
     }
@@ -139,6 +167,52 @@ public class NTupleSystem {
         return nTuplesWeightQuantity;
     }
 
+    /**
+     *
+     * @param weightsFile
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    public void load(File weightsFile) throws IOException, ClassNotFoundException {
+        // Read from disk using FileInputStream
+        FileInputStream f_in = new FileInputStream(weightsFile);
+
+        // Read object using ObjectInputStream
+        ObjectInputStream obj_in
+                = new ObjectInputStream(f_in);
+
+        // Read an object
+        Object obj = obj_in.readObject();
+
+        if ( obj instanceof double[] ) {
+            this.lut = (double[]) obj;
+        }
+    }
+
+    /**
+     *
+     */
+    public void reset() {
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //TODO implementar
+    }
+
+    /**
+     *
+     * @param lutFile
+     * @throws IOException
+     */
+    public void save(File lutFile) throws IOException {
+        FileOutputStream fout = new FileOutputStream(lutFile);
+        ObjectOutputStream oos = new ObjectOutputStream(fout);
+        oos.writeObject(lut);
+    }
+
+    /**
+     *
+     * @param index
+     * @param value
+     */
     public void setWeight(int index, double value) {
         lut[index] = value;
     }

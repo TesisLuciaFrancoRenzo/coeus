@@ -32,6 +32,10 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * turno actual
      */
     protected int currentTurn;
+
+    /**
+     *
+     */
     protected double gamma;
 
     /**
@@ -39,9 +43,24 @@ public class TDTrainerNTupleSystem implements ITrainer {
      */
     protected double lambda;
 
+    /**
+     *
+     */
     protected final NTupleSystem nTupleSystem;
+
+    /**
+     *
+     */
     protected double nextTurnOutputs;
+
+    /**
+     *
+     */
     protected boolean replaceEligibilitiTraces;
+
+    /**
+     *
+     */
     protected boolean resetEligibilitiTraces;
     /**
      * Vector de errores TD para la capa de salida, comparando el turno actual
@@ -130,23 +149,23 @@ public class TDTrainerNTupleSystem implements ITrainer {
         if ( !nextTurnState.isTerminalState() ) {
             nextTurnOutput = nextTurnStateOutput;
         } else {
-            nextTurnOutput = ((IStateNTuple) nextTurnState).translateRealOutputToNormalizedPerceptronOutput();
+            nextTurnOutput = ((IStateNTuple) nextTurnState).translateRealOutputToNormalizedPerceptronOutput(); //TODO revisar esto! hay que agregar el puntaje actual?????? o el FINAL???
         }
         tDError = ((IStateNTuple) nextTurnState).translateRewordToNormalizedPerceptronOutput()
                 + gamma * nextTurnOutput - turnCurrentStateOutputs.getOutput();
 
         IntStream
-                .rangeClosed(0, turnCurrentStateOutputs.getIndexes().length)
-                .parallel()
-                .forEach(neuronIndexK -> {
-                    int currentWeightIndex = turnCurrentStateOutputs.getIndexes()[neuronIndexK];
+                .range(0, turnCurrentStateOutputs.getIndexes().length)
+                //.parallel()
+                .forEach(weightIndex -> {
+                    int currentWeightIndex = turnCurrentStateOutputs.getIndexes()[weightIndex];
                     double oldWeight = this.nTupleSystem.getLut()[currentWeightIndex];
                     if ( !isARandomMove || nextTurnState.isTerminalState() ) {
                         //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
 
                         double newDiferential
-                                = alpha[0] * tDError
-                                * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+                        = alpha[0] * tDError
+                        * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
                         if ( momentum > 0 ) {
                             newDiferential += momentum * momentumCache[currentWeightIndex];
                         }
@@ -177,7 +196,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * @return un valor correspondiente a la formula "e" de la teoria
      */
     protected double computeEligibilityTrace(int currentWeightIndex, double currentWeightValue, double derivatedOutput, boolean isRandomMove) {
-        
+
         if ( this.lambda > 0 ) {
             if ( isRandomMove && resetEligibilitiTraces ) {
                 this.elegibilityTraces[currentWeightIndex] = 0d;

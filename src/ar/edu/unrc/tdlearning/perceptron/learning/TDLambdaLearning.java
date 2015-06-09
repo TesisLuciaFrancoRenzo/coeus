@@ -254,6 +254,17 @@ public abstract class TDLambdaLearning {
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
 
+    /**
+     *
+     * @param nTupleSystem
+     * @param alpha
+     * @param lamdba
+     * @param accumulativePredicition
+     * @param gamma
+     * @param momentum
+     * @param resetEligibilitiTraces
+     * @param replaceEligibilitiTraces
+     */
     protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
@@ -273,7 +284,7 @@ public abstract class TDLambdaLearning {
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lamdba = lamdba;
         this.gamma = gamma;
-        this.neuralNetworkType = ENeuralNetworkType.perceptron;
+        this.neuralNetworkType = ENeuralNetworkType.ntuple;
         this.perceptronInterface = null;
         this.nTupleSystem = nTupleSystem;
         this.accumulativePredicition = accumulativePredicition;
