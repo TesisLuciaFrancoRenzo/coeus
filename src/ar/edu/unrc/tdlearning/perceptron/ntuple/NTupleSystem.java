@@ -85,7 +85,25 @@ public class NTupleSystem implements IPerceptronInterface {
         };
     }
 
+    public IsolatedComputation<ComputationWithIndex> getComputationWithIndex(IStateNTuple state) {
+        return () -> {
+            double sum = 0d;
+            int lastFirstIndex = 0;
+            int[] indexes = new int[nTuplesLenght.length];
+            for ( int v = 0; v < nTuplesLenght.length; v++ ) {
+                indexes[v] = lastFirstIndex + calculateIndex(v, nTuplesLenght, state, mapSamplePointStates);
+                sum += lut[indexes[v]];
+                lastFirstIndex += nTuplesWeightQuantity[v];
+            }
+            ComputationWithIndex output = new ComputationWithIndex();
+            output.setIndexes(indexes);
+            output.setOutput(activationFunction.apply(sum));
+            return output;
+        };
+    }
+
     @Override
+
     public Function<Double, Double> getDerivatedActivationFunction(int layerIndex) {
         return derivatedActivationFunction;
     }

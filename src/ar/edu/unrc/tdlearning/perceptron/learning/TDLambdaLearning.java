@@ -401,6 +401,9 @@ public abstract class TDLambdaLearning {
         //inicializamos el problema y las variables del entrenador, o reutilizamos el ultimo Trainer para reciclar sus variables
         if ( trainer == null ) {
             trainer = new TDTrainerPerceptron(perceptronInterface);
+            if ( this.momentum > 0 ) {
+                trainer.createMomentumCache();
+            }
         } else {
             trainer.reset();
         }
