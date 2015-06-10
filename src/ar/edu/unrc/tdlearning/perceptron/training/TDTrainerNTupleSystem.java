@@ -144,73 +144,80 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
         //calculamos el TDerror
         double targetOutput;
-        if ( !nextTurnState.isTerminalState() ) {
-            targetOutput = nextTurnState.translateRewardToNormalizedPerceptronOutput() + gamma * nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
+        if ( lambda > 0 ) {
+            if ( !nextTurnState.isTerminalState() ) {
+                targetOutput = gamma * nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
+            } else {
+                targetOutput = nextTurnState.translateRewardToNormalizedPerceptronOutput();
+            }
         } else {
-            targetOutput = nextTurnState.translateRewardToNormalizedPerceptronOutput(); //TODO revisar esto! hay que agregar el puntaje actual?????? o el FINAL???
+            targetOutput = turnCurrentState.translateRewardToNormalizedPerceptronOutput() + gamma * nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
         }
-        tDError = targetOutput - turnCurrentStateOutputs.getOutput();
+        tDError = alpha[0] * (targetOutput - turnCurrentStateOutputs.getOutput());
 
-//        IntStream
-//                .range(0, turnCurrentStateOutputs.getIndexes().length)
-//                //.parallel()
-//                .forEach(weightIndex -> {
-//                    int currentWeightIndex = turnCurrentStateOutputs.getIndexes()[weightIndex];
-//                    double oldWeight = this.nTupleSystem.getLut()[currentWeightIndex];
-//                    if ( !isARandomMove || nextTurnState.isTerminalState() ) {
-//                        //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
-//
-//                        double newDiferential = alpha[0] * tDError
-//                        * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
-//                        //FIXME problemas en las trazas de eligibilidad que no se calculan? hay que actualizarlas?
-//                        if ( momentum > 0 ) {
-//                            newDiferential += momentum * momentumCache[currentWeightIndex];
-//                        }
-//
-//                        //actualizamos el peso en la red neuronal original
-//                        nTupleSystem.setWeight(currentWeightIndex, oldWeight + newDiferential);
-//                        if ( momentum > 0 ) {
-//                            momentumCache[currentWeightIndex] = newDiferential;
-//                        }
-//                    } else {
-//                        computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
-//                    }
-//                });
-        //FIXME esta bien actualziar asi?
         IntStream
-                .range(0, nTupleSystem.getLut().length)
-                .parallel()
+                .range(0, turnCurrentStateOutputs.getIndexes().length)
+                //.parallel()
                 .forEach(weightIndex -> {
-                    boolean trueInput = false;
-                    for ( int i = 0; i < turnCurrentStateOutputs.getIndexes().length && !trueInput; i++ ) {
-                        if ( turnCurrentStateOutputs.getIndexes()[i] == weightIndex ) {
-                            trueInput = true;
+                    int currentWeightIndex = turnCurrentStateOutputs.getIndexes()[weightIndex];
+                    double oldWeight = this.nTupleSystem.getLut()[currentWeightIndex];
+                    if ( !isARandomMove || nextTurnState.isTerminalState() ) {
+                        //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
+
+                        double newDiferential = tDError;
+                        if ( lambda > 0 ) {
+                            tDError = tDError * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
                         }
-                    }
-                    double oldWeight = this.nTupleSystem.getLut()[weightIndex];
-                    if ( trueInput ) {
-                        if ( !isARandomMove || nextTurnState.isTerminalState() ) {
-                            //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
-
-                            double newDiferential = alpha[0] * tDError
-                            * computeEligibilityTrace(weightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
-
-                            if ( momentum > 0 ) {
-                                newDiferential += momentum * momentumCache[weightIndex];
-                                momentumCache[weightIndex] = newDiferential;
-                            }
-
-                            //actualizamos el peso en la red neuronal original
-                            nTupleSystem.setWeight(weightIndex, oldWeight + newDiferential);
-
-                        } else {
-                            computeEligibilityTrace(weightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+                        //FIXME problemas en las trazas de eligibilidad que no se calculan? hay que actualizarlas?
+                        if ( momentum > 0 ) {
+                            newDiferential += momentum * momentumCache[currentWeightIndex];
+                            momentumCache[currentWeightIndex] = newDiferential;
                         }
+
+                        //actualizamos el peso en la red neuronal original
+                        nTupleSystem.setWeight(currentWeightIndex, oldWeight + newDiferential);
+
                     } else {
-                        computeEligibilityTrace(weightIndex, oldWeight, 0, isARandomMove); //TODO optimizar todo esto para cuando no hay traza de eligibilidad
-                        // momentumCache[weightIndex] = 0; //FIXME corregir esto
+                        if ( lambda > 0 ) {
+                            computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+                        }
                     }
                 });
+        //FIXME esta bien actualziar asi?
+//        IntStream
+//                .range(0, nTupleSystem.getLut().length)
+//                .parallel()
+//                .forEach(weightIndex -> {
+//                    boolean trueInput = false;
+//                    for ( int i = 0; i < turnCurrentStateOutputs.getIndexes().length && !trueInput; i++ ) {
+//                        if ( turnCurrentStateOutputs.getIndexes()[i] == weightIndex ) {
+//                            trueInput = true;
+//                        }
+//                    }
+//                    double oldWeight = this.nTupleSystem.getLut()[weightIndex];
+//                    if ( trueInput ) {
+//                        if ( !isARandomMove || nextTurnState.isTerminalState() ) {
+//                            //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
+//
+//                            double newDiferential =  tDError
+//                            * computeEligibilityTrace(weightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+//
+//                            if ( momentum > 0 ) {
+//                                newDiferential += momentum * momentumCache[weightIndex];
+//                                momentumCache[weightIndex] = newDiferential;
+//                            }
+//
+//                            //actualizamos el peso en la red neuronal original
+//                            nTupleSystem.setWeight(weightIndex, oldWeight + newDiferential);
+//
+//                        } else {
+//                            computeEligibilityTrace(weightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+//                        }
+//                    } else {
+//                        computeEligibilityTrace(weightIndex, oldWeight, 0, isARandomMove); //TODO optimizar todo esto para cuando no hay traza de eligibilidad
+//                        // momentumCache[weightIndex] = 0; //FIXME corregir esto
+//                    }
+//                });
 
         currentTurn++;
     }

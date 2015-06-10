@@ -67,9 +67,17 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
     protected IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
         return () -> {
             IState afterstate = problem.computeAfterState(turnInitialState, action);
+            IPrediction nextTurnStatePrediction;
             //TODO ver como hacer la evaluacion en el ultimo turno
-            IPrediction nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
-            nextTurnStatePrediction.addReword(problem.getCurrentReward().add(afterstate.getStateReward())); //para añadir la recompensa por elegir este camino
+            if ( afterstate.isTerminalState() ) {
+                nextTurnStatePrediction = problem.getCurrentRewardIf(afterstate);
+            } else {
+                nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
+                if ( this.lamdba == 0 ) {
+                    nextTurnStatePrediction.addReword(problem.getCurrentReward()); //FIXME usar partial reward o total?
+                }
+            }
+            // nextTurnStatePrediction.addReword(problem.getCurrentReward().add(afterstate.getStateReward())); //para añadir la recompensa por elegir este camino
             //TODO parece que esto deberia ir SI o si para afterstate¿? parece que no va porque el learn aprende a predecir el puntaje parcial actual mas el siguiente
             return new ActionPrediction(action, nextTurnStatePrediction);
         };

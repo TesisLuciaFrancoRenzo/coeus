@@ -17,6 +17,8 @@ public interface IProblem {
 
     public IReward getCurrentReward();
 
+    public IPrediction getCurrentRewardIf(IState afterstate);
+
     /**
      *
      * @return Inicializa el problema y devuelve su estado inicial
