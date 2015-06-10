@@ -275,7 +275,7 @@ public abstract class TDLambdaLearning {
         }
         if ( alpha == null ) {
             initialAlpha = new double[1];
-            initialAlpha[0] = 1d / nTupleSystem.getLut().length;
+            initialAlpha[0] = 1d / nTupleSystem.getnTuplesLenght().length;
         } else {
             initialAlpha = new double[1];
             initialAlpha[0] = alpha;
@@ -412,7 +412,7 @@ public abstract class TDLambdaLearning {
             case annealing: {
                 //ajustamos las alphas segun el metodo de annealing µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
-                if ( this.currentAlpha.length > 100 ) { //FIXMe hacer una constante generica para activar paralelismo
+                if ( this.currentAlpha.length > 1000 ) { //FIXMe hacer una constante generica para activar paralelismo
                     rangeStream = rangeStream.parallel();
                 } else {
                     rangeStream = rangeStream.sequential();
