@@ -145,7 +145,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
         //calculamos el TDerror
         double targetOutput;
         if ( !nextTurnState.isTerminalState() ) {
-            targetOutput = gamma * nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
+            targetOutput = nextTurnState.translateRewardToNormalizedPerceptronOutput() + gamma * nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
         } else {
             targetOutput = nextTurnState.translateRewardToNormalizedPerceptronOutput(); //TODO revisar esto! hay que agregar el puntaje actual?????? o el FINAL???
         }
@@ -208,6 +208,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
                         }
                     } else {
                         computeEligibilityTrace(weightIndex, oldWeight, 0, isARandomMove); //TODO optimizar todo esto para cuando no hay traza de eligibilidad
+                        // momentumCache[weightIndex] = 0; //FIXME corregir esto
                     }
                 });
 

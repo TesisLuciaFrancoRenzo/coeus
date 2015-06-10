@@ -35,12 +35,12 @@ public class FunctionUtils {
     public static final Function<Double, Double> tanh = (value) -> Math.tanh(value);
 
     /**
-     * Función de activación lineal
+     * Función de activación linear
      */
-    public static final Function<Double, Double> lineal = (value) -> value;
+    public static final Function<Double, Double> linear = (value) -> value;
 
     /**
-     * Función de activación lineal
+     * Función de activación linear
      */
-    public static final Function<Double, Double> derivatedLineal = (value) -> 1d;
+    public static final Function<Double, Double> derivatedLinear = (value) -> 1d;
 }

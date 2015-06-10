@@ -13,11 +13,9 @@ public interface IState {
 
     /**
      *
-     * @return recompensa obtenida en el estado actual. Si se es un estado
-     *         inicial no deberia tener recompensa, pero si es parcial deberia
-     *         poder calcularse esta recompensa parcial.
+     * @return recompensa obtenida en el estado actual.
      */
-    public IReward getReward();
+    public IReward getStateReward();
 
     /**
      *

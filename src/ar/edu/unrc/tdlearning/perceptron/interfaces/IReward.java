@@ -11,4 +11,6 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
  */
 public interface IReward {
 
+    public IReward add(IReward reward);
+
 }

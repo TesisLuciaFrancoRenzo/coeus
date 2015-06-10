@@ -15,6 +15,8 @@ import java.util.List;
  */
 public interface IProblem {
 
+    public IReward getCurrentReward();
+
     /**
      *
      * @return Inicializa el problema y devuelve su estado inicial
