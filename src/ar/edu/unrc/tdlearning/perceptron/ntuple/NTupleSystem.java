@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -202,6 +203,12 @@ public class NTupleSystem {
     public void reset() {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         //TODO implementar
+        IntStream
+                .range(0, lut.length)
+                .parallel() //FIXME necesario?
+                .forEach(weightIndex -> {
+                    lut[weightIndex] = Math.random() - 0.5d;
+                });
     }
 
     /**

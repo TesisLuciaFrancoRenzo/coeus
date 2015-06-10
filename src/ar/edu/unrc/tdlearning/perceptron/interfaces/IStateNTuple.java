@@ -20,16 +20,4 @@ public interface IStateNTuple extends IState {
      */
     public SamplePointState[] getNTuple(int nTupleIndex);
 
-    /**
-     *
-     * @return
-     */
-    public double translateRealOutputToNormalizedPerceptronOutput();
-
-    /**
-     *
-     * @return
-     */
-    public double translateRewordToNormalizedPerceptronOutput();
-
 }

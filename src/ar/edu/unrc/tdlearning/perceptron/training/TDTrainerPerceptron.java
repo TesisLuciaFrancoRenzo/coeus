@@ -143,7 +143,7 @@ public class TDTrainerPerceptron implements ITrainer {
     @Override
     public void createMomentumCache() {
         int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
-        
+
         // inicializamos la Cache o reciclamos alguna vieja
         momentumCache = new NeuralNetCache(perceptron.getLayerQuantity());
         IntStream
@@ -156,26 +156,26 @@ public class TDTrainerPerceptron implements ITrainer {
                     Layer layer = new Layer(perceptron.getNeuronQuantityInLayer(currentLayerIndex));
                     //recorremos en paralelo cada neurona que deberia ir ne la capa, la inicializamos, y la cargamos en dicha capa
                     IntStream
-                            .range(0, perceptron.getNeuronQuantityInLayer(currentLayerIndex))
-                            .parallel()
-                            .forEach(currentNeuronIndex -> {
-                                PartialNeuron neuron;
-                                if ( currentLayerIndex == 0 ) {
-                                    //configuramos la neurona de entrada creando una o reciclando una vieja
-                                    neuron = new PartialNeuron(0, 0);
-                                } else {
-                                    // iniciamos variables efectivamente constantes para la programacion funcional
-                                    int previousLayer = currentLayerIndex - 1;
-                                    //configuramos la neurona creando
-                                    neuron = new PartialNeuron(perceptron.getNeuronQuantityInLayer(previousLayer), outputLayerNeuronQuantity);
-                                    //iniciamos los pesos utilizados para momentums en cero
-                                    for ( int i = 0; i < neuron.getWeights().size(); i++ ) {
-                                        neuron.getWeights().set(i, 0d);
-                                    }
-                                }
-                                //cargamos la nueva neurona
-                                layer.setNeuron(currentNeuronIndex, neuron);
-                            });
+                    .range(0, perceptron.getNeuronQuantityInLayer(currentLayerIndex))
+                    .parallel()
+                    .forEach(currentNeuronIndex -> {
+                        PartialNeuron neuron;
+                        if ( currentLayerIndex == 0 ) {
+                            //configuramos la neurona de entrada creando una o reciclando una vieja
+                            neuron = new PartialNeuron(0, 0);
+                        } else {
+                            // iniciamos variables efectivamente constantes para la programacion funcional
+                            int previousLayer = currentLayerIndex - 1;
+                            //configuramos la neurona creando
+                            neuron = new PartialNeuron(perceptron.getNeuronQuantityInLayer(previousLayer), outputLayerNeuronQuantity);
+                            //iniciamos los pesos utilizados para momentums en cero
+                            for ( int i = 0; i < neuron.getWeights().size(); i++ ) {
+                                neuron.getWeights().set(i, 0d);
+                            }
+                        }
+                        //cargamos la nueva neurona
+                        layer.setNeuron(currentNeuronIndex, neuron);
+                    });
                     //cargamos la nueva capa
                     momentumCache.setLayer(currentLayerIndex, layer);
                 });
@@ -217,7 +217,7 @@ public class TDTrainerPerceptron implements ITrainer {
     public void reset() {
         currentTurn = 1;
     }
-    
+
     /**
      *
      */
@@ -322,44 +322,44 @@ public class TDTrainerPerceptron implements ITrainer {
                     .parallel()
                     .forEach(neuronIndexJ -> {
                         IntStream
-                                .rangeClosed(0, maxIndexK)
-                                .parallel()
-                                .forEach(neuronIndexK -> {
-                                    double oldWeight = turnCurrentStateCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
-                                    if ( !isARandomMove || nextTurnState.isTerminalState() ) {
-                                        //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
-                                        
-                                        double newDiferential = weightCorrection( //TODO asegurar safethread con estas funciones!
-                                                layerIndexJ, neuronIndexJ,
-                                                layerIndexK, neuronIndexK,
-                                                oldWeight, isARandomMove);
-                                        if ( momentum > 0 ) {
-                                            newDiferential += momentum * momentumCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
-                                        }
-                                        
-                                        if ( neuronIndexK == neuronQuantityInK ) {
-                                            // si se es una bias, actualizamos la bias en la red neuronal original
-                                            perceptron.setBias(layerIndexJ,
-                                                    neuronIndexJ,
-                                                    oldWeight + newDiferential);
-                                            if ( momentum > 0 ) {
-                                                momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setBias(newDiferential);
-                                            }
-                                        } else {
-                                            // si se es un peso, actualizamos el peso en la red neuronal original
-                                            perceptron.setWeight(layerIndexJ,
-                                                    neuronIndexJ,
-                                                    neuronIndexK,
-                                                    oldWeight + newDiferential);
-                                            if ( momentum > 0 ) {
-                                                momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setWeight(neuronIndexK, newDiferential);
-                                            }
-                                        }
-                                    } else { //TODO revisar la condicion
-                                        //TODO asegurar safethread con estas funciones!
-                                        updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, oldWeight, isARandomMove); //FIXME corregir esto para momentum?
+                        .rangeClosed(0, maxIndexK)
+                        .parallel()
+                        .forEach(neuronIndexK -> {
+                            double oldWeight = turnCurrentStateCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
+                            if ( !isARandomMove || nextTurnState.isTerminalState() ) {
+                                //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
+
+                                double newDiferential = weightCorrection( //TODO asegurar safethread con estas funciones!
+                                        layerIndexJ, neuronIndexJ,
+                                        layerIndexK, neuronIndexK,
+                                        oldWeight, isARandomMove);
+                                if ( momentum > 0 ) {
+                                    newDiferential += momentum * momentumCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
+                                }
+
+                                if ( neuronIndexK == neuronQuantityInK ) {
+                                    // si se es una bias, actualizamos la bias en la red neuronal original
+                                    perceptron.setBias(layerIndexJ,
+                                            neuronIndexJ,
+                                            oldWeight + newDiferential);
+                                    if ( momentum > 0 ) {
+                                        momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setBias(newDiferential);
                                     }
-                                });
+                                } else {
+                                    // si se es un peso, actualizamos el peso en la red neuronal original
+                                    perceptron.setWeight(layerIndexJ,
+                                            neuronIndexJ,
+                                            neuronIndexK,
+                                            oldWeight + newDiferential);
+                                    if ( momentum > 0 ) {
+                                        momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setWeight(neuronIndexK, newDiferential);
+                                    }
+                                }
+                            } else { //TODO revisar la condicion
+                                //TODO asegurar safethread con estas funciones!
+                                updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, oldWeight, isARandomMove); //FIXME corregir esto para momentum?
+                            }
+                        });
                     });
 
         }

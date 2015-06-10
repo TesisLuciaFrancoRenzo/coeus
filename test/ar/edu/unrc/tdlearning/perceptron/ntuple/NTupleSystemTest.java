@@ -99,14 +99,10 @@ public class NTupleSystemTest {
             }
 
             @Override
-            public double translateRealOutputToNormalizedPerceptronOutput() {
+            public double translateRewardToNormalizedPerceptronOutput() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
-            @Override
-            public double translateRewordToNormalizedPerceptronOutput() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
         };
 
         int[] nTupleIndexQuiantity = new int[nTuplesLenght.length];

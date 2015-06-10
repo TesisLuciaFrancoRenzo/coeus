@@ -24,4 +24,6 @@ public interface IState {
      * @return true si el estado es final para el problema
      */
     public boolean isTerminalState();
+
+    public double translateRewardToNormalizedPerceptronOutput();
 }

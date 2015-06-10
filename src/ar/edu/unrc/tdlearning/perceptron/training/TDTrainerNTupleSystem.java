@@ -141,18 +141,15 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
         //computamos turnCurrentState
         ComplexNTupleComputation turnCurrentStateOutputs = this.nTupleSystem.getComplexComputation((IStateNTuple) turnCurrentState).compute();
-        //computamos nextTurnState
-        double nextTurnStateOutput = this.nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
 
         //calculamos el TDerror
-        double nextTurnOutput;
+        double targetOutput;
         if ( !nextTurnState.isTerminalState() ) {
-            nextTurnOutput = nextTurnStateOutput;
+            targetOutput = gamma * nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
         } else {
-            nextTurnOutput = ((IStateNTuple) nextTurnState).translateRealOutputToNormalizedPerceptronOutput(); //TODO revisar esto! hay que agregar el puntaje actual?????? o el FINAL???
+            targetOutput = nextTurnState.translateRewardToNormalizedPerceptronOutput(); //TODO revisar esto! hay que agregar el puntaje actual?????? o el FINAL???
         }
-        tDError = ((IStateNTuple) nextTurnState).translateRewordToNormalizedPerceptronOutput()
-                + gamma * nextTurnOutput - turnCurrentStateOutputs.getOutput();
+        tDError = targetOutput - turnCurrentStateOutputs.getOutput();
 
         IntStream
                 .range(0, turnCurrentStateOutputs.getIndexes().length)
@@ -163,8 +160,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
                     if ( !isARandomMove || nextTurnState.isTerminalState() ) {
                         //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
 
-                        double newDiferential
-                        = alpha[0] * tDError
+                        double newDiferential = alpha[0] * tDError
                         * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
                         if ( momentum > 0 ) {
                             newDiferential += momentum * momentumCache[currentWeightIndex];
