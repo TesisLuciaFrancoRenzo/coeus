@@ -74,7 +74,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             } else {
                 nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
                 if ( this.lamdba == 0 ) {
-                    nextTurnStatePrediction.addReword(problem.getCurrentReward()); //FIXME usar partial reward o total?
+                    nextTurnStatePrediction.addReword(afterstate.getStateReward()); //FIXME usar partial reward o total?
                 }
             }
             // nextTurnStatePrediction.addReword(problem.getCurrentReward().add(afterstate.getStateReward())); //para añadir la recompensa por elegir este camino

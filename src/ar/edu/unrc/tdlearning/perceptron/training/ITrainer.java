@@ -30,8 +30,8 @@ public interface ITrainer {
 
     /**
      *
-     * @param afterstate
-     * @param afterStateNextTurn
+     * @param state
+     * @param nextTurnState
      * @param currentAlpha
      * @param lamdba
      * @param aRandomMove
@@ -40,5 +40,5 @@ public interface ITrainer {
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    public void train(IState afterstate, IState afterStateNextTurn, double[] currentAlpha, double lamdba, boolean aRandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces);
+    public void train(IState state, IState nextTurnState, double[] currentAlpha, double lamdba, boolean aRandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces);
 }

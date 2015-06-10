@@ -65,6 +65,11 @@ public class NTupleSystemTest {
         state = new IStateNTuple() {
 
             @Override
+            public double getBoardRewardToNormalizedPerceptronOutput() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
             public SamplePointState[] getNTuple(int nTupleIndex) {
                 switch ( nTupleIndex ) {
                     case 0: {
@@ -99,7 +104,7 @@ public class NTupleSystemTest {
             }
 
             @Override
-            public double translateRewardToNormalizedPerceptronOutput() {
+            public double getCurrentRewardNormalizedPerceptronOutput() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 

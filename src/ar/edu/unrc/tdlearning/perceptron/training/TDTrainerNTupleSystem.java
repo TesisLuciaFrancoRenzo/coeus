@@ -106,7 +106,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * llamarlo desde el tunro 5, y para llamarlo desde el turno 5, primero hay
      * que invocarlo desde el turno 4, etc.
      * <p>
-     * @param turnCurrentState         estado del problema en el turno
+     * @param state                    estado del problema en el turno
      *                                 {@code currentTurn}
      * @param nextTurnState            estado del problema en el turno que sigue
      *                                 de {@code currentTurn}
@@ -124,7 +124,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
      *                                 tenga menos influencia en lso calculos
      */
     @Override
-    public void train(IState turnCurrentState, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    public void train(IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.lambda = lamdba;
         this.gamma = gamma;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
@@ -140,48 +140,18 @@ public class TDTrainerNTupleSystem implements ITrainer {
         }
 
         //computamos turnCurrentState
-        ComplexNTupleComputation turnCurrentStateOutputs = this.nTupleSystem.getComplexComputation((IStateNTuple) turnCurrentState).compute();
+        ComplexNTupleComputation stateOutput = this.nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
+        ComplexNTupleComputation nextTurnStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute();
+        double nextTurnStateReward = nextTurnState.getBoardRewardToNormalizedPerceptronOutput();
 
         //calculamos el TDerror
-        double targetOutput;
-        if ( lambda > 0 ) {
-            if ( !nextTurnState.isTerminalState() ) {
-                targetOutput = gamma * nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
-            } else {
-                targetOutput = nextTurnState.translateRewardToNormalizedPerceptronOutput();
-            }
-        } else {
-            targetOutput = turnCurrentState.translateRewardToNormalizedPerceptronOutput() + gamma * nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute().getOutput();
-        }
-        tDError = alpha[0] * (targetOutput - turnCurrentStateOutputs.getOutput());
+        tDError = alpha[0] * (nextTurnStateReward + gamma * nextTurnStateOutput.getOutput() - stateOutput.getOutput());
 
         IntStream
-                .range(0, turnCurrentStateOutputs.getIndexes().length)
+                .range(0, stateOutput.getIndexes().length)
                 //.parallel()
                 .forEach(weightIndex -> {
-                    int currentWeightIndex = turnCurrentStateOutputs.getIndexes()[weightIndex];
-                    double oldWeight = this.nTupleSystem.getLut()[currentWeightIndex];
-                    if ( !isARandomMove || nextTurnState.isTerminalState() ) {
-                        //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
-
-                        double newDiferential = tDError;
-                        if ( lambda > 0 ) {
-                            tDError = tDError * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
-                        }
-                        //FIXME problemas en las trazas de eligibilidad que no se calculan? hay que actualizarlas?
-                        if ( momentum > 0 ) {
-                            newDiferential += momentum * momentumCache[currentWeightIndex];
-                            momentumCache[currentWeightIndex] = newDiferential;
-                        }
-
-                        //actualizamos el peso en la red neuronal original
-                        nTupleSystem.setWeight(currentWeightIndex, oldWeight + newDiferential);
-
-                    } else {
-                        if ( lambda > 0 ) {
-                            computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
-                        }
-                    }
+                    nTupleSystem.addCorrectionToWeight(stateOutput.getIndexes()[weightIndex], tDError);
                 });
         //FIXME esta bien actualziar asi?
 //        IntStream
