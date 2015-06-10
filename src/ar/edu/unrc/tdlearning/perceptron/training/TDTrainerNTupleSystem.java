@@ -162,6 +162,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
                         double newDiferential = alpha[0] * tDError
                         * computeEligibilityTrace(currentWeightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
+                        //FIXME problemas en las trazas de eligibilidad que no se calculan? hay que actualizarlas?
                         if ( momentum > 0 ) {
                             newDiferential += momentum * momentumCache[currentWeightIndex];
                         }

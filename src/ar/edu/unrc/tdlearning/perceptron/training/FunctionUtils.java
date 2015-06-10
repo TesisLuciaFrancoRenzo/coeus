@@ -14,13 +14,11 @@ import java.util.function.Function;
  */
 public class FunctionUtils {
 
-
     /**
      * Derivada de la función de activación Sigmoideo. {@code fValue} debe ser
      * sigmoid(value) por cuestiones de optimización
      */
     public static final Function<Double, Double> derivatedSigmoid = (fValue) -> fValue * (1d - fValue);
-
 
     /**
      * Derivada de la función de activación TANH. {@code fValue} debe ser
@@ -35,4 +33,14 @@ public class FunctionUtils {
      * Función de activación TANH
      */
     public static final Function<Double, Double> tanh = (value) -> Math.tanh(value);
+
+    /**
+     * Función de activación lineal
+     */
+    public static final Function<Double, Double> lineal = (value) -> value;
+
+    /**
+     * Función de activación lineal
+     */
+    public static final Function<Double, Double> derivatedLineal = (value) -> 1d;
 }
