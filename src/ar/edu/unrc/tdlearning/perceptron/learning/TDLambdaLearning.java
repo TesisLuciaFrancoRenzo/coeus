@@ -305,7 +305,7 @@ public abstract class TDLambdaLearning {
      * <p>
      * @return la mejor accion de todas
      */
-    public synchronized IAction computeBestPossibleAction(IProblem problem, IState tempTurnInitialState) {
+    public synchronized IAction computeBestPossibleAction(IProblem problem, IState tempTurnInitialState) { //FIXME NO deberia ser sincronizado
         List<ActionPrediction> bestActiones
                 = problem.listAllPossibleActions(tempTurnInitialState)
                 //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no

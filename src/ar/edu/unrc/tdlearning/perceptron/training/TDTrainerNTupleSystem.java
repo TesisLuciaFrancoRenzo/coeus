@@ -149,7 +149,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
             tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnStateOutput.getOutput() - stateOutput.getOutput());
         } else {
             double finalReward = nextTurnState.getCurrentRewardNormalizedPerceptronOutput();
-            tDError = alpha[0] * (nextTurnStateBoardReward + finalReward - stateOutput.getOutput());
+            tDError = alpha[0] * (finalReward - stateOutput.getOutput());
         }
 
         IntStream
@@ -158,6 +158,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
                 .forEach(weightIndex -> {
                     nTupleSystem.addCorrectionToWeight(stateOutput.getIndexes()[weightIndex], tDError);
                 });
+
         //FIXME esta bien actualziar asi?
 //        IntStream
 //                .range(0, nTupleSystem.getLut().length)
@@ -193,7 +194,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
 //                        // momentumCache[weightIndex] = 0; //FIXME corregir esto
 //                    }
 //                });
-
         currentTurn++;
     }
 
