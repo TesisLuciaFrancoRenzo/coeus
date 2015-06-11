@@ -6,6 +6,7 @@
 package ar.edu.unrc.tdlearning.perceptron.training;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
 import java.util.ArrayList;
@@ -249,7 +250,7 @@ public class TDTrainerPerceptron implements ITrainer {
      * llamarlo desde el tunro 5, y para llamarlo desde el turno 5, primero hay
      * que invocarlo desde el turno 4, etc.
      * <p>
-     * @param turnCurrentState         estado del problema en el turno
+     * @param state                    estado del problema en el turno
      *                                 {@code currentTurn}
      * @param nextTurnState            estado del problema en el turno que sigue
      *                                 de {@code currentTurn}
@@ -267,7 +268,7 @@ public class TDTrainerPerceptron implements ITrainer {
      *                                 tenga menos influencia en lso calculos
      */
     @Override
-    public void train(IState turnCurrentState, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.lambda = lamdba;
         this.alpha = alpha;
         this.gamma = gamma;
@@ -276,7 +277,7 @@ public class TDTrainerPerceptron implements ITrainer {
 
         //creamos o reciclamos caches
         if ( currentTurn == 1 ) {
-            this.turnCurrentStateCache = createCache((IStatePerceptron) turnCurrentState, null);
+            this.turnCurrentStateCache = createCache((IStatePerceptron) state, null);
             if ( lambda > 0 ) {
                 resetEligibilityCache();
             }
@@ -297,7 +298,7 @@ public class TDTrainerPerceptron implements ITrainer {
                 }
             }
         } else {
-            this.turnCurrentStateCache = createCache((IStatePerceptron) turnCurrentState, turnCurrentStateCache);
+            this.turnCurrentStateCache = createCache((IStatePerceptron) state, turnCurrentStateCache);
         }
 
         computeNextTurnOutputs((IStatePerceptron) nextTurnState);
@@ -394,27 +395,27 @@ public class TDTrainerPerceptron implements ITrainer {
         Layer outputLayerCurrentState = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex());
         int neuronQuantityAtOutput = outputLayerCurrentState.getNeurons().size();
 
-        //  int outputLayer = turnCurrentStateCache.getOutputLayerIndex();
-        IntStream
-                .range(0, neuronQuantityAtOutput)
-                .parallel()
-                .forEach(outputNeuronIndex -> {
-                    //calculamos el TD error
-                    // assert !nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput().isNaN();
-                    double nextTurnOutput;
-                    if ( !nextTurnState.isTerminalState() ) {
-                        nextTurnOutput = this.nextTurnOutputs.get(outputNeuronIndex);
-                    } else {
-                        nextTurnOutput = nextTurnState.translateRealOutputToNormalizedPerceptronOutputFrom(outputNeuronIndex);
-                    }
-
-                    tDError.set(outputNeuronIndex, //FIXME trae errores con tangente? ya que es negativo y resta siempre las rewards
-                            nextTurnState.translateRewordToNormalizedPerceptronOutputFrom(outputNeuronIndex)
-                            + gamma * nextTurnOutput
-                            - ((Neuron) outputLayerCurrentState.getNeuron(outputNeuronIndex)).getOutput()
-                    );
-                    // assert tDError.get(outputNeuronIndex) != null && !tDError.get(outputNeuronIndex).isNaN();
-                });
+//        //  int outputLayer = turnCurrentStateCache.getOutputLayerIndex();
+//        IntStream
+//                .range(0, neuronQuantityAtOutput)
+//                .parallel()
+//                .forEach(outputNeuronIndex -> {
+//                    //calculamos el TD error
+//                    // assert !nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput().isNaN();
+//                    double nextTurnOutput;
+//                    if ( !nextTurnState.isTerminalState() ) {
+//                        nextTurnOutput = this.nextTurnOutputs.get(outputNeuronIndex);
+//                    } else {
+//                        nextTurnOutput = nextTurnState.translateRealOutputToNormalizedPerceptronOutputFrom(outputNeuronIndex);
+//                    }
+//
+//                    tDError.set(outputNeuronIndex, //FIXME trae errores con tangente? ya que es negativo y resta siempre las rewards
+//                            nextTurnState.translateRewordToNormalizedPerceptronOutputFrom(outputNeuronIndex)
+//                            + gamma * nextTurnOutput
+//                            - ((Neuron) outputLayerCurrentState.getNeuron(outputNeuronIndex)).getOutput()
+//                    );
+//                    // assert tDError.get(outputNeuronIndex) != null && !tDError.get(outputNeuronIndex).isNaN();
+//                });
     }
 
     /**

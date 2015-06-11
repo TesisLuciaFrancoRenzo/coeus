@@ -6,7 +6,6 @@
 package ar.edu.unrc.tdlearning.perceptron.learning;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IPrediction;
 
 /**
  * Tupla que contiene una acción y la predicción que calcula el perceptron sobre
@@ -26,7 +25,7 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
      * comparable para poder identificar, dadas dos salidas, cual es la mejor
      * prediccion.
      */
-    private IPrediction prediction;
+    private Double prediction;
 
     /**
      *
@@ -37,7 +36,7 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
      *                   que se esta utilizando el metodo acumulativo de
      *                   TDlearning
      */
-    public ActionPrediction(IAction action, IPrediction prediction) {
+    public ActionPrediction(IAction action, Double prediction) {
         this.action = action;
         this.prediction = prediction;
     }
@@ -65,7 +64,7 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
     /**
      * @return predicción del fianl del problema si se toma la acción asociada
      */
-    public IPrediction getPrediction() {
+    public Double getPrediction() {
         return prediction;
     }
 
@@ -73,7 +72,7 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
     /**
      * @param prediction La prediccion a setear (establecer)
      */
-    public void setPrediction(IPrediction prediction) {
+    public void setPrediction(Double prediction) {
         this.prediction = prediction;
     }
 

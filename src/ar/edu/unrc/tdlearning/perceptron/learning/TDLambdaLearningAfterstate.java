@@ -7,7 +7,6 @@ package ar.edu.unrc.tdlearning.perceptron.learning;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IPrediction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
@@ -67,18 +66,10 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
     protected IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
         return () -> {
             IState afterstate = problem.computeAfterState(turnInitialState, action);
-            IPrediction nextTurnStatePrediction;
-            //TODO ver como hacer la evaluacion en el ultimo turno
-//            if ( afterstate.isTerminalState() ) {
-//                nextTurnStatePrediction = problem.getCurrentRewardIf(afterstate);
-//            } else {
-            nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
+            Double nextTurnStatePrediction = problem.evaluateBoardWithPerceptron(afterstate).compute();
             if ( this.lamdba == 0 ) {
-                nextTurnStatePrediction.addReword(afterstate.getStateReward()); //FIXME usar partial reward o total?
+                nextTurnStatePrediction += afterstate.getStateReward();
             }
-//            }
-            // nextTurnStatePrediction.addReword(problem.getCurrentReward().add(afterstate.getStateReward())); //para añadir la recompensa por elegir este camino
-            //TODO parece que esto deberia ir SI o si para afterstate¿? parece que no va porque el learn aprende a predecir el puntaje parcial actual mas el siguiente
             return new ActionPrediction(action, nextTurnStatePrediction);
         };
     }
@@ -93,14 +84,14 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
             IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
             //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
-            trainer.train(afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
+            trainer.train(problem, afterstate, afterStateNextTurn, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
         } else {
             // Si nextTurnState es un estado final, no podemos calcular el bestActionForNextTurn.
             // Teoricamente la evaluacion obtenida por el perceptronInterface en el ultimo afterstate,
             // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
             // afterstate para que prediga el final del problema
             //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
-            trainer.train(afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces); //TODO revisar aca, puede estar el error
+            trainer.train(problem, afterstate, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces); //TODO revisar aca, puede estar el error
         }
     }
 

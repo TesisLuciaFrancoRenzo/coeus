@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.training;
 
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 
 /**
@@ -30,6 +31,7 @@ public interface ITrainer {
 
     /**
      *
+     * @param problem
      * @param state
      * @param nextTurnState
      * @param currentAlpha
@@ -40,5 +42,5 @@ public interface ITrainer {
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    public void train(IState state, IState nextTurnState, double[] currentAlpha, double lamdba, boolean aRandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces);
+    public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, double lamdba, boolean aRandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces);
 }

@@ -11,13 +11,11 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
  */
 public interface IState {
 
-    public double getBoardRewardToNormalizedPerceptronOutput();
-
     /**
      *
      * @return recompensa obtenida en el estado actual.
      */
-    public IReward getStateReward();
+    public double getStateReward();
 
     /**
      *
@@ -25,5 +23,4 @@ public interface IState {
      */
     public boolean isTerminalState();
 
-    public double getCurrentRewardNormalizedPerceptronOutput();
 }

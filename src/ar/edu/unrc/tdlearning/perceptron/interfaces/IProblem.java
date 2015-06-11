@@ -15,9 +15,13 @@ import java.util.List;
  */
 public interface IProblem {
 
-    public IReward getCurrentReward();
+    public double denormalizeValueFromPerceptronOutput(double value);
 
-    public IPrediction getCurrentRewardIf(IState afterstate);
+    public double getCurrentReward();
+
+    public double getCurrentRewardIf(IState afterstate);
+
+    public double getFinalReward();
 
     /**
      *
@@ -88,10 +92,10 @@ public interface IProblem {
      * @param state estado intermedio si se utiliza afterstate, o inicio de
      *              estado
      * <p>
-     * @return prediccion del perceptron, sumada la recompensa parcial si es que
-     *         se esta utilizando el metodo acumulativo de TDLearninig
+     * @return prediccion del perceptron, normalizado (si la funcion de
+     *         activacion necesita normalizacion).
      */
-    public IsolatedComputation<IPrediction> evaluateBoardWithPerceptron(IState state);
+    public IsolatedComputation<Double> evaluateBoardWithPerceptron(IState state);
 
     /**
      *
@@ -103,5 +107,7 @@ public interface IProblem {
      *         emparejado con la probabilidad de que estos estados ocurran
      */
     public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState);
+
+    public double normalizeValueToPerceptronOutput(double value);
 
 }

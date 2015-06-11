@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.training;
 
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.ComplexNTupleComputation;
@@ -124,7 +125,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
      *                                 tenga menos influencia en lso calculos
      */
     @Override
-    public void train(IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.lambda = lamdba;
         this.gamma = gamma;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
@@ -140,23 +141,27 @@ public class TDTrainerNTupleSystem implements ITrainer {
         }
 
         //computamos
-        ComplexNTupleComputation stateOutput = this.nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
-        ComplexNTupleComputation nextTurnStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute();
+        ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
+        Double normalizedNextTurnStateOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState).compute();
 
-        double nextTurnStateBoardReward = nextTurnState.getBoardRewardToNormalizedPerceptronOutput();
+        double denormalizedStateOutput = problem.denormalizeValueFromPerceptronOutput(normalizedStateOutput.getOutput());
+        double denormalizedNextTurnStateOutput = problem.denormalizeValueFromPerceptronOutput(normalizedNextTurnStateOutput);
+        double nextTurnStateBoardReward = nextTurnState.getStateReward();
+
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
-            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnStateOutput.getOutput() - stateOutput.getOutput());
+            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * denormalizedNextTurnStateOutput - denormalizedStateOutput);
         } else {
-            double finalReward = nextTurnState.getCurrentRewardNormalizedPerceptronOutput();
-            tDError = alpha[0] * (finalReward - stateOutput.getOutput());
+            tDError = alpha[0] * (problem.getFinalReward() - denormalizedStateOutput);
         }
 
+        tDError = problem.normalizeValueToPerceptronOutput(tDError);
+
         IntStream
-                .range(0, stateOutput.getIndexes().length)
+                .range(0, normalizedStateOutput.getIndexes().length)
                 //.parallel()
                 .forEach(weightIndex -> {
-                    nTupleSystem.addCorrectionToWeight(stateOutput.getIndexes()[weightIndex], tDError);
+                    nTupleSystem.addCorrectionToWeight(normalizedStateOutput.getIndexes()[weightIndex], tDError);
                 });
 
         //FIXME esta bien actualziar asi?
