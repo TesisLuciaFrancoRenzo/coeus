@@ -168,6 +168,13 @@ public class NTupleSystemTest {
         Double expResult = FunctionUtils.sigmoid.apply(0.8 + 0.5 + 0.1);
         Double result = instance.getComputation(state).compute();
         assertEquals(expResult, result, 0.000000000000005);
+
+        System.out.println("getComputation");
+        instance = new NTupleSystem(allSamplePointStates, nTuplesLenght, FunctionUtils.linear, FunctionUtils.derivatedLinear);
+        instance.setWeights(this.weights);
+        expResult = 0.8 + 0.5 + 0.1;
+        result = instance.getComputation(state).compute();
+        assertEquals(expResult, result, 0.000000000000005);
     }
 //
 //    /**
