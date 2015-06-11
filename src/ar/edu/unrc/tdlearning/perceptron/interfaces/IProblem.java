@@ -18,22 +18,10 @@ public interface IProblem {
     /**
      *
      * @param value
+     * <p>
      * @return
      */
     public double denormalizeValueFromPerceptronOutput(double value);
-
-    /**
-     *
-     * @return
-     */
-    public double getCurrentReward();
-
-    /**
-     *
-     * @param afterstate
-     * @return
-     */
-    public double getCurrentRewardIf(IState afterstate);
 
     /**
      *
@@ -129,6 +117,7 @@ public interface IProblem {
     /**
      *
      * @param value
+     * <p>
      * @return
      */
     public double normalizeValueToPerceptronOutput(double value);

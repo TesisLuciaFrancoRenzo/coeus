@@ -31,10 +31,7 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
      *
      * @param action     acción relacionada a {@code prediction}
      * @param prediction predicción del perceptrón si se elige la acción
-     *                   {@code action}. La prediccion debe contener sumada la
-     *                   recompensa que se obtendra al tomar dicha accion, si es
-     *                   que se esta utilizando el metodo acumulativo de
-     *                   TDlearning
+     *                   {@code action}.
      */
     public ActionPrediction(IAction action, Double prediction) {
         this.action = action;
