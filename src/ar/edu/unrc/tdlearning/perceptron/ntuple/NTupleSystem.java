@@ -80,6 +80,11 @@ public class NTupleSystem {
         this.derivatedActivationFunction = derivatedActivationFunction;
     }
 
+    /**
+     *
+     * @param currentWeightIndex
+     * @param correction
+     */
     public void addCorrectionToWeight(int currentWeightIndex, double correction) {
         lut[currentWeightIndex] = lut[currentWeightIndex] + correction;
     }

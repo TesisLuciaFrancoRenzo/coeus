@@ -99,12 +99,12 @@ public class NTupleSystemTest {
             }
 
             @Override
-            public boolean isTerminalState() {
+            public double getTotalRewardNormalizedPerceptronOutput() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
-            public double getTotalRewardNormalizedPerceptronOutput() {
+            public boolean isTerminalState() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 

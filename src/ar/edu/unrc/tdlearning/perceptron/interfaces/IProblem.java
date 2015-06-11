@@ -15,12 +15,30 @@ import java.util.List;
  */
 public interface IProblem {
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     public double denormalizeValueFromPerceptronOutput(double value);
 
+    /**
+     *
+     * @return
+     */
     public double getCurrentReward();
 
+    /**
+     *
+     * @param afterstate
+     * @return
+     */
     public double getCurrentRewardIf(IState afterstate);
 
+    /**
+     *
+     * @return
+     */
     public double getFinalReward();
 
     /**
@@ -108,6 +126,11 @@ public interface IProblem {
      */
     public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState);
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     public double normalizeValueToPerceptronOutput(double value);
 
 }
