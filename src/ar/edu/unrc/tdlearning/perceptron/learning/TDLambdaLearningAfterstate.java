@@ -88,7 +88,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
         if ( !nextTurnState.isTerminalState() ) {
             // evaluamos cada accion posible aplicada al estado nextState y elegimos la mejor
             // accion basada las predicciones del problema
-            IAction bestActionForNextTurn = computeBestPossibleAction(problem, nextTurnState);
+            IAction bestActionForNextTurn = computeBestPossibleAction(problem, nextTurnState).compute();
             // aplicamos la accion 'bestActionForNextTurn' al estado (turno) siguiente 'nextState',
             // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
             IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);

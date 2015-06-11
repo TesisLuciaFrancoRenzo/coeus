@@ -305,15 +305,17 @@ public abstract class TDLambdaLearning {
      * <p>
      * @return la mejor accion de todas
      */
-    public synchronized IAction computeBestPossibleAction(IProblem problem, IState tempTurnInitialState) { //FIXME NO deberia ser sincronizado
-        List<ActionPrediction> bestActiones
-                = problem.listAllPossibleActions(tempTurnInitialState)
-                //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no
-                .stream()
-                .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction).compute())
-                .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
-                .getList();
-        return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
+    public IsolatedComputation<IAction> computeBestPossibleAction(IProblem problem, IState tempTurnInitialState) {
+        return () -> {
+            List<ActionPrediction> bestActiones
+                    = problem.listAllPossibleActions(tempTurnInitialState)
+                    //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no
+                    .stream()
+                    .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction).compute())
+                    .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
+                    .getList();
+            return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
+        };
     }
 
     /**
@@ -488,7 +490,7 @@ public abstract class TDLambdaLearning {
                 // evaluamos cada accion aplicada al estado inicial y elegimos la mejor
                 // accion basada en las predicciones del problema
                 IState tempTurnInitialState = turnInitialState; //usado para que la variable sea efectivamente final en los calculos lambda
-                bestAction = computeBestPossibleAction(problem, tempTurnInitialState);
+                bestAction = computeBestPossibleAction(problem, tempTurnInitialState).compute();
             } else {
                 List<IAction> possibleActions = problem.listAllPossibleActions(turnInitialState);
                 bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1));
