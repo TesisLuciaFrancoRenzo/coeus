@@ -131,38 +131,32 @@ public class TDTrainerNTupleSystem implements ITrainer {
         this.resetEligibilitiTraces = resetEligibilitiTraces;
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
 
-        // reciclamos caches
-        if ( currentTurn == 1 ) {
-            if ( lambda > 0 ) {
-                for ( int i = 0; i < this.elegibilityTraces.length; i++ ) {
-                    elegibilityTraces[i] = 0;
-                }
-            }
-        }
-
         //computamos
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
         Double normalizedNextTurnStateOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState).compute();
 
         double denormalizedStateOutput = problem.denormalizeValueFromPerceptronOutput(normalizedStateOutput.getOutput());
+        double denormalizedDerivatedStateOutput = problem.denormalizeValueFromPerceptronOutput(normalizedStateOutput.getDerivatedOutput());
         double denormalizedNextTurnStateOutput = problem.denormalizeValueFromPerceptronOutput(normalizedNextTurnStateOutput);
         double nextTurnStateBoardReward = nextTurnState.getStateReward();
 
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
-            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * denormalizedNextTurnStateOutput - denormalizedStateOutput);
+            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * denormalizedNextTurnStateOutput - denormalizedStateOutput) * denormalizedDerivatedStateOutput;
         } else {
-            tDError = alpha[0] * (problem.getFinalReward() - denormalizedStateOutput);
+            tDError = alpha[0] * (problem.getFinalReward() - denormalizedStateOutput) * denormalizedDerivatedStateOutput;
         }
+        //FIXME y la derivada de la funcion de activacion?
 
         tDError = problem.normalizeValueToPerceptronOutput(tDError);
-
-        IntStream
-                .range(0, normalizedStateOutput.getIndexes().length)
-                //.parallel()
-                .forEach(weightIndex -> {
-                    nTupleSystem.addCorrectionToWeight(normalizedStateOutput.getIndexes()[weightIndex], tDError);
-                });
+        if ( tDError != 0 ) {
+            IntStream
+                    .range(0, normalizedStateOutput.getIndexes().length)
+                    //.parallel()
+                    .forEach(weightIndex -> {
+                        nTupleSystem.addCorrectionToWeight(normalizedStateOutput.getIndexes()[weightIndex], tDError);
+                    });
+        }
 
         //FIXME esta bien actualziar asi?
 //        IntStream

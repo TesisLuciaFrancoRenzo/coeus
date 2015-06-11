@@ -5,7 +5,6 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IReward;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.training.FunctionUtils;
 import java.util.ArrayList;
@@ -65,11 +64,6 @@ public class NTupleSystemTest {
         state = new IStateNTuple() {
 
             @Override
-            public double getBoardRewardToNormalizedPerceptronOutput() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
             public SamplePointState[] getNTuple(int nTupleIndex) {
                 switch ( nTupleIndex ) {
                     case 0: {
@@ -94,12 +88,7 @@ public class NTupleSystemTest {
             }
 
             @Override
-            public IReward getStateReward() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public double getTotalRewardNormalizedPerceptronOutput() {
+            public double getStateReward() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -176,24 +165,179 @@ public class NTupleSystemTest {
         result = instance.getComputation(state).compute();
         assertEquals(expResult, result, 0.000000000000005);
     }
+
+    /**
+     * Test of getComplexComputation method, of class NTupleSystem.
+     */
+    @Test
+    public void testGetComplexComputation() {
+        System.out.println("getComplexComputation");
+        NTupleSystem instance = new NTupleSystem(allSamplePointStates, nTuplesLenght, FunctionUtils.sigmoid, FunctionUtils.derivatedSigmoid);
+        instance.setWeights(this.weights);
+        Double expResult = FunctionUtils.sigmoid.apply(0.8 + 0.5 + 0.1);
+        Double result = instance.getComplexComputation(state).compute().getOutput();
+        assertEquals(expResult, result, 0.000000000000005);
+
+        expResult = FunctionUtils.derivatedSigmoid.apply(FunctionUtils.sigmoid.apply(0.8 + 0.5 + 0.1));
+        result = instance.getComplexComputation(state).compute().getDerivatedOutput();
+        assertEquals(expResult, result, 0.000000000000005);
+
+        System.out.println("getComputation");
+        instance = new NTupleSystem(allSamplePointStates, nTuplesLenght, FunctionUtils.linear, FunctionUtils.derivatedLinear);
+        instance.setWeights(this.weights);
+        expResult = 0.8 + 0.5 + 0.1;
+        result = instance.getComplexComputation(state).compute().getOutput();
+        assertEquals(expResult, result, 0.000000000000005);
+    }
+
 //
 //    /**
-//     * Test of getWeight method, of class NTupleSystem.
+//     * Test of addCorrectionToWeight method, of class NTupleSystem.
 //     */
 //    @Test
-//    public void testGetWeight() {
-//        System.out.println("getWeight");
-//        int layerIndex = 0;
-//        int neuronIndex = 0;
-//        int neuronIndexPreviousLayer = 0;
+//    public void testAddCorrectionToWeight() {
+//        System.out.println("addCorrectionToWeight");
+//        int currentWeightIndex = 0;
+//        double correction = 0.0;
 //        NTupleSystem instance = null;
-//        double expResult = 0.0;
-//        double result = instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer);
-//        assertEquals(expResult, result, 0.0);
+//        instance.addCorrectionToWeight(currentWeightIndex, correction);
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
+//    /**
+//     * Test of getActivationFunction method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testGetActivationFunction() {
+//        System.out.println("getActivationFunction");
+//        NTupleSystem instance = null;
+//        Function<Double, Double> expResult = null;
+//        Function<Double, Double> result = instance.getActivationFunction();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//    /**
+//     * Test of getDerivatedActivationFunction method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testGetDerivatedActivationFunction() {
+//        System.out.println("getDerivatedActivationFunction");
+//        NTupleSystem instance = null;
+//        Function<Double, Double> expResult = null;
+//        Function<Double, Double> result = instance.getDerivatedActivationFunction();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getLut method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testGetLut() {
+//        System.out.println("getLut");
+//        NTupleSystem instance = null;
+//        double[] expResult = null;
+//        double[] result = instance.getLut();
+//        assertArrayEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getMapSamplePointStates method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testGetMapSamplePointStates() {
+//        System.out.println("getMapSamplePointStates");
+//        NTupleSystem instance = null;
+//        Map<SamplePointState, Integer> expResult = null;
+//        Map<SamplePointState, Integer> result = instance.getMapSamplePointStates();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of setWeights method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testSetWeights() {
+//        System.out.println("setWeights");
+//        double[] value = null;
+//        NTupleSystem instance = null;
+//        instance.setWeights(value);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getnTuplesLenght method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testGetnTuplesLenght() {
+//        System.out.println("getnTuplesLenght");
+//        NTupleSystem instance = null;
+//        int[] expResult = null;
+//        int[] result = instance.getnTuplesLenght();
+//        assertArrayEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getnTuplesWeightQuantity method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testGetnTuplesWeightQuantity() {
+//        System.out.println("getnTuplesWeightQuantity");
+//        NTupleSystem instance = null;
+//        int[] expResult = null;
+//        int[] result = instance.getnTuplesWeightQuantity();
+//        assertArrayEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of load method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testLoad() throws Exception {
+//        System.out.println("load");
+//        File weightsFile = null;
+//        NTupleSystem instance = null;
+//        instance.load(weightsFile);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of reset method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testReset() {
+//        System.out.println("reset");
+//        NTupleSystem instance = null;
+//        instance.reset();
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of save method, of class NTupleSystem.
+//     */
+//    @Test
+//    public void testSave() throws Exception {
+//        System.out.println("save");
+//        File lutFile = null;
+//        NTupleSystem instance = null;
+//        instance.save(lutFile);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 //
 //    /**
 //     * Test of setWeight method, of class NTupleSystem.
@@ -201,14 +345,11 @@ public class NTupleSystemTest {
 //    @Test
 //    public void testSetWeight() {
 //        System.out.println("setWeight");
-//        int layerIndex = 0;
-//        int neuronIndex = 0;
-//        int neuronIndexPreviousLayer = 0;
-//        double correctedWeight = 0.0;
+//        int index = 0;
+//        double value = 0.0;
 //        NTupleSystem instance = null;
-//        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, correctedWeight);
+//        instance.setWeight(index, value);
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-
 }

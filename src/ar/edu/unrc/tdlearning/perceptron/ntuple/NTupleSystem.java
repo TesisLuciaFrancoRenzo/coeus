@@ -114,6 +114,9 @@ public class NTupleSystem {
             ComplexNTupleComputation output = new ComplexNTupleComputation();
             output.setIndexes(indexes);
             output.setOutput(getActivationFunction().apply(sum));
+//            if ( output.getOutput() == 1 ) {
+//                System.err.println("");
+//            }
             output.setDerivatedOutput(getDerivatedActivationFunction().apply(output.getOutput()));
             return output;
         };
