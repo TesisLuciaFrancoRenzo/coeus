@@ -139,17 +139,17 @@ public class TDTrainerNTupleSystem implements ITrainer {
             }
         }
 
-        //computamos turnCurrentState
+        //computamos
         ComplexNTupleComputation stateOutput = this.nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
         ComplexNTupleComputation nextTurnStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) nextTurnState).compute();
 
+        double nextTurnStateBoardReward = nextTurnState.getBoardRewardToNormalizedPerceptronOutput();
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
-            // double nextTurnStateReward = nextTurnState.getBoardRewardToNormalizedPerceptronOutput();
-            tDError = alpha[0] * (gamma * nextTurnStateOutput.getOutput() - stateOutput.getOutput());
+            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnStateOutput.getOutput() - stateOutput.getOutput());
         } else {
             double finalReward = nextTurnState.getCurrentRewardNormalizedPerceptronOutput();
-            tDError = alpha[0] * (finalReward - stateOutput.getOutput());
+            tDError = alpha[0] * (nextTurnStateBoardReward + finalReward - stateOutput.getOutput());
         }
 
         IntStream
