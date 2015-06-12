@@ -48,10 +48,6 @@ public class TDTrainerPerceptron implements ITrainer {
      * Constante que se encuentra en el intervalo [0,1]
      */
     protected double lambda;
-    /**
-     *
-     */
-    protected NeuralNetCache momentumCache;
 
     /**
      *
@@ -140,50 +136,6 @@ public class TDTrainerPerceptron implements ITrainer {
     }
 
     /**
-     *
-     */
-    @Override
-    public void createMomentumCache() {
-        int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
-
-        // inicializamos la Cache o reciclamos alguna vieja
-        momentumCache = new NeuralNetCache(perceptron.getLayerQuantity());
-        IntStream
-                .range(0, perceptron.getLayerQuantity())
-                .sequential() //no se puede en paralelo porque se necesitan las neuronas de la capa anterior para f(net) y otros
-                .forEach(l -> {
-                    //inicializamos la variable para que sea efectivamente final, y poder usar paralelismo funcional
-                    int currentLayerIndex = l;
-                    //creamos una capa o reciclamos una vieja
-                    Layer layer = new Layer(perceptron.getNeuronQuantityInLayer(currentLayerIndex));
-                    //recorremos en paralelo cada neurona que deberia ir ne la capa, la inicializamos, y la cargamos en dicha capa
-                    IntStream
-                    .range(0, perceptron.getNeuronQuantityInLayer(currentLayerIndex))
-                    .parallel()
-                    .forEach(currentNeuronIndex -> {
-                        PartialNeuron neuron;
-                        if ( currentLayerIndex == 0 ) {
-                            //configuramos la neurona de entrada creando una o reciclando una vieja
-                            neuron = new PartialNeuron(0, 0);
-                        } else {
-                            // iniciamos variables efectivamente constantes para la programacion funcional
-                            int previousLayer = currentLayerIndex - 1;
-                            //configuramos la neurona creando
-                            neuron = new PartialNeuron(perceptron.getNeuronQuantityInLayer(previousLayer), outputLayerNeuronQuantity);
-                            //iniciamos los pesos utilizados para momentums en cero
-                            for ( int i = 0; i < neuron.getWeights().size(); i++ ) {
-                                neuron.getWeights().set(i, 0d);
-                            }
-                        }
-                        //cargamos la nueva neurona
-                        layer.setNeuron(currentNeuronIndex, neuron);
-                    });
-                    //cargamos la nueva capa
-                    momentumCache.setLayer(currentLayerIndex, layer);
-                });
-    }
-
-    /**
      * @return the currentTurn
      */
     public int getCurrentTurn() {
@@ -260,7 +212,6 @@ public class TDTrainerPerceptron implements ITrainer {
      * @param alpha                    constante de tasa de aprendizaje
      * @param isARandomMove
      * @param gamma                    tasa de descuento
-     * @param momentum                 0 <= m < 1
      * @param resetEligibilitiTraces   permite resetear las trazas de
      *                                 elegibilidad en caso de movimientos al
      *                                 azar
@@ -269,7 +220,7 @@ public class TDTrainerPerceptron implements ITrainer {
      *                                 tenga menos influencia en lso calculos
      */
     @Override
-    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.lambda = lamdba;
         this.alpha = alpha;
         this.gamma = gamma;
@@ -336,27 +287,20 @@ public class TDTrainerPerceptron implements ITrainer {
                                         layerIndexJ, neuronIndexJ,
                                         layerIndexK, neuronIndexK,
                                         oldWeight, isARandomMove);
-                                if ( momentum > 0 ) {
-                                    newDiferential += momentum * momentumCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
-                                }
 
                                 if ( neuronIndexK == neuronQuantityInK ) {
                                     // si se es una bias, actualizamos la bias en la red neuronal original
                                     perceptron.setBias(layerIndexJ,
                                             neuronIndexJ,
                                             oldWeight + newDiferential);
-                                    if ( momentum > 0 ) {
-                                        momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setBias(newDiferential);
-                                    }
+
                                 } else {
                                     // si se es un peso, actualizamos el peso en la red neuronal original
                                     perceptron.setWeight(layerIndexJ,
                                             neuronIndexJ,
                                             neuronIndexK,
                                             oldWeight + newDiferential);
-                                    if ( momentum > 0 ) {
-                                        momentumCache.getNeuron(layerIndexJ, neuronIndexJ).setWeight(neuronIndexK, newDiferential);
-                                    }
+
                                 }
                             } else { //TODO revisar la condicion
                                 //TODO asegurar safethread con estas funciones!

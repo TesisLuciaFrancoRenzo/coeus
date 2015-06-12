@@ -21,10 +21,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
     /**
      */
     private double[] elegibilityTraces; //TODO optimizar, no inicializar si no se usa
-    /**
-     *
-     */
-    private double[] momentumCache;
+
     /**
      * constante de tasa de aprendizaje
      */
@@ -83,11 +80,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
         elegibilityTraces = new double[nTupleSystem.getLut().length];
     }
 
-    @Override
-    public void createMomentumCache() {
-        momentumCache = new double[nTupleSystem.getLut().length];
-    }
-
     /**
      * @return the currentTurn
      */
@@ -125,7 +117,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
      *                                 tenga menos influencia en lso calculos
      */
     @Override
-    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.lambda = lamdba;
         this.gamma = gamma;
         this.resetEligibilitiTraces = resetEligibilitiTraces;

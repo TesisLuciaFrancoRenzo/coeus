@@ -36,7 +36,6 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      * @param accumulativePredicition  true si se esta utilizando el metodo
      *                                 acumulativo de prediccion en TDLearning
      * @param gamma                    tasa de descuento
-     * @param momentum                 0 <= m < 1
      * @param resetEligibilitiTraces   permite resetear las trazas de
      *                                 elegibilidad en caso de movimientos al
      *                                 azar
@@ -44,8 +43,8 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      *                                 que el peso sea 0, para que cada vez
      *                                 tenga menos influencia en lso calculos
      */
-    public TDLambdaLearningState(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
+    public TDLambdaLearningState(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
     /**
@@ -55,12 +54,11 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      * @param lamdba
      * @param accumulativePredicition
      * @param gamma
-     * @param momentum
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    public TDLambdaLearningState(NTupleSystem perceptron, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
+    public TDLambdaLearningState(NTupleSystem perceptron, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
     @Override
@@ -90,7 +88,7 @@ public class TDLambdaLearningState extends TDLambdaLearning {
     @Override
     protected void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
         //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
-        trainer.train(problem, turnInitialState, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, momentum, resetEligibilitiTraces, replaceEligibilitiTraces);
+        trainer.train(problem, turnInitialState, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
 }

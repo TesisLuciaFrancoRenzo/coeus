@@ -128,11 +128,6 @@ public abstract class TDLambdaLearning {
     /**
      *
      */
-    protected final double momentum;
-
-    /**
-     *
-     */
     protected final IPerceptronInterface perceptronInterface;
 
     /**
@@ -211,7 +206,6 @@ public abstract class TDLambdaLearning {
      * @param accumulativePredicition  true si se esta utilizando el metodo
      *                                 acumulativo de prediccion en TDLearning
      * @param gamma                    tasa de descuento
-     * @param momentum                 0 <= m < 1
      * @param resetEligibilitiTraces   permite resetear las trazas de
      *                                 elegibilidad en caso de movimientos al
      *                                 azar
@@ -219,14 +213,11 @@ public abstract class TDLambdaLearning {
      *                                 que el peso sea 0, para que cada vez
      *                                 tenga menos influencia en lso calculos
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
 
-        if ( momentum < 0 || momentum >= 1 ) {
-            throw new IllegalArgumentException("momentum debe ser 0 para desactivarlo, mayor a cero o menor a 1");
-        }
         if ( alpha == null ) {
             initialAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
             for ( int i = 0; i < perceptronInterface.getLayerQuantity() - 1; i++ ) {
@@ -249,7 +240,6 @@ public abstract class TDLambdaLearning {
         this.perceptronInterface = perceptronInterface;
         this.nTupleSystem = null;
         this.accumulativePredicition = accumulativePredicition;
-        this.momentum = momentum;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
@@ -261,18 +251,14 @@ public abstract class TDLambdaLearning {
      * @param lamdba
      * @param accumulativePredicition
      * @param gamma
-     * @param momentum
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, double momentum, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
 
-        if ( momentum < 0 || momentum >= 1 ) {
-            throw new IllegalArgumentException("momentum debe ser 0 para desactivarlo, mayor a cero o menor a 1");
-        }
         if ( alpha == null ) {
             initialAlpha = new double[1];
             initialAlpha[0] = 1d / nTupleSystem.getnTuplesLenght().length;
@@ -288,7 +274,6 @@ public abstract class TDLambdaLearning {
         this.perceptronInterface = null;
         this.nTupleSystem = nTupleSystem;
         this.accumulativePredicition = accumulativePredicition;
-        this.momentum = momentum;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
@@ -464,9 +449,6 @@ public abstract class TDLambdaLearning {
                 }
             }
 
-            if ( momentum > 0 ) {
-                trainer.createMomentumCache();
-            }
             if ( lamdba > 0 ) {
                 trainer.createEligibilityCache();
             }
