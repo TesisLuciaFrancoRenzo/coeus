@@ -18,29 +18,35 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
     /**
      * Acción asociada a la prediccion de llegar al final del juego.
      */
-    private IAction action;
+    private final IAction action;
 
+
+    private final Double numericRepresentation;
     /**
      * Es la salida predicha del final del juego, debe ser codificada como
      * comparable para poder identificar, dadas dos salidas, cual es la mejor
      * prediccion.
      */
-    private Double prediction;
+    private final Double[] prediction;
 
     /**
      *
-     * @param action     acción relacionada a {@code prediction}
-     * @param prediction predicción del perceptrón si se elige la acción
-     *                   {@code action}.
+     * @param action                acción relacionada a {@code prediction}
+     * @param prediction            predicción del perceptrón si se elige la
+     *                              acción {@code action}.
+     * @param numericRepresentation para comparar diferentes
+     *                              {@code ActionPrediction} cuando hay varias
+     *                              neuronas de salida
      */
-    public ActionPrediction(IAction action, Double prediction) {
+    public ActionPrediction(IAction action, Double[] prediction, Double numericRepresentation) {
         this.action = action;
         this.prediction = prediction;
+        this.numericRepresentation = numericRepresentation;
     }
 
     @Override
     public int compareTo(ActionPrediction other) {
-        return prediction.compareTo(other.getPrediction());
+        return numericRepresentation.compareTo(other.getNumericRepresentation());
     }
 
     /**
@@ -50,27 +56,18 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
         return action;
     }
 
-    //TODO: Revisar este comentario
     /**
-     * @param action La acción a setear (establecer)
+     * @return the numericRepresentation
      */
-    public void setAction(IAction action) {
-        this.action = action;
+    public double getNumericRepresentation() {
+        return numericRepresentation;
     }
 
     /**
      * @return predicción del fianl del problema si se toma la acción asociada
      */
-    public Double getPrediction() {
+    public Double[] getPrediction() {
         return prediction;
-    }
-
-    //TODO: Revisar este comentario
-    /**
-     * @param prediction La prediccion a setear (establecer)
-     */
-    public void setPrediction(Double prediction) {
-        this.prediction = prediction;
     }
 
 }

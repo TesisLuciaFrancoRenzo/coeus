@@ -139,13 +139,13 @@ public class TDTrainerNTupleSystem implements ITrainer {
         double output = normalizedStateOutput.getOutput();
         double derivatedOutput = normalizedStateOutput.getDerivatedOutput();
         double nextTurnOutput = normalizedNextTurnStateOutput;
-        double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward());
+        double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
             tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
         } else {
-            double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward());
+            double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(0));
             tDError = alpha[0] * (finalReward - output) * derivatedOutput;
         }
 

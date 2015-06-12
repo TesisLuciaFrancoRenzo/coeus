@@ -17,17 +17,25 @@ public interface IProblem {
 
     /**
      *
-     * @param value
-     * <p>
+     * @param output <p>
+     * @return
+     */
+    public IsolatedComputation<Double> computeNumericRepresentationFor(Double[] output);
+
+    /**
+     *
+     * @param value <p>
      * @return
      */
     public double denormalizeValueFromPerceptronOutput(double value);
 
     /**
      *
+     * @param outputNeuron
+     * <p>
      * @return
      */
-    public double getFinalReward();
+    public double getFinalReward(int outputNeuron);
 
     /**
      *
@@ -101,7 +109,7 @@ public interface IProblem {
      * @return prediccion del perceptron, normalizado (si la funcion de
      *         activacion necesita normalizacion).
      */
-    public IsolatedComputation<Double> evaluateBoardWithPerceptron(IState state);
+    public IsolatedComputation<Double[]> evaluateBoardWithPerceptron(IState state);
 
     /**
      *
@@ -116,8 +124,7 @@ public interface IProblem {
 
     /**
      *
-     * @param value
-     * <p>
+     * @param value <p>
      * @return
      */
     public double normalizeValueToPerceptronOutput(double value);

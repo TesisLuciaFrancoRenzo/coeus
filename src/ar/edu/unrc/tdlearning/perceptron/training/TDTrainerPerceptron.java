@@ -29,6 +29,7 @@ public class TDTrainerPerceptron implements ITrainer {
      * Quinta componente: turno (m) de la traza de eligibilidad
      */
     private List<List<List<List<Double>>>> elegibilityTraces;
+    private IProblem problem;
     /**
      * constante de tasa de aprendizaje
      */
@@ -274,6 +275,7 @@ public class TDTrainerPerceptron implements ITrainer {
         this.gamma = gamma;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
+        this.problem = problem;
 
         //creamos o reciclamos caches
         if ( currentTurn == 1 ) {
@@ -395,27 +397,22 @@ public class TDTrainerPerceptron implements ITrainer {
         Layer outputLayerCurrentState = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex());
         int neuronQuantityAtOutput = outputLayerCurrentState.getNeurons().size();
 
-//        //  int outputLayer = turnCurrentStateCache.getOutputLayerIndex();
-//        IntStream
-//                .range(0, neuronQuantityAtOutput)
-//                .parallel()
-//                .forEach(outputNeuronIndex -> {
-//                    //calculamos el TD error
-//                    // assert !nextTurnStateCache.getNeuron(outputLayer, outputNeuronIndex).getOutput().isNaN();
-//                    double nextTurnOutput;
-//                    if ( !nextTurnState.isTerminalState() ) {
-//                        nextTurnOutput = this.nextTurnOutputs.get(outputNeuronIndex);
-//                    } else {
-//                        nextTurnOutput = nextTurnState.translateRealOutputToNormalizedPerceptronOutputFrom(outputNeuronIndex);
-//                    }
-//
-//                    tDError.set(outputNeuronIndex, //FIXME trae errores con tangente? ya que es negativo y resta siempre las rewards
-//                            nextTurnState.translateRewordToNormalizedPerceptronOutputFrom(outputNeuronIndex)
-//                            + gamma * nextTurnOutput
-//                            - ((Neuron) outputLayerCurrentState.getNeuron(outputNeuronIndex)).getOutput()
-//                    );
-//                    // assert tDError.get(outputNeuronIndex) != null && !tDError.get(outputNeuronIndex).isNaN();
-//                });
+        IntStream
+                .range(0, neuronQuantityAtOutput)
+                // .parallel() //FIXME paralelizar mediante parametros
+                .forEach(outputNeuronIndex -> {
+                    Neuron neuron = (Neuron) outputLayerCurrentState.getNeuron(outputNeuronIndex);
+                    double output = neuron.getOutput();
+                    double nextTurnOutput = nextTurnOutputs.get(outputNeuronIndex);
+                    double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(outputNeuronIndex));
+
+                    if ( !nextTurnState.isTerminalState() ) {
+                        tDError.set(outputNeuronIndex, alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output));
+                    } else {
+                        double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(outputNeuronIndex));
+                        tDError.set(outputNeuronIndex, alpha[0] * (finalReward - output));
+                    }
+                });
     }
 
     /**

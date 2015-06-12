@@ -13,9 +13,11 @@ public interface IState {
 
     /**
      *
-     * @return recompensa obtenida en el estado actual.
+     * @param outputNeuron neurona de salida<p>
+     * @return recompensa parcial que da este estado para la neurona
+     *         {@code outputNeuron}.
      */
-    public double getStateReward();
+    public double getStateReward(int outputNeuron);
 
     /**
      *

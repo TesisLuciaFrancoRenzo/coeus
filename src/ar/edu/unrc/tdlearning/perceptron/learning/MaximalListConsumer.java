@@ -28,7 +28,7 @@ class MaximalListConsumer implements Consumer<ActionPrediction> {
         if ( list.isEmpty() ) {
             list.add(actionPrediction);
         } else {
-            int comparation = list.get(0).getPrediction().compareTo(actionPrediction.getPrediction());
+            int comparation = list.get(0).compareTo(actionPrediction);
             if ( comparation == 0 ) {
                 list.add(actionPrediction);
             } else if ( comparation < 0 ) {
@@ -42,7 +42,7 @@ class MaximalListConsumer implements Consumer<ActionPrediction> {
         if ( list.isEmpty() ) {
             list = other.list;
         } else if ( !other.list.isEmpty() ) {
-            int comparation = list.get(0).getPrediction().compareTo(other.list.get(0).getPrediction());
+            int comparation = list.get(0).compareTo(other.list.get(0));
 
             if ( comparation == 0 ) {
                 list.addAll(other.list);
