@@ -219,7 +219,7 @@ public class NTupleSystem {
                 .range(0, lut.length)
                 .parallel() //FIXME necesario?
                 .forEach(weightIndex -> {
-                    lut[weightIndex] = Math.random() - 0.5d;
+                    lut[weightIndex] = (Math.random() - 0.5d) / 5;
                 });
     }
 
