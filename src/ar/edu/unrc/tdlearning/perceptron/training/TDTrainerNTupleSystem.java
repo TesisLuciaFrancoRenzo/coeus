@@ -135,17 +135,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
         Double normalizedNextTurnStateOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState).compute();
 
-//        double denormalizedStateOutput = problem.denormalizeValueFromPerceptronOutput(normalizedStateOutput.getOutput());
-//        double denormalizedDerivatedStateOutput = normalizedStateOutput.getDerivatedOutput();
-//        double denormalizedNextTurnStateOutput = problem.denormalizeValueFromPerceptronOutput(normalizedNextTurnStateOutput);
-//        double nextTurnStateBoardReward = nextTurnState.getStateReward();
-//
-//        //calculamos el TDerror
-//        if ( !nextTurnState.isTerminalState() ) {
-//            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * denormalizedNextTurnStateOutput - denormalizedStateOutput) * denormalizedDerivatedStateOutput;
-//        } else {
-//            tDError = alpha[0] * (problem.getFinalReward() - denormalizedStateOutput) * denormalizedDerivatedStateOutput;
-//        }
         //FIXME y la derivada de la funcion de activacion?
         double output = normalizedStateOutput.getOutput();
         double derivatedOutput = normalizedStateOutput.getDerivatedOutput();
@@ -160,7 +149,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
             tDError = alpha[0] * (finalReward - output) * derivatedOutput;
         }
 
-//        tDError = problem.normalizeValueToPerceptronOutput(tDError);
         if ( tDError != 0 ) {
             IntStream
                     .range(0, normalizedStateOutput.getIndexes().length)

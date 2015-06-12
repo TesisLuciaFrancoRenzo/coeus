@@ -147,26 +147,6 @@ public class NTupleSystemTest {
     }
 
     /**
-     * Test of getComputation method, of class NTupleSystem.
-     */
-    @Test
-    public void testGetComputation() {
-        System.out.println("getComputation");
-        NTupleSystem instance = new NTupleSystem(allSamplePointStates, nTuplesLenght, FunctionUtils.sigmoid, FunctionUtils.derivatedSigmoid);
-        instance.setWeights(this.weights);
-        Double expResult = FunctionUtils.sigmoid.apply(0.8 + 0.5 + 0.1);
-        Double result = instance.getComputation(state).compute();
-        assertEquals(expResult, result, 0.000000000000005);
-
-        System.out.println("getComputation");
-        instance = new NTupleSystem(allSamplePointStates, nTuplesLenght, FunctionUtils.linear, FunctionUtils.derivatedLinear);
-        instance.setWeights(this.weights);
-        expResult = 0.8 + 0.5 + 0.1;
-        result = instance.getComputation(state).compute();
-        assertEquals(expResult, result, 0.000000000000005);
-    }
-
-    /**
      * Test of getComplexComputation method, of class NTupleSystem.
      */
     @Test
@@ -189,7 +169,6 @@ public class NTupleSystemTest {
         result = instance.getComplexComputation(state).compute().getOutput();
         assertEquals(expResult, result, 0.000000000000005);
     }
-
 //
 //    /**
 //     * Test of addCorrectionToWeight method, of class NTupleSystem.
@@ -352,4 +331,25 @@ public class NTupleSystemTest {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
+    
+    /**
+     * Test of getComputation method, of class NTupleSystem.
+     */
+    @Test
+    public void testGetComputation() {
+        System.out.println("getComputation");
+        NTupleSystem instance = new NTupleSystem(allSamplePointStates, nTuplesLenght, FunctionUtils.sigmoid, FunctionUtils.derivatedSigmoid);
+        instance.setWeights(this.weights);
+        Double expResult = FunctionUtils.sigmoid.apply(0.8 + 0.5 + 0.1);
+        Double result = instance.getComputation(state).compute();
+        assertEquals(expResult, result, 0.000000000000005);
+        
+        System.out.println("getComputation");
+        instance = new NTupleSystem(allSamplePointStates, nTuplesLenght, FunctionUtils.linear, FunctionUtils.derivatedLinear);
+        instance.setWeights(this.weights);
+        expResult = 0.8 + 0.5 + 0.1;
+        result = instance.getComputation(state).compute();
+        assertEquals(expResult, result, 0.000000000000005);
+    }
+
 }
