@@ -379,7 +379,7 @@ public class TDTrainerPerceptron implements ITrainer {
      */
     protected double computeEligibilityTrace(int outputNeuronIndex, int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, double currentWeightValue, boolean isRandomMove) {
 
-        if ( this.lambda != 0 ) {
+        if ( this.lambda > 0 ) {
             List<Double> neuronKEligibilityTrace = elegibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
             if ( isRandomMove && resetEligibilitiTraces ) {
                 neuronKEligibilityTrace.set(outputNeuronIndex, 0d);
@@ -391,7 +391,7 @@ public class TDTrainerPerceptron implements ITrainer {
                 } else {
                     newEligibilityTrace = neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma; //reutilizamos las viejas trazas
                 }
-                newEligibilityTrace += delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK); //TODO esto esta bien???
+                newEligibilityTrace += delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
                 neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
                 return newEligibilityTrace;
             }

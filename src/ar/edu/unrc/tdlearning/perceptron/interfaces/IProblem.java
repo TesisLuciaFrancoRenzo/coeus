@@ -31,8 +31,7 @@ public interface IProblem {
 
     /**
      *
-     * @param outputNeuron
-     * <p>
+     * @param outputNeuron <p>
      * @return
      */
     public double getFinalReward(int outputNeuron);
@@ -68,6 +67,7 @@ public interface IProblem {
      */
     public IState computeAfterState(IState turnInitialState, IAction action);
 
+    //TODO actualizar descripcion!
     /**
      * Este metodo debe:
      * <p>
