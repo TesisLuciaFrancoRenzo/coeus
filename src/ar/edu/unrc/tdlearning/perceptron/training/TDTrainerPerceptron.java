@@ -493,10 +493,10 @@ public class TDTrainerPerceptron implements ITrainer {
                             if ( perceptron.hasBias(currentLayerIndex) ) {
                                 net += neuron.getBias();
                             }
-                            neuron.setOutput(perceptron.getActivationFunction(currentLayerIndex).apply(net));
+                            neuron.setOutput(perceptron.getActivationFunction(currentLayerIndex - 1).apply(net));
 
                             //  assert !neuron.getOutput().isNaN();
-                            neuron.setDerivatedOutput(perceptron.getDerivatedActivationFunction(currentLayerIndex).apply(neuron.getOutput()));
+                            neuron.setDerivatedOutput(perceptron.getDerivatedActivationFunction(currentLayerIndex - 1).apply(neuron.getOutput()));
                             // assert !neuron.getDerivatedOutput().isNaN();
                         }
                         //cargamos la nueva neurona, si es que creamos una nueva cache
