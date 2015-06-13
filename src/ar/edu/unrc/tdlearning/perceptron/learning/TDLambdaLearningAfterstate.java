@@ -67,9 +67,9 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             Double[] output = problem.evaluateBoardWithPerceptron(afterstate).compute();
             for ( int i = 0; i < output.length; i++ ) {
                 output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]);
-                if ( this.lamdba == 0 ) {
-                    output[i] += afterstate.getStateReward(i);
-                }
+                //if ( this.lamdba == 0 ) {
+                output[i] += afterstate.getStateReward(i);
+                //}
             }
             return new ActionPrediction(action, output, problem.computeNumericRepresentationFor(output).compute());
         };

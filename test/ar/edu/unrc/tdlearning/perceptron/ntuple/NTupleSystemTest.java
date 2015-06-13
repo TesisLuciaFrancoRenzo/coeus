@@ -87,16 +87,6 @@ public class NTupleSystemTest {
                 }
             }
 
-            @Override
-            public double getStateReward() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public boolean isTerminalState() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
         };
 
         int[] nTupleIndexQuiantity = new int[nTuplesLenght.length];
@@ -331,7 +321,7 @@ public class NTupleSystemTest {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-    
+
     /**
      * Test of getComputation method, of class NTupleSystem.
      */
@@ -343,7 +333,7 @@ public class NTupleSystemTest {
         Double expResult = FunctionUtils.sigmoid.apply(0.8 + 0.5 + 0.1);
         Double result = instance.getComputation(state).compute();
         assertEquals(expResult, result, 0.000000000000005);
-        
+
         System.out.println("getComputation");
         instance = new NTupleSystem(allSamplePointStates, nTuplesLenght, FunctionUtils.linear, FunctionUtils.derivatedLinear);
         instance.setWeights(this.weights);

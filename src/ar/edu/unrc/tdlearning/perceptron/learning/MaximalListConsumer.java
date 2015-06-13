@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-class MaximalListConsumer implements Consumer<ActionPrediction> {
+public class MaximalListConsumer implements Consumer<ActionPrediction> {
 
     private List<ActionPrediction> list;
 
