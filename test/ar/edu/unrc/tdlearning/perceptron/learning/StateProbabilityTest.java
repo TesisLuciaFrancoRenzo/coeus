@@ -18,15 +18,15 @@ import org.junit.Test;
  */
 public class StateProbabilityTest {
 
-    public StateProbabilityTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public StateProbabilityTest() {
     }
 
     @Before
@@ -52,19 +52,6 @@ public class StateProbabilityTest {
     }
 
     /**
-     * Test of setNextTurnState method, of class StateProbability.
-     */
-    @Test
-    public void testSetNextTurnState() {
-        System.out.println("setNextTurnState");
-        IStatePerceptron nextTurnState = null;
-        StateProbability instance = null;
-        instance.setNextTurnState(nextTurnState);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getProbability method, of class StateProbability.
      */
     @Test
@@ -74,6 +61,19 @@ public class StateProbabilityTest {
         double expResult = 0.0;
         double result = instance.getProbability();
         assertEquals(expResult, result, 0.0);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setNextTurnState method, of class StateProbability.
+     */
+    @Test
+    public void testSetNextTurnState() {
+        System.out.println("setNextTurnState");
+        IStatePerceptron nextTurnState = null;
+        StateProbability instance = null;
+        instance.setNextTurnState(nextTurnState);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

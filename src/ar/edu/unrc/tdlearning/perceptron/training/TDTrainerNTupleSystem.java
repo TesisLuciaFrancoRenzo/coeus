@@ -108,7 +108,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * @param alpha                    constante de tasa de aprendizaje
      * @param isARandomMove
      * @param gamma                    tasa de descuento
-     * @param momentum                 0 <= m < 1
      * @param resetEligibilitiTraces   permite resetear las trazas de
      *                                 elegibilidad en caso de movimientos al
      *                                 azar

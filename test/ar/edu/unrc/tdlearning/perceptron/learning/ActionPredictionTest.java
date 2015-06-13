@@ -18,15 +18,15 @@ import org.junit.Test;
  */
 public class ActionPredictionTest {
 
-    public ActionPredictionTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public ActionPredictionTest() {
     }
 
     @Before

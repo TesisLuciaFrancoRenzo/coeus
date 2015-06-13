@@ -19,9 +19,6 @@ import org.junit.Test;
  */
 public class TDTrainerNTupleSystemTest {
 
-    public TDTrainerNTupleSystemTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -30,12 +27,33 @@ public class TDTrainerNTupleSystemTest {
     public static void tearDownClass() {
     }
 
+    public TDTrainerNTupleSystemTest() {
+    }
+
     @Before
     public void setUp() {
     }
 
     @After
     public void tearDown() {
+    }
+
+    /**
+     * Test of computeEligibilityTrace method, of class TDTrainerNTupleSystem.
+     */
+    @Test
+    public void testComputeEligibilityTrace() {
+        System.out.println("computeEligibilityTrace");
+        int currentWeightIndex = 0;
+        double currentWeightValue = 0.0;
+        double derivatedOutput = 0.0;
+        boolean isRandomMove = false;
+        TDTrainerNTupleSystem instance = null;
+        double expResult = 0.0;
+        double result = instance.computeEligibilityTrace(currentWeightIndex, currentWeightValue, derivatedOutput, isRandomMove);
+        assertEquals(expResult, result, 0.0);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -93,24 +111,6 @@ public class TDTrainerNTupleSystemTest {
         boolean replaceEligibilitiTraces = false;
         TDTrainerNTupleSystem instance = null;
         instance.train(problem, state, nextTurnState, alpha, lamdba, isARandomMove, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of computeEligibilityTrace method, of class TDTrainerNTupleSystem.
-     */
-    @Test
-    public void testComputeEligibilityTrace() {
-        System.out.println("computeEligibilityTrace");
-        int currentWeightIndex = 0;
-        double currentWeightValue = 0.0;
-        double derivatedOutput = 0.0;
-        boolean isRandomMove = false;
-        TDTrainerNTupleSystem instance = null;
-        double expResult = 0.0;
-        double result = instance.computeEligibilityTrace(currentWeightIndex, currentWeightValue, derivatedOutput, isRandomMove);
-        assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

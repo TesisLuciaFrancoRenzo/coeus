@@ -18,15 +18,15 @@ import org.junit.Test;
  */
 public class LayerTest {
 
-    public LayerTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public LayerTest() {
     }
 
     @Before

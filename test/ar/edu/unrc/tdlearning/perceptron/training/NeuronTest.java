@@ -18,15 +18,15 @@ import org.junit.Test;
  */
 public class NeuronTest {
 
-    public NeuronTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public NeuronTest() {
     }
 
     @Before
@@ -93,19 +93,6 @@ public class NeuronTest {
     }
 
     /**
-     * Test of setDerivatedOutput method, of class Neuron.
-     */
-    @Test
-    public void testSetDerivatedOutput() {
-        System.out.println("setDerivatedOutput");
-        Double derivatedOutput = null;
-        Neuron instance = null;
-        instance.setDerivatedOutput(derivatedOutput);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getOutput method, of class Neuron.
      */
     @Test
@@ -120,19 +107,6 @@ public class NeuronTest {
     }
 
     /**
-     * Test of setOutput method, of class Neuron.
-     */
-    @Test
-    public void testSetOutput() {
-        System.out.println("setOutput");
-        Double output = null;
-        Neuron instance = null;
-        instance.setOutput(output);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of setDelta method, of class Neuron.
      */
     @Test
@@ -142,6 +116,32 @@ public class NeuronTest {
         Double delta = null;
         Neuron instance = null;
         instance.setDelta(outputNeuronIndex, delta);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setDerivatedOutput method, of class Neuron.
+     */
+    @Test
+    public void testSetDerivatedOutput() {
+        System.out.println("setDerivatedOutput");
+        Double derivatedOutput = null;
+        Neuron instance = null;
+        instance.setDerivatedOutput(derivatedOutput);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setOutput method, of class Neuron.
+     */
+    @Test
+    public void testSetOutput() {
+        System.out.println("setOutput");
+        Double output = null;
+        Neuron instance = null;
+        instance.setOutput(output);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

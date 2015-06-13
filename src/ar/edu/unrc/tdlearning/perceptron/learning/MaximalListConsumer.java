@@ -19,6 +19,9 @@ public class MaximalListConsumer implements Consumer<ActionPrediction> {
 
     private List<ActionPrediction> list;
 
+    /**
+     *
+     */
     public MaximalListConsumer() {
         list = new ArrayList<>(); //TODO optimizar: es mejor esta implementacion?
     }
@@ -38,6 +41,10 @@ public class MaximalListConsumer implements Consumer<ActionPrediction> {
         }
     }
 
+    /**
+     *
+     * @param other
+     */
     public void combine(MaximalListConsumer other) {
         if ( list.isEmpty() ) {
             list = other.list;

@@ -33,8 +33,6 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      * @param lamdba                   constante que se encuentra en el
      *                                 intervalo [0,1]
      * @param alpha                    constante de tasa de aprendizaje
-     * @param accumulativePredicition  true si se esta utilizando el metodo
-     *                                 acumulativo de prediccion en TDLearning
      * @param gamma                    tasa de descuento
      * @param resetEligibilitiTraces   permite resetear las trazas de
      *                                 elegibilidad en caso de movimientos al
@@ -43,8 +41,8 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      *                                 que el peso sea 0, para que cada vez
      *                                 tenga menos influencia en lso calculos
      */
-    public TDLambdaLearningState(IPerceptronInterface perceptron, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
+    public TDLambdaLearningState(IPerceptronInterface perceptron, double[] alpha, double lamdba, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
     /**
@@ -52,13 +50,12 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      * @param perceptron
      * @param alpha
      * @param lamdba
-     * @param accumulativePredicition
      * @param gamma
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    public TDLambdaLearningState(NTupleSystem perceptron, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, accumulativePredicition, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
+    public TDLambdaLearningState(NTupleSystem perceptron, Double alpha, double lamdba, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
     }
 
     @Override

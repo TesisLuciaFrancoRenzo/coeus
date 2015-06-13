@@ -99,11 +99,6 @@ public abstract class TDLambdaLearning {
     /**
      *
      */
-    protected final boolean accumulativePredicition;
-
-    /**
-     *
-     */
     protected int annealingT;
 
     /**
@@ -203,8 +198,6 @@ public abstract class TDLambdaLearning {
      *                                 cada capa. Si es null, se inicializa cada
      *                                 initialAlpha con la formula
      *                                 1/num_neuronas de la capa anterior.
-     * @param accumulativePredicition  true si se esta utilizando el metodo
-     *                                 acumulativo de prediccion en TDLearning
      * @param gamma                    tasa de descuento
      * @param resetEligibilitiTraces   permite resetear las trazas de
      *                                 elegibilidad en caso de movimientos al
@@ -213,7 +206,7 @@ public abstract class TDLambdaLearning {
      *                                 que el peso sea 0, para que cada vez
      *                                 tenga menos influencia en lso calculos
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, boolean accumulativePredicition, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
@@ -239,7 +232,6 @@ public abstract class TDLambdaLearning {
         this.neuralNetworkType = ENeuralNetworkType.perceptron;
         this.perceptronInterface = perceptronInterface;
         this.nTupleSystem = null;
-        this.accumulativePredicition = accumulativePredicition;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
@@ -249,12 +241,11 @@ public abstract class TDLambdaLearning {
      * @param nTupleSystem
      * @param alpha
      * @param lamdba
-     * @param accumulativePredicition
      * @param gamma
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lamdba, boolean accumulativePredicition, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lamdba, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
@@ -273,7 +264,6 @@ public abstract class TDLambdaLearning {
         this.neuralNetworkType = ENeuralNetworkType.ntuple;
         this.perceptronInterface = null;
         this.nTupleSystem = nTupleSystem;
-        this.accumulativePredicition = accumulativePredicition;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
