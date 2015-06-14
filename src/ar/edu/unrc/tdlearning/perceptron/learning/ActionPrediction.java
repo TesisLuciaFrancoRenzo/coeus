@@ -19,28 +19,17 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
      * Acción asociada a la prediccion de llegar al final del juego.
      */
     private final IAction action;
-
-
     private final Double numericRepresentation;
-    /**
-     * Es la salida predicha del final del juego, debe ser codificada como
-     * comparable para poder identificar, dadas dos salidas, cual es la mejor
-     * prediccion.
-     */
-    private final Double[] prediction;
 
     /**
      *
      * @param action                acción relacionada a {@code prediction}
-     * @param prediction            predicción del perceptrón si se elige la
-     *                              acción {@code action}.
      * @param numericRepresentation para comparar diferentes
      *                              {@code ActionPrediction} cuando hay varias
      *                              neuronas de salida
      */
-    public ActionPrediction(IAction action, Double[] prediction, Double numericRepresentation) {
+    public ActionPrediction(IAction action, Double numericRepresentation) {
         this.action = action;
-        this.prediction = prediction;
         this.numericRepresentation = numericRepresentation;
     }
 
@@ -61,13 +50,6 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
      */
     public double getNumericRepresentation() {
         return numericRepresentation;
-    }
-
-    /**
-     * @return predicción del fianl del problema si se toma la acción asociada
-     */
-    public Double[] getPrediction() {
-        return prediction;
     }
 
 }

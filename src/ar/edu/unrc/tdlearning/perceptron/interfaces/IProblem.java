@@ -20,14 +20,14 @@ public interface IProblem {
      * @param output <p>
      * @return
      */
-    public IsolatedComputation<Double> computeNumericRepresentationFor(Double[] output);
+    public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output);
 
     /**
      *
      * @param value <p>
      * @return
      */
-    public double denormalizeValueFromPerceptronOutput(double value);
+    public double denormalizeValueFromPerceptronOutput(Object value);
 
     /**
      *
