@@ -109,7 +109,7 @@ public interface IProblem {
      * @return prediccion del perceptron, normalizado (si la funcion de
      *         activacion necesita normalizacion).
      */
-    public IsolatedComputation<Double[]> evaluateBoardWithPerceptron(IState state);
+    public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state);
 
     /**
      *
@@ -127,6 +127,6 @@ public interface IProblem {
      * @param value <p>
      * @return
      */
-    public double normalizeValueToPerceptronOutput(double value);
+    public double normalizeValueToPerceptronOutput(Object value);
 
 }
