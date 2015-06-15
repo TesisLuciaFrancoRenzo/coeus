@@ -11,7 +11,6 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.ComplexNTupleComputation;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace.EligibilityTraceForNTuple;
-import java.util.stream.IntStream;
 
 /**
  *
@@ -141,21 +140,25 @@ public class TDTrainerNTupleSystem implements ITrainer {
             tDError = alpha[0] * (finalReward - output);
         }
 
-        if ( tDError != 0 ) {
-            IntStream
-                    .range(0, normalizedStateOutput.getIndexes().length)
-                    //.parallel()
-                    .forEach(index -> {
-                        int weightIndex = normalizedStateOutput.getIndexes()[index];
-                        double oldWeight = this.nTupleSystem.getLut()[weightIndex];
-                        double newDiferential;
-                        if ( lambda == 0 ) {
-                            newDiferential = tDError * derivatedOutput;
-                        } else {
-                            newDiferential = tDError * eligibilityTrace.compute(weightIndex, oldWeight, derivatedOutput, isARandomMove);
-                        }
-                        nTupleSystem.setWeight(weightIndex, oldWeight + newDiferential);
-                    });
+        if ( isARandomMove && nextTurnState.isTerminalState() ) {
+            isARandomMove = false;
+        }
+
+        int weightIndex;
+        double oldWeight;
+        double newDiferential;
+        if ( tDError != 0 && !isARandomMove ) {
+            for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
+                weightIndex = normalizedStateOutput.getIndexes()[index];
+                oldWeight = this.nTupleSystem.getLut()[weightIndex];
+                if ( lambda == 0 ) {
+                    newDiferential = tDError * derivatedOutput;
+                } else {
+                    newDiferential = tDError * eligibilityTrace.compute(weightIndex, oldWeight, derivatedOutput, isARandomMove);
+                }
+
+                nTupleSystem.setWeight(weightIndex, oldWeight + newDiferential);
+            }
         }
         if ( lambda != 0 ) {
             this.eligibilityTrace.processNotUsedTraces();
