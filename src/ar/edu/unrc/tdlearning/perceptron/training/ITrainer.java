@@ -17,11 +17,6 @@ public interface ITrainer {
     /**
      *
      */
-    public void createEligibilityCache();
-
-    /**
-     *
-     */
     public void reset();
 
     /**
@@ -30,11 +25,7 @@ public interface ITrainer {
      * @param state
      * @param nextTurnState
      * @param currentAlpha
-     * @param lamdba
      * @param aRandomMove
-     * @param gamma
-     * @param resetEligibilitiTraces
-     * @param replaceEligibilitiTraces
      */
-    public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, double lamdba, boolean aRandomMove, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces);
+    public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove);
 }

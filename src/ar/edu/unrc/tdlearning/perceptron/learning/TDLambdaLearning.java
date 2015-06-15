@@ -113,7 +113,7 @@ public abstract class TDLambdaLearning {
     /**
      * constante que se encuentra en el intervalo [0,1]
      */
-    protected double lamdba;
+    protected double lambda;
 
     /**
      *
@@ -163,27 +163,28 @@ public abstract class TDLambdaLearning {
 //     * @param lambda <p>
 //     * @return
 //     */
-//    public static Integer calculateBestEligibilityTraceLenght(Double lambda) {
-//        if ( lambda > 1 || lambda < 0 ) {
-//            throw new IllegalArgumentException("lambda=" + lambda + " is out of range from a valid [0..1]");
-//        } else if ( lambda > 0.99 ) {
-//            return Integer.MAX_VALUE;
-//        } else if ( lambda == 0 ) {
-//            return 0;
-//        }
-//        int lenght = 0;
-//        while ( true ) {
-//            double pow = Math.pow(lambda, lenght);
-//            double threshold = 0.001 * lambda;
-//            if ( pow < threshold ) {
-//                return lenght;
-//            }
-//            lenght++;
-//            if ( lenght >= 500 ) {
-//                return Integer.MAX_VALUE;
-//            }
-//        }
-//    }
+
+    public static Integer calculateBestEligibilityTraceLenght(Double lambda) {
+        if ( lambda > 1 || lambda < 0 ) {
+            throw new IllegalArgumentException("lambda=" + lambda + " is out of range from a valid [0..1]");
+        } else if ( lambda > 0.99 ) {
+            return Integer.MAX_VALUE;
+        } else if ( lambda == 0 ) {
+            return 0;
+        }
+        int lenght = 0;
+        while ( true ) {
+            double pow = Math.pow(lambda, lenght);
+            double threshold = 0.001 * lambda;
+            if ( pow < threshold ) {
+                return lenght;
+            }
+            lenght++;
+            if ( lenght >= 500 ) {
+                return Integer.MAX_VALUE;
+            }
+        }
+    }
 
     /**
      *
@@ -192,7 +193,7 @@ public abstract class TDLambdaLearning {
      *                                 perceptronInterface que utilizara el
      *                                 problema. Este puede estar implementado
      *                                 con cualquier libreria o codigo.
-     * @param lamdba                   constante que se encuentra en el
+     * @param lambda                   constante que se encuentra en el
      *                                 intervalo [0,1]
      * @param alpha                    Constantes de tasa de aprendizaje para
      *                                 cada capa. Si es null, se inicializa cada
@@ -206,7 +207,7 @@ public abstract class TDLambdaLearning {
      *                                 que el peso sea 0, para que cada vez
      *                                 tenga menos influencia en lso calculos
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lamdba, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lambda, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
@@ -227,7 +228,7 @@ public abstract class TDLambdaLearning {
         }
         this.currentAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
-        this.lamdba = lamdba;
+        this.lambda = lambda;
         this.gamma = gamma;
         this.neuralNetworkType = ENeuralNetworkType.perceptron;
         this.perceptronInterface = perceptronInterface;
@@ -240,12 +241,12 @@ public abstract class TDLambdaLearning {
      *
      * @param nTupleSystem
      * @param alpha
-     * @param lamdba
+     * @param lambda
      * @param gamma
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lamdba, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lambda, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
@@ -259,7 +260,7 @@ public abstract class TDLambdaLearning {
         }
         this.currentAlpha = new double[1];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
-        this.lamdba = lamdba;
+        this.lambda = lambda;
         this.gamma = gamma;
         this.neuralNetworkType = ENeuralNetworkType.ntuple;
         this.perceptronInterface = null;
@@ -430,17 +431,13 @@ public abstract class TDLambdaLearning {
         if ( trainer == null ) {
             switch ( neuralNetworkType ) {
                 case perceptron: {
-                    trainer = new TDTrainerPerceptron(perceptronInterface);
+                    trainer = new TDTrainerPerceptron(perceptronInterface, lambda, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
                     break;
                 }
                 case ntuple: {
-                    trainer = new TDTrainerNTupleSystem(nTupleSystem);
+                    trainer = new TDTrainerNTupleSystem(nTupleSystem, calculateBestEligibilityTraceLenght(lambda), lambda, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
                     break;
                 }
-            }
-
-            if ( lamdba > 0 ) {
-                trainer.createEligibilityCache();
             }
         } else {
             trainer.reset();

@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public class TDTrainerPerceptron implements ITrainer {
+public final class TDTrainerPerceptron implements ITrainer {
 
     /**
      * Primer componente: indice de la capa de la neurona<br>
@@ -83,20 +83,33 @@ public class TDTrainerPerceptron implements ITrainer {
     protected NeuralNetCache turnCurrentStateCache;
 
     /**
-     *
+     * @param lambda                   constante que se encuentra en el
+     *                                 intervalo [0,1]
+     * @param gamma                    tasa de descuento
+     * @param resetEligibilitiTraces   permite resetear las trazas de
+     *                                 elegibilidad en caso de movimientos al
+     *                                 azar
+     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
+     *                                 que el peso sea 0, para que cada vez
+     *                                 tenga menos influencia en lso calculos
      * @param perceptron
      */
-    public TDTrainerPerceptron(IPerceptronInterface perceptron) {
+    public TDTrainerPerceptron(IPerceptronInterface perceptron, double lambda, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.perceptron = perceptron;
         currentTurn = 1;
         elegibilityTraces = null;
-
         nextTurnStateCache = null;
         turnCurrentStateCache = null;
+        this.lambda = lambda;
+        this.gamma = gamma;
+        this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
+        if ( lambda > 0 ) {
+            createEligibilityCache();
+        }
     }
 
-    @Override
-    public void createEligibilityCache() {
+    private void createEligibilityCache() {
         int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
         // inicializamos la traza de eligibilidad si no esta inicializada
         /**
@@ -203,29 +216,16 @@ public class TDTrainerPerceptron implements ITrainer {
      * llamarlo desde el tunro 5, y para llamarlo desde el turno 5, primero hay
      * que invocarlo desde el turno 4, etc.
      * <p>
-     * @param state                    estado del problema en el turno
-     *                                 {@code currentTurn}
-     * @param nextTurnState            estado del problema en el turno que sigue
-     *                                 de {@code currentTurn}
-     * @param lamdba                   constante que se encuentra en el
-     *                                 intervalo [0,1]
-     * @param alpha                    constante de tasa de aprendizaje
+     * @param state         estado del problema en el turno {@code currentTurn}
+     * @param nextTurnState estado del problema en el turno que sigue de
+     *                      {@code currentTurn}
+     * <p>
+     * @param alpha         constante de tasa de aprendizaje
      * @param isARandomMove
-     * @param gamma                    tasa de descuento
-     * @param resetEligibilitiTraces   permite resetear las trazas de
-     *                                 elegibilidad en caso de movimientos al
-     *                                 azar
-     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
-     *                                 que el peso sea 0, para que cada vez
-     *                                 tenga menos influencia en lso calculos
      */
     @Override
-    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        this.lambda = lamdba;
+    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, boolean isARandomMove) {
         this.alpha = alpha;
-        this.gamma = gamma;
-        this.resetEligibilitiTraces = resetEligibilitiTraces;
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
         this.problem = problem;
 
         //creamos o reciclamos caches

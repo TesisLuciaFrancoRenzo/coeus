@@ -85,7 +85,7 @@ public class TDLambdaLearningState extends TDLambdaLearning {
     @Override
     protected void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
         //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
-        trainer.train(problem, turnInitialState, nextTurnState, getCurrentAlpha(), lamdba, isARandomMove, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
+        trainer.train(problem, turnInitialState, nextTurnState, getCurrentAlpha(), isARandomMove);
     }
 
 }

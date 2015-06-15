@@ -10,6 +10,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.ComplexNTupleComputation;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
+import ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace.EligibilityTraceForNTuple;
 import java.util.stream.IntStream;
 
 /**
@@ -18,9 +19,7 @@ import java.util.stream.IntStream;
  */
 public class TDTrainerNTupleSystem implements ITrainer {
 
-    /**
-     */
-    private double[] elegibilityTraces; //TODO optimizar, no inicializar si no se usa
+    private EligibilityTraceForNTuple eligibilityTrace;
 
     /**
      * constante de tasa de aprendizaje
@@ -67,17 +66,32 @@ public class TDTrainerNTupleSystem implements ITrainer {
     protected double tDError;
 
     /**
-     *
+     * @param lambda                    constante que se encuentra en el
+     *                                  intervalo [0,1]
+     * @param maxEligibilityTraceLenght
+     * @param gamma                     tasa de descuento
+     * @param resetEligibilitiTraces    permite resetear las trazas de
+     *                                  elegibilidad en caso de movimientos al
+     *                                  azar
+     * @param replaceEligibilitiTraces  permite reemplazar las trazas en caso de
+     *                                  que el peso sea 0, para que cada vez
+     *                                  tenga menos influencia en lso calculos
      * @param nTupleSystem
      */
-    public TDTrainerNTupleSystem(NTupleSystem nTupleSystem) {
+    public TDTrainerNTupleSystem(NTupleSystem nTupleSystem, int maxEligibilityTraceLenght, double lambda, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
         this.nTupleSystem = nTupleSystem;
+        this.lambda = lambda;
+        this.gamma = gamma;
+        this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
+        if ( lambda != 0 ) {
+            eligibilityTrace = new EligibilityTraceForNTuple(
+                    nTupleSystem.getnTuplesLenght().length,
+                    nTupleSystem.getLut().length, gamma, lambda,
+                    maxEligibilityTraceLenght, resetEligibilitiTraces, replaceEligibilitiTraces
+            );
+        }
         currentTurn = 1;
-    }
-
-    @Override
-    public void createEligibilityCache() {
-        elegibilityTraces = new double[nTupleSystem.getLut().length];
     }
 
     /**
@@ -99,28 +113,15 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * llamarlo desde el tunro 5, y para llamarlo desde el turno 5, primero hay
      * que invocarlo desde el turno 4, etc.
      * <p>
-     * @param state                    estado del problema en el turno
-     *                                 {@code currentTurn}
-     * @param nextTurnState            estado del problema en el turno que sigue
-     *                                 de {@code currentTurn}
-     * @param lamdba                   constante que se encuentra en el
-     *                                 intervalo [0,1]
-     * @param alpha                    constante de tasa de aprendizaje
-     * @param isARandomMove
-     * @param gamma                    tasa de descuento
-     * @param resetEligibilitiTraces   permite resetear las trazas de
-     *                                 elegibilidad en caso de movimientos al
-     *                                 azar
-     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
-     *                                 que el peso sea 0, para que cada vez
-     *                                 tenga menos influencia en lso calculos
+     * @param state         estado del problema en el turno {@code currentTurn}
+     * @param nextTurnState estado del problema en el turno que sigue de
+     *                      {@code currentTurn}
+     * <p>
+     * @param alpha         constante de tasa de aprendizaje
+     * @param isARandomMove <p>
      */
     @Override
-    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, double lamdba, boolean isARandomMove, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        this.lambda = lamdba;
-        this.gamma = gamma;
-        this.resetEligibilitiTraces = resetEligibilitiTraces;
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
+    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, boolean isARandomMove) {
 
         //computamos
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
@@ -134,90 +135,32 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
-            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
+            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output);
         } else {
             double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(0));
-            tDError = alpha[0] * (finalReward - output) * derivatedOutput;
+            tDError = alpha[0] * (finalReward - output);
         }
 
         if ( tDError != 0 ) {
             IntStream
                     .range(0, normalizedStateOutput.getIndexes().length)
                     //.parallel()
-                    .forEach(weightIndex -> {
-                        nTupleSystem.addCorrectionToWeight(normalizedStateOutput.getIndexes()[weightIndex], tDError);
+                    .forEach(index -> {
+                        int weightIndex = normalizedStateOutput.getIndexes()[index];
+                        double oldWeight = this.nTupleSystem.getLut()[weightIndex];
+                        double newDiferential;
+                        if ( lambda == 0 ) {
+                            newDiferential = tDError * derivatedOutput;
+                        } else {
+                            newDiferential = tDError * eligibilityTrace.compute(weightIndex, oldWeight, derivatedOutput, isARandomMove);
+                        }
+                        nTupleSystem.setWeight(weightIndex, oldWeight + newDiferential);
                     });
         }
-
-        //FIXME esta bien actualziar asi?
-//        IntStream
-//                .range(0, nTupleSystem.getLut().length)
-//                .parallel()
-//                .forEach(weightIndex -> {
-//                    boolean trueInput = false;
-//                    for ( int i = 0; i < turnCurrentStateOutputs.getIndexes().length && !trueInput; i++ ) {
-//                        if ( turnCurrentStateOutputs.getIndexes()[i] == weightIndex ) {
-//                            trueInput = true;
-//                        }
-//                    }
-//                    double oldWeight = this.nTupleSystem.getLut()[weightIndex];
-//                    if ( trueInput ) {
-//                        if ( !isARandomMove || nextTurnState.isTerminalState() ) {
-//                            //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
-//
-//                            double newDiferential =  tDError
-//                            * computeEligibilityTrace(weightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
-//
-//                            if ( momentum > 0 ) {
-//                                newDiferential += momentum * momentumCache[weightIndex];
-//                                momentumCache[weightIndex] = newDiferential;
-//                            }
-//
-//                            //actualizamos el peso en la red neuronal original
-//                            nTupleSystem.setWeight(weightIndex, oldWeight + newDiferential);
-//
-//                        } else {
-//                            computeEligibilityTrace(weightIndex, oldWeight, turnCurrentStateOutputs.getDerivatedOutput(), isARandomMove);
-//                        }
-//                    } else {
-//                        computeEligibilityTrace(weightIndex, oldWeight, 0, isARandomMove); //TODO optimizar todo esto para cuando no hay traza de eligibilidad
-//                        // momentumCache[weightIndex] = 0; //FIXME corregir esto
-//                    }
-//                });
+        if ( lambda != 0 ) {
+            this.eligibilityTrace.processNotUsedTraces();
+        }
         currentTurn++;
     }
 
-    /**
-     * Computo de la traza de elegibilidad para el estado actual
-     * <p>
-     * @param currentWeightIndex
-     * @param currentWeightValue ultimo valor que tenia el peso
-     * <p>
-     * @param derivatedOutput
-     * @param isRandomMove       true si el ultimo movimiento fue elegido al
-     *                           azar
-     * <p>
-     * @return un valor correspondiente a la formula "e" de la teoria
-     */
-    protected double computeEligibilityTrace(int currentWeightIndex, double currentWeightValue, double derivatedOutput, boolean isRandomMove) {
-        //FIXME estan bien calculadas las derivatedOutput? no son con respecto al PESO?
-        if ( this.lambda > 0 ) {
-            if ( isRandomMove && resetEligibilitiTraces ) {
-                this.elegibilityTraces[currentWeightIndex] = 0d;
-                return 0d;
-            } else {
-                double newEligibilityTrace;
-                if ( currentWeightValue == 0 && replaceEligibilitiTraces ) {
-                    newEligibilityTrace = 0;
-                } else {
-                    newEligibilityTrace = elegibilityTraces[currentWeightIndex] * lambda * gamma; //reutilizamos las viejas trazas
-                }
-                newEligibilityTrace += derivatedOutput;
-                elegibilityTraces[currentWeightIndex] = newEligibilityTrace;
-                return newEligibilityTrace;
-            }
-        } else {
-            return derivatedOutput;
-        }
-    }
 }
