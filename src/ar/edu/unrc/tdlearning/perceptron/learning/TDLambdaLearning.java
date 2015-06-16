@@ -150,11 +150,6 @@ public abstract class TDLambdaLearning {
     /**
      *
      */
-    protected boolean replaceEligibilitiTraces;
-
-    /**
-     *
-     */
     protected boolean resetEligibilitiTraces;
 
     /**
@@ -207,7 +202,7 @@ public abstract class TDLambdaLearning {
      *                                 que el peso sea 0, para que cada vez
      *                                 tenga menos influencia en lso calculos
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lambda, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lambda, double gamma, boolean resetEligibilitiTraces) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
@@ -234,7 +229,6 @@ public abstract class TDLambdaLearning {
         this.perceptronInterface = perceptronInterface;
         this.nTupleSystem = null;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
 
     /**
@@ -246,7 +240,7 @@ public abstract class TDLambdaLearning {
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lambda, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lambda, double gamma, boolean resetEligibilitiTraces) {
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
@@ -266,7 +260,6 @@ public abstract class TDLambdaLearning {
         this.perceptronInterface = null;
         this.nTupleSystem = nTupleSystem;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
 
     /**
@@ -285,11 +278,11 @@ public abstract class TDLambdaLearning {
         return () -> {
             List<ActionPrediction> bestActiones
                     = problem.listAllPossibleActions(tempTurnInitialState)
-                            //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no
-                            .stream()
-                            .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction).compute())
-                            .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
-                            .getList();
+                    //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no
+                    .stream()
+                    .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction).compute())
+                    .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
+                    .getList();
             return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
         };
     }
@@ -431,11 +424,11 @@ public abstract class TDLambdaLearning {
         if ( trainer == null ) {
             switch ( neuralNetworkType ) {
                 case perceptron: {
-                    trainer = new TDTrainerPerceptron(perceptronInterface, lambda, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
+                    trainer = new TDTrainerPerceptron(perceptronInterface, lambda, gamma, resetEligibilitiTraces);
                     break;
                 }
                 case ntuple: {
-                    trainer = new TDTrainerNTupleSystem(nTupleSystem, calculateBestEligibilityTraceLenght(lambda), lambda, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
+                    trainer = new TDTrainerNTupleSystem(nTupleSystem, calculateBestEligibilityTraceLenght(lambda), lambda, gamma, resetEligibilitiTraces);
                     break;
                 }
             }
@@ -524,6 +517,5 @@ public abstract class TDLambdaLearning {
      * @currentState
      */
     protected abstract void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove);
-
 
 }

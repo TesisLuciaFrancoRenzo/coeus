@@ -24,24 +24,20 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
 
     /**
      *
-     * @param perceptron               implementacion de la interfaz entre
-     *                                 nuestra red neuronal y el
-     *                                 perceptronInterface que utilizara el
-     *                                 problema. Este puede estar implementado
-     *                                 con cualquier libreria o codigo.
-     * @param lamdba                   constante que se encuentra en el
-     *                                 intervalo [0,1]
-     * @param alpha                    constante de tasa de aprendizaje
-     * @param gamma                    tasa de descuento
-     * @param resetEligibilitiTraces   permite resetear las trazas de
-     *                                 elegibilidad en caso de movimientos al
-     *                                 azar
-     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
-     *                                 que el peso sea 0, para que cada vez
-     *                                 tenga menos influencia en lso calculos
+     * @param perceptron             implementacion de la interfaz entre nuestra
+     *                               red neuronal y el perceptronInterface que
+     *                               utilizara el problema. Este puede estar
+     *                               implementado con cualquier libreria o
+     *                               codigo.
+     * @param lamdba                 constante que se encuentra en el intervalo
+     *                               [0,1]
+     * @param alpha                  constante de tasa de aprendizaje
+     * @param gamma                  tasa de descuento
+     * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
+     *                               en caso de movimientos al azar
      */
-    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, double lamdba, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
+    public TDLambdaLearningAfterstate(IPerceptronInterface perceptron, double[] alpha, double lamdba, double gamma, boolean resetEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, gamma, resetEligibilitiTraces);
     }
 
     /**
@@ -51,10 +47,9 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      * @param lamdba
      * @param gamma
      * @param resetEligibilitiTraces
-     * @param replaceEligibilitiTraces
      */
-    public TDLambdaLearningAfterstate(NTupleSystem perceptron, Double alpha, double lamdba, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
+    public TDLambdaLearningAfterstate(NTupleSystem perceptron, Double alpha, double lamdba, double gamma, boolean resetEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, gamma, resetEligibilitiTraces);
     }
 
     @Override

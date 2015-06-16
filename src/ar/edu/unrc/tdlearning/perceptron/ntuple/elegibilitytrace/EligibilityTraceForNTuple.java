@@ -21,8 +21,6 @@ public class EligibilityTraceForNTuple {
     private final double lambda;
     private final int maxEligibilityTraceLenght;
     private final NTupleSystem nTupleSystem;
-    private final boolean replaceEligibilitiTraces;
-    private final boolean resetEligibilitiTraces;
     private final Set<Integer> usedTraces;
 
     /**
@@ -31,11 +29,8 @@ public class EligibilityTraceForNTuple {
      * @param gamma
      * @param lambda
      * @param maxEligibilityTraceLenght
-     * @param resetEligibilitiTraces
-     * @param replaceEligibilitiTraces
      */
-    public EligibilityTraceForNTuple(NTupleSystem nTupleSystem, double gamma, double lambda,
-            int maxEligibilityTraceLenght, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    public EligibilityTraceForNTuple(NTupleSystem nTupleSystem, double gamma, double lambda, int maxEligibilityTraceLenght) {
         this.nTupleSystem = nTupleSystem;
         eligibilityTrace = new ValueUsagePair[nTupleSystem.getLut().length];
         for ( int i = 0; i < eligibilityTrace.length; i++ ) {
@@ -45,8 +40,6 @@ public class EligibilityTraceForNTuple {
         this.maxEligibilityTraceLenght = maxEligibilityTraceLenght;
         this.gamma = gamma;
         this.lambda = lambda;
-        this.resetEligibilitiTraces = resetEligibilitiTraces; //TODO ver si ahyq ue usar o no esto
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces; //TODO ver si ahyq ue usar o no esto
     }
 
     public void processNotUsedTraces(double tDError) {
@@ -91,7 +84,7 @@ public class EligibilityTraceForNTuple {
 //        e.processNotUsedTraces();
 //        e.processNotUsedTraces();
 //    }
-    
+
     public void reset() {
         for ( ValueUsagePair trace : eligibilityTrace ) {
             trace.reset();

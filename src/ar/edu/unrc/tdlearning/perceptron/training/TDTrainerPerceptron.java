@@ -83,18 +83,14 @@ public final class TDTrainerPerceptron implements ITrainer {
     protected NeuralNetCache turnCurrentStateCache;
 
     /**
-     * @param lambda                   constante que se encuentra en el
-     *                                 intervalo [0,1]
-     * @param gamma                    tasa de descuento
-     * @param resetEligibilitiTraces   permite resetear las trazas de
-     *                                 elegibilidad en caso de movimientos al
-     *                                 azar
-     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
-     *                                 que el peso sea 0, para que cada vez
-     *                                 tenga menos influencia en lso calculos
+     * @param lambda                 constante que se encuentra en el intervalo
+     *                               [0,1]
+     * @param gamma                  tasa de descuento
+     * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
+     *                               en caso de movimientos al azar
      * @param perceptron
      */
-    public TDTrainerPerceptron(IPerceptronInterface perceptron, double lambda, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    public TDTrainerPerceptron(IPerceptronInterface perceptron, double lambda, double gamma, boolean resetEligibilitiTraces) {
         this.perceptron = perceptron;
         currentTurn = 1;
         elegibilityTraces = null;
@@ -237,44 +233,44 @@ public final class TDTrainerPerceptron implements ITrainer {
                     .parallel()
                     .forEach(neuronIndexJ -> {
                         IntStream
-                                .rangeClosed(0, maxIndexK)
-                                .parallel()
-                                .forEach(neuronIndexK -> {
-                                    double oldWeight = turnCurrentStateCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
-                                    if ( !isARandomMove || nextTurnState.isTerminalState() ) {
+                        .rangeClosed(0, maxIndexK)
+                        .parallel()
+                        .forEach(neuronIndexK -> {
+                            double oldWeight = turnCurrentStateCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
+                            if ( !isARandomMove || nextTurnState.isTerminalState() ) {
                                         //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
-                                        
-                                        double newDiferential = weightCorrection( //TODO asegurar safethread con estas funciones!
-                                                layerIndexJ, neuronIndexJ,
-                                                layerIndexK, neuronIndexK,
-                                                oldWeight, isARandomMove);
-                                        
-                                        if ( neuronIndexK == neuronQuantityInK ) {
-                                            // si se es una bias, actualizamos la bias en la red neuronal original
-                                            perceptron.setBias(layerIndexJ,
-                                                    neuronIndexJ,
-                                                    oldWeight + newDiferential);
-                                            
-                                        } else {
-                                            // si se es un peso, actualizamos el peso en la red neuronal original
-                                            perceptron.setWeight(layerIndexJ,
-                                                    neuronIndexJ,
-                                                    neuronIndexK,
-                                                    oldWeight + newDiferential);
-                                            
-                                        }
-                                    } else { //TODO revisar la condicion
-                                        //TODO asegurar safethread con estas funciones!
-                                        updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, oldWeight, isARandomMove); //FIXME corregir esto para momentum?
-                                    }
-                                });
+
+                                double newDiferential = weightCorrection( //TODO asegurar safethread con estas funciones!
+                                        layerIndexJ, neuronIndexJ,
+                                        layerIndexK, neuronIndexK,
+                                        oldWeight, isARandomMove);
+
+                                if ( neuronIndexK == neuronQuantityInK ) {
+                                    // si se es una bias, actualizamos la bias en la red neuronal original
+                                    perceptron.setBias(layerIndexJ,
+                                            neuronIndexJ,
+                                            oldWeight + newDiferential);
+
+                                } else {
+                                    // si se es un peso, actualizamos el peso en la red neuronal original
+                                    perceptron.setWeight(layerIndexJ,
+                                            neuronIndexJ,
+                                            neuronIndexK,
+                                            oldWeight + newDiferential);
+
+                                }
+                            } else { //TODO revisar la condicion
+                                //TODO asegurar safethread con estas funciones!
+                                updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, oldWeight, isARandomMove); //FIXME corregir esto para momentum?
+                            }
+                        });
                     });
 
         }
 
         currentTurn++;
     }
-    
+
     private void createEligibilityCache() {
         int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
         // inicializamos la traza de eligibilidad si no esta inicializada

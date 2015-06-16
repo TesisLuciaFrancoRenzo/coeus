@@ -72,21 +72,17 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * @param resetEligibilitiTraces    permite resetear las trazas de
      *                                  elegibilidad en caso de movimientos al
      *                                  azar
-     * @param replaceEligibilitiTraces  permite reemplazar las trazas en caso de
-     *                                  que el peso sea 0, para que cada vez
-     *                                  tenga menos influencia en lso calculos
      * @param nTupleSystem
      */
-    public TDTrainerNTupleSystem(NTupleSystem nTupleSystem, int maxEligibilityTraceLenght, double lambda, double gamma, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
+    public TDTrainerNTupleSystem(NTupleSystem nTupleSystem, int maxEligibilityTraceLenght, double lambda, double gamma, boolean resetEligibilitiTraces) {
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
         if ( lambda != 0 ) {
             eligibilityTrace = new EligibilityTraceForNTuple(
                     nTupleSystem, gamma, lambda,
-                    maxEligibilityTraceLenght, resetEligibilitiTraces, replaceEligibilitiTraces
+                    maxEligibilityTraceLenght
             );
         }
         currentTurn = 1;
@@ -148,6 +144,8 @@ public class TDTrainerNTupleSystem implements ITrainer {
             weightIndex = normalizedStateOutput.getIndexes()[index];
             if ( !isARandomMove ) {
                 nTupleSystem.addCorrectionToWeight(weightIndex, tDError);
+            } else if ( this.resetEligibilitiTraces ) {
+                eligibilityTrace.reset();
             }
             eligibilityTrace.updateTrace(weightIndex);
         }
