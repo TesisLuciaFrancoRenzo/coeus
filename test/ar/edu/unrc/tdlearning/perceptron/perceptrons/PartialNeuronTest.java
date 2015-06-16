@@ -18,15 +18,15 @@ import org.junit.Test;
  */
 public class PartialNeuronTest {
 
-    public PartialNeuronTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public PartialNeuronTest() {
     }
 
     @Before
@@ -47,19 +47,6 @@ public class PartialNeuronTest {
         Double expResult = null;
         Double result = instance.getBias();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setBias method, of class PartialNeuron.
-     */
-    @Test
-    public void testSetBias() {
-        System.out.println("setBias");
-        Double newBias = null;
-        PartialNeuron instance = null;
-        instance.setBias(newBias);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -89,6 +76,19 @@ public class PartialNeuronTest {
         List<Double> expResult = null;
         List<Double> result = instance.getWeights();
         assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setBias method, of class PartialNeuron.
+     */
+    @Test
+    public void testSetBias() {
+        System.out.println("setBias");
+        Double newBias = null;
+        PartialNeuron instance = null;
+        instance.setBias(newBias);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

@@ -20,18 +20,34 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses( {ar.edu.unrc.tdlearning.perceptron.perceptrons.NeuronTest.class, ar.edu.unrc.tdlearning.perceptron.perceptrons.LayerTest.class, ar.edu.unrc.tdlearning.perceptron.perceptrons.PartialNeuronTest.class, ar.edu.unrc.tdlearning.perceptron.perceptrons.NeuralNetCacheTest.class} )
 public class PerceptronsSuite {
 
+    /**
+     *
+     * @throws Exception
+     */
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @After
     public void tearDown() throws Exception {
     }

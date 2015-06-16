@@ -19,15 +19,15 @@ import org.junit.Test;
  */
 public class ITrainerTest {
 
-    public ITrainerTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public ITrainerTest() {
     }
 
     @Before
@@ -69,27 +69,55 @@ public class ITrainerTest {
 
     public class ITrainerImpl implements ITrainer {
 
+        @Override
         public void reset() {
         }
 
+        @Override
         public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
         }
     }
 
     public class ITrainerImpl implements ITrainer {
 
+        /**
+         *
+         */
+        @Override
         public void reset() {
         }
 
+        /**
+         *
+         * @param problem
+         * @param state
+         * @param nextTurnState
+         * @param currentAlpha
+         * @param aRandomMove
+         */
+        @Override
         public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
         }
     }
 
     public class ITrainerImpl implements ITrainer {
 
+        /**
+         *
+         */
+        @Override
         public void reset() {
         }
 
+        /**
+         *
+         * @param problem
+         * @param state
+         * @param nextTurnState
+         * @param currentAlpha
+         * @param aRandomMove
+         */
+        @Override
         public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
         }
     }

@@ -18,6 +18,11 @@ public class PartialNeuron {
 
     private final List<Double> weights;
 
+    /**
+     *
+     * @param weightsQuantity
+     * @param outputLayerNeuronQuantity
+     */
     public PartialNeuron(int weightsQuantity, int outputLayerNeuronQuantity) {
         if ( weightsQuantity > 0 ) {
             weights = new ArrayList(weightsQuantity + 1);

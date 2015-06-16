@@ -17,9 +17,6 @@ import org.junit.Test;
  */
 public class ELearningRateAdaptationTest {
 
-    public ELearningRateAdaptationTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -28,25 +25,15 @@ public class ELearningRateAdaptationTest {
     public static void tearDownClass() {
     }
 
+    public ELearningRateAdaptationTest() {
+    }
+
     @Before
     public void setUp() {
     }
 
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of values method, of class ELearningRateAdaptation.
-     */
-    @Test
-    public void testValues() {
-        System.out.println("values");
-        ELearningRateAdaptation[] expResult = null;
-        ELearningRateAdaptation[] result = ELearningRateAdaptation.values();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -59,6 +46,19 @@ public class ELearningRateAdaptationTest {
         ELearningRateAdaptation expResult = null;
         ELearningRateAdaptation result = ELearningRateAdaptation.valueOf(name);
         assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of values method, of class ELearningRateAdaptation.
+     */
+    @Test
+    public void testValues() {
+        System.out.println("values");
+        ELearningRateAdaptation[] expResult = null;
+        ELearningRateAdaptation[] result = ELearningRateAdaptation.values();
+        assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

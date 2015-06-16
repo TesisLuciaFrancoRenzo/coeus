@@ -17,15 +17,15 @@ import org.junit.Test;
  */
 public class IStatePerceptronTest {
 
-    public IStatePerceptronTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public IStatePerceptronTest() {
     }
 
     @Before
@@ -53,6 +53,7 @@ public class IStatePerceptronTest {
 
     public class IStatePerceptronImpl implements IStatePerceptron {
 
+        @Override
         public double translateToPerceptronInput(int neuronIndex) {
             return 0.0;
         }
@@ -60,6 +61,12 @@ public class IStatePerceptronTest {
 
     public class IStatePerceptronImpl implements IStatePerceptron {
 
+        /**
+         *
+         * @param neuronIndex
+         * @return
+         */
+        @Override
         public double translateToPerceptronInput(int neuronIndex) {
             return 0.0;
         }
@@ -67,6 +74,12 @@ public class IStatePerceptronTest {
 
     public class IStatePerceptronImpl implements IStatePerceptron {
 
+        /**
+         *
+         * @param neuronIndex
+         * @return
+         */
+        @Override
         public double translateToPerceptronInput(int neuronIndex) {
             return 0.0;
         }

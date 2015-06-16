@@ -18,9 +18,6 @@ import org.junit.Test;
  */
 public class IPerceptronInterfaceTest {
 
-    public IPerceptronInterfaceTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -29,12 +26,30 @@ public class IPerceptronInterfaceTest {
     public static void tearDownClass() {
     }
 
+    public IPerceptronInterfaceTest() {
+    }
+
     @Before
     public void setUp() {
     }
 
     @After
     public void tearDown() {
+    }
+
+    /**
+     * Test of getActivationFunction method, of class IPerceptronInterface.
+     */
+    @Test
+    public void testGetActivationFunction() {
+        System.out.println("getActivationFunction");
+        int layerIndex = 0;
+        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
+        Function<Double, Double> expResult = null;
+        Function<Double, Double> result = instance.getActivationFunction(layerIndex);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -49,21 +64,6 @@ public class IPerceptronInterfaceTest {
         double expResult = 0.0;
         double result = instance.getBias(layerIndex, neuronIndex);
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getActivationFunction method, of class IPerceptronInterface.
-     */
-    @Test
-    public void testGetActivationFunction() {
-        System.out.println("getActivationFunction");
-        int layerIndex = 0;
-        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-        Function<Double, Double> expResult = null;
-        Function<Double, Double> result = instance.getActivationFunction(layerIndex);
-        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -177,111 +177,238 @@ public class IPerceptronInterfaceTest {
 
     public class IPerceptronInterfaceImpl implements IPerceptronInterface {
 
+        @Override
         public double getBias(int layerIndex, int neuronIndex) {
             return 0.0;
         }
 
+        @Override
         public Function<Double, Double> getActivationFunction(int layerIndex) {
             return null;
         }
 
+        @Override
         public Function<Double, Double> getDerivatedActivationFunction(int layerIndex) {
             return null;
         }
 
+        @Override
         public int getLayerQuantity() {
             return 0;
         }
 
+        @Override
         public int getNeuronQuantityInLayer(int layerIndex) {
             return 0;
         }
 
+        @Override
         public double getWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer) {
             return 0.0;
         }
 
+        @Override
         public boolean hasBias(int layerIndex) {
             return false;
         }
 
+        @Override
         public void setBias(int layerIndex, int neuronIndex, double correctedBias) {
         }
 
+        @Override
         public void setWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer, double correctedWeight) {
         }
     }
 
     public class IPerceptronInterfaceImpl implements IPerceptronInterface {
 
+        /**
+         *
+         * @param layerIndex
+         * @param neuronIndex
+         * @return
+         */
+        @Override
         public double getBias(int layerIndex, int neuronIndex) {
             return 0.0;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @return
+         */
+        @Override
         public Function<Double, Double> getActivationFunction(int layerIndex) {
             return null;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @return
+         */
+        @Override
         public Function<Double, Double> getDerivatedActivationFunction(int layerIndex) {
             return null;
         }
 
+        /**
+         *
+         * @return
+         */
+        @Override
         public int getLayerQuantity() {
             return 0;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @return
+         */
+        @Override
         public int getNeuronQuantityInLayer(int layerIndex) {
             return 0;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @param neuronIndex
+         * @param neuronIndexPreviousLayer
+         * @return
+         */
+        @Override
         public double getWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer) {
             return 0.0;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @return
+         */
+        @Override
         public boolean hasBias(int layerIndex) {
             return false;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @param neuronIndex
+         * @param correctedBias
+         */
+        @Override
         public void setBias(int layerIndex, int neuronIndex, double correctedBias) {
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @param neuronIndex
+         * @param neuronIndexPreviousLayer
+         * @param correctedWeight
+         */
+        @Override
         public void setWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer, double correctedWeight) {
         }
     }
 
     public class IPerceptronInterfaceImpl implements IPerceptronInterface {
 
+        /**
+         *
+         * @param layerIndex
+         * @param neuronIndex
+         * @return
+         */
+        @Override
         public double getBias(int layerIndex, int neuronIndex) {
             return 0.0;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @return
+         */
+        @Override
         public Function<Double, Double> getActivationFunction(int layerIndex) {
             return null;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @return
+         */
+        @Override
         public Function<Double, Double> getDerivatedActivationFunction(int layerIndex) {
             return null;
         }
 
+        /**
+         *
+         * @return
+         */
+        @Override
         public int getLayerQuantity() {
             return 0;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @return
+         */
+        @Override
         public int getNeuronQuantityInLayer(int layerIndex) {
             return 0;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @param neuronIndex
+         * @param neuronIndexPreviousLayer
+         * @return
+         */
+        @Override
         public double getWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer) {
             return 0.0;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @return
+         */
+        @Override
         public boolean hasBias(int layerIndex) {
             return false;
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @param neuronIndex
+         * @param correctedBias
+         */
+        @Override
         public void setBias(int layerIndex, int neuronIndex, double correctedBias) {
         }
 
+        /**
+         *
+         * @param layerIndex
+         * @param neuronIndex
+         * @param neuronIndexPreviousLayer
+         * @param correctedWeight
+         */
+        @Override
         public void setWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer, double correctedWeight) {
         }
     }

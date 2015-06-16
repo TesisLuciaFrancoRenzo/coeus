@@ -135,21 +135,6 @@ public class TDLambdaLearningTest {
     }
 
     /**
-     * Test of randomBetween method, of class TDLambdaLearning.
-     */
-    @Test
-    public void testRandomBetween() {
-        System.out.println("randomBetween");
-        int a = 0;
-        int b = 0;
-        int expResult = 0;
-        int result = TDLambdaLearning.randomBetween(a, b);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of computeBestPossibleAction method, of class TDLambdaLearning.
      */
     @Test
@@ -160,6 +145,23 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         IsolatedComputation<IAction> expResult = null;
         IsolatedComputation<IAction> result = instance.computeBestPossibleAction(problem, tempTurnInitialState);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of evaluate method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testEvaluate() {
+        System.out.println("evaluate");
+        IProblem problem = null;
+        IState turnInitialState = null;
+        IAction action = null;
+        TDLambdaLearning instance = null;
+        IsolatedComputation<ActionPrediction> expResult = null;
+        IsolatedComputation<ActionPrediction> result = instance.evaluate(problem, turnInitialState, action);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -194,6 +196,55 @@ public class TDLambdaLearningTest {
     }
 
     /**
+     * Test of learnEvaluation method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testLearnEvaluation() {
+        System.out.println("learnEvaluation");
+        IProblem problem = null;
+        IState turnInitialState = null;
+        IAction action = null;
+        IState afterstate = null;
+        IState nextTurnState = null;
+        boolean isARandomMove = false;
+        TDLambdaLearning instance = null;
+        instance.learnEvaluation(problem, turnInitialState, action, afterstate, nextTurnState, isARandomMove);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of randomBetween method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testRandomBetween() {
+        System.out.println("randomBetween");
+        int a = 0;
+        int b = 0;
+        int expResult = 0;
+        int result = TDLambdaLearning.randomBetween(a, b);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setExplorationRate method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testSetExplorationRate() {
+        System.out.println("setExplorationRate");
+        double initialValue = 0.0;
+        int startDecrementing = 0;
+        double finalValue = 0.0;
+        int finishDecrementing = 0;
+        TDLambdaLearning instance = null;
+        instance.setExplorationRate(initialValue, startDecrementing, finalValue, finishDecrementing);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of setExplorationRateToFixed method, of class TDLambdaLearning.
      */
     @Test
@@ -216,22 +267,6 @@ public class TDLambdaLearningTest {
         int annealingT = 0;
         TDLambdaLearning instance = null;
         instance.setLearningRateAdaptationToAnnealing(annealingT);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setExplorationRate method, of class TDLambdaLearning.
-     */
-    @Test
-    public void testSetExplorationRate() {
-        System.out.println("setExplorationRate");
-        double initialValue = 0.0;
-        int startDecrementing = 0;
-        double finalValue = 0.0;
-        int finishDecrementing = 0;
-        TDLambdaLearning instance = null;
-        instance.setExplorationRate(initialValue, startDecrementing, finalValue, finishDecrementing);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -263,51 +298,18 @@ public class TDLambdaLearningTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of evaluate method, of class TDLambdaLearning.
-     */
-    @Test
-    public void testEvaluate() {
-        System.out.println("evaluate");
-        IProblem problem = null;
-        IState turnInitialState = null;
-        IAction action = null;
-        TDLambdaLearning instance = null;
-        IsolatedComputation<ActionPrediction> expResult = null;
-        IsolatedComputation<ActionPrediction> result = instance.evaluate(problem, turnInitialState, action);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of learnEvaluation method, of class TDLambdaLearning.
-     */
-    @Test
-    public void testLearnEvaluation() {
-        System.out.println("learnEvaluation");
-        IProblem problem = null;
-        IState turnInitialState = null;
-        IAction action = null;
-        IState afterstate = null;
-        IState nextTurnState = null;
-        boolean isARandomMove = false;
-        TDLambdaLearning instance = null;
-        instance.learnEvaluation(problem, turnInitialState, action, afterstate, nextTurnState, isARandomMove);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
     public class TDLambdaLearningImpl extends TDLambdaLearning {
 
         public TDLambdaLearningImpl() {
             super(null, null, 0.0, 0.0, false);
         }
 
+        @Override
         public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
             return null;
         }
 
+        @Override
         public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
         }
     }
@@ -318,10 +320,28 @@ public class TDLambdaLearningTest {
             super(null, null, 0.0, 0.0, false);
         }
 
+        /**
+         *
+         * @param problem
+         * @param turnInitialState
+         * @param action
+         * @return
+         */
+        @Override
         public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
             return null;
         }
 
+        /**
+         *
+         * @param problem
+         * @param turnInitialState
+         * @param action
+         * @param afterstate
+         * @param nextTurnState
+         * @param isARandomMove
+         */
+        @Override
         public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
         }
     }
@@ -332,10 +352,28 @@ public class TDLambdaLearningTest {
             super(null, null, 0.0, 0.0, false);
         }
 
+        /**
+         *
+         * @param problem
+         * @param turnInitialState
+         * @param action
+         * @return
+         */
+        @Override
         public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
             return null;
         }
 
+        /**
+         *
+         * @param problem
+         * @param turnInitialState
+         * @param action
+         * @param afterstate
+         * @param nextTurnState
+         * @param isARandomMove
+         */
+        @Override
         public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
         }
     }

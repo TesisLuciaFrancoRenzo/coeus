@@ -17,15 +17,15 @@ import org.junit.Test;
  */
 public class IStateTest {
 
-    public IStateTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public IStateTest() {
     }
 
     @Before
@@ -67,10 +67,12 @@ public class IStateTest {
 
     public class IStateImpl implements IState {
 
+        @Override
         public double getStateReward(int outputNeuron) {
             return 0.0;
         }
 
+        @Override
         public boolean isTerminalState() {
             return false;
         }
@@ -78,10 +80,21 @@ public class IStateTest {
 
     public class IStateImpl implements IState {
 
+        /**
+         *
+         * @param outputNeuron
+         * @return
+         */
+        @Override
         public double getStateReward(int outputNeuron) {
             return 0.0;
         }
 
+        /**
+         *
+         * @return
+         */
+        @Override
         public boolean isTerminalState() {
             return false;
         }
@@ -89,10 +102,21 @@ public class IStateTest {
 
     public class IStateImpl implements IState {
 
+        /**
+         *
+         * @param outputNeuron
+         * @return
+         */
+        @Override
         public double getStateReward(int outputNeuron) {
             return 0.0;
         }
 
+        /**
+         *
+         * @return
+         */
+        @Override
         public boolean isTerminalState() {
             return false;
         }

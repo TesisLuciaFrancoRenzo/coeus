@@ -16,6 +16,10 @@ public class Layer {
 
     private final List<PartialNeuron> neurons;
 
+    /**
+     *
+     * @param neuronQuantityInLayer
+     */
     public Layer(int neuronQuantityInLayer) {
         neurons = new ArrayList<>(neuronQuantityInLayer);
         for ( int i = 0; i < neuronQuantityInLayer; i++ ) {
@@ -39,6 +43,11 @@ public class Layer {
         return neurons;
     }
 
+    /**
+     *
+     * @param neuronIndex
+     * @param neuron
+     */
     public void setNeuron(int neuronIndex, PartialNeuron neuron) {
         neurons.set(neuronIndex, neuron);
     }

@@ -17,15 +17,15 @@ import org.junit.Test;
  */
 public class EligibilityTraceForNTupleTest {
 
-    public EligibilityTraceForNTupleTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public EligibilityTraceForNTupleTest() {
     }
 
     @Before

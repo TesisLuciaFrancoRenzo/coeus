@@ -17,15 +17,15 @@ import org.junit.Test;
  */
 public class NeuralNetCacheTest {
 
-    public NeuralNetCacheTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public NeuralNetCacheTest() {
     }
 
     @Before

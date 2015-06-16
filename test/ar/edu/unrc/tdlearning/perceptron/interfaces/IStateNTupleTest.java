@@ -18,15 +18,15 @@ import org.junit.Test;
  */
 public class IStateNTupleTest {
 
-    public IStateNTupleTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public IStateNTupleTest() {
     }
 
     @Before
@@ -54,6 +54,7 @@ public class IStateNTupleTest {
 
     public class IStateNTupleImpl implements IStateNTuple {
 
+        @Override
         public SamplePointState[] getNTuple(int nTupleIndex) {
             return null;
         }
@@ -61,6 +62,12 @@ public class IStateNTupleTest {
 
     public class IStateNTupleImpl implements IStateNTuple {
 
+        /**
+         *
+         * @param nTupleIndex
+         * @return
+         */
+        @Override
         public SamplePointState[] getNTuple(int nTupleIndex) {
             return null;
         }
@@ -68,6 +75,12 @@ public class IStateNTupleTest {
 
     public class IStateNTupleImpl implements IStateNTuple {
 
+        /**
+         *
+         * @param nTupleIndex
+         * @return
+         */
+        @Override
         public SamplePointState[] getNTuple(int nTupleIndex) {
             return null;
         }

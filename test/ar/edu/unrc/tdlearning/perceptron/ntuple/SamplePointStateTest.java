@@ -17,15 +17,15 @@ import org.junit.Test;
  */
 public class SamplePointStateTest {
 
-    public SamplePointStateTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public SamplePointStateTest() {
     }
 
     @Before

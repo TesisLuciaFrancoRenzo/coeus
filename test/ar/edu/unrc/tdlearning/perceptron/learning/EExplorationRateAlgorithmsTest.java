@@ -17,9 +17,6 @@ import org.junit.Test;
  */
 public class EExplorationRateAlgorithmsTest {
 
-    public EExplorationRateAlgorithmsTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -28,25 +25,15 @@ public class EExplorationRateAlgorithmsTest {
     public static void tearDownClass() {
     }
 
+    public EExplorationRateAlgorithmsTest() {
+    }
+
     @Before
     public void setUp() {
     }
 
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of values method, of class EExplorationRateAlgorithms.
-     */
-    @Test
-    public void testValues() {
-        System.out.println("values");
-        EExplorationRateAlgorithms[] expResult = null;
-        EExplorationRateAlgorithms[] result = EExplorationRateAlgorithms.values();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -59,6 +46,19 @@ public class EExplorationRateAlgorithmsTest {
         EExplorationRateAlgorithms expResult = null;
         EExplorationRateAlgorithms result = EExplorationRateAlgorithms.valueOf(name);
         assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of values method, of class EExplorationRateAlgorithms.
+     */
+    @Test
+    public void testValues() {
+        System.out.println("values");
+        EExplorationRateAlgorithms[] expResult = null;
+        EExplorationRateAlgorithms[] result = EExplorationRateAlgorithms.values();
+        assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

@@ -19,15 +19,15 @@ import org.junit.Test;
  */
 public class TDTrainerNTupleSystemTest {
 
-    public TDTrainerNTupleSystemTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public TDTrainerNTupleSystemTest() {
     }
 
     @Before

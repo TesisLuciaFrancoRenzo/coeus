@@ -22,9 +22,6 @@ import org.junit.Test;
  */
 public class NTupleSystemTest {
 
-    public NTupleSystemTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -33,12 +30,29 @@ public class NTupleSystemTest {
     public static void tearDownClass() {
     }
 
+    public NTupleSystemTest() {
+    }
+
     @Before
     public void setUp() {
     }
 
     @After
     public void tearDown() {
+    }
+
+    /**
+     * Test of addCorrectionToWeight method, of class NTupleSystem.
+     */
+    @Test
+    public void testAddCorrectionToWeight() {
+        System.out.println("addCorrectionToWeight");
+        int currentWeightIndex = 0;
+        double correction = 0.0;
+        NTupleSystem instance = null;
+        instance.addCorrectionToWeight(currentWeightIndex, correction);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -54,20 +68,6 @@ public class NTupleSystemTest {
         int expResult = 0;
         int result = NTupleSystem.calculateIndex(nTupleIndex, nTuplesLenght, state, mapSamplePointStates);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of addCorrectionToWeight method, of class NTupleSystem.
-     */
-    @Test
-    public void testAddCorrectionToWeight() {
-        System.out.println("addCorrectionToWeight");
-        int currentWeightIndex = 0;
-        double correction = 0.0;
-        NTupleSystem instance = null;
-        instance.addCorrectionToWeight(currentWeightIndex, correction);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -159,19 +159,6 @@ public class NTupleSystemTest {
     }
 
     /**
-     * Test of setWeights method, of class NTupleSystem.
-     */
-    @Test
-    public void testSetWeights() {
-        System.out.println("setWeights");
-        double[] value = null;
-        NTupleSystem instance = null;
-        instance.setWeights(value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getnTuplesLenght method, of class NTupleSystem.
      */
     @Test
@@ -247,6 +234,19 @@ public class NTupleSystemTest {
         double value = 0.0;
         NTupleSystem instance = null;
         instance.setWeight(index, value);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setWeights method, of class NTupleSystem.
+     */
+    @Test
+    public void testSetWeights() {
+        System.out.println("setWeights");
+        double[] value = null;
+        NTupleSystem instance = null;
+        instance.setWeights(value);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

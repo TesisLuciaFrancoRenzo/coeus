@@ -17,9 +17,6 @@ import org.junit.Test;
  */
 public class ENeuralNetworkTypeTest {
 
-    public ENeuralNetworkTypeTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -28,25 +25,15 @@ public class ENeuralNetworkTypeTest {
     public static void tearDownClass() {
     }
 
+    public ENeuralNetworkTypeTest() {
+    }
+
     @Before
     public void setUp() {
     }
 
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of values method, of class ENeuralNetworkType.
-     */
-    @Test
-    public void testValues() {
-        System.out.println("values");
-        ENeuralNetworkType[] expResult = null;
-        ENeuralNetworkType[] result = ENeuralNetworkType.values();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -59,6 +46,19 @@ public class ENeuralNetworkTypeTest {
         ENeuralNetworkType expResult = null;
         ENeuralNetworkType result = ENeuralNetworkType.valueOf(name);
         assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of values method, of class ENeuralNetworkType.
+     */
+    @Test
+    public void testValues() {
+        System.out.println("values");
+        ENeuralNetworkType[] expResult = null;
+        ENeuralNetworkType[] result = ENeuralNetworkType.values();
+        assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

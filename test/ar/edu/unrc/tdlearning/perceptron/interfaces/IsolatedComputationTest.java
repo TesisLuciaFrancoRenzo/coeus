@@ -17,15 +17,15 @@ import org.junit.Test;
  */
 public class IsolatedComputationTest {
 
-    public IsolatedComputationTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public IsolatedComputationTest() {
     }
 
     @Before
@@ -52,6 +52,7 @@ public class IsolatedComputationTest {
 
     public class IsolatedComputationImpl implements IsolatedComputation {
 
+        @Override
         public T compute() {
             return null;
         }
@@ -59,6 +60,11 @@ public class IsolatedComputationTest {
 
     public class IsolatedComputationImpl implements IsolatedComputation {
 
+        /**
+         *
+         * @return
+         */
+        @Override
         public T compute() {
             return null;
         }
@@ -66,6 +72,11 @@ public class IsolatedComputationTest {
 
     public class IsolatedComputationImpl implements IsolatedComputation {
 
+        /**
+         *
+         * @return
+         */
+        @Override
         public T compute() {
             return null;
         }

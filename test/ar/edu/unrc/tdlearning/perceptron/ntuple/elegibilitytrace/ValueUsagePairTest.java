@@ -17,15 +17,15 @@ import org.junit.Test;
  */
 public class ValueUsagePairTest {
 
-    public ValueUsagePairTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public ValueUsagePairTest() {
     }
 
     @Before
@@ -51,19 +51,6 @@ public class ValueUsagePairTest {
     }
 
     /**
-     * Test of setUsagesLeft method, of class ValueUsagePair.
-     */
-    @Test
-    public void testSetUsagesLeft() {
-        System.out.println("setUsagesLeft");
-        int usagesLeft = 0;
-        ValueUsagePair instance = new ValueUsagePair();
-        instance.setUsagesLeft(usagesLeft);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getValue method, of class ValueUsagePair.
      */
     @Test
@@ -73,6 +60,31 @@ public class ValueUsagePairTest {
         double expResult = 0.0;
         double result = instance.getValue();
         assertEquals(expResult, result, 0.0);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of reset method, of class ValueUsagePair.
+     */
+    @Test
+    public void testReset() {
+        System.out.println("reset");
+        ValueUsagePair instance = new ValueUsagePair();
+        instance.reset();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setUsagesLeft method, of class ValueUsagePair.
+     */
+    @Test
+    public void testSetUsagesLeft() {
+        System.out.println("setUsagesLeft");
+        int usagesLeft = 0;
+        ValueUsagePair instance = new ValueUsagePair();
+        instance.setUsagesLeft(usagesLeft);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -98,18 +110,6 @@ public class ValueUsagePairTest {
         System.out.println("use");
         ValueUsagePair instance = new ValueUsagePair();
         instance.use();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of reset method, of class ValueUsagePair.
-     */
-    @Test
-    public void testReset() {
-        System.out.println("reset");
-        ValueUsagePair instance = new ValueUsagePair();
-        instance.reset();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
