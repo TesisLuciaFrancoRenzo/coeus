@@ -9,6 +9,8 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -190,7 +192,7 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         double[] expResult = null;
         double[] result = instance.getCurrentAlpha();
-        assertArrayEquals(expResult, result);
+        //  assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -297,85 +299,21 @@ public class TDLambdaLearningTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
-    public class TDLambdaLearningImpl extends TDLambdaLearning {
-
-        public TDLambdaLearningImpl() {
-            super(null, null, 0.0, 0.0, false);
-        }
-
-        @Override
-        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
-            return null;
-        }
-
-        @Override
-        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
-        }
-    }
-
-    public class TDLambdaLearningImpl extends TDLambdaLearning {
-
-        public TDLambdaLearningImpl() {
-            super(null, null, 0.0, 0.0, false);
-        }
-
-        /**
-         *
-         * @param problem
-         * @param turnInitialState
-         * @param action
-         * @return
-         */
-        @Override
-        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
-            return null;
-        }
-
-        /**
-         *
-         * @param problem
-         * @param turnInitialState
-         * @param action
-         * @param afterstate
-         * @param nextTurnState
-         * @param isARandomMove
-         */
-        @Override
-        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
-        }
-    }
-
-    public class TDLambdaLearningImpl extends TDLambdaLearning {
-
-        public TDLambdaLearningImpl() {
-            super(null, null, 0.0, 0.0, false);
-        }
-
-        /**
-         *
-         * @param problem
-         * @param turnInitialState
-         * @param action
-         * @return
-         */
-        @Override
-        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
-            return null;
-        }
-
-        /**
-         *
-         * @param problem
-         * @param turnInitialState
-         * @param action
-         * @param afterstate
-         * @param nextTurnState
-         * @param isARandomMove
-         */
-        @Override
-        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
-        }
-    }
+//
+//    public class TDLambdaLearningImpl extends TDLambdaLearning {
+//
+//        public TDLambdaLearningImpl() {
+//            super(null, null, 0.0, 0.0, false);
+//        }
+//
+//        @Override
+//        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
+//            return null;
+//        }
+//
+//        @Override
+//        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
+//        }
+//    }
 
 }

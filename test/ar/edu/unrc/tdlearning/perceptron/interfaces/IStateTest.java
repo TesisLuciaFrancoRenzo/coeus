@@ -5,6 +5,8 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -72,50 +74,6 @@ public class IStateTest {
             return 0.0;
         }
 
-        @Override
-        public boolean isTerminalState() {
-            return false;
-        }
-    }
-
-    public class IStateImpl implements IState {
-
-        /**
-         *
-         * @param outputNeuron
-         * @return
-         */
-        @Override
-        public double getStateReward(int outputNeuron) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @return
-         */
-        @Override
-        public boolean isTerminalState() {
-            return false;
-        }
-    }
-
-    public class IStateImpl implements IState {
-
-        /**
-         *
-         * @param outputNeuron
-         * @return
-         */
-        @Override
-        public double getStateReward(int outputNeuron) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @return
-         */
         @Override
         public boolean isTerminalState() {
             return false;

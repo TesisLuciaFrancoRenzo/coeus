@@ -8,6 +8,8 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
 import ar.edu.unrc.tdlearning.perceptron.learning.StateProbability;
 import java.util.ArrayList;
 import java.util.List;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -160,7 +162,8 @@ public class IProblemTest {
     }
 
     /**
-     * Test of listAllPossibleNextTurnStateFromAfterstate method, of class IProblem.
+     * Test of listAllPossibleNextTurnStateFromAfterstate method, of class
+     * IProblem.
      */
     @Test
     public void testListAllPossibleNextTurnStateFromAfterstate() {
@@ -253,228 +256,6 @@ public class IProblemTest {
             return null;
         }
 
-        @Override
-        public double normalizeValueToPerceptronOutput(Object value) {
-            return 0.0;
-        }
-    }
-
-    public class IProblemImpl implements IProblem {
-
-        /**
-         *
-         * @param output
-         * @return
-         */
-        @Override
-        public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output) {
-            return null;
-        }
-
-        /**
-         *
-         * @param value
-         * @return
-         */
-        @Override
-        public double denormalizeValueFromPerceptronOutput(Object value) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @param outputNeuron
-         * @return
-         */
-        @Override
-        public double getFinalReward(int outputNeuron) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @return
-         */
-        @Override
-        public IState initialize() {
-            return null;
-        }
-
-        /**
-         *
-         * @param turnInitialState
-         * @return
-         */
-        @Override
-        public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
-            return null;
-        }
-
-        /**
-         *
-         * @param turnInitialState
-         * @param action
-         * @return
-         */
-        @Override
-        public IState computeAfterState(IState turnInitialState, IAction action) {
-            return null;
-        }
-
-        /**
-         *
-         * @param afterstate
-         * @return
-         */
-        @Override
-        public IState computeNextTurnStateFromAfterstate(IState afterstate) {
-            return null;
-        }
-
-        /**
-         *
-         * @param nextTurnState
-         */
-        @Override
-        public void setCurrentState(IState nextTurnState) {
-        }
-
-        /**
-         *
-         * @param state
-         * @return
-         */
-        @Override
-        public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
-            return null;
-        }
-
-        /**
-         *
-         * @param afterState
-         * @return
-         */
-        @Override
-        public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
-            return null;
-        }
-
-        /**
-         *
-         * @param value
-         * @return
-         */
-        @Override
-        public double normalizeValueToPerceptronOutput(Object value) {
-            return 0.0;
-        }
-    }
-
-    public class IProblemImpl implements IProblem {
-
-        /**
-         *
-         * @param output
-         * @return
-         */
-        @Override
-        public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output) {
-            return null;
-        }
-
-        /**
-         *
-         * @param value
-         * @return
-         */
-        @Override
-        public double denormalizeValueFromPerceptronOutput(Object value) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @param outputNeuron
-         * @return
-         */
-        @Override
-        public double getFinalReward(int outputNeuron) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @return
-         */
-        @Override
-        public IState initialize() {
-            return null;
-        }
-
-        /**
-         *
-         * @param turnInitialState
-         * @return
-         */
-        @Override
-        public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
-            return null;
-        }
-
-        /**
-         *
-         * @param turnInitialState
-         * @param action
-         * @return
-         */
-        @Override
-        public IState computeAfterState(IState turnInitialState, IAction action) {
-            return null;
-        }
-
-        /**
-         *
-         * @param afterstate
-         * @return
-         */
-        @Override
-        public IState computeNextTurnStateFromAfterstate(IState afterstate) {
-            return null;
-        }
-
-        /**
-         *
-         * @param nextTurnState
-         */
-        @Override
-        public void setCurrentState(IState nextTurnState) {
-        }
-
-        /**
-         *
-         * @param state
-         * @return
-         */
-        @Override
-        public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
-            return null;
-        }
-
-        /**
-         *
-         * @param afterState
-         * @return
-         */
-        @Override
-        public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
-            return null;
-        }
-
-        /**
-         *
-         * @param value
-         * @return
-         */
         @Override
         public double normalizeValueToPerceptronOutput(Object value) {
             return 0.0;

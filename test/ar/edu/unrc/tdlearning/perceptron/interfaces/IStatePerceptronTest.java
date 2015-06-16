@@ -5,6 +5,8 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -54,31 +56,15 @@ public class IStatePerceptronTest {
     public class IStatePerceptronImpl implements IStatePerceptron {
 
         @Override
-        public double translateToPerceptronInput(int neuronIndex) {
-            return 0.0;
+        public double getStateReward(int outputNeuron) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-    }
 
-    public class IStatePerceptronImpl implements IStatePerceptron {
-
-        /**
-         *
-         * @param neuronIndex
-         * @return
-         */
         @Override
-        public double translateToPerceptronInput(int neuronIndex) {
-            return 0.0;
+        public boolean isTerminalState() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-    }
 
-    public class IStatePerceptronImpl implements IStatePerceptron {
-
-        /**
-         *
-         * @param neuronIndex
-         * @return
-         */
         @Override
         public double translateToPerceptronInput(int neuronIndex) {
             return 0.0;

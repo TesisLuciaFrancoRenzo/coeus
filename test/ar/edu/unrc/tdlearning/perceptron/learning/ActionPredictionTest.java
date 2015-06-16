@@ -6,6 +6,8 @@
 package ar.edu.unrc.tdlearning.perceptron.learning;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -91,20 +93,6 @@ public class ActionPredictionTest {
         double expResult = 0.0;
         double result = instance.getNumericRepresentation();
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getPrediction method, of class ActionPrediction.
-     */
-    @Test
-    public void testGetPrediction() {
-        System.out.println("getPrediction");
-        ActionPrediction instance = null;
-        Double[] expResult = null;
-        Double[] result = instance.getPrediction();
-        assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

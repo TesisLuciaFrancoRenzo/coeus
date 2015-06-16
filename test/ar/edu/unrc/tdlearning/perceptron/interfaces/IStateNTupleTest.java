@@ -6,8 +6,10 @@
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
 import ar.edu.unrc.tdlearning.perceptron.ntuple.SamplePointState;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,31 +60,15 @@ public class IStateNTupleTest {
         public SamplePointState[] getNTuple(int nTupleIndex) {
             return null;
         }
-    }
 
-    public class IStateNTupleImpl implements IStateNTuple {
-
-        /**
-         *
-         * @param nTupleIndex
-         * @return
-         */
         @Override
-        public SamplePointState[] getNTuple(int nTupleIndex) {
-            return null;
+        public double getStateReward(int outputNeuron) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-    }
 
-    public class IStateNTupleImpl implements IStateNTuple {
-
-        /**
-         *
-         * @param nTupleIndex
-         * @return
-         */
         @Override
-        public SamplePointState[] getNTuple(int nTupleIndex) {
-            return null;
+        public boolean isTerminalState() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 

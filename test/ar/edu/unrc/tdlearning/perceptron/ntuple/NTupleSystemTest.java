@@ -10,6 +10,8 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import java.io.File;
 import java.util.Map;
 import java.util.function.Function;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -139,7 +141,7 @@ public class NTupleSystemTest {
         NTupleSystem instance = null;
         double[] expResult = null;
         double[] result = instance.getLut();
-        assertArrayEquals(expResult, result);
+        //   assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -167,7 +169,7 @@ public class NTupleSystemTest {
         NTupleSystem instance = null;
         int[] expResult = null;
         int[] result = instance.getnTuplesLenght();
-        assertArrayEquals(expResult, result);
+        //  assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -181,7 +183,7 @@ public class NTupleSystemTest {
         NTupleSystem instance = null;
         int[] expResult = null;
         int[] result = instance.getnTuplesWeightQuantity();
-        assertArrayEquals(expResult, result);
+        //  assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

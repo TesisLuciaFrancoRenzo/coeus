@@ -7,6 +7,7 @@ package ar.edu.unrc.tdlearning.perceptron.training;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -73,50 +74,6 @@ public class ITrainerTest {
         public void reset() {
         }
 
-        @Override
-        public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
-        }
-    }
-
-    public class ITrainerImpl implements ITrainer {
-
-        /**
-         *
-         */
-        @Override
-        public void reset() {
-        }
-
-        /**
-         *
-         * @param problem
-         * @param state
-         * @param nextTurnState
-         * @param currentAlpha
-         * @param aRandomMove
-         */
-        @Override
-        public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
-        }
-    }
-
-    public class ITrainerImpl implements ITrainer {
-
-        /**
-         *
-         */
-        @Override
-        public void reset() {
-        }
-
-        /**
-         *
-         * @param problem
-         * @param state
-         * @param nextTurnState
-         * @param currentAlpha
-         * @param aRandomMove
-         */
         @Override
         public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
         }

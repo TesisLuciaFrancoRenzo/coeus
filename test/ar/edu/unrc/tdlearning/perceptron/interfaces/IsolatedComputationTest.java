@@ -5,6 +5,8 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -53,31 +55,7 @@ public class IsolatedComputationTest {
     public class IsolatedComputationImpl implements IsolatedComputation {
 
         @Override
-        public T compute() {
-            return null;
-        }
-    }
-
-    public class IsolatedComputationImpl implements IsolatedComputation {
-
-        /**
-         *
-         * @return
-         */
-        @Override
-        public T compute() {
-            return null;
-        }
-    }
-
-    public class IsolatedComputationImpl implements IsolatedComputation {
-
-        /**
-         *
-         * @return
-         */
-        @Override
-        public T compute() {
+        public Double compute() {
             return null;
         }
     }
