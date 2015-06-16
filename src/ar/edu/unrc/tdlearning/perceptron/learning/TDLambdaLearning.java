@@ -64,6 +64,28 @@ public abstract class TDLambdaLearning {
         return initialAlpha / (1d + ((t * 1d) / (T * 1d)));
     }
 
+    public static Integer calculateBestEligibilityTraceLenght(Double lambda) {
+        if ( lambda > 1 || lambda < 0 ) {
+            throw new IllegalArgumentException("lambda=" + lambda + " is out of range from a valid [0..1]");
+        } else if ( lambda > 0.99 ) {
+            return Integer.MAX_VALUE;
+        } else if ( lambda == 0 ) {
+            return 0;
+        }
+        int lenght = 0;
+        while ( true ) {
+            double pow = Math.pow(lambda, lenght);
+            double threshold = 0.001 * lambda;
+            if ( pow < threshold ) {
+                return lenght;
+            }
+            lenght++;
+            if ( lenght >= 500 ) {
+                return Integer.MAX_VALUE;
+            }
+        }
+    }
+
     /**
      * calcula un numero al azar entre los limites dados, inclusive estos.
      * <p>
@@ -164,28 +186,6 @@ public abstract class TDLambdaLearning {
 //     * @return
 //     */
 
-    public static Integer calculateBestEligibilityTraceLenght(Double lambda) {
-        if ( lambda > 1 || lambda < 0 ) {
-            throw new IllegalArgumentException("lambda=" + lambda + " is out of range from a valid [0..1]");
-        } else if ( lambda > 0.99 ) {
-            return Integer.MAX_VALUE;
-        } else if ( lambda == 0 ) {
-            return 0;
-        }
-        int lenght = 0;
-        while ( true ) {
-            double pow = Math.pow(lambda, lenght);
-            double threshold = 0.001 * lambda;
-            if ( pow < threshold ) {
-                return lenght;
-            }
-            lenght++;
-            if ( lenght >= 500 ) {
-                return Integer.MAX_VALUE;
-            }
-        }
-    }
-
     /**
      *
      * @param perceptronInterface      implementacion de la interfaz entre
@@ -285,11 +285,11 @@ public abstract class TDLambdaLearning {
         return () -> {
             List<ActionPrediction> bestActiones
                     = problem.listAllPossibleActions(tempTurnInitialState)
-                    //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no
-                    .stream()
-                    .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction).compute())
-                    .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
-                    .getList();
+                            //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no
+                            .stream()
+                            .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction).compute())
+                            .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
+                            .getList();
             return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
         };
     }
@@ -524,5 +524,6 @@ public abstract class TDLambdaLearning {
      * @currentState
      */
     protected abstract void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove);
+
 
 }

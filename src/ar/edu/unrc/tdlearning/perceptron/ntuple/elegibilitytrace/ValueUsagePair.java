@@ -11,15 +11,10 @@ package ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace;
  */
 public class ValueUsagePair {
 
-    private double value;
     private int usagesLeft;
+    private double value;
 
     public ValueUsagePair() {
-        value = 0;
-        usagesLeft = 0;
-    }
-
-    void reset() {
         value = 0;
         usagesLeft = 0;
     }
@@ -54,6 +49,11 @@ public class ValueUsagePair {
 
     public void use() {
         usagesLeft--;
+    }
+
+    void reset() {
+        value = 0;
+        usagesLeft = 0;
     }
 
 }

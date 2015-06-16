@@ -49,22 +49,6 @@ public class EligibilityTraceForNTuple {
         this.replaceEligibilitiTraces = replaceEligibilitiTraces; //TODO ver si ahyq ue usar o no esto
     }
 
-    public void reset() {
-        for ( ValueUsagePair trace : eligibilityTrace ) {
-            trace.reset();
-        }
-        usedTraces.clear();
-    }
-
-    public synchronized void updateTrace(int weightIndex) {
-        if ( this.lambda > 0 ) {
-            ValueUsagePair trace = eligibilityTrace[weightIndex];
-            trace.setValue(1d);
-            trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
-            usedTraces.add(weightIndex);
-        }
-    }
-
     public void processNotUsedTraces(double tDError) {
         if ( this.lambda > 0 ) {
             Iterator<Integer> it = usedTraces.iterator();
@@ -77,14 +61,13 @@ public class EligibilityTraceForNTuple {
                     trace.reset();
                 } else {
                     if ( trace.getUsagesLeft() != maxEligibilityTraceLenght ) {
-                        nTupleSystem.addCorrectionToWeight(traceIndex, tDError * trace.getValue());
                         trace.setValue(trace.getValue() * lambda * gamma);//reutilizamos las viejas trazas, ajustandola al tiempo actual
+                        nTupleSystem.addCorrectionToWeight(traceIndex, tDError * trace.getValue());
                     }
                 }
             }
         }
     }
-
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -108,4 +91,21 @@ public class EligibilityTraceForNTuple {
 //        e.processNotUsedTraces();
 //        e.processNotUsedTraces();
 //    }
+    
+    public void reset() {
+        for ( ValueUsagePair trace : eligibilityTrace ) {
+            trace.reset();
+        }
+        usedTraces.clear();
+    }
+
+    public synchronized void updateTrace(int weightIndex) {
+        if ( this.lambda > 0 ) {
+            ValueUsagePair trace = eligibilityTrace[weightIndex];
+            trace.setValue(1d);
+            trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
+            usedTraces.add(weightIndex);
+        }
+    }
+
 }
