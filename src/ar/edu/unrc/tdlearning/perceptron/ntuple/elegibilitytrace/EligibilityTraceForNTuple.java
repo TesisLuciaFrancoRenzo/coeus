@@ -59,7 +59,7 @@ public class EligibilityTraceForNTuple {
                 } else {
                     if ( trace.getUsagesLeft() != maxEligibilityTraceLenght ) {
                         trace.setValue(trace.getValue() * lambda * gamma);//reutilizamos las viejas trazas, ajustandola al tiempo actual
-                        nTupleSystem.addCorrectionToWeight(traceIndex, tDError * trace.getValue());
+                        nTupleSystem.addCorrectionToWeight(traceIndex, tDError * trace.getValue()); //falta la multiplicacion por la salida de la neurona de entrada, pero al ser 1 se ignora
                     }
                 }
             }
@@ -102,11 +102,12 @@ public class EligibilityTraceForNTuple {
     /**
      *
      * @param weightIndex
+     * @param derivatedOutput
      */
-    public synchronized void updateTrace(int weightIndex) {
+    public synchronized void updateTrace(int weightIndex, double derivatedOutput) {
         if ( this.lambda > 0 ) {
             ValueUsagePair trace = eligibilityTrace[weightIndex];
-            trace.setValue(1d);
+            trace.setValue(derivatedOutput); //falta la multiplicacion por la neurona de entrada
             trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
             usedTraces.add(weightIndex);
         }

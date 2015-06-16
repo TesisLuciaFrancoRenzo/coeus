@@ -129,8 +129,10 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
+            //falta la multiplicacion por la neurona de entrada, pero al sser 1 se ignora
             tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
         } else {
+            //falta la multiplicacion por la neurona de entrada, pero al sser 1 se ignora
             double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(0));
             tDError = alpha[0] * (finalReward - output) * derivatedOutput;
         }
@@ -148,7 +150,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
             if ( !isARandomMove ) {
                 nTupleSystem.addCorrectionToWeight(weightIndex, tDError);
             }
-            eligibilityTrace.updateTrace(weightIndex);
+            eligibilityTrace.updateTrace(weightIndex, derivatedOutput);
         }
         if ( !needToReset ) {
             this.eligibilityTrace.processNotUsedTraces(tDError);
