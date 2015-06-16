@@ -64,6 +64,11 @@ public abstract class TDLambdaLearning {
         return initialAlpha / (1d + ((t * 1d) / (T * 1d)));
     }
 
+    /**
+     *
+     * @param lambda
+     * @return
+     */
     public static Integer calculateBestEligibilityTraceLenght(Double lambda) {
         if ( lambda > 1 || lambda < 0 ) {
             throw new IllegalArgumentException("lambda=" + lambda + " is out of range from a valid [0..1]");
@@ -198,9 +203,6 @@ public abstract class TDLambdaLearning {
      * @param resetEligibilitiTraces   permite resetear las trazas de
      *                                 elegibilidad en caso de movimientos al
      *                                 azar
-     * @param replaceEligibilitiTraces permite reemplazar las trazas en caso de
-     *                                 que el peso sea 0, para que cada vez
-     *                                 tenga menos influencia en lso calculos
      */
     protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lambda, double gamma, boolean resetEligibilitiTraces) {
         if ( perceptronInterface == null ) {
@@ -238,7 +240,6 @@ public abstract class TDLambdaLearning {
      * @param lambda
      * @param gamma
      * @param resetEligibilitiTraces
-     * @param replaceEligibilitiTraces
      */
     protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lambda, double gamma, boolean resetEligibilitiTraces) {
         if ( nTupleSystem == null ) {

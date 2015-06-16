@@ -66,11 +66,6 @@ public final class TDTrainerPerceptron implements ITrainer {
     /**
      *
      */
-    protected boolean replaceEligibilitiTraces;
-
-    /**
-     *
-     */
     protected boolean resetEligibilitiTraces;
     /**
      * Vector de errores TD para la capa de salida, comparando el turno actual
@@ -99,7 +94,6 @@ public final class TDTrainerPerceptron implements ITrainer {
         this.lambda = lambda;
         this.gamma = gamma;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
         if ( lambda > 0 ) {
             createEligibilityCache();
         }
@@ -238,7 +232,7 @@ public final class TDTrainerPerceptron implements ITrainer {
                         .forEach(neuronIndexK -> {
                             double oldWeight = turnCurrentStateCache.getNeuron(layerIndexJ, neuronIndexJ).getWeight(neuronIndexK);
                             if ( !isARandomMove || nextTurnState.isTerminalState() ) {
-                                        //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
+                                //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
 
                                 double newDiferential = weightCorrection( //TODO asegurar safethread con estas funciones!
                                         layerIndexJ, neuronIndexJ,
@@ -382,7 +376,7 @@ public final class TDTrainerPerceptron implements ITrainer {
                 return 0d;
             } else {
                 double newEligibilityTrace;
-                if ( currentWeightValue == 0 && replaceEligibilitiTraces ) {
+                if ( currentWeightValue == 0 ) {//&& replaceEligibilitiTraces
                     newEligibilityTrace = 0;
                 } else {
                     newEligibilityTrace = neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma; //reutilizamos las viejas trazas
@@ -547,20 +541,6 @@ public final class TDTrainerPerceptron implements ITrainer {
             }
         }
         return delta;
-    }
-
-    /**
-     * @return the replaceEligibilitiTraces
-     */
-    protected boolean isReplaceEligibilitiTraces() {
-        return replaceEligibilitiTraces;
-    }
-
-    /**
-     * @param replaceEligibilitiTraces the replaceEligibilitiTraces to set
-     */
-    protected void setReplaceEligibilitiTraces(boolean replaceEligibilitiTraces) {
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
     }
 
     /**

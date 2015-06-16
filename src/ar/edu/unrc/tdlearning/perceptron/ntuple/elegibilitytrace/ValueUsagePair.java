@@ -14,6 +14,9 @@ public class ValueUsagePair {
     private int usagesLeft;
     private double value;
 
+    /**
+     *
+     */
     public ValueUsagePair() {
         value = 0;
         usagesLeft = 0;
@@ -47,6 +50,9 @@ public class ValueUsagePair {
         this.value = value;
     }
 
+    /**
+     *
+     */
     public void use() {
         usagesLeft--;
     }

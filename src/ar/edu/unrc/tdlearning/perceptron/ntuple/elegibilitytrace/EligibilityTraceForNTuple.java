@@ -42,6 +42,10 @@ public class EligibilityTraceForNTuple {
         this.lambda = lambda;
     }
 
+    /**
+     *
+     * @param tDError
+     */
     public void processNotUsedTraces(double tDError) {
         if ( this.lambda > 0 ) {
             Iterator<Integer> it = usedTraces.iterator();
@@ -85,6 +89,9 @@ public class EligibilityTraceForNTuple {
 //        e.processNotUsedTraces();
 //    }
 
+    /**
+     *
+     */
     public void reset() {
         for ( ValueUsagePair trace : eligibilityTrace ) {
             trace.reset();
@@ -92,6 +99,10 @@ public class EligibilityTraceForNTuple {
         usedTraces.clear();
     }
 
+    /**
+     *
+     * @param weightIndex
+     */
     public synchronized void updateTrace(int weightIndex) {
         if ( this.lambda > 0 ) {
             ValueUsagePair trace = eligibilityTrace[weightIndex];
