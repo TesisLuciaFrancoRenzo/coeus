@@ -129,17 +129,14 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
-            //falta la multiplicacion por la neurona de entrada, pero al sser 1 se ignora
+            //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
             tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
         } else {
-            //falta la multiplicacion por la neurona de entrada, pero al sser 1 se ignora
+            //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
             double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(0));
             tDError = alpha[0] * (finalReward - output) * derivatedOutput;
         }
 
-        if ( isARandomMove && nextTurnState.isTerminalState() ) {
-            isARandomMove = false;
-        }
         boolean needToReset = isARandomMove && resetEligibilitiTraces;
         if ( lambda != 0 && needToReset ) {
             eligibilityTrace.reset();
@@ -147,10 +144,10 @@ public class TDTrainerNTupleSystem implements ITrainer {
         int weightIndex;
         for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
             weightIndex = normalizedStateOutput.getIndexes()[index];
-            if ( !isARandomMove ) {
+            if ( !isARandomMove || nextTurnState.isTerminalState() ) {
                 nTupleSystem.addCorrectionToWeight(weightIndex, tDError);
             }
-            eligibilityTrace.updateTrace(weightIndex, derivatedOutput);
+            eligibilityTrace.updateTrace(weightIndex, derivatedOutput); //TODO si es andom move... se actualzia? o se deja en 0?
         }
         if ( lambda != 0 && !needToReset ) {
             this.eligibilityTrace.processNotUsedTraces(tDError);
