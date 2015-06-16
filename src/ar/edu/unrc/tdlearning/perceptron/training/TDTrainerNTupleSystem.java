@@ -140,8 +140,8 @@ public class TDTrainerNTupleSystem implements ITrainer {
         if ( isARandomMove && nextTurnState.isTerminalState() ) {
             isARandomMove = false;
         }
-        boolean needToReset = lambda != 0 && isARandomMove && resetEligibilitiTraces;
-        if ( needToReset ) {
+        boolean needToReset = isARandomMove && resetEligibilitiTraces;
+        if ( lambda != 0 && needToReset ) {
             eligibilityTrace.reset();
         }
         int weightIndex;
@@ -152,7 +152,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
             }
             eligibilityTrace.updateTrace(weightIndex, derivatedOutput);
         }
-        if ( !needToReset ) {
+        if ( lambda != 0 && !needToReset ) {
             this.eligibilityTrace.processNotUsedTraces(tDError);
         }
         currentTurn++;
