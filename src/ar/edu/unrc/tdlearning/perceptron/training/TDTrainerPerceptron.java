@@ -5,6 +5,9 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.training;
 
+import ar.edu.unrc.tdlearning.perceptron.perceptrons.NeuralNetCache;
+import ar.edu.unrc.tdlearning.perceptron.perceptrons.Layer;
+import ar.edu.unrc.tdlearning.perceptron.perceptrons.Neuron;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;

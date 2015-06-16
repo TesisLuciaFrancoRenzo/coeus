@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.training;
 
+import ar.edu.unrc.tdlearning.perceptron.learning.FunctionUtils;
 import java.util.function.Function;
 import org.junit.After;
 import org.junit.AfterClass;

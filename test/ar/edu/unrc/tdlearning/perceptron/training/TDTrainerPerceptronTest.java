@@ -8,6 +8,7 @@ package ar.edu.unrc.tdlearning.perceptron.training;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
+import ar.edu.unrc.tdlearning.perceptron.perceptrons.NeuralNetCache;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,42 +18,108 @@ import org.junit.Test;
 
 /**
  *
- * @author Franco
+ * @author franco
  */
 public class TDTrainerPerceptronTest {
 
-    /**
-     *
-     */
+    public TDTrainerPerceptronTest() {
+    }
+
     @BeforeClass
     public static void setUpClass() {
     }
 
-    /**
-     *
-     */
     @AfterClass
     public static void tearDownClass() {
     }
 
-    /**
-     *
-     */
-    public TDTrainerPerceptronTest() {
-    }
-
-    /**
-     *
-     */
     @Before
     public void setUp() {
     }
 
-    /**
-     *
-     */
     @After
     public void tearDown() {
+    }
+
+    /**
+     * Test of getCurrentTurn method, of class TDTrainerPerceptron.
+     */
+    @Test
+    public void testGetCurrentTurn() {
+        System.out.println("getCurrentTurn");
+        TDTrainerPerceptron instance = null;
+        int expResult = 0;
+        int result = instance.getCurrentTurn();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getElegibilityTraces method, of class TDTrainerPerceptron.
+     */
+    @Test
+    public void testGetElegibilityTraces() {
+        System.out.println("getElegibilityTraces");
+        TDTrainerPerceptron instance = null;
+        List<List<List<List<Double>>>> expResult = null;
+        List<List<List<List<Double>>>> result = instance.getElegibilityTraces();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of printLastCache method, of class TDTrainerPerceptron.
+     */
+    @Test
+    public void testPrintLastCache() {
+        System.out.println("printLastCache");
+        TDTrainerPerceptron instance = null;
+        instance.printLastCache();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of reset method, of class TDTrainerPerceptron.
+     */
+    @Test
+    public void testReset() {
+        System.out.println("reset");
+        TDTrainerPerceptron instance = null;
+        instance.reset();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of resetEligibilityCache method, of class TDTrainerPerceptron.
+     */
+    @Test
+    public void testResetEligibilityCache() {
+        System.out.println("resetEligibilityCache");
+        TDTrainerPerceptron instance = null;
+        instance.resetEligibilityCache();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of train method, of class TDTrainerPerceptron.
+     */
+    @Test
+    public void testTrain() {
+        System.out.println("train");
+        IProblem problem = null;
+        IState state = null;
+        IState nextTurnState = null;
+        double[] alpha = null;
+        boolean isARandomMove = false;
+        TDTrainerPerceptron instance = null;
+        instance.train(problem, state, nextTurnState, alpha, isARandomMove);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -135,18 +202,6 @@ public class TDTrainerPerceptronTest {
     }
 
     /**
-     * Test of createEligibilityCache method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testCreateEligibilityCache() {
-        System.out.println("createEligibilityCache");
-        TDTrainerPerceptron instance = null;
-        instance.createEligibilityCache();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of delta method, of class TDTrainerPerceptron.
      */
     @Test
@@ -164,48 +219,6 @@ public class TDTrainerPerceptronTest {
     }
 
     /**
-     * Test of getCurrentTurn method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testGetCurrentTurn() {
-        System.out.println("getCurrentTurn");
-        TDTrainerPerceptron instance = null;
-        int expResult = 0;
-        int result = instance.getCurrentTurn();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getElegibilityTraces method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testGetElegibilityTraces() {
-        System.out.println("getElegibilityTraces");
-        TDTrainerPerceptron instance = null;
-        List<List<List<List<Double>>>> expResult = null;
-        List<List<List<List<Double>>>> result = instance.getElegibilityTraces();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of isReplaceEligibilitiTraces method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testIsReplaceEligibilitiTraces() {
-        System.out.println("isReplaceEligibilitiTraces");
-        TDTrainerPerceptron instance = null;
-        boolean expResult = false;
-        boolean result = instance.isReplaceEligibilitiTraces();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of isResetEligibilitiTraces method, of class TDTrainerPerceptron.
      */
     @Test
@@ -215,55 +228,6 @@ public class TDTrainerPerceptronTest {
         boolean expResult = false;
         boolean result = instance.isResetEligibilitiTraces();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of printLastCache method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testPrintLastCache() {
-        System.out.println("printLastCache");
-        TDTrainerPerceptron instance = null;
-        instance.printLastCache();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of reset method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testReset() {
-        System.out.println("reset");
-        TDTrainerPerceptron instance = null;
-        instance.reset();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of resetEligibilityCache method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testResetEligibilityCache() {
-        System.out.println("resetEligibilityCache");
-        TDTrainerPerceptron instance = null;
-        instance.resetEligibilityCache();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setReplaceEligibilitiTraces method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testSetReplaceEligibilitiTraces() {
-        System.out.println("setReplaceEligibilitiTraces");
-        boolean replaceEligibilitiTraces = false;
-        TDTrainerPerceptron instance = null;
-        instance.setReplaceEligibilitiTraces(replaceEligibilitiTraces);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -289,27 +253,6 @@ public class TDTrainerPerceptronTest {
         System.out.println("sinchornizeCaches");
         TDTrainerPerceptron instance = null;
         instance.sinchornizeCaches();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of train method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testTrain() {
-        System.out.println("train");
-        IProblem problem = null;
-        IState state = null;
-        IState nextTurnState = null;
-        double[] alpha = null;
-        double lamdba = 0.0;
-        boolean isARandomMove = false;
-        double gamma = 0.0;
-        boolean resetEligibilitiTraces = false;
-        boolean replaceEligibilitiTraces = false;
-        TDTrainerPerceptron instance = null;
-        instance.train(problem, state, nextTurnState, alpha, lamdba, isARandomMove, gamma, resetEligibilitiTraces, replaceEligibilitiTraces);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

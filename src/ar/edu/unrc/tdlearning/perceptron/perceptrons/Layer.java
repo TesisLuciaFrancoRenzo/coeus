@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ar.edu.unrc.tdlearning.perceptron.training;
+package ar.edu.unrc.tdlearning.perceptron.perceptrons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-class Layer {
+public class Layer {
 
     private final List<PartialNeuron> neurons;
 
-    Layer(int neuronQuantityInLayer) {
+    public Layer(int neuronQuantityInLayer) {
         neurons = new ArrayList<>(neuronQuantityInLayer);
         for ( int i = 0; i < neuronQuantityInLayer; i++ ) {
             neurons.add(null);
@@ -28,18 +28,18 @@ class Layer {
      * @param neuronIndex <p>
      * @return the neurons
      */
-    PartialNeuron getNeuron(int neuronIndex) {
+    public PartialNeuron getNeuron(int neuronIndex) {
         return neurons.get(neuronIndex);
     }
 
     /**
      * @return the neurons
      */
-    List<PartialNeuron> getNeurons() {
+    public List<PartialNeuron> getNeurons() {
         return neurons;
     }
 
-    void setNeuron(int neuronIndex, PartialNeuron neuron) {
+    public void setNeuron(int neuronIndex, PartialNeuron neuron) {
         neurons.set(neuronIndex, neuron);
     }
 

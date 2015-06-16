@@ -17,9 +17,9 @@ import org.junit.Test;
  *
  * @author franco
  */
-public class TDTrainerNTupleSystemTest {
+public class ITrainerTest {
 
-    public TDTrainerNTupleSystemTest() {
+    public ITrainerTest() {
     }
 
     @BeforeClass
@@ -39,19 +39,19 @@ public class TDTrainerNTupleSystemTest {
     }
 
     /**
-     * Test of reset method, of class TDTrainerNTupleSystem.
+     * Test of reset method, of class ITrainer.
      */
     @Test
     public void testReset() {
         System.out.println("reset");
-        TDTrainerNTupleSystem instance = null;
+        ITrainer instance = new ITrainerImpl();
         instance.reset();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of train method, of class TDTrainerNTupleSystem.
+     * Test of train method, of class ITrainer.
      */
     @Test
     public void testTrain() {
@@ -59,12 +59,39 @@ public class TDTrainerNTupleSystemTest {
         IProblem problem = null;
         IState state = null;
         IState nextTurnState = null;
-        double[] alpha = null;
-        boolean isARandomMove = false;
-        TDTrainerNTupleSystem instance = null;
-        instance.train(problem, state, nextTurnState, alpha, isARandomMove);
+        double[] currentAlpha = null;
+        boolean aRandomMove = false;
+        ITrainer instance = new ITrainerImpl();
+        instance.train(problem, state, nextTurnState, currentAlpha, aRandomMove);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+
+    public class ITrainerImpl implements ITrainer {
+
+        public void reset() {
+        }
+
+        public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
+        }
+    }
+
+    public class ITrainerImpl implements ITrainer {
+
+        public void reset() {
+        }
+
+        public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
+        }
+    }
+
+    public class ITrainerImpl implements ITrainer {
+
+        public void reset() {
+        }
+
+        public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
+        }
     }
 
 }

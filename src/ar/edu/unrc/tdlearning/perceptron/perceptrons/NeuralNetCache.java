@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ar.edu.unrc.tdlearning.perceptron.training;
+package ar.edu.unrc.tdlearning.perceptron.perceptrons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class NeuralNetCache {
      *
      * @param layerQuantity cantidad de capas que posee la red neuronal
      */
-    NeuralNetCache(int layerQuantity) {
+    public NeuralNetCache(int layerQuantity) {
         layers = new ArrayList<>(layerQuantity);
         for ( int i = 0; i < layerQuantity; i++ ) {
             layers.add(null);
@@ -61,7 +61,7 @@ public class NeuralNetCache {
      * @param layerIndex <p>
      * @return la capa indicada
      */
-    Layer getLayer(int layerIndex) {
+    public Layer getLayer(int layerIndex) {
         return layers.get(layerIndex);
     }
 
@@ -72,7 +72,7 @@ public class NeuralNetCache {
      * <p>
      * @return una neurona
      */
-    PartialNeuron getNeuron(int layerIndex, int neuronIndex) {
+    public PartialNeuron getNeuron(int layerIndex, int neuronIndex) {
         return layers.get(layerIndex).getNeuron(neuronIndex); //FIXME sacar esto ya que es menos eficiente
     }
 
@@ -80,7 +80,7 @@ public class NeuralNetCache {
      *
      * @return indice de la ultima capa (capa de salida)
      */
-    int getOutputLayerIndex() {
+    public int getOutputLayerIndex() {
         return layers.size() - 1;
     }
 
@@ -90,7 +90,7 @@ public class NeuralNetCache {
      * <p>
      * @return true si es la penultima capa
      */
-    boolean isNextToLasyLayer(int layerIndex) {
+    public boolean isNextToLasyLayer(int layerIndex) {
         return layerIndex == getOutputLayerIndex() - 1;
     }
 
@@ -100,7 +100,7 @@ public class NeuralNetCache {
      * <p>
      * @return true si es la ultima capa (capa de salida)
      */
-    boolean isOutputLayer(int layerIndex) {
+    public boolean isOutputLayer(int layerIndex) {
         return layerIndex == layers.size() - 1;
     }
 
@@ -110,7 +110,7 @@ public class NeuralNetCache {
      * @param layerIndex indice del destino de la nueva capa
      * @param layer      nueva capa a añadir a la cache
      */
-    void setLayer(int layerIndex, Layer layer) {
+    public void setLayer(int layerIndex, Layer layer) {
         layers.set(layerIndex, layer);
     }
 }

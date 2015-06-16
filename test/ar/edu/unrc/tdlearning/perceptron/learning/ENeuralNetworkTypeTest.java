@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ar.edu.unrc.tdlearning.perceptron.training;
+package ar.edu.unrc.tdlearning.perceptron.learning;
 
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,9 +15,9 @@ import org.junit.Test;
  *
  * @author franco
  */
-public class TDTrainerNTupleSystemTest {
+public class ENeuralNetworkTypeTest {
 
-    public TDTrainerNTupleSystemTest() {
+    public ENeuralNetworkTypeTest() {
     }
 
     @BeforeClass
@@ -39,30 +37,28 @@ public class TDTrainerNTupleSystemTest {
     }
 
     /**
-     * Test of reset method, of class TDTrainerNTupleSystem.
+     * Test of values method, of class ENeuralNetworkType.
      */
     @Test
-    public void testReset() {
-        System.out.println("reset");
-        TDTrainerNTupleSystem instance = null;
-        instance.reset();
+    public void testValues() {
+        System.out.println("values");
+        ENeuralNetworkType[] expResult = null;
+        ENeuralNetworkType[] result = ENeuralNetworkType.values();
+        assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of train method, of class TDTrainerNTupleSystem.
+     * Test of valueOf method, of class ENeuralNetworkType.
      */
     @Test
-    public void testTrain() {
-        System.out.println("train");
-        IProblem problem = null;
-        IState state = null;
-        IState nextTurnState = null;
-        double[] alpha = null;
-        boolean isARandomMove = false;
-        TDTrainerNTupleSystem instance = null;
-        instance.train(problem, state, nextTurnState, alpha, isARandomMove);
+    public void testValueOf() {
+        System.out.println("valueOf");
+        String name = "";
+        ENeuralNetworkType expResult = null;
+        ENeuralNetworkType result = ENeuralNetworkType.valueOf(name);
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
