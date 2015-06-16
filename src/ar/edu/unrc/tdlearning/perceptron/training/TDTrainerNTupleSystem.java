@@ -144,10 +144,10 @@ public class TDTrainerNTupleSystem implements ITrainer {
         int weightIndex;
         for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
             weightIndex = normalizedStateOutput.getIndexes()[index];
-            if ( !isARandomMove || nextTurnState.isTerminalState() ) {
+            if ( (!isARandomMove || nextTurnState.isTerminalState()) && tDError != 0 ) {
                 nTupleSystem.addCorrectionToWeight(weightIndex, tDError);
             }
-            eligibilityTrace.updateTrace(weightIndex, derivatedOutput); //TODO si es andom move... se actualzia? o se deja en 0?
+            eligibilityTrace.updateTrace(weightIndex, derivatedOutput); //TODO si es random move... se actualiza? o se deja en 0?
         }
         if ( lambda != 0 && !needToReset ) {
             this.eligibilityTrace.processNotUsedTraces(tDError);
