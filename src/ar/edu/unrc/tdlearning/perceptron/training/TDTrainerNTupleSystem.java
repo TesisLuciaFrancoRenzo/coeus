@@ -138,14 +138,14 @@ public class TDTrainerNTupleSystem implements ITrainer {
         if ( isARandomMove && nextTurnState.isTerminalState() ) {
             isARandomMove = false;
         }
-
+        if ( lambda != 0 && isARandomMove && resetEligibilitiTraces ) {
+            eligibilityTrace.reset();
+        }
         int weightIndex;
         for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
             weightIndex = normalizedStateOutput.getIndexes()[index];
             if ( !isARandomMove ) {
                 nTupleSystem.addCorrectionToWeight(weightIndex, tDError);
-            } else if ( this.resetEligibilitiTraces ) {
-                eligibilityTrace.reset();
             }
             eligibilityTrace.updateTrace(weightIndex);
         }
