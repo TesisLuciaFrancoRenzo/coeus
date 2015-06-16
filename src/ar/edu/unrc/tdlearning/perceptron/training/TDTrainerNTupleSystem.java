@@ -24,10 +24,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * constante de tasa de aprendizaje
      */
     protected double alpha;
-    /**
-     * turno actual
-     */
-    protected int currentTurn;
 
     /**
      *
@@ -85,19 +81,11 @@ public class TDTrainerNTupleSystem implements ITrainer {
                     maxEligibilityTraceLenght
             );
         }
-        currentTurn = 1;
-    }
-
-    /**
-     * @return the currentTurn
-     */
-    public int getCurrentTurn() {
-        return currentTurn;
     }
 
     @Override
     public void reset() {
-        currentTurn = 1;
+        eligibilityTrace.reset();
     }
 
     /**
@@ -121,7 +109,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
         Double normalizedNextTurnStateOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState).compute();
 
-        //FIXME y la derivada de la funcion de activacion?
         double output = normalizedStateOutput.getOutput();
         double derivatedOutput = normalizedStateOutput.getDerivatedOutput();
         double nextTurnOutput = normalizedNextTurnStateOutput;
@@ -152,7 +139,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
         if ( lambda != 0 && !needToReset ) {
             this.eligibilityTrace.processNotUsedTraces(tDError);
         }
-        currentTurn++;
     }
 
 }
