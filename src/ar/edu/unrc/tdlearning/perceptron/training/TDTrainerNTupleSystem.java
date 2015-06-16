@@ -85,8 +85,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
         this.replaceEligibilitiTraces = replaceEligibilitiTraces;
         if ( lambda != 0 ) {
             eligibilityTrace = new EligibilityTraceForNTuple(
-                    nTupleSystem.getnTuplesLenght().length,
-                    nTupleSystem.getLut().length, gamma, lambda,
+                    nTupleSystem, gamma, lambda,
                     maxEligibilityTraceLenght, resetEligibilitiTraces, replaceEligibilitiTraces
             );
         }
@@ -134,10 +133,10 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
-            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output);
+            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
         } else {
             double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(0));
-            tDError = alpha[0] * (finalReward - output);
+            tDError = alpha[0] * (finalReward - output) * derivatedOutput;
         }
 
         if ( isARandomMove && nextTurnState.isTerminalState() ) {
@@ -145,23 +144,15 @@ public class TDTrainerNTupleSystem implements ITrainer {
         }
 
         int weightIndex;
-        double oldWeight;
-        double newDiferential;
-        if ( tDError != 0 && !isARandomMove ) {
-            for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
-                weightIndex = normalizedStateOutput.getIndexes()[index];
-                oldWeight = this.nTupleSystem.getLut()[weightIndex];
-                if ( lambda == 0 ) {
-                    newDiferential = tDError * derivatedOutput;
-                } else {
-                    newDiferential = tDError * eligibilityTrace.compute(weightIndex, oldWeight, derivatedOutput, isARandomMove);
-                }
-
-                nTupleSystem.setWeight(weightIndex, oldWeight + newDiferential);
+        for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
+            weightIndex = normalizedStateOutput.getIndexes()[index];
+            if ( !isARandomMove ) {
+                nTupleSystem.addCorrectionToWeight(weightIndex, tDError);
             }
+            eligibilityTrace.updateTrace(weightIndex);
         }
         if ( lambda != 0 ) {
-            this.eligibilityTrace.processNotUsedTraces();
+            this.eligibilityTrace.processNotUsedTraces(tDError);
         }
         currentTurn++;
     }

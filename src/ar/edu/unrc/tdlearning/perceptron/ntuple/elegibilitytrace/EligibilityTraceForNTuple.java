@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace;
 
+import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -19,32 +20,33 @@ public class EligibilityTraceForNTuple {
     private final double gamma;
     private final double lambda;
     private final int maxEligibilityTraceLenght;
+    private final NTupleSystem nTupleSystem;
     private final boolean replaceEligibilitiTraces;
     private final boolean resetEligibilitiTraces;
     private final Set<Integer> usedTraces;
 
     /**
      *
-     * @param initialCacheSize
-     * @param nTupleSystemSize
+     * @param nTupleSystem
      * @param gamma
      * @param lambda
      * @param maxEligibilityTraceLenght
      * @param resetEligibilitiTraces
      * @param replaceEligibilitiTraces
      */
-    public EligibilityTraceForNTuple(int initialCacheSize, int nTupleSystemSize, double gamma, double lambda,
+    public EligibilityTraceForNTuple(NTupleSystem nTupleSystem, double gamma, double lambda,
             int maxEligibilityTraceLenght, boolean resetEligibilitiTraces, boolean replaceEligibilitiTraces) {
-        eligibilityTrace = new ValueUsagePair[nTupleSystemSize];
+        this.nTupleSystem = nTupleSystem;
+        eligibilityTrace = new ValueUsagePair[nTupleSystem.getLut().length];
         for ( int i = 0; i < eligibilityTrace.length; i++ ) {
             eligibilityTrace[i] = new ValueUsagePair();
         }
-        usedTraces = new HashSet<>(initialCacheSize);
+        usedTraces = new HashSet<>(nTupleSystem.getnTuplesLenght().length);
         this.maxEligibilityTraceLenght = maxEligibilityTraceLenght;
         this.gamma = gamma;
         this.lambda = lambda;
-        this.resetEligibilitiTraces = resetEligibilitiTraces;
-        this.replaceEligibilitiTraces = replaceEligibilitiTraces;
+        this.resetEligibilitiTraces = resetEligibilitiTraces; //TODO ver si ahyq ue usar o no esto
+        this.replaceEligibilitiTraces = replaceEligibilitiTraces; //TODO ver si ahyq ue usar o no esto
     }
 
     public void reset() {
@@ -54,33 +56,16 @@ public class EligibilityTraceForNTuple {
         usedTraces.clear();
     }
 
-    public synchronized double compute(int currentWeightIndex, double currentWeightValue, double derivatedOutput, boolean isRandomMove) {
-        //TODO revisar lo synchronized si es la mejor estrategia... usa o no usa paralelismo?
+    public synchronized void updateTrace(int weightIndex) {
         if ( this.lambda > 0 ) {
-            ValueUsagePair trace = eligibilityTrace[currentWeightIndex];
-            if ( isRandomMove && resetEligibilitiTraces ) {
-                trace.reset();
-                usedTraces.remove(currentWeightIndex);
-                return 0d;
-            } else {
-                double newEligibilityTrace;
-                if ( currentWeightValue == 0 && replaceEligibilitiTraces ) {
-                    newEligibilityTrace = 0;
-                } else {
-                    newEligibilityTrace = trace.getValue() * lambda * gamma; //reutilizamos las viejas trazas
-                }
-                newEligibilityTrace += derivatedOutput;
-                trace.setValue(newEligibilityTrace);
-                trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
-                usedTraces.add(currentWeightIndex);
-                return newEligibilityTrace;
-            }
-        } else {
-            return derivatedOutput;
+            ValueUsagePair trace = eligibilityTrace[weightIndex];
+            trace.setValue(1d);
+            trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
+            usedTraces.add(weightIndex);
         }
     }
 
-    public void processNotUsedTraces() {
+    public void processNotUsedTraces(double tDError) {
         if ( this.lambda > 0 ) {
             Iterator<Integer> it = usedTraces.iterator();
             while ( it.hasNext() ) {
@@ -92,6 +77,7 @@ public class EligibilityTraceForNTuple {
                     trace.reset();
                 } else {
                     if ( trace.getUsagesLeft() != maxEligibilityTraceLenght ) {
+                        nTupleSystem.addCorrectionToWeight(traceIndex, tDError * trace.getValue());
                         trace.setValue(trace.getValue() * lambda * gamma);//reutilizamos las viejas trazas, ajustandola al tiempo actual
                     }
                 }
@@ -99,28 +85,27 @@ public class EligibilityTraceForNTuple {
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        EligibilityTraceForNTuple e = new EligibilityTraceForNTuple(5, 10, 1, 0.7, 3, false, false);
-        //turno 1
-        e.compute(1, 0.5, 0.1, false);
-        e.compute(4, 0.2, 0.2, false);
-        e.processNotUsedTraces();
-        //turno 2
-        e.compute(1, 0.5, 0.1, false);
-        e.processNotUsedTraces();
-        //turno 3
-        e.compute(4, 0.5, 0.1, false);
-        e.compute(2, 0.2, 0.2, false);
-        e.processNotUsedTraces();
-        //turno 4
-        e.processNotUsedTraces();
-        e.processNotUsedTraces();
-        e.processNotUsedTraces();
-        e.processNotUsedTraces();
-        e.processNotUsedTraces();
-    }
-
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String[] args) {
+//        EligibilityTraceForNTuple e = new EligibilityTraceForNTuple(5, 10, 1, 0.7, 3, false, false);
+//        //turno 1
+//        e.compute(1, 0.5, 0.1, false);
+//        e.compute(4, 0.2, 0.2, false);
+//        e.processNotUsedTraces();
+//        //turno 2
+//        e.compute(1, 0.5, 0.1, false);
+//        e.processNotUsedTraces();
+//        //turno 3
+//        e.compute(4, 0.5, 0.1, false);
+//        e.compute(2, 0.2, 0.2, false);
+//        e.processNotUsedTraces();
+//        //turno 4
+//        e.processNotUsedTraces();
+//        e.processNotUsedTraces();
+//        e.processNotUsedTraces();
+//        e.processNotUsedTraces();
+//        e.processNotUsedTraces();
+//    }
 }
