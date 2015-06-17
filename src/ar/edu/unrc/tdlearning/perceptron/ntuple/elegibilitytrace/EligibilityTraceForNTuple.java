@@ -104,18 +104,23 @@ public class EligibilityTraceForNTuple {
         usedTraces.clear();
     }
 
+    public void reset(int weightIndex) {
+        ValueUsagePair trace = eligibilityTrace[weightIndex];
+        trace.setValue(0);
+        trace.setUsagesLeft(0);
+        usedTraces.remove(weightIndex);
+    }
+
     /**
      *
      * @param weightIndex
      * @param derivatedOutput
      */
     public synchronized void updateTrace(int weightIndex, double derivatedOutput) {
-        if ( this.lambda > 0 ) {
-            ValueUsagePair trace = eligibilityTrace[weightIndex];
-            trace.setValue(derivatedOutput); //falta la multiplicacion por la neurona de entrada
-            trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
-            usedTraces.add(weightIndex);
-        }
+        ValueUsagePair trace = eligibilityTrace[weightIndex];
+        trace.setValue(derivatedOutput); //falta la multiplicacion por la neurona de entrada
+        trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
+        usedTraces.add(weightIndex);
     }
 
 }

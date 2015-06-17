@@ -125,16 +125,22 @@ public class TDTrainerNTupleSystem implements ITrainer {
         }
 
         boolean needToReset = isARandomMove && resetEligibilitiTraces;
-        if ( lambda != 0 && needToReset ) {
-            eligibilityTrace.reset();
-        }
+//        if ( lambda != 0 && needToReset ) {
+//            eligibilityTrace.reset();
+//        }
         int weightIndex;
         for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
             weightIndex = normalizedStateOutput.getIndexes()[index];
             if ( (!isARandomMove || nextTurnState.isTerminalState()) && tDError != 0 ) {
                 nTupleSystem.addCorrectionToWeight(weightIndex, tDError);
             }
-            eligibilityTrace.updateTrace(weightIndex, derivatedOutput); //TODO si es random move... se actualiza? o se deja en 0?
+            if ( lambda != 0 ) {
+                if ( needToReset ) {
+                    eligibilityTrace.reset(weightIndex);
+                } else {
+                    eligibilityTrace.updateTrace(weightIndex, derivatedOutput); //TODO si es random move... se actualiza? o se deja en 0?
+                }
+            }
         }
         if ( lambda != 0 && !needToReset ) {
             this.eligibilityTrace.processNotUsedTraces(tDError);
