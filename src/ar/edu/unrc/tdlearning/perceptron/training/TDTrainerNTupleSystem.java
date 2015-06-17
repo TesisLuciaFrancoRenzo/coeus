@@ -85,7 +85,9 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
     @Override
     public void reset() {
-        eligibilityTrace.reset();
+        if ( lambda != 0 ) {
+            eligibilityTrace.reset();
+        }
     }
 
     /**
