@@ -98,16 +98,13 @@ public class EligibilityTraceForNTuple {
         Iterator<Integer> it = usedTraces.iterator();
         while ( it.hasNext() ) {
             Integer traceIndex = it.next();
-            ValueUsagePair trace = eligibilityTrace[traceIndex];
-            trace.reset();//TODO hacer un JUnit que verifique que siempre se vacian TODAS las trazas
+            eligibilityTrace[traceIndex].reset();
         }
         usedTraces.clear();
     }
 
     public void reset(int weightIndex) {
-        ValueUsagePair trace = eligibilityTrace[weightIndex];
-        trace.setValue(0);
-        trace.setUsagesLeft(0);
+        eligibilityTrace[weightIndex].reset();
         usedTraces.remove(weightIndex);
     }
 

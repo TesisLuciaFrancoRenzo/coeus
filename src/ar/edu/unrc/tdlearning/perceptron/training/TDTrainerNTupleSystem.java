@@ -142,7 +142,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
                 }
             }
         }
-        if ( lambda != 0 && !needToReset ) {
+        if ( lambda != 0 ) {
             this.eligibilityTrace.processNotUsedTraces(tDError);
         }
     }
