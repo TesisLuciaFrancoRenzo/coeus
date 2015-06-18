@@ -103,6 +103,10 @@ public class EligibilityTraceForNTuple {
         usedTraces.clear();
     }
 
+    /**
+     *
+     * @param weightIndex
+     */
     public void reset(int weightIndex) {
         eligibilityTrace[weightIndex].reset();
         usedTraces.remove(weightIndex);

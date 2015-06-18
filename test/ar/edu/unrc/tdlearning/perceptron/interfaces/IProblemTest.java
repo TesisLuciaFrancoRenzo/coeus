@@ -22,21 +22,36 @@ import org.junit.Test;
  */
 public class IProblemTest {
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
 
+    /**
+     *
+     */
     public IProblemTest() {
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
@@ -205,7 +220,20 @@ public class IProblemTest {
         fail("The test case is a prototype.");
     }
 
+    /**
+     *
+     */
     public class IProblemImpl implements IProblem {
+
+        @Override
+        public IState computeAfterState(IState turnInitialState, IAction action) {
+            return null;
+        }
+
+        @Override
+        public IState computeNextTurnStateFromAfterstate(IState afterstate) {
+            return null;
+        }
 
         @Override
         public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output) {
@@ -215,6 +243,15 @@ public class IProblemTest {
         @Override
         public double denormalizeValueFromPerceptronOutput(Object value) {
             return 0.0;
+        }
+
+        @Override
+        public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
+            return null;
+        }
+
+        @Override
+        public void setCurrentState(IState nextTurnState) {
         }
 
         @Override
@@ -229,25 +266,6 @@ public class IProblemTest {
 
         @Override
         public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
-            return null;
-        }
-
-        @Override
-        public IState computeAfterState(IState turnInitialState, IAction action) {
-            return null;
-        }
-
-        @Override
-        public IState computeNextTurnStateFromAfterstate(IState afterstate) {
-            return null;
-        }
-
-        @Override
-        public void setCurrentState(IState nextTurnState) {
-        }
-
-        @Override
-        public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
             return null;
         }
 

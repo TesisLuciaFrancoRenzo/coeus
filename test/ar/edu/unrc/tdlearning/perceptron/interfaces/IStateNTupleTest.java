@@ -20,21 +20,36 @@ import org.junit.Test;
  */
 public class IStateNTupleTest {
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
 
+    /**
+     *
+     */
     public IStateNTupleTest() {
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
@@ -54,6 +69,9 @@ public class IStateNTupleTest {
         fail("The test case is a prototype.");
     }
 
+    /**
+     *
+     */
     public class IStateNTupleImpl implements IStateNTuple {
 
         @Override

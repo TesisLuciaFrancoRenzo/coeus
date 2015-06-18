@@ -20,21 +20,36 @@ import org.junit.Test;
  */
 public class IPerceptronInterfaceTest {
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
 
+    /**
+     *
+     */
     public IPerceptronInterfaceTest() {
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
@@ -178,16 +193,19 @@ public class IPerceptronInterfaceTest {
         fail("The test case is a prototype.");
     }
 
+    /**
+     *
+     */
     public class IPerceptronInterfaceImpl implements IPerceptronInterface {
-
-        @Override
-        public double getBias(int layerIndex, int neuronIndex) {
-            return 0.0;
-        }
 
         @Override
         public Function<Double, Double> getActivationFunction(int layerIndex) {
             return null;
+        }
+
+        @Override
+        public double getBias(int layerIndex, int neuronIndex) {
+            return 0.0;
         }
 
         @Override

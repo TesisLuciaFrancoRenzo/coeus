@@ -20,21 +20,36 @@ import org.junit.Test;
  */
 public class ITrainerTest {
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
 
+    /**
+     *
+     */
     public ITrainerTest() {
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
@@ -68,6 +83,9 @@ public class ITrainerTest {
         fail("The test case is a prototype.");
     }
 
+    /**
+     *
+     */
     public class ITrainerImpl implements ITrainer {
 
         @Override
