@@ -9,6 +9,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import ar.edu.unrc.tdlearning.perceptron.perceptrons.Layer;
 import ar.edu.unrc.tdlearning.perceptron.perceptrons.NeuralNetCache;
 import ar.edu.unrc.tdlearning.perceptron.perceptrons.Neuron;
@@ -240,10 +241,10 @@ public final class TDTrainerPerceptron implements ITrainer {
                             if ( !isARandomMove || nextTurnState.isTerminalState() ) {
                                 //calculamos el nuevo valor para el peso o bias, sumando la correccion adecuada a su valor anterior
 
-                                double newDiferential = weightCorrection( //TODO asegurar safethread con estas funciones!
+                                double newDiferential = weightCorrection(
                                         layerIndexJ, neuronIndexJ,
                                         layerIndexK, neuronIndexK,
-                                        oldWeight, isARandomMove);
+                                        oldWeight, isARandomMove).compute();
 
                                 if ( neuronIndexK == neuronQuantityInK ) {
                                     // si se es una bias, actualizamos la bias en la red neuronal original
@@ -318,15 +319,17 @@ public final class TDTrainerPerceptron implements ITrainer {
      * <p>
      * @return salida de una neurona
      */
-    protected Double calculateNeuronOutput(int layerIndex, int neuronIndex) {
-        Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
-        if ( neuronIndex == currentLayer.getNeurons().size() ) {
-            //retorno la salida de la neurona falsa
-            return 1d;
-        } else {
-            // si es la coordenada de una neurona, devuelvo su f(net) o la entrada (si es capa de entrada)
-            return ((Neuron) currentLayer.getNeuron(neuronIndex)).getOutput();
-        }
+    protected IsolatedComputation<Double> calculateNeuronOutput(int layerIndex, int neuronIndex) {
+        return () -> {
+            Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
+            if ( neuronIndex == currentLayer.getNeurons().size() ) {
+                //retorno la salida de la neurona falsa
+                return 1d;
+            } else {
+                // si es la coordenada de una neurona, devuelvo su f(net) o la entrada (si es capa de entrada)
+                return ((Neuron) currentLayer.getNeuron(neuronIndex)).getOutput();
+            }
+        };
     }
 
     /**
@@ -374,27 +377,28 @@ public final class TDTrainerPerceptron implements ITrainer {
      * <p>
      * @return un valor correspondiente a la formula "e" de la teoria
      */
-    protected double computeEligibilityTrace(int outputNeuronIndex, int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, double currentWeightValue, boolean isRandomMove) {
-
-        if ( this.lambda > 0 ) {
-            List<Double> neuronKEligibilityTrace = elegibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
-            if ( isRandomMove && resetEligibilitiTraces ) {
-                neuronKEligibilityTrace.set(outputNeuronIndex, 0d);
-                return 0d;
-            } else {
-                double newEligibilityTrace;
-                if ( currentWeightValue == 0 ) {//&& replaceEligibilitiTraces
-                    newEligibilityTrace = 0;
+    protected IsolatedComputation<Double> computeEligibilityTrace(int outputNeuronIndex, int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, double currentWeightValue, boolean isRandomMove) {
+        return () -> {
+            if ( this.lambda > 0 ) {
+                List<Double> neuronKEligibilityTrace = elegibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
+                if ( isRandomMove && resetEligibilitiTraces ) {
+                    neuronKEligibilityTrace.set(outputNeuronIndex, 0d);
+                    return 0d;
                 } else {
-                    newEligibilityTrace = neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma; //reutilizamos las viejas trazas
+                    double newEligibilityTrace;
+                    if ( currentWeightValue == 0 ) {//&& replaceEligibilitiTraces
+                        newEligibilityTrace = 0;
+                    } else {
+                        newEligibilityTrace = neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma; //reutilizamos las viejas trazas
+                    }
+                    newEligibilityTrace += delta(outputNeuronIndex, layerIndexJ, neuronIndexJ).compute() * calculateNeuronOutput(layerIndexK, neuronIndexK).compute();
+                    neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
+                    return newEligibilityTrace;
                 }
-                newEligibilityTrace += delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
-                neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
-                return newEligibilityTrace;
+            } else {
+                return delta(outputNeuronIndex, layerIndexJ, neuronIndexJ).compute() * calculateNeuronOutput(layerIndexK, neuronIndexK).compute();
             }
-        } else {
-            return delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
-        }
+        };
     }
 
     /**
@@ -527,45 +531,47 @@ public final class TDTrainerPerceptron implements ITrainer {
      */
     //TODO parallelComputation?? necesita ser threadsafe?
     @SuppressWarnings( "null" )
-    protected double delta(int outputNeuronIndex, int layerIndex, int neuronIndex) {
-        Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
-        Layer nextLayer;
-        if ( turnCurrentStateCache.isOutputLayer(layerIndex) ) {
-            nextLayer = null;
-        } else {
-            nextLayer = turnCurrentStateCache.getLayer(layerIndex + 1);
-        }
-        Neuron neuronO = (Neuron) currentLayer.getNeuron(neuronIndex);
-        Double delta = neuronO.getDelta(outputNeuronIndex);
-        if ( delta == null ) {
+    protected IsolatedComputation<Double> delta(int outputNeuronIndex, int layerIndex, int neuronIndex) {
+        return () -> {
+            Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
+            Layer nextLayer;
             if ( turnCurrentStateCache.isOutputLayer(layerIndex) ) {
-                //i==o ^ o pertenece(I) => f'(net(i,m))
-                assert outputNeuronIndex == neuronIndex;
-                delta = ((Neuron) currentLayer.getNeuron(outputNeuronIndex)).getDerivatedOutput();
-                neuronO.setDelta(outputNeuronIndex, delta);
-            } else if ( turnCurrentStateCache.isNextToLasyLayer(layerIndex) ) {
-                //i!=o ^ o pertenece(I-1) => f'(net(o,m))*delta(i,i,m)*w(i,o,m)
-                delta = neuronO.getDerivatedOutput()
-                        * delta(outputNeuronIndex, turnCurrentStateCache.getOutputLayerIndex(), outputNeuronIndex)
-                        * nextLayer.getNeuron(outputNeuronIndex).getWeight(neuronIndex);
-                neuronO.setDelta(outputNeuronIndex, delta);
+                nextLayer = null;
             } else {
-                //i!=o ^ o !pertenece(I-1) => f'(net(o,m))*SumatoriaP(delta(i,p,m)*w(p,o,m))
-                double sum = IntStream
-                        .range(0, turnCurrentStateCache.getLayer(layerIndex + 1).getNeurons().size())
-                        .parallel()
-                        .mapToDouble(neuronIndexP -> {
-                            @SuppressWarnings( "null" )
-                            Neuron neuronP = (Neuron) nextLayer.getNeuron(neuronIndexP);
-                            Double deltaP = neuronP.getDelta(outputNeuronIndex);
-                            assert deltaP != null; // llamar la actualizacion de pesos de tal forma que no haga recursividad
-                            return deltaP * neuronP.getWeight(neuronIndex);
-                        }).sum();
-                delta = neuronO.getDerivatedOutput() * sum;
-                neuronO.setDelta(outputNeuronIndex, delta);
+                nextLayer = turnCurrentStateCache.getLayer(layerIndex + 1);
             }
-        }
-        return delta;
+            Neuron neuronO = (Neuron) currentLayer.getNeuron(neuronIndex);
+            Double delta = neuronO.getDelta(outputNeuronIndex);
+            if ( delta == null ) {
+                if ( turnCurrentStateCache.isOutputLayer(layerIndex) ) {
+                    //i==o ^ o pertenece(I) => f'(net(i,m))
+                    assert outputNeuronIndex == neuronIndex;
+                    delta = ((Neuron) currentLayer.getNeuron(outputNeuronIndex)).getDerivatedOutput();
+                    neuronO.setDelta(outputNeuronIndex, delta);
+                } else if ( turnCurrentStateCache.isNextToLasyLayer(layerIndex) ) {
+                    //i!=o ^ o pertenece(I-1) => f'(net(o,m))*delta(i,i,m)*w(i,o,m)
+                    delta = neuronO.getDerivatedOutput()
+                            * delta(outputNeuronIndex, turnCurrentStateCache.getOutputLayerIndex(), outputNeuronIndex).compute()
+                            * nextLayer.getNeuron(outputNeuronIndex).getWeight(neuronIndex);
+                    neuronO.setDelta(outputNeuronIndex, delta);
+                } else {
+                    //i!=o ^ o !pertenece(I-1) => f'(net(o,m))*SumatoriaP(delta(i,p,m)*w(p,o,m))
+                    double sum = IntStream
+                            .range(0, turnCurrentStateCache.getLayer(layerIndex + 1).getNeurons().size())
+                            .parallel()
+                            .mapToDouble(neuronIndexP -> {
+                                @SuppressWarnings( "null" )
+                                Neuron neuronP = (Neuron) nextLayer.getNeuron(neuronIndexP);
+                                Double deltaP = neuronP.getDelta(outputNeuronIndex);
+                                assert deltaP != null; // llamar la actualizacion de pesos de tal forma que no haga recursividad
+                                return deltaP * neuronP.getWeight(neuronIndex);
+                            }).sum();
+                    delta = neuronO.getDerivatedOutput() * sum;
+                    neuronO.setDelta(outputNeuronIndex, delta);
+                }
+            }
+            return delta;
+        };
     }
 
     /**
@@ -630,24 +636,26 @@ public final class TDTrainerPerceptron implements ITrainer {
      * @param isRandomMove       <p>
      * @return
      */
-    protected double weightCorrection(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, double currentWeightValue, boolean isRandomMove) {
-        int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
+    protected IsolatedComputation<Double> weightCorrection(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, double currentWeightValue, boolean isRandomMove) {
+        return () -> {
+            int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
 
-        //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
-        if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
-            // System.out.println("outputNeuronIndex:" + neuronIndexJ + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
-            return alpha[layerIndexK] * tDError.get(neuronIndexJ)
-                    * computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
-        } else { //FIXME cambiar alpha por beta en casos necesarios
-            return IntStream
-                    .range(0, outputLayerSize)
-                    .parallel()
-                    .mapToDouble(outputNeuronIndex -> {
-                        // System.out.println("outputNeuronIndex:" + outputNeuronIndex + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
-                        return alpha[layerIndexJ] * tDError.get(outputNeuronIndex)
-                        * computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
-                    }).sum();
-        }
+            //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
+            if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
+                // System.out.println("outputNeuronIndex:" + neuronIndexJ + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
+                return alpha[layerIndexK] * tDError.get(neuronIndexJ)
+                        * computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove).compute();
+            } else { //FIXME cambiar alpha por beta en casos necesarios
+                return IntStream
+                        .range(0, outputLayerSize)
+                        .parallel()
+                        .mapToDouble(outputNeuronIndex -> {
+                            // System.out.println("outputNeuronIndex:" + outputNeuronIndex + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
+                            return alpha[layerIndexJ] * tDError.get(outputNeuronIndex)
+                            * computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove).compute();
+                        }).sum();
+            }
+        };
     }
 
 }
