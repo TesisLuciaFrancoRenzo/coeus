@@ -78,6 +78,31 @@ public class EligibilityTraceForNTupleTest {
     }
 
     /**
+     * Test of reset method, of class EligibilityTraceForNTuple.
+     */
+    @Test
+    public void testReset_0args() {
+        System.out.println("reset");
+        EligibilityTraceForNTuple instance = null;
+        instance.reset();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of reset method, of class EligibilityTraceForNTuple.
+     */
+    @Test
+    public void testReset_int() {
+        System.out.println("reset");
+        int weightIndex = 0;
+        EligibilityTraceForNTuple instance = null;
+        instance.reset(weightIndex);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of updateTrace method, of class EligibilityTraceForNTuple.
      */
     @Test

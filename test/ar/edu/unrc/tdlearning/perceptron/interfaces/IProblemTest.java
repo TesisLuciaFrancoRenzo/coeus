@@ -280,4 +280,64 @@ public class IProblemTest {
         }
     }
 
+    /**
+     *
+     */
+    public class IProblemImpl implements IProblem {
+
+        @Override
+        public IState computeAfterState(IState turnInitialState, IAction action) {
+            return null;
+        }
+
+        @Override
+        public IState computeNextTurnStateFromAfterstate(IState afterstate) {
+            return null;
+        }
+
+        @Override
+        public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output) {
+            return null;
+        }
+
+        @Override
+        public double denormalizeValueFromPerceptronOutput(Object value) {
+            return 0.0;
+        }
+
+        @Override
+        public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
+            return null;
+        }
+
+        @Override
+        public void setCurrentState(IState nextTurnState) {
+        }
+
+        @Override
+        public double getFinalReward(int outputNeuron) {
+            return 0.0;
+        }
+
+        @Override
+        public IState initialize() {
+            return null;
+        }
+
+        @Override
+        public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
+            return null;
+        }
+
+        @Override
+        public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
+            return null;
+        }
+
+        @Override
+        public double normalizeValueToPerceptronOutput(Object value) {
+            return 0.0;
+        }
+    }
+
 }

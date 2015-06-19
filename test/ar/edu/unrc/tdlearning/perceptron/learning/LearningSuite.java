@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {TDLambdaLearningTest.class, FunctionUtilsTest.class, ELearningRateAdaptationTest.class, ActionPredictionTest.class, TDLambdaLearningAfterstateTest.class, StateProbabilityTest.class, ENeuralNetworkTypeTest.class, MaximalListConsumerTest.class, TDLambdaLearningStateTest.class, EExplorationRateAlgorithmsTest.class} )
+@Suite.SuiteClasses( {FunctionUtilsTest.class, ELearningRateAdaptationTest.class, MaximalListConsumerTest.class, ENeuralNetworkTypeTest.class, StateProbabilityTest.class, TDLambdaLearningStateTest.class, EExplorationRateAlgorithmsTest.class, TDLambdaLearningTest.class, ActionPredictionTest.class, TDLambdaLearningAfterstateTest.class})
 public class LearningSuite {
 
     /**

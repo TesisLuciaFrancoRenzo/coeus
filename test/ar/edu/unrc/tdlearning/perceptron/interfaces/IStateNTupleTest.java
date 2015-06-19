@@ -90,4 +90,20 @@ public class IStateNTupleTest {
         }
     }
 
+    /**
+     *
+     */
+    public class IStateNTupleImpl implements IStateNTuple {
+
+        /**
+         *
+         * @param nTupleIndex
+         * @return
+         */
+        @Override
+        public SamplePointState[] getNTuple(int nTupleIndex) {
+            return null;
+        }
+    }
+
 }

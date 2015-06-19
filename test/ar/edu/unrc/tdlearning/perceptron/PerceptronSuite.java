@@ -22,7 +22,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {LearningSuite.class, NtupleSuite.class, PerceptronsSuite.class, InterfacesSuite.class, TrainingSuite.class})
+@Suite.SuiteClasses( {NtupleSuite.class, LearningSuite.class, PerceptronsSuite.class, TrainingSuite.class, InterfacesSuite.class})
 public class PerceptronSuite {
 
     /**

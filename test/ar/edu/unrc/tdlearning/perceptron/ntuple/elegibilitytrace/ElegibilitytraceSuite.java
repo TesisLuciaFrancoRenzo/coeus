@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace.ValueUsagePairTest.class, ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace.EligibilityTraceForNTupleTest.class} )
+@Suite.SuiteClasses( {EligibilityTraceForNTupleTest.class, ValueUsagePairTest.class})
 public class ElegibilitytraceSuite {
 
     /**

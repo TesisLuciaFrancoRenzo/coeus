@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
+import ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace.ElegibilitytraceSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +18,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.tdlearning.perceptron.ntuple.ComplexNTupleComputationTest.class, ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystemTest.class, ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace.ElegibilitytraceSuite.class, ar.edu.unrc.tdlearning.perceptron.ntuple.SamplePointStateTest.class} )
+@Suite.SuiteClasses( {NTupleSystemTest.class, SamplePointStateTest.class, ComplexNTupleComputationTest.class, ElegibilitytraceSuite.class})
 public class NtupleSuite {
 
     /**

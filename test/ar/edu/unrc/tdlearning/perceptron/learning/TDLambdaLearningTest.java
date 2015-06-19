@@ -198,6 +198,20 @@ public class TDLambdaLearningTest {
     }
 
     /**
+     * Test of isComputeParallelBestPossibleAction method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testIsComputeParallelBestPossibleAction() {
+        System.out.println("isComputeParallelBestPossibleAction");
+        TDLambdaLearning instance = null;
+        boolean expResult = false;
+        boolean result = instance.isComputeParallelBestPossibleAction();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of learnEvaluation method, of class TDLambdaLearning.
      */
     @Test
@@ -226,6 +240,19 @@ public class TDLambdaLearningTest {
         int expResult = 0;
         int result = TDLambdaLearning.randomBetween(a, b);
         assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setComputeParallelBestPossibleAction method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testSetComputeParallelBestPossibleAction() {
+        System.out.println("setComputeParallelBestPossibleAction");
+        boolean computeParallelBestPossibleAction = false;
+        TDLambdaLearning instance = null;
+        instance.setComputeParallelBestPossibleAction(computeParallelBestPossibleAction);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -315,5 +342,21 @@ public class TDLambdaLearningTest {
 //        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
 //        }
 //    }
+
+    public class TDLambdaLearningImpl extends TDLambdaLearning {
+
+        public TDLambdaLearningImpl() {
+            super(null, null, 0.0, 0.0, false);
+        }
+
+        @Override
+        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
+            return null;
+        }
+
+        @Override
+        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
+        }
+    }
 
 }

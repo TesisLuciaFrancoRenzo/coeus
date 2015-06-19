@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.tdlearning.perceptron.interfaces.IActionTest.class, ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptronTest.class, ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemTest.class, ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterfaceTest.class, ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputationTest.class, ar.edu.unrc.tdlearning.perceptron.interfaces.IStateTest.class, ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTupleTest.class} )
+@Suite.SuiteClasses( {IsolatedComputationTest.class, IActionTest.class, IStatePerceptronTest.class, IPerceptronInterfaceTest.class, IStateTest.class, IStateNTupleTest.class, IProblemTest.class})
 public class InterfacesSuite {
 
     /**

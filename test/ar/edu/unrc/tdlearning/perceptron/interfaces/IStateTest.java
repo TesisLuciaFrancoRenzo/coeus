@@ -98,4 +98,29 @@ public class IStateTest {
         }
     }
 
+    /**
+     *
+     */
+    public class IStateImpl implements IState {
+
+        /**
+         *
+         * @param outputNeuron
+         * @return
+         */
+        @Override
+        public double getStateReward(int outputNeuron) {
+            return 0.0;
+        }
+
+        /**
+         *
+         * @return
+         */
+        @Override
+        public boolean isTerminalState() {
+            return false;
+        }
+    }
+
 }

@@ -242,4 +242,53 @@ public class IPerceptronInterfaceTest {
         }
     }
 
+    /**
+     *
+     */
+    public class IPerceptronInterfaceImpl implements IPerceptronInterface {
+
+        @Override
+        public Function<Double, Double> getActivationFunction(int layerIndex) {
+            return null;
+        }
+
+        @Override
+        public double getBias(int layerIndex, int neuronIndex) {
+            return 0.0;
+        }
+
+        @Override
+        public Function<Double, Double> getDerivatedActivationFunction(int layerIndex) {
+            return null;
+        }
+
+        @Override
+        public int getLayerQuantity() {
+            return 0;
+        }
+
+        @Override
+        public int getNeuronQuantityInLayer(int layerIndex) {
+            return 0;
+        }
+
+        @Override
+        public double getWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer) {
+            return 0.0;
+        }
+
+        @Override
+        public boolean hasBias(int layerIndex) {
+            return false;
+        }
+
+        @Override
+        public void setBias(int layerIndex, int neuronIndex, double correctedBias) {
+        }
+
+        @Override
+        public void setWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer, double correctedWeight) {
+        }
+    }
+
 }

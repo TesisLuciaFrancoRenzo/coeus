@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ITrainerTest.class, TDTrainerPerceptronTest.class, TDTrainerNTupleSystemTest.class} )
+@Suite.SuiteClasses( {ITrainerTest.class, TDTrainerNTupleSystemTest.class, TDTrainerPerceptronTest.class})
 public class TrainingSuite {
 
     /**

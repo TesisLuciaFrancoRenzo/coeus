@@ -97,4 +97,29 @@ public class ITrainerTest {
         }
     }
 
+    /**
+     *
+     */
+    public class ITrainerImpl implements ITrainer {
+
+        /**
+         *
+         */
+        @Override
+        public void reset() {
+        }
+
+        /**
+         *
+         * @param problem
+         * @param state
+         * @param nextTurnState
+         * @param currentAlpha
+         * @param aRandomMove
+         */
+        @Override
+        public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove) {
+        }
+    }
+
 }

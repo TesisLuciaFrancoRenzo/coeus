@@ -110,6 +110,7 @@ public abstract class TDLambdaLearning {
             return tirada;
         }
     }
+    private boolean computeParallelBestPossibleAction = false;
     /**
      * tasa de aprendizaje actual para cada capa de pesos
      */
@@ -261,7 +262,6 @@ public abstract class TDLambdaLearning {
         this.resetEligibilitiTraces = resetEligibilitiTraces;
     }
 
-    private boolean computeParallelBestPossibleAction = false;
 
     /**
      * Computa la mejor accion posible dado un estado inicial. No invocar sobre
