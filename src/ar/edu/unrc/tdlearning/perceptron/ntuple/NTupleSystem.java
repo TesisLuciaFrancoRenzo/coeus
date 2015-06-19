@@ -217,7 +217,7 @@ public class NTupleSystem {
         //TODO implementar
         IntStream
                 .range(0, lut.length)
-                .parallel() //FIXME necesario?
+                .parallel()
                 .forEach(weightIndex -> {
                     lut[weightIndex] = (Math.random() - 0.5d) / 5;
                 });
