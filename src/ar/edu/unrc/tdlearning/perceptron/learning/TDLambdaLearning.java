@@ -22,6 +22,7 @@ import ar.edu.unrc.tdlearning.perceptron.training.TDTrainerPerceptron;
 import static java.lang.Math.random;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Este método de aprendizaje de TD lambda learning necesita Trazas de
@@ -64,7 +65,7 @@ public abstract class TDLambdaLearning {
 
     /**
      *
-     * @param lambda
+     * @param lambda <p>
      * @return
      */
     public static Integer calculateBestEligibilityTraceLenght(Double lambda) {
@@ -186,21 +187,20 @@ public abstract class TDLambdaLearning {
 
     /**
      *
-     * @param perceptronInterface      implementacion de la interfaz entre
-     *                                 nuestra red neuronal y el
-     *                                 perceptronInterface que utilizara el
-     *                                 problema. Este puede estar implementado
-     *                                 con cualquier libreria o codigo.
-     * @param lambda                   constante que se encuentra en el
-     *                                 intervalo [0,1]
-     * @param alpha                    Constantes de tasa de aprendizaje para
-     *                                 cada capa. Si es null, se inicializa cada
-     *                                 initialAlpha con la formula
-     *                                 1/num_neuronas de la capa anterior.
-     * @param gamma                    tasa de descuento
-     * @param resetEligibilitiTraces   permite resetear las trazas de
-     *                                 elegibilidad en caso de movimientos al
-     *                                 azar
+     * @param perceptronInterface    implementacion de la interfaz entre nuestra
+     *                               red neuronal y el perceptronInterface que
+     *                               utilizara el problema. Este puede estar
+     *                               implementado con cualquier libreria o
+     *                               codigo.
+     * @param lambda                 constante que se encuentra en el intervalo
+     *                               [0,1]
+     * @param alpha                  Constantes de tasa de aprendizaje para cada
+     *                               capa. Si es null, se inicializa cada
+     *                               initialAlpha con la formula 1/num_neuronas
+     *                               de la capa anterior.
+     * @param gamma                  tasa de descuento
+     * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
+     *                               en caso de movimientos al azar
      */
     protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lambda, double gamma, boolean resetEligibilitiTraces) {
         if ( perceptronInterface == null ) {
@@ -261,6 +261,8 @@ public abstract class TDLambdaLearning {
         this.resetEligibilitiTraces = resetEligibilitiTraces;
     }
 
+    private boolean computeParallelBestPossibleAction = false;
+
     /**
      * Computa la mejor accion posible dado un estado inicial. No invocar sobre
      * estados finales o estados que no tiene posibles acciones a realizar.
@@ -268,18 +270,23 @@ public abstract class TDLambdaLearning {
      * {@code possibleActions}
      * <p>
      * @param problem
-     * @param tempTurnInitialState estado inicial
+     * @param turnInitialState                       estado inicial
      * <p>
      * <p>
+     * @param allPossibleActionsFromTurnInitialState <p>
      * @return la mejor accion de todas
      */
-    public IsolatedComputation<IAction> computeBestPossibleAction(IProblem problem, IState tempTurnInitialState) {
+    public IsolatedComputation<IAction> computeBestPossibleAction(IProblem problem, IState turnInitialState, List<IAction> allPossibleActionsFromTurnInitialState) {
         return () -> {
+            Stream<IAction> stream;
+            if ( computeParallelBestPossibleAction ) {
+                stream = allPossibleActionsFromTurnInitialState.parallelStream();
+            } else {
+                stream = allPossibleActionsFromTurnInitialState.stream();
+            }
             List<ActionPrediction> bestActiones
-                    = problem.listAllPossibleActions(tempTurnInitialState)
-                    //  .parallelStream() //FIXME hacer una variable que configure que ejecutar en paralelo y que no
-                    .stream()
-                    .map(possibleAction -> evaluate(problem, tempTurnInitialState, possibleAction).compute())
+                    = stream
+                    .map(possibleAction -> evaluate(problem, turnInitialState, possibleAction).compute())
                     .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
                     .getList();
             return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
@@ -322,6 +329,24 @@ public abstract class TDLambdaLearning {
         }
         this.learningRateAdaptation = ELearningRateAdaptation.annealing;
         this.annealingT = annealingT;
+    }
+
+    /**
+     * @return the computeParallelBestPossibleAction
+     */
+    public boolean isComputeParallelBestPossibleAction() {
+        return computeParallelBestPossibleAction;
+    }
+
+    /**
+     * Asegurarse que la funcion {@code evaluate} este implementada de modo que
+     * pueda ser ejecutada concurrentemente.
+     * <p>
+     * @param computeParallelBestPossibleAction true si las evaluaciones deben
+     *                                          ejecutarse en paralelo.
+     */
+    public void setComputeParallelBestPossibleAction(boolean computeParallelBestPossibleAction) {
+        this.computeParallelBestPossibleAction = computeParallelBestPossibleAction;
     }
 
     /**
@@ -447,13 +472,12 @@ public abstract class TDLambdaLearning {
                 randomChoise = Math.random() <= currentExplorationRate;
             }
 
+            List<IAction> possibleActions = problem.listAllPossibleActions(turnInitialState);
             if ( !randomChoise ) {
                 // evaluamos cada accion aplicada al estado inicial y elegimos la mejor
                 // accion basada en las predicciones del problema
-                IState tempTurnInitialState = turnInitialState; //usado para que la variable sea efectivamente final en los calculos lambda
-                bestAction = computeBestPossibleAction(problem, tempTurnInitialState).compute();
+                bestAction = computeBestPossibleAction(problem, turnInitialState, possibleActions).compute();
             } else {
-                List<IAction> possibleActions = problem.listAllPossibleActions(turnInitialState);
                 bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1));
             }
 

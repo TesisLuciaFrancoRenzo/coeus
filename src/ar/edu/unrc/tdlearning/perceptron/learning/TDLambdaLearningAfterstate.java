@@ -11,6 +11,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
+import java.util.List;
 
 /**
  * Esta clase implementa TD lambda learning (lambda = trazas de elegibilidad),
@@ -69,7 +70,8 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
         if ( !nextTurnState.isTerminalState() ) {
             // evaluamos cada accion posible aplicada al estado nextState y elegimos la mejor
             // accion basada las predicciones del problema
-            IAction bestActionForNextTurn = computeBestPossibleAction(problem, nextTurnState).compute();
+            List<IAction> possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
+            IAction bestActionForNextTurn = computeBestPossibleAction(problem, nextTurnState, possibleActionsNextTurn).compute();
             // aplicamos la accion 'bestActionForNextTurn' al estado (turno) siguiente 'nextState',
             // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
             IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
