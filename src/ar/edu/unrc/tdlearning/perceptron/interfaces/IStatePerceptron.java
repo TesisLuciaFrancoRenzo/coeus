@@ -25,6 +25,6 @@ public interface IStatePerceptron extends IState {
      * @return valor de entrada normalizado a la neurona con el indice
      *         {@code neuronIndex}
      */
-    public double translateToPerceptronInput(int neuronIndex);
+    public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex);
 
 }

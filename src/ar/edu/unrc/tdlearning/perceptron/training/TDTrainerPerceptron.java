@@ -461,7 +461,7 @@ public final class TDTrainerPerceptron implements ITrainer {
                             } else {
                                 neuron = (Neuron) oldCacheCurrentLayer.getNeuron(currentNeuronIndex);
                             }
-                            neuron.setOutput(state.translateToPerceptronInput(currentNeuronIndex));
+                            neuron.setOutput(state.translateToPerceptronInput(currentNeuronIndex).compute());
 //                                    if ( neuron.getOutput().isNaN() ) {
 //                                        try { //FIXME hacer mas lindo
 //                                            throw new Exception("wrong input translation state.translateToPerceptronInput(" + currentNeuronIndex + ")= " + neuron.getOutput());
