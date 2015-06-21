@@ -17,10 +17,20 @@ public interface IProblem {
 
     /**
      *
-     * @param output <p>
-     * @return
+     * @return el Actor (jugador si es un juego) que se va a entrenar
      */
-    public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output);
+    public IActor getActorToTrain();
+
+    /**
+     *
+     * @param output salida del perceptron no normalizada.<p>
+     * @param actor  jugador actual que necesita interpretar {@code output}
+     *               desde su punto de vista
+     * <p>
+     * @return un valor representativo que interpreta la salida del perceptron
+     *         {@code output} desde el punto de vista del jugador {@code player}
+     */
+    public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor);
 
     /**
      *
@@ -37,10 +47,14 @@ public interface IProblem {
     public double getFinalReward(int outputNeuron);
 
     /**
-     *
+     * Se debe inicializar el problema y avanzar hasta el punto en el que el
+     * {@code actor} le toque actuar por primera vez
+     * <p>
+     * @param actor que se va a aentrenar durante el problema.
+     * <p>
      * @return Inicializa el problema y devuelve su estado inicial
      */
-    public IState initialize();
+    public IState initialize(IActor actor);
 
     /**
      *
