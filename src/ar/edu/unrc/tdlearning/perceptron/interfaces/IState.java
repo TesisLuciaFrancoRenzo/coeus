@@ -25,4 +25,6 @@ public interface IState {
      */
     public boolean isTerminalState();
 
+    public IState getCopy();
+
 }
