@@ -25,6 +25,10 @@ public interface IState {
      */
     public boolean isTerminalState();
 
+    /**
+     *
+     * @return
+     */
     public IState getCopy();
 
 }

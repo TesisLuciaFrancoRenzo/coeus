@@ -343,12 +343,25 @@ public class TDLambdaLearningTest {
 //        }
 //    }
 
+    /**
+     *
+     */
     public class TDLambdaLearningImpl extends TDLambdaLearning {
 
+        /**
+         *
+         */
         public TDLambdaLearningImpl() {
             super(null, null, 0.0, 0.0, false);
         }
 
+        /**
+         *
+         * @param problem
+         * @param turnInitialState
+         * @param action
+         * @return
+         */
         @Override
         public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
             return null;
