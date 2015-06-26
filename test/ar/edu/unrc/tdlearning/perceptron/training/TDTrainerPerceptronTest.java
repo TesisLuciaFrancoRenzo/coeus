@@ -293,7 +293,7 @@ public class TDTrainerPerceptronTest {
     }
 
     /**
-     * Test of weightCorrection method, of class TDTrainerPerceptron.
+     * Test of computeWeightError method, of class TDTrainerPerceptron.
      */
     @Test
     public void testWeightCorrection() {
@@ -306,7 +306,7 @@ public class TDTrainerPerceptronTest {
         boolean isRandomMove = false;
         TDTrainerPerceptron instance = null;
         double expResult = 0.0;
-        double result = instance.weightCorrection(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
+        double result = instance.computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

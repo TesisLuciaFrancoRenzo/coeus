@@ -24,6 +24,11 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * constante de tasa de aprendizaje
      */
     protected double alpha;
+    /**
+     * Vector de errores TD para la capa de salida, comparando el turno actual
+     * con el siguiente
+     */
+    protected double error;
 
     /**
      *
@@ -54,11 +59,6 @@ public class TDTrainerNTupleSystem implements ITrainer {
      *
      */
     protected boolean resetEligibilitiTraces;
-    /**
-     * Vector de errores TD para la capa de salida, comparando el turno actual
-     * con el siguiente
-     */
-    protected double tDError;
 
     /**
      * @param lambda                    constante que se encuentra en el
@@ -109,32 +109,29 @@ public class TDTrainerNTupleSystem implements ITrainer {
 
         //computamos
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
-        Double normalizedNextTurnStateOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState).compute();
 
         double output = normalizedStateOutput.getOutput();
         double derivatedOutput = normalizedStateOutput.getDerivatedOutput();
-        double nextTurnOutput = normalizedNextTurnStateOutput;
+        double nextTurnOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState).compute();
         double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDerror
         if ( !nextTurnState.isTerminalState() ) {
             //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
-            tDError = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
+            error = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
         } else {
             //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
             double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(0));
-            tDError = alpha[0] * (finalReward - output) * derivatedOutput;
+            error = alpha[0] * (gamma * finalReward - output) * derivatedOutput;
         }
 
         boolean needToReset = isARandomMove && resetEligibilitiTraces;
-//        if ( lambda != 0 && needToReset ) {
-//            eligibilityTrace.reset();
-//        }
+
         int weightIndex;
         for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
             weightIndex = normalizedStateOutput.getIndexes()[index];
-            if ( (!isARandomMove || nextTurnState.isTerminalState()) && tDError != 0 ) {
-                nTupleSystem.addCorrectionToWeight(weightIndex, tDError);
+            if ( (!isARandomMove || nextTurnState.isTerminalState()) && error != 0 ) {
+                nTupleSystem.addCorrectionToWeight(weightIndex, error);
             }
             if ( lambda != 0 ) {
                 if ( needToReset ) {
@@ -145,7 +142,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
             }
         }
         if ( lambda != 0 ) {
-            this.eligibilityTrace.processNotUsedTraces(tDError);
+            this.eligibilityTrace.processNotUsedTraces(error);
         }
     }
 

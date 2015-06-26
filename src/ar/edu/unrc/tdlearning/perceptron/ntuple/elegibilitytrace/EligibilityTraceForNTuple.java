@@ -120,6 +120,7 @@ public class EligibilityTraceForNTuple {
     public synchronized void updateTrace(int weightIndex, double derivatedOutput) {
         ValueUsagePair trace = eligibilityTrace[weightIndex];
         trace.setValue(derivatedOutput); //falta la multiplicacion por la neurona de entrada
+        //TODO hacer el otro metodo de calcular trazas, como en perceptrones
         trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
         usedTraces.add(weightIndex);
     }
