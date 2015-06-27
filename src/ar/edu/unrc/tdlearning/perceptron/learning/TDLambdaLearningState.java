@@ -9,6 +9,7 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
@@ -61,7 +62,7 @@ public class TDLambdaLearningState extends TDLambdaLearning {
         IState afterState = problem.computeAfterState(turnInitialState, action);
 
         //computamos todos los posibles futuros estados a los que podemos alcanzar desde el afterstate, y la probabilidad de que estos ocurran
-        List<StateProbability> allPossibleNextTurnState = problem.listAllPossibleNextTurnStateFromAfterstate(afterState);
+        List<StateProbability> allPossibleNextTurnState = ((IProblemState) problem).listAllPossibleNextTurnStateFromAfterstate(afterState);
 
         //FIXME asegurar no efectos colaterales si activamos pralelismo
 //        IPrediction fullPrediction = allPossibleNextTurnState.stream()

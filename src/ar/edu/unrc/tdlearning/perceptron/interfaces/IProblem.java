@@ -5,9 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
-import ar.edu.unrc.tdlearning.perceptron.learning.StateProbability;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -124,17 +122,6 @@ public interface IProblem {
      *         activacion necesita normalizacion).
      */
     public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state);
-
-    /**
-     *
-     * @param afterState estado intermedio que contiene las acciones
-     *                   deterministicas tomadas hasta el momento.
-     * <p>
-     * @return lista de los estados a los que se pueden alcanzar luego de
-     *         computar las acciones no deterministicas. Cada estado debe estar
-     *         emparejado con la probabilidad de que estos estados ocurran
-     */
-    public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState);
 
     /**
      *
