@@ -32,10 +32,12 @@ public interface IProblem {
 
     /**
      *
-     * @param value <p>
+     * @param value             <p>
+     * @param outputNeuronIndex
+     * <p>
      * @return
      */
-    public double denormalizeValueFromPerceptronOutput(Object value);
+    public double denormalizeValueFromPerceptronOutput(Object[] value, int outputNeuronIndex);
 
     /**
      *
