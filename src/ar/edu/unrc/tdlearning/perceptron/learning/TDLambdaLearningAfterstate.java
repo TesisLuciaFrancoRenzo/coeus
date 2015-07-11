@@ -60,7 +60,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             IState afterstate = problem.computeAfterState(turnInitialState, action);
             Object[] output = problem.evaluateBoardWithPerceptron(afterstate).compute();
             for ( int i = 0; i < output.length; i++ ) {
-                output[i] = problem.denormalizeValueFromPerceptronOutput(output, i) + afterstate.getStateReward(i);
+                output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]) + afterstate.getStateReward(i);
             }
             return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, player).compute());
         };

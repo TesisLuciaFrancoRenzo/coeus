@@ -246,7 +246,7 @@ public class IProblemTest {
         }
 
         @Override
-        public double denormalizeValueFromPerceptronOutput(Object[] value, int outputNeuronIndex) {
+        public double denormalizeValueFromPerceptronOutput(Object value) {
             return 0.0;
         }
 
@@ -331,7 +331,7 @@ public class IProblemTest {
          * @return
          */
         @Override
-        public double denormalizeValueFromPerceptronOutput(Object[] value, int outputNeuronIndex) {
+        public double denormalizeValueFromPerceptronOutput(Object value) {
             return 0.0;
         }
 
