@@ -121,7 +121,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
             error = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
         } else {
             //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
-            double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(0));
+            double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(nextTurnState, 0));
             error = alpha[0] * (gamma * finalReward - output) * derivatedOutput;
         }
 

@@ -39,10 +39,11 @@ public interface IProblem {
 
     /**
      *
+     * @param finalState
      * @param outputNeuron <p>
      * @return
      */
-    public double getFinalReward(int outputNeuron);
+    public double getFinalReward(IState finalState, int outputNeuron);
 
     /**
      * Se debe inicializar el problema y avanzar hasta el punto en el que el

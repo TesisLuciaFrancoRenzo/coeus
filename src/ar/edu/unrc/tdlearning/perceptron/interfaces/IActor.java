@@ -10,5 +10,5 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
  * @author franco
  */
 public interface IActor {
-
+   // public String getName();
 }
