@@ -7,7 +7,6 @@ package ar.edu.unrc.tdlearning.perceptron.learning;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -59,42 +58,20 @@ public class ActionPredictionTest {
      */
     @Test
     public void testCompareTo() {
-        System.out.println("compareTo");
-        ActionPrediction other = null;
-        ActionPrediction instance = null;
+        System.out.println("compareTo iguales");
+        ActionPrediction other = new ActionPrediction(new IAction() {
+        }, 10d);
+        ActionPrediction instance = new ActionPrediction(new IAction() {
+        }, 10d);
         int expResult = 0;
         int result = instance.compareTo(other);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getAction method, of class ActionPrediction.
-     */
-    @Test
-    public void testGetAction() {
-        System.out.println("getAction");
-        ActionPrediction instance = null;
-        IAction expResult = null;
-        IAction result = instance.getAction();
+        System.out.println("compareTo distintos");
+        instance = new ActionPrediction(new IAction() {
+        }, 1d);
+        expResult = -1;
+        result = instance.compareTo(other);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getNumericRepresentation method, of class ActionPrediction.
-     */
-    @Test
-    public void testGetNumericRepresentation() {
-        System.out.println("getNumericRepresentation");
-        ActionPrediction instance = null;
-        double expResult = 0.0;
-        double result = instance.getNumericRepresentation();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
 }

@@ -146,7 +146,7 @@ public class TDLambdaLearningTest {
         IState tempTurnInitialState = null;
         TDLambdaLearning instance = null;
         IsolatedComputation<IAction> expResult = null;
-        IsolatedComputation<IAction> result = instance.computeBestPossibleAction(problem, tempTurnInitialState);
+        IsolatedComputation<IAction> result = instance.computeBestPossibleAction(problem, tempTurnInitialState, null, null);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -163,7 +163,7 @@ public class TDLambdaLearningTest {
         IAction action = null;
         TDLambdaLearning instance = null;
         IsolatedComputation<ActionPrediction> expResult = null;
-        IsolatedComputation<ActionPrediction> result = instance.evaluate(problem, turnInitialState, action);
+        IsolatedComputation<ActionPrediction> result = instance.evaluate(problem, turnInitialState, action, null);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -198,7 +198,8 @@ public class TDLambdaLearningTest {
     }
 
     /**
-     * Test of isComputeParallelBestPossibleAction method, of class TDLambdaLearning.
+     * Test of isComputeParallelBestPossibleAction method, of class
+     * TDLambdaLearning.
      */
     @Test
     public void testIsComputeParallelBestPossibleAction() {
@@ -245,7 +246,8 @@ public class TDLambdaLearningTest {
     }
 
     /**
-     * Test of setComputeParallelBestPossibleAction method, of class TDLambdaLearning.
+     * Test of setComputeParallelBestPossibleAction method, of class
+     * TDLambdaLearning.
      */
     @Test
     public void testSetComputeParallelBestPossibleAction() {
@@ -342,34 +344,5 @@ public class TDLambdaLearningTest {
 //        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
 //        }
 //    }
-
-    /**
-     *
-     */
-    public class TDLambdaLearningImpl extends TDLambdaLearning {
-
-        /**
-         *
-         */
-        public TDLambdaLearningImpl() {
-            super(null, null, 0.0, 0.0, false);
-        }
-
-        /**
-         *
-         * @param problem
-         * @param turnInitialState
-         * @param action
-         * @return
-         */
-        @Override
-        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
-            return null;
-        }
-
-        @Override
-        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
-        }
-    }
 
 }

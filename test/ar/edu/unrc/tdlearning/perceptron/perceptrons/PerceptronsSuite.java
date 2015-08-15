@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.tdlearning.perceptron.perceptrons.NeuronTest.class, ar.edu.unrc.tdlearning.perceptron.perceptrons.LayerTest.class, ar.edu.unrc.tdlearning.perceptron.perceptrons.PartialNeuronTest.class, ar.edu.unrc.tdlearning.perceptron.perceptrons.NeuralNetCacheTest.class} )
+@Suite.SuiteClasses( {NeuralNetCacheTest.class, PartialNeuronTest.class, NeuronTest.class, LayerTest.class})
 public class PerceptronsSuite {
 
     /**

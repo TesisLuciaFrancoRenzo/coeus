@@ -16,40 +16,25 @@ import org.junit.Test;
 
 /**
  *
- * @author franco
+ * @author lucy
  */
 public class ComplexNTupleComputationTest {
 
-    /**
-     *
-     */
+    public ComplexNTupleComputationTest() {
+    }
+
     @BeforeClass
     public static void setUpClass() {
     }
 
-    /**
-     *
-     */
     @AfterClass
     public static void tearDownClass() {
     }
 
-    /**
-     *
-     */
-    public ComplexNTupleComputationTest() {
-    }
-
-    /**
-     *
-     */
     @Before
     public void setUp() {
     }
 
-    /**
-     *
-     */
     @After
     public void tearDown() {
     }
@@ -69,6 +54,19 @@ public class ComplexNTupleComputationTest {
     }
 
     /**
+     * Test of setDerivatedOutput method, of class ComplexNTupleComputation.
+     */
+    @Test
+    public void testSetDerivatedOutput() {
+        System.out.println("setDerivatedOutput");
+        double derivatedOutput = 0.0;
+        ComplexNTupleComputation instance = new ComplexNTupleComputation();
+        instance.setDerivatedOutput(derivatedOutput);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of getIndexes method, of class ComplexNTupleComputation.
      */
     @Test
@@ -83,6 +81,19 @@ public class ComplexNTupleComputationTest {
     }
 
     /**
+     * Test of setIndexes method, of class ComplexNTupleComputation.
+     */
+    @Test
+    public void testSetIndexes() {
+        System.out.println("setIndexes");
+        int[] indexes = null;
+        ComplexNTupleComputation instance = new ComplexNTupleComputation();
+        instance.setIndexes(indexes);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of getOutput method, of class ComplexNTupleComputation.
      */
     @Test
@@ -92,32 +103,6 @@ public class ComplexNTupleComputationTest {
         double expResult = 0.0;
         double result = instance.getOutput();
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setDerivatedOutput method, of class ComplexNTupleComputation.
-     */
-    @Test
-    public void testSetDerivatedOutput() {
-        System.out.println("setDerivatedOutput");
-        double derivatedOutput = 0.0;
-        ComplexNTupleComputation instance = new ComplexNTupleComputation();
-        instance.setDerivatedOutput(derivatedOutput);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setIndexes method, of class ComplexNTupleComputation.
-     */
-    @Test
-    public void testSetIndexes() {
-        System.out.println("setIndexes");
-        int[] indexes = null;
-        ComplexNTupleComputation instance = new ComplexNTupleComputation();
-        instance.setIndexes(indexes);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

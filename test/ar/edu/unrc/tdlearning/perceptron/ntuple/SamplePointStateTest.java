@@ -14,47 +14,29 @@ import org.junit.Test;
 
 /**
  *
- * @author franco
+ * @author lucy
  */
 public class SamplePointStateTest {
 
-    /**
-     *
-     */
+    public SamplePointStateTest() {
+    }
+
     @BeforeClass
     public static void setUpClass() {
     }
 
-    /**
-     *
-     */
     @AfterClass
     public static void tearDownClass() {
     }
 
-    /**
-     *
-     */
-    public SamplePointStateTest() {
-    }
-
-    /**
-     *
-     */
     @Before
     public void setUp() {
     }
 
-    /**
-     *
-     */
     @After
     public void tearDown() {
     }
 
-    /**
-     *
-     */
     @Test
     public void testSomeMethod() {
         // TODO review the generated test code and remove the default call to fail.

@@ -82,16 +82,27 @@ public class IStateTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     *
-     */
     public class IStateImpl implements IState {
 
+        @Override
+        public IState getCopy() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        /**
+         *
+         * @param outputNeuron <p>
+         * @return
+         */
         @Override
         public double getStateReward(int outputNeuron) {
             return 0.0;
         }
 
+        /**
+         *
+         * @return
+         */
         @Override
         public boolean isTerminalState() {
             return false;
@@ -99,28 +110,17 @@ public class IStateTest {
     }
 
     /**
-     *
+     * Test of getCopy method, of class IState.
      */
-    public class IStateImpl implements IState {
-
-        /**
-         *
-         * @param outputNeuron
-         * @return
-         */
-        @Override
-        public double getStateReward(int outputNeuron) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @return
-         */
-        @Override
-        public boolean isTerminalState() {
-            return false;
-        }
+    @Test
+    public void testGetCopy() {
+        System.out.println("getCopy");
+        IState instance = new IStateImpl();
+        IState expResult = null;
+        IState result = instance.getCopy();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
 }

@@ -75,6 +75,11 @@ public class IStateNTupleTest {
     public class IStateNTupleImpl implements IStateNTuple {
 
         @Override
+        public IState getCopy() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
         public SamplePointState[] getNTuple(int nTupleIndex) {
             return null;
         }
@@ -87,22 +92,6 @@ public class IStateNTupleTest {
         @Override
         public boolean isTerminalState() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    }
-
-    /**
-     *
-     */
-    public class IStateNTupleImpl implements IStateNTuple {
-
-        /**
-         *
-         * @param nTupleIndex
-         * @return
-         */
-        @Override
-        public SamplePointState[] getNTuple(int nTupleIndex) {
-            return null;
         }
     }
 

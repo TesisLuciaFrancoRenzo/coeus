@@ -78,7 +78,7 @@ public class NeuralNetCacheTest {
         int neuronIndex = 0;
         NeuralNetCache instance = null;
         PartialNeuron expResult = null;
-        PartialNeuron result = instance.getNeuron(layerIndex, neuronIndex);
+        PartialNeuron result = instance.getLayer(layerIndex).getNeuron(neuronIndex);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

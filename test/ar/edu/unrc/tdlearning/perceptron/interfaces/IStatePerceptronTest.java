@@ -62,8 +62,8 @@ public class IStatePerceptronTest {
         int neuronIndex = 0;
         IStatePerceptron instance = new IStatePerceptronImpl();
         double expResult = 0.0;
-        double result = instance.translateToPerceptronInput(neuronIndex);
-        assertEquals(expResult, result, 0.0);
+        IsolatedComputation<Double> result = instance.translateToPerceptronInput(neuronIndex);
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -72,6 +72,11 @@ public class IStatePerceptronTest {
      *
      */
     public class IStatePerceptronImpl implements IStatePerceptron {
+
+        @Override
+        public IState getCopy() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 
         @Override
         public double getStateReward(int outputNeuron) {
@@ -84,24 +89,10 @@ public class IStatePerceptronTest {
         }
 
         @Override
-        public double translateToPerceptronInput(int neuronIndex) {
-            return 0.0;
-        }
-    }
-
-    /**
-     *
-     */
-    public class IStatePerceptronImpl implements IStatePerceptron {
-
-        /**
-         *
-         * @param neuronIndex
-         * @return
-         */
         public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
             return null;
         }
+
     }
 
 }

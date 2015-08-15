@@ -68,7 +68,7 @@ public class TDLambdaLearningStateTest {
         IAction action = null;
         TDLambdaLearningState instance = null;
         IsolatedComputation<ActionPrediction> expResult = null;
-        IsolatedComputation<ActionPrediction> result = instance.evaluate(problem, turnInitialState, action);
+        IsolatedComputation<ActionPrediction> result = instance.evaluate(problem, turnInitialState, action, null);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {IsolatedComputationTest.class, IActionTest.class, IStatePerceptronTest.class, IPerceptronInterfaceTest.class, IStateTest.class, IStateNTupleTest.class, IProblemTest.class})
+@Suite.SuiteClasses( {IProblemStateTest.class, IProblemTest.class, IActionTest.class, IStateTest.class, IActorTest.class, IsolatedComputationTest.class, IStatePerceptronTest.class, IStateNTupleTest.class, IPerceptronInterfaceTest.class})
 public class InterfacesSuite {
 
     /**

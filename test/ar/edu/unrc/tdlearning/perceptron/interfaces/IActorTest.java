@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ar.edu.unrc.tdlearning.perceptron.learning;
+package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
 import static junit.framework.Assert.fail;
 import org.junit.After;
@@ -14,47 +14,29 @@ import org.junit.Test;
 
 /**
  *
- * @author franco
+ * @author lucy
  */
-public class FunctionUtilsTest {
+public class IActorTest {
 
-    /**
-     *
-     */
+    public IActorTest() {
+    }
+
     @BeforeClass
     public static void setUpClass() {
     }
 
-    /**
-     *
-     */
     @AfterClass
     public static void tearDownClass() {
     }
 
-    /**
-     *
-     */
-    public FunctionUtilsTest() {
-    }
-
-    /**
-     *
-     */
     @Before
     public void setUp() {
     }
 
-    /**
-     *
-     */
     @After
     public void tearDown() {
     }
 
-    /**
-     *
-     */
     @Test
     public void testSomeMethod() {
         // TODO review the generated test code and remove the default call to fail.

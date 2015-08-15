@@ -96,7 +96,7 @@ public class IProblemTest {
         Object[] output = null;
         IProblem instance = new IProblemImpl();
         IsolatedComputation<Double> expResult = null;
-        IsolatedComputation<Double> result = instance.computeNumericRepresentationFor(output);
+        IsolatedComputation<Double> result = instance.computeNumericRepresentationFor(output, null);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -141,7 +141,7 @@ public class IProblemTest {
         int outputNeuron = 0;
         IProblem instance = new IProblemImpl();
         double expResult = 0.0;
-        double result = instance.getFinalReward(outputNeuron);
+        double result = instance.getFinalReward(null, outputNeuron);
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -155,7 +155,7 @@ public class IProblemTest {
         System.out.println("initialize");
         IProblem instance = new IProblemImpl();
         IState expResult = null;
-        IState result = instance.initialize();
+        IState result = instance.initialize(null);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -186,7 +186,7 @@ public class IProblemTest {
         IState afterState = null;
         IProblem instance = new IProblemImpl();
         List<StateProbability> expResult = null;
-        List<StateProbability> result = instance.listAllPossibleNextTurnStateFromAfterstate(afterState);
+        ArrayList<IAction> result = instance.listAllPossibleActions(afterState);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -237,12 +237,16 @@ public class IProblemTest {
 
         /**
          *
-         * @param output
+         * @param output <p>
          * @return
          */
-        @Override
         public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output) {
             return null;
+        }
+
+        @Override
+        public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
@@ -256,21 +260,34 @@ public class IProblemTest {
         }
 
         @Override
-        public void setCurrentState(IState nextTurnState) {
+        public IActor getActorToTrain() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
+        public void setCurrentState(IState nextTurnState) {
+        }
+
         public double getFinalReward(int outputNeuron) {
             return 0.0;
+        }
+
+        @Override
+        public double getFinalReward(IState finalState, int outputNeuron) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         /**
          *
          * @return
          */
-        @Override
         public IState initialize() {
             return null;
+        }
+
+        @Override
+        public IState initialize(IActor actor) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
@@ -278,125 +295,10 @@ public class IProblemTest {
             return null;
         }
 
-        @Override
         public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
             return null;
         }
 
-        @Override
-        public double normalizeValueToPerceptronOutput(Object value) {
-            return 0.0;
-        }
-    }
-
-    /**
-     *
-     */
-    public class IProblemImpl implements IProblem {
-
-        /**
-         *
-         * @param turnInitialState
-         * @param action
-         * @return
-         */
-        @Override
-        public IState computeAfterState(IState turnInitialState, IAction action) {
-            return null;
-        }
-
-        /**
-         *
-         * @param afterstate
-         * @return
-         */
-        @Override
-        public IState computeNextTurnStateFromAfterstate(IState afterstate) {
-            return null;
-        }
-
-        /**
-         *
-         * @param output
-         * @return
-         */
-        @Override
-        public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output) {
-            return null;
-        }
-
-        /**
-         *
-         * @param value
-         * @return
-         */
-        @Override
-        public double denormalizeValueFromPerceptronOutput(Object value) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @param state
-         * @return
-         */
-        @Override
-        public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
-            return null;
-        }
-
-        /**
-         *
-         * @param nextTurnState
-         */
-        @Override
-        public void setCurrentState(IState nextTurnState) {
-        }
-
-        /**
-         *
-         * @param outputNeuron
-         * @return
-         */
-        @Override
-        public double getFinalReward(int outputNeuron) {
-            return 0.0;
-        }
-
-        /**
-         *
-         * @return
-         */
-        @Override
-        public IState initialize() {
-            return null;
-        }
-
-        /**
-         *
-         * @param turnInitialState
-         * @return
-         */
-        @Override
-        public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
-            return null;
-        }
-
-        /**
-         *
-         * @param afterState
-         * @return
-         */
-        @Override
-        public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
-            return null;
-        }
-
-        /**
-         *
-         * @param value
-         * @return
-         */
         @Override
         public double normalizeValueToPerceptronOutput(Object value) {
             return 0.0;

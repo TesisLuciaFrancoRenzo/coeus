@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import java.io.File;
@@ -14,48 +15,52 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
  *
- * @author franco
+ * @author lucy
  */
 public class NTupleSystemTest {
 
-    /**
-     *
-     */
+    public NTupleSystemTest() {
+    }
+
     @BeforeClass
     public static void setUpClass() {
     }
 
-    /**
-     *
-     */
     @AfterClass
     public static void tearDownClass() {
     }
 
-    /**
-     *
-     */
-    public NTupleSystemTest() {
-    }
-
-    /**
-     *
-     */
     @Before
     public void setUp() {
     }
 
-    /**
-     *
-     */
     @After
     public void tearDown() {
+    }
+
+    /**
+     * Test of calculateIndex method, of class NTupleSystem.
+     */
+    @Test
+    public void testCalculateIndex() {
+        System.out.println("testCalculateIndex");
+        int nTupleIndex = 0;
+
+        IStateNTuple state = new DummyState();
+        int[] nTuplesLenght = null;
+        Map<SamplePointState, Integer> mapSamplePointStates = null;
+        int expResult = 0;
+        int result = NTupleSystem.calculateIndex(nTupleIndex, nTuplesLenght, state, mapSamplePointStates);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -68,23 +73,6 @@ public class NTupleSystemTest {
         double correction = 0.0;
         NTupleSystem instance = null;
         instance.addCorrectionToWeight(currentWeightIndex, correction);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of calculateIndex method, of class NTupleSystem.
-     */
-    @Test
-    public void testCalculateIndex() {
-        System.out.println("calculateIndex");
-        int nTupleIndex = 0;
-        int[] nTuplesLenght = null;
-        IStateNTuple state = null;
-        Map<SamplePointState, Integer> mapSamplePointStates = null;
-        int expResult = 0;
-        int result = NTupleSystem.calculateIndex(nTupleIndex, nTuplesLenght, state, mapSamplePointStates);
-        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -156,7 +144,7 @@ public class NTupleSystemTest {
         NTupleSystem instance = null;
         double[] expResult = null;
         double[] result = instance.getLut();
-        //   assertArrayEquals(expResult, result);
+        //assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -176,6 +164,19 @@ public class NTupleSystemTest {
     }
 
     /**
+     * Test of setWeights method, of class NTupleSystem.
+     */
+    @Test
+    public void testSetWeights() {
+        System.out.println("setWeights");
+        double[] value = null;
+        NTupleSystem instance = null;
+        instance.setWeights(value);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of getnTuplesLenght method, of class NTupleSystem.
      */
     @Test
@@ -184,7 +185,7 @@ public class NTupleSystemTest {
         NTupleSystem instance = null;
         int[] expResult = null;
         int[] result = instance.getnTuplesLenght();
-        //  assertArrayEquals(expResult, result);
+        assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -198,14 +199,13 @@ public class NTupleSystemTest {
         NTupleSystem instance = null;
         int[] expResult = null;
         int[] result = instance.getnTuplesWeightQuantity();
-        //  assertArrayEquals(expResult, result);
+        assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
      * Test of load method, of class NTupleSystem.
-     * @throws java.lang.Exception
      */
     @Test
     public void testLoad() throws Exception {
@@ -231,7 +231,6 @@ public class NTupleSystemTest {
 
     /**
      * Test of save method, of class NTupleSystem.
-     * @throws java.lang.Exception
      */
     @Test
     public void testSave() throws Exception {
@@ -257,17 +256,30 @@ public class NTupleSystemTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of setWeights method, of class NTupleSystem.
-     */
-    @Test
-    public void testSetWeights() {
-        System.out.println("setWeights");
-        double[] value = null;
-        NTupleSystem instance = null;
-        instance.setWeights(value);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    private static class DummyState implements IStateNTuple  {
+
+        public DummyState () {
+        }
+
+        @Override
+        public IState getCopy() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public SamplePointState[] getNTuple(int nTupleIndex) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public double getStateReward(int outputNeuron) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public boolean isTerminalState() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     }
 
 }

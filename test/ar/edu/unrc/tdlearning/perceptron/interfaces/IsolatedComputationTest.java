@@ -78,18 +78,4 @@ public class IsolatedComputationTest {
         }
     }
 
-    /**
-     *
-     */
-    public class IsolatedComputationImpl implements IsolatedComputation {
-
-        /**
-         *
-         * @return
-         */
-        public T compute() {
-            return null;
-        }
-    }
-
 }

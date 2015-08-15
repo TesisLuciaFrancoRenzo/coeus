@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author franco
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {EligibilityTraceForNTupleTest.class, ValueUsagePairTest.class})
+@Suite.SuiteClasses( {ValueUsagePairTest.class, EligibilityTraceForNTupleTest.class})
 public class ElegibilitytraceSuite {
 
     /**

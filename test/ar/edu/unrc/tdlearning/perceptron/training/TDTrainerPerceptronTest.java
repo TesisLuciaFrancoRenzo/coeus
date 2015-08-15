@@ -8,6 +8,7 @@ package ar.edu.unrc.tdlearning.perceptron.training;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import ar.edu.unrc.tdlearning.perceptron.perceptrons.NeuralNetCache;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
@@ -68,7 +69,7 @@ public class TDTrainerPerceptronTest {
         int neuronIndex = 0;
         TDTrainerPerceptron instance = null;
         Double expResult = null;
-        Double result = instance.calculateNeuronOutput(layerIndex, neuronIndex);
+        IsolatedComputation<Double> result = instance.calculateNeuronOutput(layerIndex, neuronIndex);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -102,8 +103,8 @@ public class TDTrainerPerceptronTest {
         boolean isRandomMove = false;
         TDTrainerPerceptron instance = null;
         double expResult = 0.0;
-        double result = instance.computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
-        assertEquals(expResult, result, 0.0);
+        IsolatedComputation<Double> result = instance.computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -148,8 +149,8 @@ public class TDTrainerPerceptronTest {
         int neuronIndex = 0;
         TDTrainerPerceptron instance = null;
         double expResult = 0.0;
-        double result = instance.delta(outputNeuronIndex, layerIndex, neuronIndex);
-        assertEquals(expResult, result, 0.0);
+        IsolatedComputation<Double> result = instance.delta(outputNeuronIndex, layerIndex, neuronIndex);
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -287,7 +288,7 @@ public class TDTrainerPerceptronTest {
         double currentWeightValue = 0.0;
         boolean isRandomMove = false;
         TDTrainerPerceptron instance = null;
-        instance.updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
+        instance.updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -306,8 +307,27 @@ public class TDTrainerPerceptronTest {
         boolean isRandomMove = false;
         TDTrainerPerceptron instance = null;
         double expResult = 0.0;
-        double result = instance.computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, currentWeightValue, isRandomMove);
-        assertEquals(expResult, result, 0.0);
+        IsolatedComputation<Double> result = instance.computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of computeWeightError method, of class TDTrainerPerceptron.
+     */
+    @Test
+    public void testComputeWeightError() {
+        System.out.println("computeWeightError");
+        int layerIndexJ = 0;
+        int neuronIndexJ = 0;
+        int layerIndexK = 0;
+        int neuronIndexK = 0;
+        boolean isRandomMove = false;
+        TDTrainerPerceptron instance = null;
+        IsolatedComputation<Double> expResult = null;
+        IsolatedComputation<Double> result = instance.computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
