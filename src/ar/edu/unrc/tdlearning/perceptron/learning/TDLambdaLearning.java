@@ -507,7 +507,7 @@ public abstract class TDLambdaLearning {
     }
 
     /**
-     * Calcula la predicciondel resultado final del juego al aplicar la accion
+     * Calcula la prediccion del resultado final del juego al aplicar la accion
      * {@code action} en el estado {@code turnInitialState}, utilizando un
      * metodo entre varios dependiendo de la implementacion de IProblem. Por
      * ejemplo si utilizas una red neuronal esta funcion deberia devolver la
