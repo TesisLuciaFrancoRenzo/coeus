@@ -10,7 +10,6 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -56,69 +55,53 @@ public class TDLambdaLearningTest {
     @After
     public void tearDown() {
     }
-//
-//    /**
-//     * Test of calculateBestEligibilityTraceLenght method, of class
-//     * TDLambdaLearning.
-//     */
-//    @Test
-//    public void testCalculateBestEligibilityTraceLenght_Double() {
-//        System.out.println("calculateBestEligibilityTraceLenght");
-//        Double lambda = 0.99;
-//        Integer expResult = Integer.MAX_VALUE;
-//        Integer result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
-//        assertEquals(expResult, result);
-//
-//        lambda = 0.975;
-//        expResult = 274;
-//        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
-//        assertEquals(expResult, result);
-//
-//        lambda = 0.95;
-//        expResult = 136;
-//        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
-//        assertEquals(expResult, result);
-//
-//        lambda = 0.9;
-//        expResult = 67;
-//        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
-//        assertEquals(expResult, result);
-//
-//        lambda = 0.8;
-//        expResult = 32;
-//        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
-//        assertEquals(expResult, result);
-//
-//        lambda = 0.6;
-//        expResult = 15;
-//        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
-//        assertEquals(expResult, result);
-//
-//        lambda = 1d;
-//        expResult = Integer.MAX_VALUE;
-//        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
-//        assertEquals(expResult, result);
-//
-//        lambda = 0d;
-//        expResult = 0;
-//        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
-//        assertEquals(expResult, result);
-//    }
 
     /**
-     * Test of annealingLearningRate method, of class TDLambdaLearning.
+     * Test of calculateBestEligibilityTraceLenght method, of class
+     * TDLambdaLearning.
      */
     @Test
-    public void testAnnealingLearningRate() {
-        System.out.println("annealingLearningRate");
-        double initialAlpha = 0.0;
-        int t = 0;
-        int T = 0;
-        double expResult = 0.0;
-        double result = TDLambdaLearning.annealingLearningRate(initialAlpha, t, T);
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testCalculateBestEligibilityTraceLenght_Double() {
+        System.out.println("calculateBestEligibilityTraceLenght");
+        Double lambda = 0.99;
+        Integer expResult = Integer.MAX_VALUE;
+        Integer result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        assertEquals(expResult, result);
+
+        lambda = 0.975;
+        expResult = 274;
+        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        assertEquals(expResult, result);
+
+        lambda = 0.95;
+        expResult = 136;
+        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        assertEquals(expResult, result);
+
+        lambda = 0.9;
+        expResult = 67;
+        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        assertEquals(expResult, result);
+
+        lambda = 0.8;
+        expResult = 32;
+        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        assertEquals(expResult, result);
+
+        lambda = 0.6;
+        expResult = 15;
+        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        assertEquals(expResult, result);
+
+        lambda = 1d;
+        expResult = Integer.MAX_VALUE;
+        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        assertEquals(expResult, result);
+
+        lambda = 0d;
+        expResult = 0;
+        result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -128,12 +111,13 @@ public class TDLambdaLearningTest {
     @Test
     public void testCalculateBestEligibilityTraceLenght() {
         System.out.println("calculateBestEligibilityTraceLenght");
-        Double lambda = null;
-        Integer expResult = null;
+        Double lambda = 0.7;
+        double expResult = 21;
         Integer result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        System.out.println("result " + result);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -149,7 +133,7 @@ public class TDLambdaLearningTest {
         IsolatedComputation<IAction> result = instance.computeBestPossibleAction(problem, tempTurnInitialState, null, null);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -159,42 +143,31 @@ public class TDLambdaLearningTest {
     public void testEvaluate() {
         System.out.println("evaluate");
         IProblem problem = null;
-        IState turnInitialState = null;
-        IAction action = null;
+        IState turnInitialState = new IState() {
+
+            @Override
+            public IState getCopy() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public double getStateReward(int outputNeuron) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public boolean isTerminalState() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        IAction action = new IAction() {
+        };
         TDLambdaLearning instance = null;
         IsolatedComputation<ActionPrediction> expResult = null;
         IsolatedComputation<ActionPrediction> result = instance.evaluate(problem, turnInitialState, action, null);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
-    /**
-     * Test of getAnnealingT method, of class TDLambdaLearning.
-     */
-    @Test
-    public void testGetAnnealingT() {
-        System.out.println("getAnnealingT");
-        TDLambdaLearning instance = null;
-        int expResult = 0;
-        int result = instance.getAnnealingT();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getCurrentAlpha method, of class TDLambdaLearning.
-     */
-    @Test
-    public void testGetCurrentAlpha() {
-        System.out.println("getCurrentAlpha");
-        TDLambdaLearning instance = null;
-        double[] expResult = null;
-        double[] result = instance.getCurrentAlpha();
-        //  assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -209,7 +182,7 @@ public class TDLambdaLearningTest {
         boolean result = instance.isComputeParallelBestPossibleAction();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -227,7 +200,7 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         instance.learnEvaluation(problem, turnInitialState, action, afterstate, nextTurnState, isARandomMove);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -242,7 +215,7 @@ public class TDLambdaLearningTest {
         int result = TDLambdaLearning.randomBetween(a, b);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -256,7 +229,7 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         instance.setComputeParallelBestPossibleAction(computeParallelBestPossibleAction);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -272,7 +245,7 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         instance.setExplorationRate(initialValue, startDecrementing, finalValue, finishDecrementing);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -285,7 +258,7 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         instance.setExplorationRateToFixed(value);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -299,7 +272,7 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         instance.setLearningRateAdaptationToAnnealing(annealingT);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -312,7 +285,7 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         instance.setLearningRateAdaptationToFixed();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -326,23 +299,7 @@ public class TDLambdaLearningTest {
         TDLambdaLearning instance = null;
         instance.solveAndTrainOnce(problem, t);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-//
-//    public class TDLambdaLearningImpl extends TDLambdaLearning {
-//
-//        public TDLambdaLearningImpl() {
-//            super(null, null, 0.0, 0.0, false);
-//        }
-//
-//        @Override
-//        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action) {
-//            return null;
-//        }
-//
-//        @Override
-//        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
-//        }
-//    }
 
 }
