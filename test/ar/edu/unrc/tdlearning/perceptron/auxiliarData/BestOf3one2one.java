@@ -9,11 +9,16 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import java.util.ArrayList;
 import org.encog.engine.network.activation.ActivationSigmoid;
+import org.encog.ml.data.MLData;
+import org.encog.ml.data.basic.BasicMLData;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
+import org.encog.util.arrayutil.NormalizationAction;
+import org.encog.util.arrayutil.NormalizedField;
 
 public final class BestOf3one2one implements IProblem {
 
@@ -27,8 +32,9 @@ public final class BestOf3one2one implements IProblem {
         // TODO code application logic here
     }
 
-    public BestOf3one2one() {
-        initializeEncogPerceptron();
+    public BestOf3one2one(BasicNetwork encogPerceptron) {
+        this.encogPerceptron = encogPerceptron;
+        //initializeEncogPerceptron();
         resetGame();
     }
 
@@ -54,45 +60,45 @@ public final class BestOf3one2one implements IProblem {
 
     @Override
     public double denormalizeValueFromPerceptronOutput(Object value) {
-        if ( getBoard()[0][0] == true && getBoard()[0][1] == true && getBoard()[1][0] == true && getBoard()[1][1] == false ) {
-            return normOutput.normalize(13);
+        if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
+                && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == false ) {
+            return 13d;
         }
-        if ( getBoard()[0][0] == true && getBoard()[0][1] == false && getBoard()[1][0] == true && getBoard()[1][1] == true ) {
-            return normOutput.normalize(15);
+        if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == false
+                && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
+            return 15d;
         }
-        if ( getBoard()[0][0] == false && getBoard()[0][1] == true && getBoard()[1][0] == true && getBoard()[1][1] == true ) {
-            return normOutput.normalize(6);
+        if ( currentBoard.getBoard()[0][0] == false && currentBoard.getBoard()[0][1] == true
+                && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
+            return 6d;
         }
-        if ( getBoard()[0][0] == true && getBoard()[0][1] == true && getBoard()[1][0] == false && getBoard()[1][1] == true ) {
-            return normOutput.normalize(14);
+        if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
+                && currentBoard.getBoard()[1][0] == false && currentBoard.getBoard()[1][1] == true ) {
+            return 14d;
         }
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return () -> {
+            double[] inputs = new double[4];
+            for ( int i = 0; i < 4; i++ ) {
+                inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i).compute();
+            } //TODO reeemplazar esto por algo mas elegante
+            MLData inputData = new BasicMLData(inputs);
+            MLData output = (encogPerceptron).compute(inputData);
+            Double[] out = new Double[output.getData().length];
+            for ( int i = 0; i < output.size(); i++ ) {
+                out[i] = output.getData()[i];
+            }
+            return out;
+        };
     }
 
-//    @Override
-//    public IPrediction evaluateBoardWithPerceptron(IState state) {
-//        //dependiendo de que tipo de red neuronal utilizamos, evaluamos las entradas y calculamos una salida
-//        if ( getEncogPerceptron() != null ) {
-//            double[] inputs = new double[4];
-//            for ( int i = 0; i < 4; i++ ) {
-//                inputs[i] = state.translateToPerceptronInput(i); //input
-//            }
-//            MLData inputData = new BasicMLData(inputs);
-//            MLData output = getEncogPerceptron().compute(inputData);
-//            double out = output.getData(0);
-//            return new Prediction(out);
-//        } else {
-//            throw new UnsupportedOperationException("only encog is implemented");
-//        }
-//    }
     @Override
     public IActor getActorToTrain() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
@@ -116,13 +122,12 @@ public final class BestOf3one2one implements IProblem {
 
     @Override
     public double getFinalReward(IState finalState, int outputNeuron) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int getScore() {
         return this.currentBoard.getScore();
     }
 
+//    public int getScore() {
+//        return this.currentBoard.getScore();
+//    }
 //    @Override
 //    public IState initialize() {
 //        resetGame();
@@ -130,7 +135,8 @@ public final class BestOf3one2one implements IProblem {
 //    }
     @Override
     public IState initialize(IActor actor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //initializeEncogPerceptron();
+        return currentBoard.getCopy();
     }
 
     @Override
@@ -155,6 +161,23 @@ public final class BestOf3one2one implements IProblem {
 
     @Override
     public double normalizeValueToPerceptronOutput(Object value) {
+        NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize, null, 15, 6, 1, 0);
+        if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
+                && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == false ) {
+            return normOutput.normalize(13);
+        }
+        if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == false
+                && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
+            return normOutput.normalize(15);
+        }
+        if ( currentBoard.getBoard()[0][0] == false && currentBoard.getBoard()[0][1] == true
+                && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
+            return normOutput.normalize(6);
+        }
+        if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
+                && currentBoard.getBoard()[1][0] == false && currentBoard.getBoard()[1][1] == true ) {
+            return normOutput.normalize(14);
+        }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

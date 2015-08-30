@@ -5,12 +5,17 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.learning;
 
+import ar.edu.unrc.tdlearning.perceptron.auxiliarData.Action;
+import ar.edu.unrc.tdlearning.perceptron.auxiliarData.BestOf3one2one;
+import ar.edu.unrc.tdlearning.perceptron.auxiliarData.Boardone2one;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
+import org.encog.neural.networks.BasicNetwork;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -59,10 +64,14 @@ public class TDLambdaLearningAfterstateTest {
     @Test
     public void testEvaluate() {
         System.out.println("evaluate");
-        IProblem problem = null;
-        IState turnInitialState = null;
-        IAction action = null;
-        TDLambdaLearningAfterstate instance = null;
+        BasicNetwork encogPerceptron = null;//crear bien implementar la clase, correr el juego para que se entre obtener un perceptron entrenado y pasarlo.
+        //obtengo lo valores del perceptron los pesos y la bias creo un perceptron con esos datos y se lo paso aca
+        IPerceptronInterface perceptron = null;
+        IProblem problem = new BestOf3one2one(encogPerceptron);
+        IState turnInitialState = new Boardone2one();
+        IAction action = new Action(0, 0);
+        double[] alpha = {0.001};
+        TDLambdaLearningAfterstate instance = new TDLambdaLearningAfterstate(perceptron, alpha, 0.7d, 1d, true);
         IsolatedComputation<ActionPrediction> expResult = null;
         IsolatedComputation<ActionPrediction> result = instance.evaluate(problem, turnInitialState, action, null);
         assertEquals(expResult, result);

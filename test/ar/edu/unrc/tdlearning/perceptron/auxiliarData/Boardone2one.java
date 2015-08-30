@@ -37,7 +37,7 @@ public class Boardone2one implements IState {
 
     @Override
     public double getStateReward(int outputNeuron) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return getScore();
     }
 
     @Override
