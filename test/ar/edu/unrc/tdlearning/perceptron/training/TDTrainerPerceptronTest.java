@@ -123,6 +123,25 @@ public class TDTrainerPerceptronTest {
     }
 
     /**
+     * Test of computeWeightError method, of class TDTrainerPerceptron.
+     */
+    @Test
+    public void testComputeWeightError() {
+        System.out.println("computeWeightError");
+        int layerIndexJ = 0;
+        int neuronIndexJ = 0;
+        int layerIndexK = 0;
+        int neuronIndexK = 0;
+        boolean isRandomMove = false;
+        TDTrainerPerceptron instance = null;
+        IsolatedComputation<Double> expResult = null;
+        IsolatedComputation<Double> result = instance.computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of createCache method, of class TDTrainerPerceptron.
      */
     @Test
@@ -307,25 +326,6 @@ public class TDTrainerPerceptronTest {
         boolean isRandomMove = false;
         TDTrainerPerceptron instance = null;
         double expResult = 0.0;
-        IsolatedComputation<Double> result = instance.computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of computeWeightError method, of class TDTrainerPerceptron.
-     */
-    @Test
-    public void testComputeWeightError() {
-        System.out.println("computeWeightError");
-        int layerIndexJ = 0;
-        int neuronIndexJ = 0;
-        int layerIndexK = 0;
-        int neuronIndexK = 0;
-        boolean isRandomMove = false;
-        TDTrainerPerceptron instance = null;
-        IsolatedComputation<Double> expResult = null;
         IsolatedComputation<Double> result = instance.computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.

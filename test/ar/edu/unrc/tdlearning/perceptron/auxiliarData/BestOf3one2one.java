@@ -20,10 +20,11 @@ import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.arrayutil.NormalizedField;
 
+/**
+ *
+ * @author renzo
+ */
 public final class BestOf3one2one implements IProblem {
-
-    private BasicNetwork encogPerceptron;
-    private Boardone2one currentBoard;
 
     /**
      * @param args the command line arguments
@@ -31,6 +32,8 @@ public final class BestOf3one2one implements IProblem {
     public static void main(String[] args) {
         // TODO code application logic here
     }
+    private Boardone2one currentBoard;
+    private BasicNetwork encogPerceptron;
 
     public BestOf3one2one(BasicNetwork encogPerceptron) {
         this.encogPerceptron = encogPerceptron;
@@ -139,6 +142,19 @@ public final class BestOf3one2one implements IProblem {
         return currentBoard.getCopy();
     }
 
+//    @Override
+//    public double randomMoveProbability() {
+//        return 0.5;
+//    }
+    public void initializeEncogPerceptron() {
+        setEncogPerceptron(new BasicNetwork());
+        getEncogPerceptron().addLayer(new BasicLayer(null, true, 4));
+        getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), true, 2));
+        getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
+        getEncogPerceptron().getStructure().finalizeStructure();
+        getEncogPerceptron().reset();
+    }
+
     @Override
     public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
         ArrayList<IAction> actions = new ArrayList<>();
@@ -180,22 +196,9 @@ public final class BestOf3one2one implements IProblem {
         }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-//    @Override
-//    public double randomMoveProbability() {
-//        return 0.5;
-//    }
-    public void initializeEncogPerceptron() {
-        setEncogPerceptron(new BasicNetwork());
-        getEncogPerceptron().addLayer(new BasicLayer(null, true, 4));
-        getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), true, 2));
-        getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
-        getEncogPerceptron().getStructure().finalizeStructure();
-        getEncogPerceptron().reset();
-    }
-
     private void resetGame() {
         currentBoard = new Boardone2one();
     }
+
 
 }

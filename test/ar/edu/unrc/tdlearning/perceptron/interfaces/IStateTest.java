@@ -54,6 +54,20 @@ public class IStateTest {
     }
 
     /**
+     * Test of getCopy method, of class IState.
+     */
+    @Test
+    public void testGetCopy() {
+        System.out.println("getCopy");
+        IState instance = new IStateImpl();
+        IState expResult = null;
+        IState result = instance.getCopy();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of getStateReward method, of class IState.
      */
     @Test
@@ -67,6 +81,7 @@ public class IStateTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
 
     /**
      * Test of isTerminalState method, of class IState.
@@ -107,20 +122,6 @@ public class IStateTest {
         public boolean isTerminalState() {
             return false;
         }
-    }
-
-    /**
-     * Test of getCopy method, of class IState.
-     */
-    @Test
-    public void testGetCopy() {
-        System.out.println("getCopy");
-        IState instance = new IStateImpl();
-        IState expResult = null;
-        IState result = instance.getCopy();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
 }

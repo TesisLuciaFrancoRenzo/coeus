@@ -18,15 +18,15 @@ import org.junit.Test;
  */
 public class IActorTest {
 
-    public IActorTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public IActorTest() {
     }
 
     @Before

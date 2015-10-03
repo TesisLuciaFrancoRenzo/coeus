@@ -22,15 +22,15 @@ import org.junit.Test;
  */
 public class IProblemStateTest {
 
-    public IProblemStateTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public IProblemStateTest() {
     }
 
     @Before
@@ -109,6 +109,7 @@ public class IProblemStateTest {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
+        @Override
         public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
             return null;
         }

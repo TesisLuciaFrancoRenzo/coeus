@@ -20,18 +20,34 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses( {ar.edu.unrc.tdlearning.perceptron.ntuple.ComplexNTupleComputationTest.class, ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystemTest.class, ar.edu.unrc.tdlearning.perceptron.ntuple.SamplePointStateTest.class, ar.edu.unrc.tdlearning.perceptron.ntuple.elegibilitytrace.ElegibilitytraceSuite.class} )
 public class NtupleSuite {
 
+    /**
+     *
+     * @throws Exception
+     */
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @After
     public void tearDown() throws Exception {
     }

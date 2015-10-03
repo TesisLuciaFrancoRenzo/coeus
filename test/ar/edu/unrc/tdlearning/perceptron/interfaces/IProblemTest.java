@@ -268,6 +268,11 @@ public class IProblemTest {
         public void setCurrentState(IState nextTurnState) {
         }
 
+        /**
+         *
+         * @param outputNeuron
+         * @return
+         */
         public double getFinalReward(int outputNeuron) {
             return 0.0;
         }
@@ -295,6 +300,11 @@ public class IProblemTest {
             return null;
         }
 
+        /**
+         *
+         * @param afterState
+         * @return
+         */
         public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
             return null;
         }

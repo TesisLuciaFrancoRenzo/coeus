@@ -21,11 +21,6 @@ public class Action implements IAction {
         this.y = y;
     }
 
-    @Override
-    public String toString() {
-        return "(" + x + "," + y + ")";
-    }
-
     /**
      * @return the x
      */
@@ -52,5 +47,10 @@ public class Action implements IAction {
      */
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + "," + y + ")";
     }
 }

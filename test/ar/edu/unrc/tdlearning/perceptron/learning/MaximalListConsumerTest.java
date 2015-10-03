@@ -24,6 +24,20 @@ import org.junit.Test;
  */
 public class MaximalListConsumerTest {
 
+    /**
+     *
+     */
+    @BeforeClass
+    public static void setUpClass() {
+    }
+
+    /**
+     *
+     */
+    @AfterClass
+    public static void tearDownClass() {
+    }
+
     List<ActionPrediction> list = new List<ActionPrediction>() {
 
         @Override
@@ -145,20 +159,6 @@ public class MaximalListConsumerTest {
     /**
      *
      */
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    /**
-     *
-     */
     public MaximalListConsumerTest() {
         this.list = new ArrayList<>();
     }
@@ -241,4 +241,5 @@ public class MaximalListConsumerTest {
         instance.combine(other);
         assertEquals(1, instance.getList().size());
     }
+
 }

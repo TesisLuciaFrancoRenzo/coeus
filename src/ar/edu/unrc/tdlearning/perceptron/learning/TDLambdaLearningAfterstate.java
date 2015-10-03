@@ -84,7 +84,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
             // afterstate para que prediga el final del problema
             //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
-            trainer.train(problem, afterstate, nextTurnState, getCurrentAlpha(), isARandomMove); //TODO revisar aca, puede estar el error
+            trainer.train(problem, afterstate, nextTurnState, getCurrentAlpha(), isARandomMove);
         }
     }
 

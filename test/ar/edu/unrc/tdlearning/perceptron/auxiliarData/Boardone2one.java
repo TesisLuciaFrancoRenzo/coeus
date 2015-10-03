@@ -15,9 +15,9 @@ import org.encog.util.arrayutil.NormalizedField;
  */
 public class Boardone2one implements IState {
 
-    private boolean[][] board = {{false, false}, {false, false}};
     public static NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize,
             null, 15, 6, 1, 0);
+    private boolean[][] board = {{false, false}, {false, false}};
 
     /**
      * @return the board
@@ -26,6 +26,7 @@ public class Boardone2one implements IState {
         return board;
     }
 
+    @Override
     public Boardone2one getCopy() {
         Boardone2one newBoard = new Boardone2one();
         newBoard.board[0][0] = this.board[0][0];
