@@ -5,9 +5,9 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.perceptrons;
 
+import java.util.ArrayList;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -61,12 +61,12 @@ public class LayerTest {
     public void testGetNeuron() {
         System.out.println("getNeuron");
         int neuronIndex = 0;
-        Layer instance = null;
-        PartialNeuron expResult = null;
+        Layer instance = new Layer(1);
+        PartialNeuron expResult = new Neuron(1, 1);
+        instance.setNeuron(0, expResult);
+
         PartialNeuron result = instance.getNeuron(neuronIndex);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -75,12 +75,13 @@ public class LayerTest {
     @Test
     public void testGetNeurons() {
         System.out.println("getNeurons");
-        Layer instance = null;
-        List<PartialNeuron> expResult = null;
+        Layer instance = new Layer(2);
+        instance.setNeuron(0, new Neuron(1, 1));
+        List<PartialNeuron> expResult = new ArrayList<>(1);
+        expResult.add(new Neuron(1, 1));
+        expResult.add(new Neuron(1, 1));
         List<PartialNeuron> result = instance.getNeurons();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult.size(), result.size());
     }
 
     /**
@@ -90,11 +91,9 @@ public class LayerTest {
     public void testSetNeuron() {
         System.out.println("setNeuron");
         int neuronIndex = 0;
-        PartialNeuron neuron = null;
-        Layer instance = null;
+        PartialNeuron neuron = new Neuron(1, 1);
+        Layer instance = new Layer(1);
         instance.setNeuron(neuronIndex, neuron);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(instance.getNeuron(0), neuron);
     }
-
 }
