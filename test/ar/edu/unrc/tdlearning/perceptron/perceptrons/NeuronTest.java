@@ -5,9 +5,9 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.perceptrons;
 
+import java.util.ArrayList;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -60,10 +60,11 @@ public class NeuronTest {
     @Test
     public void testClearDeltas() {
         System.out.println("clearDeltas");
-        Neuron instance = null;
+        Neuron instance = new Neuron(1, 1);
         instance.clearDeltas();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Double result = instance.getDelta(0);
+        Double expResult = null;
+        assertEquals(expResult, result);
     }
 
     /**
@@ -73,12 +74,11 @@ public class NeuronTest {
     public void testGetDelta() {
         System.out.println("getDelta");
         int outputNeuronIndex = 0;
-        Neuron instance = null;
-        Double expResult = null;
-        Double result = instance.getDelta(outputNeuronIndex);
+        Neuron instance = new Neuron(1, 1);
+        instance.setDelta(0, 1d);
+        Double expResult = 1d;
+        Double result = instance.getDelta(0);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -87,12 +87,12 @@ public class NeuronTest {
     @Test
     public void testGetDeltas() {
         System.out.println("getDeltas");
-        Neuron instance = null;
-        List<Double> expResult = null;
+        Neuron instance = new Neuron(2, 2);
+        List<Double> expResult = new ArrayList<>(2);
+        expResult.add(null);
+        expResult.add(null);
         List<Double> result = instance.getDeltas();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult.size(), result.size());
     }
 
     /**
@@ -101,12 +101,11 @@ public class NeuronTest {
     @Test
     public void testGetDerivatedOutput() {
         System.out.println("getDerivatedOutput");
-        Neuron instance = null;
-        Double expResult = null;
+        Neuron instance = new Neuron(1, 1);
+        instance.setDerivatedOutput(0.33);
+        Double expResult = 0.33;
         Double result = instance.getDerivatedOutput();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -115,12 +114,11 @@ public class NeuronTest {
     @Test
     public void testGetOutput() {
         System.out.println("getOutput");
-        Neuron instance = null;
-        Double expResult = null;
+        Neuron instance = new Neuron(1, 1);
+        instance.setOutput(0.5);
+        Double expResult = 0.5;
         Double result = instance.getOutput();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -130,11 +128,10 @@ public class NeuronTest {
     public void testSetDelta() {
         System.out.println("setDelta");
         int outputNeuronIndex = 0;
-        Double delta = null;
-        Neuron instance = null;
+        Double delta = 0.33;
+        Neuron instance = new Neuron(1, 1);
         instance.setDelta(outputNeuronIndex, delta);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(instance.getDeltas().get(outputNeuronIndex), delta);
     }
 
     /**
@@ -143,11 +140,10 @@ public class NeuronTest {
     @Test
     public void testSetDerivatedOutput() {
         System.out.println("setDerivatedOutput");
-        Double derivatedOutput = null;
-        Neuron instance = null;
+        Double derivatedOutput = 0.365;
+        Neuron instance = new Neuron(1, 1);
         instance.setDerivatedOutput(derivatedOutput);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(instance.getDerivatedOutput(), derivatedOutput);
     }
 
     /**
@@ -156,11 +152,10 @@ public class NeuronTest {
     @Test
     public void testSetOutput() {
         System.out.println("setOutput");
-        Double output = null;
-        Neuron instance = null;
+        Double output = 0.1111;
+        Neuron instance = new Neuron(1, 1);
         instance.setOutput(output);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(instance.getOutput(), output);
     }
 
 }
