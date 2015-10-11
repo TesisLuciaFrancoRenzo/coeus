@@ -97,48 +97,49 @@ public class NeuralNetCacheTest {
         int result = instance.getOutputLayerIndex();
         assertEquals(expResult, result);
     }
-//
-//    /**
-//     * Test of isNextToLasyLayer method, of class NeuralNetCache.
-//     */
-//    @Test
-//    public void testIsNextToLasyLayer() {
-//        System.out.println("isNextToLasyLayer");
-//        int layerIndex = 0;
-//        NeuralNetCache instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.isNextToLasyLayer(layerIndex);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of isOutputLayer method, of class NeuralNetCache.
-//     */
-//    @Test
-//    public void testIsOutputLayer() {
-//        System.out.println("isOutputLayer");
-//        int layerIndex = 0;
-//        NeuralNetCache instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.isOutputLayer(layerIndex);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of setLayer method, of class NeuralNetCache.
-//     */
-//    @Test
-//    public void testSetLayer() {
-//        System.out.println("setLayer");
-//        int layerIndex = 0;
-//        Layer layer = null;
-//        NeuralNetCache instance = null;
-//        instance.setLayer(layerIndex, layer);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+
+    /**
+     * Test of isNextToLasyLayer method, of class NeuralNetCache.
+     */
+    @Test
+    public void testIsNextToLasyLayer() {
+        System.out.println("isNextToLasyLayer");
+        int layerIndex = 0;
+        NeuralNetCache instance = new NeuralNetCache(2);
+        instance.setLayer(layerIndex, new Layer(1));
+        instance.setLayer(1, new Layer(1));
+        boolean expResult = true;
+        System.out.println("isNextToLasyLayer" + instance.getOutputLayerIndex());
+        boolean result = instance.isNextToLasyLayer(0);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of isOutputLayer method, of class NeuralNetCache.
+     */
+    @Test
+    public void testIsOutputLayer() {
+        System.out.println("isOutputLayer");
+        int layerIndex = 0;
+        NeuralNetCache instance = new NeuralNetCache(2);
+        instance.setLayer(layerIndex, new Layer(1));
+        instance.setLayer(1, new Layer(1));
+        boolean expResult = true;
+        boolean result = instance.isOutputLayer(1);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setLayer method, of class NeuralNetCache.
+     */
+    @Test
+    public void testSetLayer() {
+        System.out.println("setLayer");
+        int layerIndex = 0;
+        NeuralNetCache instance = new NeuralNetCache(2);
+        Layer layer = new Layer(1);
+        instance.setLayer(layerIndex, layer);
+        instance.setLayer(1, new Layer(1));
+        assertEquals(instance.getLayer(layerIndex), layer);
+    }
 }
