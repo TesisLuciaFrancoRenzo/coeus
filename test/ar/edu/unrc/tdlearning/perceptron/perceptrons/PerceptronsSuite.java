@@ -14,10 +14,10 @@ import org.junit.runners.Suite;
 
 /**
  *
- * @author franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {NeuralNetCacheTest.class, PartialNeuronTest.class, NeuronTest.class, LayerTest.class})
+@Suite.SuiteClasses( {NeuralNetCacheTest.class, PartialNeuronTest.class, NeuronTest.class, LayerTest.class} )
 public class PerceptronsSuite {
 
     /**
