@@ -5,9 +5,9 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.perceptrons;
 
+import java.util.ArrayList;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -60,12 +60,11 @@ public class PartialNeuronTest {
     @Test
     public void testGetBias() {
         System.out.println("getBias");
-        PartialNeuron instance = null;
-        Double expResult = null;
+        PartialNeuron instance = new Neuron(1, 1);
+        instance.setBias(1.325);
+        Double expResult = 1.325;
         Double result = instance.getBias();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -75,12 +74,11 @@ public class PartialNeuronTest {
     public void testGetWeight() {
         System.out.println("getWeight");
         int previousLayerNeuronIndex = 0;
-        PartialNeuron instance = null;
-        Double expResult = null;
+        PartialNeuron instance = new Neuron(1, 1);
+        instance.setWeight(0, 0.356);
+        Double expResult = 0.356;
         Double result = instance.getWeight(previousLayerNeuronIndex);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -89,12 +87,15 @@ public class PartialNeuronTest {
     @Test
     public void testGetWeights() {
         System.out.println("getWeights");
-        PartialNeuron instance = null;
-        List<Double> expResult = null;
+        PartialNeuron instance = new Neuron(1, 1);
+        instance.setWeight(0, 0.3);
+        instance.setWeight(1, 0.4);
+        List<Double> expResult = new ArrayList(1);
+        expResult.add(0.3);
+        expResult.add(0.4);
         List<Double> result = instance.getWeights();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult.get(0), result.get(0));
+        assertEquals(expResult.get(1), result.get(01));
     }
 
     /**
@@ -103,11 +104,11 @@ public class PartialNeuronTest {
     @Test
     public void testSetBias() {
         System.out.println("setBias");
-        Double newBias = null;
-        PartialNeuron instance = null;
+        Double newBias = 0.356;
+        PartialNeuron instance = new Neuron(1, 1);
         instance.setBias(newBias);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(instance.getBias(), newBias);
+
     }
 
     /**
@@ -117,11 +118,9 @@ public class PartialNeuronTest {
     public void testSetWeight() {
         System.out.println("setWeight");
         int previousLayerNeuronIndex = 0;
-        Double weight = null;
-        PartialNeuron instance = null;
+        Double weight = 0.256;
+        PartialNeuron instance = new Neuron(1, 1);
         instance.setWeight(previousLayerNeuronIndex, weight);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(instance.getWeight(0), weight);
     }
-
 }
