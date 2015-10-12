@@ -14,7 +14,7 @@ import org.junit.Test;
 
 /**
  *
- * @author franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class IActionTest {
 
