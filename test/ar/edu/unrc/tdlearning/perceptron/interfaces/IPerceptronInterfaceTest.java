@@ -76,125 +76,118 @@ public class IPerceptronInterfaceTest {
         int layerIndex = 0;
         int neuronIndex = 0;
         IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-        double expResult = 0.0;
-        instance.setBias(layerIndex, neuronIndex, 0.0);
+        double expResult = 0.56;
+        instance.setBias(layerIndex, neuronIndex, 0.56);
         double result = instance.getBias(layerIndex, neuronIndex);
-        assertEquals(expResult, result, 0.0);
+        assertEquals(expResult, result);
     }
-//
-//    /**
-//     * Test of getDerivatedActivationFunction method, of class
-//     * IPerceptronInterface.
-//     */
-//    @Test
-//    public void testGetDerivatedActivationFunction() {
-//        System.out.println("getDerivatedActivationFunction");
-//        int layerIndex = 0;
-//        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-//        Function<Double, Double> expResult = null;
-//        Function<Double, Double> result = instance.getDerivatedActivationFunction(layerIndex);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getLayerQuantity method, of class IPerceptronInterface.
-//     */
-//    @Test
-//    public void testGetLayerQuantity() {
-//        System.out.println("getLayerQuantity");
-//        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-//        int expResult = 0;
-//        int result = instance.getLayerQuantity();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getNeuronQuantityInLayer method, of class IPerceptronInterface.
-//     */
-//    @Test
-//    public void testGetNeuronQuantityInLayer() {
-//        System.out.println("getNeuronQuantityInLayer");
-//        int layerIndex = 0;
-//        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-//        int expResult = 0;
-//        int result = instance.getNeuronQuantityInLayer(layerIndex);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getWeight method, of class IPerceptronInterface.
-//     */
-//    @Test
-//    public void testGetWeight() {
-//        System.out.println("getWeight");
-//        int layerIndex = 0;
-//        int neuronIndex = 0;
-//        int neuronIndexPreviousLayer = 0;
-//        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-//        double expResult = 0.0;
-//        double result = instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer);
-//        assertEquals(expResult, result, 0.0);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of hasBias method, of class IPerceptronInterface.
-//     */
-//    @Test
-//    public void testHasBias() {
-//        System.out.println("hasBias");
-//        int layerIndex = 0;
-//        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-//        boolean expResult = false;
-//        boolean result = instance.hasBias(layerIndex);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of setBias method, of class IPerceptronInterface.
-//     */
-//    @Test
-//    public void testSetBias() {
-//        System.out.println("setBias");
-//        int layerIndex = 0;
-//        int neuronIndex = 0;
-//        double correctedBias = 0.0;
-//        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-//        instance.setBias(layerIndex, neuronIndex, correctedBias);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of setWeight method, of class IPerceptronInterface.
-//     */
-//    @Test
-//    public void testSetWeight() {
-//        System.out.println("setWeight");
-//        int layerIndex = 0;
-//        int neuronIndex = 0;
-//        int neuronIndexPreviousLayer = 0;
-//        double correctedWeight = 0.0;
-//        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-//        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, correctedWeight);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
+
+    /**
+     * Test of getDerivatedActivationFunction method, of class
+     * IPerceptronInterface.
+     */
+    @Test
+    public void testGetDerivatedActivationFunction() {
+        System.out.println("getDerivatedActivationFunction");
+        int layerIndex = 0;
+        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
+        Function<Double, Double> expResult = FunctionUtils.derivatedSigmoid;
+        Function<Double, Double> result = instance.getDerivatedActivationFunction(layerIndex);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getLayerQuantity method, of class IPerceptronInterface.
+     */
+    @Test
+    public void testGetLayerQuantity() {
+        System.out.println("getLayerQuantity");
+        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
+        int expResult = 3;
+        int result = instance.getLayerQuantity();
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of getNeuronQuantityInLayer method, of class IPerceptronInterface.
+     */
+    @Test
+    public void testGetNeuronQuantityInLayer() {
+        System.out.println("getNeuronQuantityInLayer");
+        int layerIndex = 0;
+        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
+        int expResult = 3;
+        int result = instance.getNeuronQuantityInLayer(layerIndex);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getWeight method, of class IPerceptronInterface.
+     */
+    @Test
+    public void testGetWeight() {
+        System.out.println("getWeight");
+        int layerIndex = 0;
+        int neuronIndex = 0;
+        int neuronIndexPreviousLayer = 0;
+        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
+        double expResult = 0.3556;
+        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, expResult);
+        double result = instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer);
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of hasBias method, of class IPerceptronInterface.
+     */
+    @Test
+    public void testHasBias() {
+        System.out.println("hasBias");
+        int layerIndex = 0;
+        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
+        boolean expResult = true;
+        boolean result = instance.hasBias(layerIndex);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setBias method, of class IPerceptronInterface.
+     */
+    @Test
+    public void testSetBias() {
+        System.out.println("setBias");
+        int layerIndex = 0;
+        int neuronIndex = 0;
+        double correctedBias = 0.56;
+        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
+        instance.setBias(layerIndex, neuronIndex, correctedBias);
+        assertEquals(instance.getBias(layerIndex, neuronIndex), correctedBias);
+    }
+
+    /**
+     * Test of setWeight method, of class IPerceptronInterface.
+     */
+    @Test
+    public void testSetWeight() {
+        System.out.println("setWeight");
+        int layerIndex = 0;
+        int neuronIndex = 0;
+        int neuronIndexPreviousLayer = 0;
+        double correctedWeight = 0.3556;
+        IPerceptronInterface instance = new IPerceptronInterfaceImpl();
+        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, correctedWeight);
+        assertEquals(instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer), correctedWeight);
+    }
 
     /**
      *
      */
     public class IPerceptronInterfaceImpl implements IPerceptronInterface {
+
+        double bias, weight;
+        int neuronQuantityInLayer = 3, layerQuantity = 3;
 
         @Override
         public Function<Double, Double> getActivationFunction(int layerIndex) {
@@ -203,40 +196,42 @@ public class IPerceptronInterfaceTest {
 
         @Override
         public double getBias(int layerIndex, int neuronIndex) {
-            return 0.0;
+            return bias;
         }
 
         @Override
         public Function<Double, Double> getDerivatedActivationFunction(int layerIndex) {
-            return null;
+            return FunctionUtils.derivatedSigmoid;
         }
 
         @Override
         public int getLayerQuantity() {
-            return 0;
+            return layerQuantity;
         }
 
         @Override
         public int getNeuronQuantityInLayer(int layerIndex) {
-            return 0;
+            return neuronQuantityInLayer;
         }
 
         @Override
         public double getWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer) {
-            return 0.0;
+            return weight;
         }
 
         @Override
         public boolean hasBias(int layerIndex) {
-            return false;
+            return true;
         }
 
         @Override
         public void setBias(int layerIndex, int neuronIndex, double correctedBias) {
+            bias = correctedBias;
         }
 
         @Override
         public void setWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer, double correctedWeight) {
+            weight = correctedWeight;
         }
     }
 }
