@@ -6,7 +6,8 @@
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import org.encog.util.arrayutil.NormalizationAction;
+import org.encog.util.arrayutil.NormalizedField;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,6 +19,10 @@ import org.junit.Test;
  * @author franco
  */
 public class IStatePerceptronTest {
+
+    public static NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize,
+            null, 15, 6, 1, 0);
+    private final boolean[][] board = {{false, false}, {false, false}, {false, false}, {false, false}};
 
     /**
      *
@@ -59,13 +64,13 @@ public class IStatePerceptronTest {
     @Test
     public void testTranslateToPerceptronInput() {
         System.out.println("translateToPerceptronInput");
-        int neuronIndex = 0;
+        int neuronIndex = 2;
         IStatePerceptron instance = new IStatePerceptronImpl();
-        double expResult = 0.0;
+        IsolatedComputation<Double> expResult = () -> {
+            return 0d;
+        };
         IsolatedComputation<Double> result = instance.translateToPerceptronInput(neuronIndex);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult.compute(), result.compute());
     }
 
     /**
@@ -85,12 +90,30 @@ public class IStatePerceptronTest {
 
         @Override
         public boolean isTerminalState() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            int count = 0;
+            count += (board[0][0]) ? 1 : 0;
+            count += (board[0][1]) ? 1 : 0;
+            count += (board[1][0]) ? 1 : 0;
+            count += (board[1][1]) ? 1 : 0;
+            assert count != 4;
+            return count == 3;
         }
 
         @Override
         public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-            return null;
+            if ( board[0][0] == true && neuronIndex == 0 ) {
+                return () -> 1d;
+            }
+            if ( board[0][1] == true && neuronIndex == 1 ) {
+                return () -> 1d;
+            }
+            if ( board[1][0] == true && neuronIndex == 2 ) {
+                return () -> 1d;
+            }
+            if ( board[1][1] == true && neuronIndex == 3 ) {
+                return () -> 1d;
+            }
+            return () -> 0d;
         }
 
     }

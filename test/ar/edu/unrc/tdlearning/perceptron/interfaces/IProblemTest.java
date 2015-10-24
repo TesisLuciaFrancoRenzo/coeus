@@ -18,7 +18,7 @@ import org.junit.Test;
 
 /**
  *
- * @author franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class IProblemTest {
 
@@ -271,6 +271,7 @@ public class IProblemTest {
         /**
          *
          * @param outputNeuron
+         * <p>
          * @return
          */
         public double getFinalReward(int outputNeuron) {
@@ -303,6 +304,7 @@ public class IProblemTest {
         /**
          *
          * @param afterState
+         * <p>
          * @return
          */
         public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {

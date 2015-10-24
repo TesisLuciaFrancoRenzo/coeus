@@ -14,10 +14,10 @@ import org.junit.runners.Suite;
 
 /**
  *
- * @author franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {IProblemStateTest.class, IProblemTest.class, IActionTest.class, IStateTest.class, IActorTest.class, IsolatedComputationTest.class, IStatePerceptronTest.class, IStateNTupleTest.class, IPerceptronInterfaceTest.class})
+@Suite.SuiteClasses( {IProblemStateTest.class, IProblemTest.class, IActionTest.class, IStateTest.class, IActorTest.class, IsolatedComputationTest.class, IStatePerceptronTest.class, IStateNTupleTest.class, IPerceptronInterfaceTest.class} )
 public class InterfacesSuite {
 
     /**

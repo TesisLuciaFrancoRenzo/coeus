@@ -15,7 +15,7 @@ import org.junit.Test;
 
 /**
  *
- * @author franco
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class IStateTest {
 
@@ -81,7 +81,6 @@ public class IStateTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
 
     /**
      * Test of isTerminalState method, of class IState.

@@ -18,7 +18,7 @@ import org.junit.Test;
 
 /**
  *
- * @author lucy
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class IProblemStateTest {
 

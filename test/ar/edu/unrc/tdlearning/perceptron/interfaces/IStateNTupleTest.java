@@ -5,6 +5,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
+import ar.edu.unrc.tdlearning.perceptron.auxiliarData.BestOf3one2one;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.SamplePointState;
 import static junit.framework.Assert.fail;
 import org.junit.After;
@@ -74,6 +75,8 @@ public class IStateNTupleTest {
      */
     public class IStateNTupleImpl implements IStateNTuple {
 
+        private BestOf3one2one board;
+
         @Override
         public IState getCopy() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -82,6 +85,7 @@ public class IStateNTupleTest {
         @Override
         public SamplePointState[] getNTuple(int nTupleIndex) {
             return null;
+
         }
 
         @Override
