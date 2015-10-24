@@ -87,7 +87,7 @@ public class IProblemStateTest {
 
         @Override
         public IState computeAfterState(IState turnInitialState, IAction action) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
