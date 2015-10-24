@@ -5,11 +5,10 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
+import ar.edu.unrc.tdlearning.perceptron.auxiliarData.Boardone2one;
 import ar.edu.unrc.tdlearning.perceptron.learning.StateProbability;
 import java.util.ArrayList;
 import java.util.List;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -48,16 +47,43 @@ public class IProblemStateTest {
     @Test
     public void testListAllPossibleNextTurnStateFromAfterstate() {
         System.out.println("listAllPossibleNextTurnStateFromAfterstate");
-        IState afterState = null;
+        List<StateProbability> expResult = new ArrayList<>(4);
+        Boardone2one newBoard = new Boardone2one();
+        double probability = 1 / 4;
+        Boardone2one newBoard1 = newBoard.getCopy();
+        Boardone2one newBoard2 = newBoard.getCopy();
+        Boardone2one newBoard3 = newBoard.getCopy();
+        Boardone2one newBoard4 = newBoard.getCopy();
+
+        newBoard1.board[0][0] = true;
+        newBoard2.board[1][0] = true;
+        newBoard3.board[0][1] = true;
+        newBoard4.board[1][1] = true;
+
+        expResult.add(new StateProbability((IStatePerceptron) newBoard1, probability));
+        expResult.add(new StateProbability((IStatePerceptron) newBoard2, probability));
+        expResult.add(new StateProbability((IStatePerceptron) newBoard3, probability));
+        expResult.add(new StateProbability((IStatePerceptron) newBoard4, probability));
+
         IProblemState instance = new IProblemStateImpl();
-        List<StateProbability> expResult = null;
-        List<StateProbability> result = instance.listAllPossibleNextTurnStateFromAfterstate(afterState);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        List<StateProbability> result = instance.listAllPossibleNextTurnStateFromAfterstate(newBoard);
+        System.out.println("listAllPossibleNextTurnStateFromAfterstate" + expResult.get(0).toString());
+        //assertEquals(expResult.get(0), result.get(0));
     }
 
     public class IProblemStateImpl implements IProblemState {
+
+        Boardone2one newBoard;
+
+        public IProblemStateImpl() {
+            this.newBoard = new Boardone2one();
+            newBoard.board[0][0] = false;
+            newBoard.board[1][0] = false;
+            newBoard.board[0][1] = false;
+            newBoard.board[1][1] = false;
+
+        }
 
         @Override
         public IState computeAfterState(IState turnInitialState, IAction action) {
@@ -111,7 +137,31 @@ public class IProblemStateTest {
 
         @Override
         public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
-            return null;
+            List<StateProbability> output = new ArrayList<>(4);
+            Boardone2one newBoard1 = null, newBoard2 = null, newBoard3 = null, newBoard4 = null;
+            double probability = 1 / 4;
+            if ( newBoard.board[0][0] == false ) {
+                newBoard1 = newBoard.getCopy();
+                newBoard1.board[0][0] = true;
+                output.add(new StateProbability((IStatePerceptron) newBoard1, probability));
+            }
+            if ( newBoard.board[1][0] == false ) {
+                newBoard2 = newBoard.getCopy();
+                newBoard1.board[1][0] = true;
+                output.add(new StateProbability((IStatePerceptron) newBoard2, probability));
+            }
+            if ( newBoard.board[0][1] == false ) {
+                newBoard3 = newBoard.getCopy();
+                newBoard1.board[0][1] = true;
+                output.add(new StateProbability((IStatePerceptron) newBoard3, probability));
+            }
+            if ( newBoard.board[1][1] == false ) {
+                newBoard4 = newBoard.getCopy();
+                newBoard1.board[1][1] = true;
+                output.add(new StateProbability((IStatePerceptron) newBoard4, probability));
+            }
+
+            return output;
         }
 
         @Override
