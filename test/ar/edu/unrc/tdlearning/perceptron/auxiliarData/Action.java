@@ -16,6 +16,11 @@ public class Action implements IAction {
     private int x;
     private int y;
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public Action(int x, int y) {
         this.x = x;
         this.y = y;

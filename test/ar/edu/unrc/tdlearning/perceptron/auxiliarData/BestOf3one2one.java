@@ -35,6 +35,10 @@ public final class BestOf3one2one implements IProblem {
     private Boardone2one currentBoard;
     private BasicNetwork encogPerceptron;
 
+    /**
+     *
+     * @param encogPerceptron
+     */
     public BestOf3one2one(BasicNetwork encogPerceptron) {
         this.encogPerceptron = encogPerceptron;
         //initializeEncogPerceptron();
@@ -146,6 +150,10 @@ public final class BestOf3one2one implements IProblem {
 //    public double randomMoveProbability() {
 //        return 0.5;
 //    }
+
+    /**
+     *
+     */
     public void initializeEncogPerceptron() {
         setEncogPerceptron(new BasicNetwork());
         getEncogPerceptron().addLayer(new BasicLayer(null, true, 4));

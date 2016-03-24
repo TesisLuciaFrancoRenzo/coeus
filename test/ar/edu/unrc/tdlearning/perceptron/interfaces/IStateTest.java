@@ -96,6 +96,9 @@ public class IStateTest {
         fail("The test case is a prototype.");
     }
 
+    /**
+     *
+     */
     public class IStateImpl implements IState {
 
         @Override

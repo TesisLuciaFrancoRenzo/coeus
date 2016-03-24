@@ -16,8 +16,15 @@ import org.encog.util.arrayutil.NormalizedField;
  */
 public class Boardone2one implements IStatePerceptron {
 
+    /**
+     *
+     */
     public static NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize,
             null, 15, 6, 1, 0);
+
+    /**
+     *
+     */
     public boolean[][] board = {{false, false}, {false, false}};
 
     /**

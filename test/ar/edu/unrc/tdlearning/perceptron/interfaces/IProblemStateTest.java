@@ -21,21 +21,36 @@ import org.junit.Test;
  */
 public class IProblemStateTest {
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
 
+    /**
+     *
+     */
     public IProblemStateTest() {
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
@@ -72,10 +87,16 @@ public class IProblemStateTest {
         //assertEquals(expResult.get(0), result.get(0));
     }
 
+    /**
+     *
+     */
     public class IProblemStateImpl implements IProblemState {
 
         Boardone2one newBoard;
 
+        /**
+         *
+         */
         public IProblemStateImpl() {
             this.newBoard = new Boardone2one();
             newBoard.board[0][0] = false;

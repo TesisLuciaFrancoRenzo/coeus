@@ -20,9 +20,11 @@ import org.junit.Test;
  */
 public class IStatePerceptronTest {
 
+    /**
+     *
+     */
     public static NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize,
             null, 15, 6, 1, 0);
-    private final boolean[][] board = {{false, false}, {false, false}, {false, false}, {false, false}};
 
     /**
      *
@@ -37,6 +39,7 @@ public class IStatePerceptronTest {
     @AfterClass
     public static void tearDownClass() {
     }
+    private final boolean[][] board = {{false, false}, {false, false}, {false, false}, {false, false}};
 
     /**
      *
