@@ -162,30 +162,6 @@ public abstract class TDLambdaLearning {
      *
      */
     protected ITrainer trainer;
-//
-//    public static Integer calculateBestEligibilityTraceLenght(Double lambda, Double threshold) {
-//        if ( lambda > 1 || lambda < 0 ) {
-//            throw new IllegalArgumentException("lambda=" + lambda + " is out of range from a valid [0..1]");
-//        } else if ( lambda > 0.99 ) {
-//            return Integer.MAX_VALUE;
-//        } else if ( lambda == 0 ) {
-//            return 0;
-//        }
-//        Integer lenght = 2;
-//        while ( Math.pow(lambda, lenght - 1) > threshold ) {
-//            lenght++;
-//            if ( lenght == Integer.MAX_VALUE ) {
-//                return Integer.MAX_VALUE;
-//            }
-//        }
-//        return lenght;
-//    }
-//
-//    /**
-//     *
-//     * @param lambda <p>
-//     * @return
-//     */
 
     /**
      *

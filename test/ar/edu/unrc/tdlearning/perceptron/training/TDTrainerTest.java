@@ -652,26 +652,6 @@ public class TDTrainerTest {
             public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
                 return () -> input1;
             }
-
-//            @Override
-//            public IReward getReward() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public boolean isTerminalState() {
-//                return false;
-//            }
-//
-//            @Override
-//            public double translateRealOutputToNormalizedPerceptronOutputFrom(int outputNeuronIndex) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public double translateRewordToNormalizedPerceptronOutputFrom(int outputNeuronIndex) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
         };
 
         IStatePerceptron stateTp1 = new IStatePerceptron() {
@@ -694,31 +674,6 @@ public class TDTrainerTest {
             public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
                 return () -> input1Tp1;
             }
-
-//            @Override
-//            public IReward getReward() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public boolean isTerminalState() {
-//                return false;
-//            }
-//
-//            @Override
-//            public double translateRealOutputToNormalizedPerceptronOutputFrom(int outputNeuronIndex) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public double translateRewordToNormalizedPerceptronOutputFrom(int outputNeuronIndex) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public double translateToPerceptronInput(int neuronIndex) {
-//                return input1Tp1;
-//            }
         };
 
         IPerceptronInterface perceptronInterface = new IPerceptronInterface() {
@@ -1088,7 +1043,7 @@ public class TDTrainerTest {
 
             @Override
             public boolean isTerminalState() {
-                return true;
+                return false;
             }
 
             @Override
