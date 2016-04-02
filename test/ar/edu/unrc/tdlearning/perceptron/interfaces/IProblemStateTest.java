@@ -204,18 +204,4 @@ public class IProblemStateTest {
         }
     }
 
-    public class IProblemStateImpl implements IProblemState {
-
-        public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
-            return null;
-        }
-    }
-
-    public class IProblemStateImpl implements IProblemState {
-
-        public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
-            return null;
-        }
-    }
-
 }

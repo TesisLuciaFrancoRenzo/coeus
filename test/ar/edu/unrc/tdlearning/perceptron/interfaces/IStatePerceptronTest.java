@@ -134,18 +134,4 @@ public class IStatePerceptronTest {
 
     }
 
-    public class IStatePerceptronImpl implements IStatePerceptron {
-
-        public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-            return null;
-        }
-    }
-
-    public class IStatePerceptronImpl implements IStatePerceptron {
-
-        public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-            return null;
-        }
-    }
-
 }
