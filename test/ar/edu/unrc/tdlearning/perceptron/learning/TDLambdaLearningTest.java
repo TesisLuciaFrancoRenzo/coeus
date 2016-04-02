@@ -19,6 +19,7 @@
 package ar.edu.unrc.tdlearning.perceptron.learning;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
@@ -313,6 +314,48 @@ public class TDLambdaLearningTest {
         instance.solveAndTrainOnce(problem, t);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getCurrentAlpha method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testGetCurrentAlpha() {
+        System.out.println("getCurrentAlpha");
+        TDLambdaLearning instance = null;
+        double[] expResult = null;
+        double[] result = instance.getCurrentAlpha();
+        assertArrayEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    public class TDLambdaLearningImpl extends TDLambdaLearning {
+
+        public TDLambdaLearningImpl() {
+            super(null, null, 0.0, 0.0, false);
+        }
+
+        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action, IActor player) {
+            return null;
+        }
+
+        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
+        }
+    }
+
+    public class TDLambdaLearningImpl extends TDLambdaLearning {
+
+        public TDLambdaLearningImpl() {
+            super(null, null, 0.0, 0.0, false);
+        }
+
+        public IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action, IActor player) {
+            return null;
+        }
+
+        public void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
+        }
     }
 
 }
