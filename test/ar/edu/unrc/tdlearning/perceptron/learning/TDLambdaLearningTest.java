@@ -73,12 +73,10 @@ public class TDLambdaLearningTest {
     public void testCalculateBestEligibilityTraceLenght() {
         System.out.println("calculateBestEligibilityTraceLenght");
         Double lambda = 0.7;
-        double expResult = 21;
+        Integer expResult = 21;
         Integer result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
         System.out.println("result " + result);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-
     }
 
     /**
