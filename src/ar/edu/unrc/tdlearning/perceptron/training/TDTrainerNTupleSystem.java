@@ -121,11 +121,11 @@ public class TDTrainerNTupleSystem implements ITrainer {
     public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, boolean isARandomMove) {
 
         //computamos
-        ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state).compute();
+        ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state);
 
         double output = normalizedStateOutput.getOutput();
         double derivatedOutput = normalizedStateOutput.getDerivatedOutput();
-        double nextTurnOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState).compute();
+        double nextTurnOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState);
         double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDerror

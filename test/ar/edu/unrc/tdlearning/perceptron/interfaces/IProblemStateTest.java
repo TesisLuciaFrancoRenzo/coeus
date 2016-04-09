@@ -130,7 +130,7 @@ public class IProblemStateTest {
         }
 
         @Override
-        public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor) {
+        public Double computeNumericRepresentationFor(Object[] output, IActor actor) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -140,7 +140,7 @@ public class IProblemStateTest {
         }
 
         @Override
-        public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
+        public Object[] evaluateBoardWithPerceptron(IState state) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 

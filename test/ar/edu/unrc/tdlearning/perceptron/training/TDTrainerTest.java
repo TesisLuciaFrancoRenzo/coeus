@@ -24,7 +24,6 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import ar.edu.unrc.tdlearning.perceptron.learning.FunctionUtils;
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -159,8 +158,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input1;
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input1;
             }
         };
 
@@ -181,8 +180,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input1Tp1;
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input1Tp1;
             }
         };
 
@@ -263,7 +262,7 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor) {
+            public Double computeNumericRepresentationFor(Object[] output, IActor actor) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -273,21 +272,19 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
-                return () -> {
-                    double[] inputs = new double[neuralNetwork.getLayerNeuronCount(0)];
-                    for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
-                        inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i).compute();
-                    } //todo reeemplazar esot po algo ams elegante
+            public Object[] evaluateBoardWithPerceptron(IState state) {
+                double[] inputs = new double[neuralNetwork.getLayerNeuronCount(0)];
+                for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
+                    inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i);
+                } //todo reeemplazar esot po algo ams elegante
 
-                    MLData inputData = new BasicMLData(inputs);
-                    MLData output = neuralNetwork.compute(inputData);
-                    Double[] out = new Double[output.getData().length];
-                    for ( int i = 0; i < output.size(); i++ ) {
-                        out[i] = output.getData()[i];
-                    }
-                    return out;
-                };
+                MLData inputData = new BasicMLData(inputs);
+                MLData output = neuralNetwork.compute(inputData);
+                Double[] out = new Double[output.getData().length];
+                for ( int i = 0; i < output.size(); i++ ) {
+                    out[i] = output.getData()[i];
+                }
+                return out;
             }
 
             @Override
@@ -411,8 +408,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input[neuronIndex];
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input[neuronIndex];
             }
         };
 
@@ -433,8 +430,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> inputTp1[neuronIndex];
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return inputTp1[neuronIndex];
             }
         };
 
@@ -515,7 +512,7 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor) {
+            public Double computeNumericRepresentationFor(Object[] output, IActor actor) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -525,21 +522,19 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
-                return () -> {
-                    double[] inputs = new double[neuralNetwork.getLayerNeuronCount(0)];
-                    for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
-                        inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i).compute();
-                    } //todo reeemplazar esot po algo ams elegante
+            public Object[] evaluateBoardWithPerceptron(IState state) {
+                double[] inputs = new double[neuralNetwork.getLayerNeuronCount(0)];
+                for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
+                    inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i);
+                } //todo reeemplazar esot po algo ams elegante
 
-                    MLData inputData = new BasicMLData(inputs);
-                    MLData output = neuralNetwork.compute(inputData);
-                    Double[] out = new Double[output.getData().length];
-                    for ( int i = 0; i < output.size(); i++ ) {
-                        out[i] = output.getData()[i];
-                    }
-                    return out;
-                };
+                MLData inputData = new BasicMLData(inputs);
+                MLData output = neuralNetwork.compute(inputData);
+                Double[] out = new Double[output.getData().length];
+                for ( int i = 0; i < output.size(); i++ ) {
+                    out[i] = output.getData()[i];
+                }
+                return out;
             }
 
             @Override
@@ -662,8 +657,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input1;
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input1;
             }
         };
 
@@ -684,8 +679,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input1Tp1;
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input1Tp1;
             }
         };
 
@@ -766,7 +761,7 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor) {
+            public Double computeNumericRepresentationFor(Object[] output, IActor actor) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -776,21 +771,19 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
-                return () -> {
-                    double[] inputs = new double[neuralNetwork.getLayerNeuronCount(0)];
-                    for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
-                        inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i).compute();
-                    } //todo reeemplazar esot po algo ams elegante
+            public Object[] evaluateBoardWithPerceptron(IState state) {
+                double[] inputs = new double[neuralNetwork.getLayerNeuronCount(0)];
+                for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
+                    inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i);
+                } //todo reeemplazar esot po algo ams elegante
 
-                    MLData inputData = new BasicMLData(inputs);
-                    MLData output = neuralNetwork.compute(inputData);
-                    Double[] out = new Double[output.getData().length];
-                    for ( int i = 0; i < output.size(); i++ ) {
-                        out[i] = output.getData()[i];
-                    }
-                    return out;
-                };
+                MLData inputData = new BasicMLData(inputs);
+                MLData output = neuralNetwork.compute(inputData);
+                Double[] out = new Double[output.getData().length];
+                for ( int i = 0; i < output.size(); i++ ) {
+                    out[i] = output.getData()[i];
+                }
+                return out;
             }
 
             @Override
@@ -916,8 +909,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input1_2;
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input1_2;
             }
 
         };
@@ -939,8 +932,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input1Tp1_2;
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input1Tp1_2;
             }
 
         };
@@ -1037,8 +1030,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input1_3;
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input1_3;
             }
 
         };
@@ -1060,8 +1053,8 @@ public class TDTrainerTest {
             }
 
             @Override
-            public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
-                return () -> input1Tp1_3;
+            public Double translateToPerceptronInput(int neuronIndex) {
+                return input1Tp1_3;
             }
 
         };
@@ -1083,7 +1076,7 @@ public class TDTrainerTest {
         Assert.assertArrayEquals(expResultArrayt_3, resultArray, 0.0000000000000001);
 
         //calculamos valores que deberian resultar
-        Object[] output = problem.evaluateBoardWithPerceptron(stateTp1_3).compute();
+        Object[] output = problem.evaluateBoardWithPerceptron(stateTp1_3);
         for ( int i = 0; i < output.length; i++ ) {
             output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]);
         }

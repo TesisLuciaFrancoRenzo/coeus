@@ -82,11 +82,9 @@ public class IStatePerceptronTest {
         System.out.println("translateToPerceptronInput");
         int neuronIndex = 2;
         IStatePerceptron instance = new IStatePerceptronImpl();
-        IsolatedComputation<Double> expResult = () -> {
-            return 0d;
-        };
-        IsolatedComputation<Double> result = instance.translateToPerceptronInput(neuronIndex);
-        assertEquals(expResult.compute(), result.compute());
+        Double expResult = 0d;
+        Double result = instance.translateToPerceptronInput(neuronIndex);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -116,20 +114,20 @@ public class IStatePerceptronTest {
         }
 
         @Override
-        public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
+        public Double translateToPerceptronInput(int neuronIndex) {
             if ( board[0][0] == true && neuronIndex == 0 ) {
-                return () -> 1d;
+                return 1d;
             }
             if ( board[0][1] == true && neuronIndex == 1 ) {
-                return () -> 1d;
+                return 1d;
             }
             if ( board[1][0] == true && neuronIndex == 2 ) {
-                return () -> 1d;
+                return 1d;
             }
             if ( board[1][1] == true && neuronIndex == 3 ) {
-                return () -> 1d;
+                return 1d;
             }
-            return () -> 0d;
+            return 0d;
         }
 
     }

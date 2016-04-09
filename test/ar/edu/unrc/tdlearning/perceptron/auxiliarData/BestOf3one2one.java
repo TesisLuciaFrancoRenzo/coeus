@@ -23,7 +23,6 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import java.util.ArrayList;
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
@@ -71,11 +70,9 @@ public final class BestOf3one2one implements IProblem {
     }
 
     @Override
-    public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor) {
-        return () -> {
-            assert output.length == 1;
-            return (Double) output[0];
-        };
+    public Double computeNumericRepresentationFor(Object[] output, IActor actor) {
+        assert output.length == 1;
+        return (Double) output[0];
     }
 
     @Override
@@ -100,20 +97,18 @@ public final class BestOf3one2one implements IProblem {
     }
 
     @Override
-    public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
-        return () -> {
-            double[] inputs = new double[4];
-            for ( int i = 0; i < 4; i++ ) {
-                inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i).compute();
-            } //TODO reeemplazar esto por algo mas elegante
-            MLData inputData = new BasicMLData(inputs);
-            MLData output = (encogPerceptron).compute(inputData);
-            Double[] out = new Double[output.getData().length];
-            for ( int i = 0; i < output.size(); i++ ) {
-                out[i] = output.getData()[i];
-            }
-            return out;
-        };
+    public Object[] evaluateBoardWithPerceptron(IState state) {
+        double[] inputs = new double[4];
+        for ( int i = 0; i < 4; i++ ) {
+            inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i);
+        } //TODO reeemplazar esto por algo mas elegante
+        MLData inputData = new BasicMLData(inputs);
+        MLData output = (encogPerceptron).compute(inputData);
+        Double[] out = new Double[output.getData().length];
+        for ( int i = 0; i < output.size(); i++ ) {
+            out[i] = output.getData()[i];
+        }
+        return out;
     }
 
     @Override

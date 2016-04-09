@@ -41,7 +41,7 @@ public interface IProblem {
      * @return un valor representativo que interpreta la salida del perceptron
      *         {@code output} desde el punto de vista del jugador {@code player}
      */
-    public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor);
+    public Double computeNumericRepresentationFor(Object[] output, IActor actor);
 
     /**
      *
@@ -135,7 +135,7 @@ public interface IProblem {
      * @return prediccion del perceptron, normalizado (si la funcion de
      *         activacion necesita normalizacion).
      */
-    public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state);
+    public Object[] evaluateBoardWithPerceptron(IState state);
 
     /**
      *

@@ -23,7 +23,6 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.NTupleSystem;
 import java.util.List;
 
@@ -68,15 +67,13 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
     }
 
     @Override
-    protected IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action, IActor player) {
-        return () -> {
-            IState afterstate = problem.computeAfterState(turnInitialState, action);
-            Object[] output = problem.evaluateBoardWithPerceptron(afterstate).compute();
-            for ( int i = 0; i < output.length; i++ ) {
-                output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]) + afterstate.getStateReward(i);
-            }
-            return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, player).compute());
-        };
+    protected ActionPrediction evaluate(IProblem problem, IState turnInitialState, IAction action, IActor player) {
+        IState afterstate = problem.computeAfterState(turnInitialState, action);
+        Object[] output = problem.evaluateBoardWithPerceptron(afterstate);
+        for ( int i = 0; i < output.length; i++ ) {
+            output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]) + afterstate.getStateReward(i);
+        }
+        return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, player));
     }
 
     @Override
@@ -85,7 +82,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             // evaluamos cada accion posible aplicada al estado nextState y elegimos la mejor
             // accion basada las predicciones del problema
             List<IAction> possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
-            IAction bestActionForNextTurn = computeBestPossibleAction(problem, nextTurnState, possibleActionsNextTurn, problem.getActorToTrain()).compute();
+            IAction bestActionForNextTurn = computeBestPossibleAction(problem, nextTurnState, possibleActionsNextTurn, problem.getActorToTrain());
             // aplicamos la accion 'bestActionForNextTurn' al estado (turno) siguiente 'nextState',
             // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
             IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);

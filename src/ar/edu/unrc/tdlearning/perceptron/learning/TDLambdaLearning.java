@@ -23,7 +23,6 @@ import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import static ar.edu.unrc.tdlearning.perceptron.learning.EExplorationRateAlgorithms.linear;
 import static ar.edu.unrc.tdlearning.perceptron.learning.ELearningRateAdaptation.annealing;
 import static ar.edu.unrc.tdlearning.perceptron.learning.ELearningRateAdaptation.fixed;
@@ -267,21 +266,19 @@ public abstract class TDLambdaLearning {
      * <p>
      * @return la mejor accion de todas
      */
-    public IsolatedComputation<IAction> computeBestPossibleAction(IProblem problem, IState turnInitialState, List<IAction> allPossibleActionsFromTurnInitialState, IActor player) {
-        return () -> {
-            Stream<IAction> stream;
-            if ( computeParallelBestPossibleAction ) {
-                stream = allPossibleActionsFromTurnInitialState.parallelStream();
-            } else {
-                stream = allPossibleActionsFromTurnInitialState.stream();
-            }
-            List<ActionPrediction> bestActiones
-                    = stream
-                    .map(possibleAction -> evaluate(problem, turnInitialState, possibleAction, player).compute())
-                    .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
-                    .getList();
-            return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
-        };
+    public IAction computeBestPossibleAction(IProblem problem, IState turnInitialState, List<IAction> allPossibleActionsFromTurnInitialState, IActor player) {
+        Stream<IAction> stream;
+        if ( computeParallelBestPossibleAction ) {
+            stream = allPossibleActionsFromTurnInitialState.parallelStream();
+        } else {
+            stream = allPossibleActionsFromTurnInitialState.stream();
+        }
+        List<ActionPrediction> bestActiones
+                = stream
+                .map(possibleAction -> evaluate(problem, turnInitialState, possibleAction, player))
+                .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
+                .getList();
+        return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
     }
 
     /**
@@ -467,7 +464,7 @@ public abstract class TDLambdaLearning {
             if ( !randomChoise ) {
                 // evaluamos cada accion aplicada al estado inicial y elegimos la mejor
                 // accion basada en las predicciones del problema
-                bestAction = computeBestPossibleAction(problem, turnInitialState, possibleActions, problem.getActorToTrain()).compute();
+                bestAction = computeBestPossibleAction(problem, turnInitialState, possibleActions, problem.getActorToTrain());
             } else {
                 bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1));
             }
@@ -515,7 +512,7 @@ public abstract class TDLambdaLearning {
      *         prediccion del valor final del juego si aplico {@code action} al
      *         estado {@code turnInitialState}
      */
-    protected abstract IsolatedComputation<ActionPrediction> evaluate(IProblem problem, IState turnInitialState, IAction action, IActor player);
+    protected abstract ActionPrediction evaluate(IProblem problem, IState turnInitialState, IAction action, IActor player);
 
     /**
      * Metodo que implementa el entrenamiento de una red mediante la experiencia

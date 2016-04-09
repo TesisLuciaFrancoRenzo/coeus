@@ -19,7 +19,6 @@
 package ar.edu.unrc.tdlearning.perceptron.ntuple;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -114,25 +113,20 @@ public class NTupleSystem {
      * @param state <p>
      * @return
      */
-    public IsolatedComputation<ComplexNTupleComputation> getComplexComputation(IStateNTuple state) {
-        return () -> {
-            double sum = 0d;
-            int lastFirstIndex = 0;
-            int[] indexes = new int[getnTuplesLenght().length];
-            for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
-                indexes[v] = lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
-                sum += getLut()[indexes[v]];
-                lastFirstIndex += getnTuplesWeightQuantity()[v];
-            }
-            ComplexNTupleComputation output = new ComplexNTupleComputation();
-            output.setIndexes(indexes);
-            output.setOutput(getActivationFunction().apply(sum));
-//            if ( output.getOutput() == 1 ) {
-//                System.err.println("");
-//            }
-            output.setDerivatedOutput(getDerivatedActivationFunction().apply(output.getOutput()));
-            return output;
-        };
+    public ComplexNTupleComputation getComplexComputation(IStateNTuple state) {
+        double sum = 0d;
+        int lastFirstIndex = 0;
+        int[] indexes = new int[getnTuplesLenght().length];
+        for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
+            indexes[v] = lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
+            sum += getLut()[indexes[v]];
+            lastFirstIndex += getnTuplesWeightQuantity()[v];
+        }
+        ComplexNTupleComputation output = new ComplexNTupleComputation();
+        output.setIndexes(indexes);
+        output.setOutput(getActivationFunction().apply(sum));
+        output.setDerivatedOutput(getDerivatedActivationFunction().apply(output.getOutput()));
+        return output;
     }
 
     /**
@@ -140,16 +134,14 @@ public class NTupleSystem {
      * @param state <p>
      * @return
      */
-    public IsolatedComputation<Double> getComputation(IStateNTuple state) {
-        return () -> {
-            double sum = 0d;
-            int lastFirstIndex = 0;
-            for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
-                sum += getLut()[lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
-                lastFirstIndex += getnTuplesWeightQuantity()[v];
-            }
-            return getActivationFunction().apply(sum);
-        };
+    public Double getComputation(IStateNTuple state) {
+        double sum = 0d;
+        int lastFirstIndex = 0;
+        for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
+            sum += getLut()[lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
+            lastFirstIndex += getnTuplesWeightQuantity()[v];
+        }
+        return getActivationFunction().apply(sum);
     }
 
     /**

@@ -19,7 +19,6 @@
 package ar.edu.unrc.tdlearning.perceptron.auxiliarData;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IsolatedComputation;
 import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.arrayutil.NormalizedField;
 
@@ -79,20 +78,20 @@ public class Boardone2one implements IStatePerceptron {
     }
 
     @Override
-    public IsolatedComputation<Double> translateToPerceptronInput(int neuronIndex) {
+    public Double translateToPerceptronInput(int neuronIndex) {
         if ( getBoard()[0][0] == true && neuronIndex == 0 ) {
-            return () -> 1d;
+            return 1d;
         }
         if ( getBoard()[0][1] == true && neuronIndex == 1 ) {
-            return () -> 1d;
+            return 1d;
         }
         if ( getBoard()[1][0] == true && neuronIndex == 2 ) {
-            return () -> 1d;
+            return 1d;
         }
         if ( getBoard()[1][1] == true && neuronIndex == 3 ) {
-            return () -> 1d;
+            return 1d;
         }
-        return () -> 0d;
+        return 0d;
     }
 
 //    @Override

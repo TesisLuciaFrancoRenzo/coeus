@@ -110,12 +110,12 @@ public class IProblemTest {
          * @param output <p>
          * @return
          */
-        public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output) {
+        public Double computeNumericRepresentationFor(Object[] output) {
             return null;
         }
 
         @Override
-        public IsolatedComputation<Double> computeNumericRepresentationFor(Object[] output, IActor actor) {
+        public Double computeNumericRepresentationFor(Object[] output, IActor actor) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -125,7 +125,7 @@ public class IProblemTest {
         }
 
         @Override
-        public IsolatedComputation<Object[]> evaluateBoardWithPerceptron(IState state) {
+        public Object[] evaluateBoardWithPerceptron(IState state) {
             return null;
         }
 
