@@ -38,7 +38,8 @@ public interface ITrainer {
      * @param state
      * @param nextTurnState
      * @param currentAlpha
+     * @param concurrencyInLayer
      * @param aRandomMove
      */
-    public void train(IProblem problem, IState state, IState nextTurnState, double[] currentAlpha, boolean aRandomMove);
+    public void train(final IProblem problem, final IState state, final IState nextTurnState, final double[] currentAlpha, final boolean[] concurrencyInLayer, final boolean aRandomMove);
 }

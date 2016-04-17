@@ -118,7 +118,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * @param isARandomMove <p>
      */
     @Override
-    public void train(IProblem problem, IState state, IState nextTurnState, double[] alpha, boolean isARandomMove) {
+    public void train(final IProblem problem, final IState state, final IState nextTurnState, final double[] alpha, final boolean[] concurrencyInLayer, final boolean isARandomMove) {
 
         //computamos
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state);

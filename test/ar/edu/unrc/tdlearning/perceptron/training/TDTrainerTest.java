@@ -140,6 +140,7 @@ public class TDTrainerTest {
         double input1Tp1 = 5; //entrada del perceptron en el tiempo t+1
         double lambda = 0.8;
         double alpha[] = {0.5, 0.5, 0.5};
+        boolean concurrency[] = {false, false, false, false};
 
         IStatePerceptron stateT = new IStatePerceptron() {
             @Override
@@ -340,7 +341,7 @@ public class TDTrainerTest {
 
         //entrenamos
         TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
-        trainer.train(problem, stateT, stateTp1, alpha, false);
+        trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
 
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 0);
         double calculatedFinalBias = neuralNetwork.getWeight(1, 1, 0);
@@ -389,7 +390,8 @@ public class TDTrainerTest {
         double[] input = {0.8, 1.5}; //entrada del perceptron en el tiempo t
         double[] inputTp1 = {0.3, 0.4}; //entrada del perceptron en el tiempo t+1
         double lambda = 0.8;
-        double[] alpha = {0.5, 0.5, 0.5};
+        double[] alpha = {0.5, 0.5};
+        boolean concurrency[] = {false, false, false};
 
         IStatePerceptron stateT = new IStatePerceptron() {
             @Override
@@ -588,7 +590,7 @@ public class TDTrainerTest {
 
         //entrenamos
         TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
-        trainer.train(problem, stateT, stateTp1, alpha, false);
+        trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
 
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 1);
         double calculatedFinalBias = neuralNetwork.getWeight(0, 2, 1);
@@ -638,7 +640,8 @@ public class TDTrainerTest {
         double input1 = 0.22; //entrada del perceptron en el tiempo t
         double input1Tp1 = 0.31; //entrada del perceptron en el tiempo t+1
         double lambda = 0.7;
-        double alpha[] = {0.5, 0.5, 0.5};
+        double alpha[] = {0.5, 0.5};
+        boolean concurrency[] = {false, false, false};
 
         IStatePerceptron stateT = new IStatePerceptron() {
             @Override
@@ -857,7 +860,7 @@ public class TDTrainerTest {
 
         //---------- entrenamos---------------------------------------
         TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
-        trainer.train(problem, stateT, stateTp1, alpha, false);
+        trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
 
         wJI[1] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[1] = neuralNetwork.getWeight(0, 0, 0);
@@ -969,7 +972,7 @@ public class TDTrainerTest {
         Assert.assertArrayEquals(expResultArraytp1_2, resultArray, 0.0000000000000001);
 
         //---------- entrenamos---------------------------------------
-        trainer.train(problem, stateT_2, stateTp1_2, alpha, false);
+        trainer.train(problem, stateT_2, stateTp1_2, alpha, concurrency, false);
 
         wJI[2] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[2] = neuralNetwork.getWeight(0, 0, 0);
@@ -1083,7 +1086,7 @@ public class TDTrainerTest {
         double fnetIFinal = (double) output[0];
 
         //---------- entrenamos---------------------------------------
-        trainer.train(problem, stateT_3, stateTp1_3, alpha, false);
+        trainer.train(problem, stateT_3, stateTp1_3, alpha, concurrency, false);
 
         wJI[3] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[3] = neuralNetwork.getWeight(0, 0, 0);

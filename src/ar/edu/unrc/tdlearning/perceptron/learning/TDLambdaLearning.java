@@ -164,6 +164,7 @@ public abstract class TDLambdaLearning {
      *
      */
     protected final IPerceptronInterface perceptronInterface;
+    protected final boolean[] concurrencyInLayer;
 
     /**
      *
@@ -189,12 +190,17 @@ public abstract class TDLambdaLearning {
      *                               initialAlpha con la formula 1/num_neuronas
      *                               de la capa anterior.
      * @param gamma                  tasa de descuento
+     * @param concurrencyInLayer
      * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
      *                               en caso de movimientos al azar
      */
-    protected TDLambdaLearning(IPerceptronInterface perceptronInterface, double[] alpha, double lambda, double gamma, boolean resetEligibilitiTraces) {
+    protected TDLambdaLearning(final IPerceptronInterface perceptronInterface, final double[] alpha, final double lambda, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
+        }
+
+        if ( concurrencyInLayer == null ) {
+            throw new IllegalArgumentException("concurrencyInLayer can't be null");
         }
 
         if ( alpha == null ) {
@@ -211,6 +217,11 @@ public abstract class TDLambdaLearning {
             }
             this.initialAlpha = alpha;
         }
+
+        if ( this.initialAlpha.length + 1 != concurrencyInLayer.length ) {
+            throw new IllegalArgumentException("alpha.lenght+1 and concurrencyInLayer.lenght must be the same");
+        }
+
         this.currentAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
@@ -218,6 +229,7 @@ public abstract class TDLambdaLearning {
         this.neuralNetworkType = ENeuralNetworkType.perceptron;
         this.perceptronInterface = perceptronInterface;
         this.nTupleSystem = null;
+        this.concurrencyInLayer = concurrencyInLayer;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
     }
 
@@ -227,11 +239,16 @@ public abstract class TDLambdaLearning {
      * @param alpha
      * @param lambda
      * @param gamma
+     * @param concurrencyInLayer
      * @param resetEligibilitiTraces
      */
-    protected TDLambdaLearning(NTupleSystem nTupleSystem, Double alpha, double lambda, double gamma, boolean resetEligibilitiTraces) {
+    protected TDLambdaLearning(final NTupleSystem nTupleSystem, final Double alpha, final double lambda, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces) {
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
+        }
+
+        if ( concurrencyInLayer == null ) {
+            throw new IllegalArgumentException("concurrencyInLayer can't be null");
         }
 
         if ( alpha == null ) {
@@ -241,6 +258,11 @@ public abstract class TDLambdaLearning {
             initialAlpha = new double[1];
             initialAlpha[0] = alpha;
         }
+
+        if ( this.initialAlpha.length + 1 != concurrencyInLayer.length ) {
+            throw new IllegalArgumentException("alpha.lenght+1 and concurrencyInLayer.lenght must be the same");
+        }
+
         this.currentAlpha = new double[1];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
@@ -248,6 +270,7 @@ public abstract class TDLambdaLearning {
         this.neuralNetworkType = ENeuralNetworkType.ntuple;
         this.perceptronInterface = null;
         this.nTupleSystem = nTupleSystem;
+        this.concurrencyInLayer = concurrencyInLayer;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
     }
 

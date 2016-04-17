@@ -48,11 +48,12 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      *                               [0,1]
      * @param alpha                  constante de tasa de aprendizaje
      * @param gamma                  tasa de descuento
+     * @param concurrencyInLayer
      * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
      *                               en caso de movimientos al azar
      */
-    public TDLambdaLearningState(IPerceptronInterface perceptron, double[] alpha, double lamdba, double gamma, boolean resetEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, gamma, resetEligibilitiTraces);
+    public TDLambdaLearningState(final IPerceptronInterface perceptron, final double[] alpha, final double lamdba, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, gamma, concurrencyInLayer, resetEligibilitiTraces);
     }
 
     /**
@@ -61,10 +62,11 @@ public class TDLambdaLearningState extends TDLambdaLearning {
      * @param alpha
      * @param lamdba
      * @param gamma
+     * @param concurrencyInLayer
      * @param resetEligibilitiTraces
      */
-    public TDLambdaLearningState(NTupleSystem perceptron, Double alpha, double lamdba, double gamma, boolean resetEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, gamma, resetEligibilitiTraces);
+    public TDLambdaLearningState(final NTupleSystem perceptron, final Double alpha, final double lamdba, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces) {
+        super(perceptron, alpha, lamdba, gamma, concurrencyInLayer, resetEligibilitiTraces);
     }
 
     @Override
@@ -94,7 +96,7 @@ public class TDLambdaLearningState extends TDLambdaLearning {
     @Override
     protected void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
         //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
-        trainer.train(problem, turnInitialState, nextTurnState, getCurrentAlpha(), isARandomMove);
+        trainer.train(problem, turnInitialState, nextTurnState, getCurrentAlpha(), concurrencyInLayer, isARandomMove);
     }
 
 }
