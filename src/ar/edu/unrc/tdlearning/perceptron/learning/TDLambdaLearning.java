@@ -213,7 +213,7 @@ public abstract class TDLambdaLearning {
             }
         } else {
             if ( alpha.length != perceptronInterface.getLayerQuantity() - 1 ) {
-                throw new IllegalArgumentException("alpha.length debe ser igual a perceptronInterface.getLayerQuantity() - 1");
+                throw new IllegalArgumentException("alpha.length debe ser igual a perceptronInterface.getLayerQuantity() - 1 = " + (perceptronInterface.getLayerQuantity() - 1) + " y es = " + alpha.length);
             }
             this.initialAlpha = alpha;
         }
