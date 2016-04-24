@@ -51,8 +51,8 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
      *                               en caso de movimientos al azar
      */
-    public TDLambdaLearningAfterstate(final IPerceptronInterface perceptron, final double[] alpha, final double lamdba, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, gamma, concurrencyInLayer, resetEligibilitiTraces);
+    public TDLambdaLearningAfterstate(final IPerceptronInterface perceptron, final double[] alpha, final double lamdba, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces, final boolean statistics) {
+        super(perceptron, alpha, lamdba, gamma, concurrencyInLayer, resetEligibilitiTraces, statistics);
     }
 
     /**
@@ -64,8 +64,8 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      * @param concurrencyInLayer
      * @param resetEligibilitiTraces
      */
-    public TDLambdaLearningAfterstate(final NTupleSystem perceptron, final Double alpha, final double lamdba, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces) {
-        super(perceptron, alpha, lamdba, gamma, concurrencyInLayer, resetEligibilitiTraces);
+    public TDLambdaLearningAfterstate(final NTupleSystem perceptron, final Double alpha, final double lamdba, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces, final boolean statistics) {
+        super(perceptron, alpha, lamdba, gamma, concurrencyInLayer, resetEligibilitiTraces, statistics);
     }
 
     @Override
@@ -80,6 +80,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
 
     @Override
     protected void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove) {
+        long time = 0;
         if ( !nextTurnState.isTerminalState() ) {
             // evaluamos cada accion posible aplicada al estado nextState y elegimos la mejor
             // accion basada las predicciones del problema
@@ -89,14 +90,28 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
             IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
             //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
+            if ( canCollectStatistics ) {
+                time = System.currentTimeMillis();
+            }
             trainer.train(problem, afterstate, afterStateNextTurn, getCurrentAlpha(), concurrencyInLayer, isARandomMove);
+            if ( canCollectStatistics ) {
+                time = System.currentTimeMillis() - time;
+                trainingTimes.add(time);
+            }
         } else {
             // Si nextTurnState es un estado final, no podemos calcular el bestActionForNextTurn.
             // Teoricamente la evaluacion obtenida por el perceptronInterface en el ultimo afterstate,
             // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
             // afterstate para que prediga el final del problema
             //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
+            if ( canCollectStatistics ) {
+                time = System.currentTimeMillis();
+            }
             trainer.train(problem, afterstate, nextTurnState, getCurrentAlpha(), concurrencyInLayer, isARandomMove);
+            if ( canCollectStatistics ) {
+                time = System.currentTimeMillis() - time;
+                trainingTimes.add(time);
+            }
         }
     }
 

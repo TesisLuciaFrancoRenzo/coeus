@@ -33,6 +33,7 @@ import ar.edu.unrc.tdlearning.perceptron.training.ITrainer;
 import ar.edu.unrc.tdlearning.perceptron.training.TDTrainerNTupleSystem;
 import ar.edu.unrc.tdlearning.perceptron.training.TDTrainerPerceptron;
 import static java.lang.Math.random;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -135,6 +136,21 @@ public abstract class TDLambdaLearning {
     private int explorationRateStartDecrementing;
     private NTupleSystem nTupleSystem;
     private final ENeuralNetworkType neuralNetworkType;
+    protected boolean canCollectStatistics;
+
+    public boolean canCollectStatistics() {
+        return canCollectStatistics;
+    }
+
+    public LinkedList<Long> getTrainingTimes() {
+        return trainingTimes;
+    }
+
+    public LinkedList<Long> getBestPissibleActionTimes() {
+        return bestPissibleActionTimes;
+    }
+    protected LinkedList<Long> trainingTimes;
+    protected LinkedList<Long> bestPissibleActionTimes;
 
     /**
      *
@@ -193,8 +209,17 @@ public abstract class TDLambdaLearning {
      * @param concurrencyInLayer
      * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
      *                               en caso de movimientos al azar
+     * @param collectStatistics      guarda estadisticas relevante a los tiempos
+     *                               de cálculo
      */
-    protected TDLambdaLearning(final IPerceptronInterface perceptronInterface, final double[] alpha, final double lambda, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces) {
+    protected TDLambdaLearning(
+            final IPerceptronInterface perceptronInterface,
+            final double[] alpha,
+            final double lambda,
+            final double gamma,
+            final boolean[] concurrencyInLayer,
+            final boolean resetEligibilitiTraces,
+            final boolean collectStatistics) {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
@@ -231,6 +256,12 @@ public abstract class TDLambdaLearning {
         this.nTupleSystem = null;
         this.concurrencyInLayer = concurrencyInLayer;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.canCollectStatistics = collectStatistics;
+
+        if ( collectStatistics ) {
+            this.bestPissibleActionTimes = new LinkedList<>();
+            this.trainingTimes = new LinkedList<>();
+        }
     }
 
     /**
@@ -241,8 +272,16 @@ public abstract class TDLambdaLearning {
      * @param gamma
      * @param concurrencyInLayer
      * @param resetEligibilitiTraces
+     * @param collectStatistics
      */
-    protected TDLambdaLearning(final NTupleSystem nTupleSystem, final Double alpha, final double lambda, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces) {
+    protected TDLambdaLearning(
+            final NTupleSystem nTupleSystem,
+            final Double alpha,
+            final double lambda,
+            final double gamma,
+            final boolean[] concurrencyInLayer,
+            final boolean resetEligibilitiTraces,
+            final boolean collectStatistics) {
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
@@ -272,6 +311,12 @@ public abstract class TDLambdaLearning {
         this.nTupleSystem = nTupleSystem;
         this.concurrencyInLayer = concurrencyInLayer;
         this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.canCollectStatistics = collectStatistics;
+
+        if ( collectStatistics ) {
+            this.bestPissibleActionTimes = new LinkedList<>();
+            this.trainingTimes = new LinkedList<>();
+        }
     }
 
     /**
@@ -291,6 +336,10 @@ public abstract class TDLambdaLearning {
      */
     public IAction computeBestPossibleAction(IProblem problem, IState turnInitialState, List<IAction> allPossibleActionsFromTurnInitialState, IActor player) {
         Stream<IAction> stream;
+        long time = 0;
+        if ( canCollectStatistics ) {
+            time = System.currentTimeMillis();
+        }
         if ( computeParallelBestPossibleAction ) {
             stream = allPossibleActionsFromTurnInitialState.parallelStream();
         } else {
@@ -301,7 +350,12 @@ public abstract class TDLambdaLearning {
                 .map(possibleAction -> evaluate(problem, turnInitialState, possibleAction, player))
                 .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
                 .getList();
-        return bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
+        IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
+        if ( canCollectStatistics ) {
+            time = System.currentTimeMillis() - time;
+            bestPissibleActionTimes.add(time);
+        }
+        return bestAction;
     }
 
     /**
