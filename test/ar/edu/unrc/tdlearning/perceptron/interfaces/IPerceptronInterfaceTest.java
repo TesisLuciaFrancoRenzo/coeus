@@ -200,8 +200,9 @@ public class IPerceptronInterfaceTest {
     public class IPerceptronInterfaceImpl implements IPerceptronInterface {
 
         double biasB;
+        double bisas,
         int layerQuantity = 3, neuronQuantityInLayer = 3;
-        double bisas, weight;
+        double weight;
 
         @Override
         public Function<Double, Double> getActivationFunction(int layerIndex) {

@@ -136,26 +136,22 @@ public abstract class TDLambdaLearning {
     private int explorationRateStartDecrementing;
     private NTupleSystem nTupleSystem;
     private final ENeuralNetworkType neuralNetworkType;
-    protected boolean canCollectStatistics;
-
-    public boolean canCollectStatistics() {
-        return canCollectStatistics;
-    }
-
-    public LinkedList<Long> getTrainingTimes() {
-        return trainingTimes;
-    }
-
-    public LinkedList<Long> getBestPissibleActionTimes() {
-        return bestPissibleActionTimes;
-    }
-    protected LinkedList<Long> trainingTimes;
-    protected LinkedList<Long> bestPissibleActionTimes;
-
     /**
      *
      */
     protected int annealingT;
+
+    /**
+     *
+     */
+    protected LinkedList<Long> bestPissibleActionTimes;
+
+    protected boolean canCollectStatistics;
+
+    /**
+     *
+     */
+    protected final boolean[] concurrencyInLayer;
 
     /**
      *
@@ -180,7 +176,6 @@ public abstract class TDLambdaLearning {
      *
      */
     protected final IPerceptronInterface perceptronInterface;
-    protected final boolean[] concurrencyInLayer;
 
     /**
      *
@@ -191,6 +186,11 @@ public abstract class TDLambdaLearning {
      *
      */
     protected ITrainer trainer;
+
+    /**
+     *
+     */
+    protected LinkedList<Long> trainingTimes;
 
     /**
      *
@@ -320,6 +320,14 @@ public abstract class TDLambdaLearning {
     }
 
     /**
+     *
+     * @return
+     */
+    public boolean canCollectStatistics() {
+        return canCollectStatistics;
+    }
+
+    /**
      * Computa la mejor accion posible dado un estado inicial. No invocar sobre
      * estados finales o estados que no tiene posibles acciones a realizar.
      * {@code tempTurnInitialState} y todas las posibles acciones a tomar
@@ -366,6 +374,14 @@ public abstract class TDLambdaLearning {
     }
 
     /**
+     *
+     * @return
+     */
+    public LinkedList<Long> getBestPissibleActionTimes() {
+        return bestPissibleActionTimes;
+    }
+
+    /**
      * @return the currentAlpha
      */
     public double[] getCurrentAlpha() {
@@ -394,6 +410,14 @@ public abstract class TDLambdaLearning {
         }
         this.learningRateAdaptation = ELearningRateAdaptation.annealing;
         this.annealingT = annealingT;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public LinkedList<Long> getTrainingTimes() {
+        return trainingTimes;
     }
 
     /**

@@ -33,18 +33,34 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses( {ar.edu.unrc.tdlearning.perceptron.learning.TDLambdaLearningTest.class, ar.edu.unrc.tdlearning.perceptron.learning.ActionPredictionTest.class, ar.edu.unrc.tdlearning.perceptron.learning.MaximalListConsumerTest.class} )
 public class LearningSuite {
 
+    /**
+     *
+     * @throws Exception
+     */
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @After
     public void tearDown() throws Exception {
     }

@@ -50,6 +50,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      * @param concurrencyInLayer
      * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
      *                               en caso de movimientos al azar
+     * @param statistics
      */
     public TDLambdaLearningAfterstate(final IPerceptronInterface perceptron, final double[] alpha, final double lamdba, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces, final boolean statistics) {
         super(perceptron, alpha, lamdba, gamma, concurrencyInLayer, resetEligibilitiTraces, statistics);
@@ -63,6 +64,7 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
      * @param gamma
      * @param concurrencyInLayer
      * @param resetEligibilitiTraces
+     * @param statistics
      */
     public TDLambdaLearningAfterstate(final NTupleSystem perceptron, final Double alpha, final double lamdba, final double gamma, final boolean[] concurrencyInLayer, final boolean resetEligibilitiTraces, final boolean statistics) {
         super(perceptron, alpha, lamdba, gamma, concurrencyInLayer, resetEligibilitiTraces, statistics);
