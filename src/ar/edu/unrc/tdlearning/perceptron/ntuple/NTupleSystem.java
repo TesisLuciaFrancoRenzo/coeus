@@ -119,7 +119,7 @@ public class NTupleSystem {
         int[] indexes = new int[getnTuplesLenght().length];
         for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
             indexes[v] = lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
-            sum += getLut()[indexes[v]];
+            sum += lut[indexes[v]];
             lastFirstIndex += getnTuplesWeightQuantity()[v];
         }
         ComplexNTupleComputation output = new ComplexNTupleComputation();
@@ -138,7 +138,7 @@ public class NTupleSystem {
         double sum = 0d;
         int lastFirstIndex = 0;
         for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
-            sum += getLut()[lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
+            sum += lut[lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
             lastFirstIndex += getnTuplesWeightQuantity()[v];
         }
         return getActivationFunction().apply(sum);
