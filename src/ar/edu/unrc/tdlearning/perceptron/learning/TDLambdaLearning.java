@@ -146,6 +146,9 @@ public abstract class TDLambdaLearning {
      */
     protected LinkedList<Long> bestPissibleActionTimes;
 
+    /**
+     *
+     */
     protected boolean canCollectStatistics;
 
     /**
@@ -298,10 +301,9 @@ public abstract class TDLambdaLearning {
             initialAlpha[0] = alpha;
         }
 
-        if ( this.initialAlpha.length + 1 != concurrencyInLayer.length ) {
-            throw new IllegalArgumentException("alpha.lenght+1 and concurrencyInLayer.lenght must be the same");
-        }
-
+//        if ( this.initialAlpha.length + 1 != concurrencyInLayer.length ) {
+//            throw new IllegalArgumentException("alpha.lenght+1 and concurrencyInLayer.lenght must be the same");
+//        }
         this.currentAlpha = new double[1];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;

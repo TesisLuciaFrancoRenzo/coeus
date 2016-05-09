@@ -61,12 +61,14 @@ public class NTupleSystem {
     }
 
     private final Function<Double, Double> activationFunction;
+    private final boolean concurrency;
     private final Function<Double, Double> derivatedActivationFunction;
 
     private double[] lut;
     private final Map<SamplePointState, Integer> mapSamplePointStates;
     private final int[] nTuplesLenght;
     private final int[] nTuplesWeightQuantity;
+    private final int[] nTuplesWeightQuantityIndex;
 
     /**
      *
@@ -74,22 +76,29 @@ public class NTupleSystem {
      * @param nTuplesLenght
      * @param activationFunction
      * @param derivatedActivationFunction
+     * @param concurrency
      */
-    public NTupleSystem(List<SamplePointState> allSamplePointStates, int[] nTuplesLenght, Function<Double, Double> activationFunction, Function<Double, Double> derivatedActivationFunction) {
+    public NTupleSystem(List<SamplePointState> allSamplePointStates, int[] nTuplesLenght, Function<Double, Double> activationFunction, Function<Double, Double> derivatedActivationFunction, boolean concurrency) {
         this.mapSamplePointStates = new HashMap<>();
         for ( int i = 0; i < allSamplePointStates.size(); i++ ) {
             mapSamplePointStates.put(allSamplePointStates.get(i), i);
         }
         int lutSize = 0;
         nTuplesWeightQuantity = new int[nTuplesLenght.length];
+        nTuplesWeightQuantityIndex = new int[nTuplesLenght.length];
+        nTuplesWeightQuantityIndex[0] = 0;
         for ( int i = 0; i < nTuplesLenght.length; i++ ) {
             nTuplesWeightQuantity[i] = (int) Math.pow(mapSamplePointStates.size(), nTuplesLenght[i]);
             lutSize += nTuplesWeightQuantity[i];
+            if ( i > 0 ) {
+                nTuplesWeightQuantityIndex[i] = nTuplesWeightQuantity[i - 1];
+            }
         }
         lut = new double[lutSize];
         this.nTuplesLenght = nTuplesLenght;
         this.activationFunction = activationFunction;
         this.derivatedActivationFunction = derivatedActivationFunction;
+        this.concurrency = concurrency;
     }
 
     /**
@@ -114,14 +123,24 @@ public class NTupleSystem {
      * @return
      */
     public ComplexNTupleComputation getComplexComputation(IStateNTuple state) {
-        double sum = 0d;
-        int lastFirstIndex = 0;
-        int[] indexes = new int[getnTuplesLenght().length];
-        for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
-            indexes[v] = lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
-            sum += lut[indexes[v]];
-            lastFirstIndex += getnTuplesWeightQuantity()[v];
+        IntStream stream = IntStream
+                .range(0, nTuplesLenght.length);
+        if ( concurrency ) {
+            stream = stream.parallel();
+        } else {
+            stream = stream.sequential();
         }
+        int[] indexes = new int[nTuplesLenght.length];
+        double sum = stream.mapToDouble(v -> {
+            indexes[v] = nTuplesWeightQuantityIndex[v] + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
+            return lut[indexes[v]];
+        }).sum();
+
+//        double sum2 = 0d;
+//        for ( int v = 0; v < nTuplesLenght.length; v++ ) {
+//            indexes[v] = nTuplesWeightQuantityIndex[v] + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
+//            sum2 += lut[indexes[v]];
+//        }
         ComplexNTupleComputation output = new ComplexNTupleComputation();
         output.setIndexes(indexes);
         output.setOutput(getActivationFunction().apply(sum));
@@ -135,12 +154,21 @@ public class NTupleSystem {
      * @return
      */
     public Double getComputation(IStateNTuple state) {
-        double sum = 0d;
-        int lastFirstIndex = 0;
-        for ( int v = 0; v < getnTuplesLenght().length; v++ ) {
-            sum += lut[lastFirstIndex + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
-            lastFirstIndex += getnTuplesWeightQuantity()[v];
+        IntStream stream = IntStream
+                .range(0, nTuplesLenght.length);
+        if ( concurrency ) {
+            stream = stream.parallel();
+        } else {
+            stream = stream.sequential();
         }
+        double sum = stream.mapToDouble(v -> {
+            return lut[nTuplesWeightQuantityIndex[v] + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
+        }).sum();
+
+//        double sum = 0d;
+//        for ( int v = 0; v < nTuplesLenght.length; v++ ) {
+//            sum += lut[nTuplesWeightQuantityIndex[v] + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
+//        }
         return getActivationFunction().apply(sum);
     }
 
