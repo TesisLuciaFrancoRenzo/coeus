@@ -43,17 +43,22 @@ public class FunctionUtils {
      * tanh(value) por cuestiones de optimización
      */
     public static final Function<Double, Double> derivatedTanh = (fValue) -> 1d - fValue * fValue;
+
     /**
      * Función de activación linear
      */
     public static final Function<Double, Double> linear = (value) -> value;
+
     /**
      * Función de activación Sigmoideo
      */
     public static final Function<Double, Double> sigmoid = (value) -> 1d / (1d + exp(-value));
+
     /**
      * Función de activación TANH
      */
     public static final Function<Double, Double> tanh = (value) -> Math.tanh(value);
 
+    private FunctionUtils() {
+    }
 }

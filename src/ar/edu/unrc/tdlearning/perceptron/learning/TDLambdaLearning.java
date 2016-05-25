@@ -114,16 +114,15 @@ public abstract class TDLambdaLearning {
      * <p>
      */
     public static int randomBetween(int a, int b) {
-        //TODO verificar covertura de todos los valores en un arreglo, si se elige uno de estos elementos
         if ( a > b ) {
             throw new IllegalArgumentException("error: b debe ser mayor que a");
         } else if ( a == b ) {
             return a;
         } else {
-            int tirada = a + (int) ((double) (b - a + 1) * random());
-            return tirada;
+            return a + (int) ((b - a + 1d) * random());
         }
     }
+
     private boolean computeParallelBestPossibleAction = false;
     /**
      * tasa de aprendizaje actual para cada capa de pesos
@@ -498,7 +497,7 @@ public abstract class TDLambdaLearning {
             case annealing: {
                 //ajustamos las alphas segun el metodo de annealing µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
-                if ( this.currentAlpha.length > 1000 ) { //FIXMe hacer una constante generica para activar paralelismo
+                if ( this.currentAlpha.length > 1_000 ) { //FIXMe hacer una constante generica para activar paralelismo
                     rangeStream = rangeStream.parallel();
                 } else {
                     rangeStream = rangeStream.sequential();

@@ -37,14 +37,12 @@ public interface IPerceptronInterface {
     public double getBias(int layerIndex, int neuronIndex);
 
     /**
-     * Funcion de activacion de todas las neuronas del perceptron. Por motivos
-     * matematicos, el perceptron debe tener la misma funcion de activacion en
-     * todas las capas.
+     * Funcion de activacion de todas las neuronas del perceptron en la capa
+     * {@code layerIndex}.
      * <p>
      * @param layerIndex <p>
      * @return fución de activación, cuyo parametro es "net"
      */
-//TODO: revisar el comentario. No es necesario que todas las neuronas tiengan la misma fcion de activacion???
     public Function<Double, Double> getActivationFunction(int layerIndex);
 
     /**

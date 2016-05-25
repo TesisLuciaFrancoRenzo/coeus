@@ -66,7 +66,7 @@ public final class BestOf3one2one implements IProblem {
 
     @Override
     public IState computeNextTurnStateFromAfterstate(IState afterstate) {
-        return ((Boardone2one) afterstate).getCopy();
+        return afterstate.getCopy();
     }
 
     @Override
@@ -140,24 +140,12 @@ public final class BestOf3one2one implements IProblem {
         return this.currentBoard.getScore();
     }
 
-//    public int getScore() {
-//        return this.currentBoard.getScore();
-//    }
-//    @Override
-//    public IState initialize() {
-//        resetGame();
-//        return currentBoard;
-//    }
     @Override
     public IState initialize(IActor actor) {
         //initializeEncogPerceptron();
         return currentBoard.getCopy();
     }
 
-//    @Override
-//    public double randomMoveProbability() {
-//        return 0.5;
-//    }
     /**
      *
      */
@@ -173,7 +161,7 @@ public final class BestOf3one2one implements IProblem {
     @Override
     public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
         ArrayList<IAction> actions = new ArrayList<>();
-        assert !((Boardone2one) turnInitialState).isTerminalState();
+        assert !turnInitialState.isTerminalState();
         if ( ((Boardone2one) turnInitialState).getBoard()[0][0] == false ) {
             actions.add(new Action(0, 0));
         }

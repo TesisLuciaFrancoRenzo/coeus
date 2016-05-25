@@ -107,7 +107,7 @@ public class NTupleSystem {
      * @param correction
      */
     public void addCorrectionToWeight(int currentWeightIndex, double correction) {
-        lut[currentWeightIndex] = lut[currentWeightIndex] + correction;
+        lut[currentWeightIndex] += correction;
     }
 
     /**
