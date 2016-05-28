@@ -497,7 +497,7 @@ public abstract class TDLambdaLearning {
             case annealing: {
                 //ajustamos las alphas segun el metodo de annealing µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
-                if ( this.currentAlpha.length > 1_000 ) { //FIXMe hacer una constante generica para activar paralelismo
+                if ( this.currentAlpha.length > 1_000 ) {
                     rangeStream = rangeStream.parallel();
                 } else {
                     rangeStream = rangeStream.sequential();

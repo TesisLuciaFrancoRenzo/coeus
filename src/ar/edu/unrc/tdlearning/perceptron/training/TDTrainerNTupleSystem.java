@@ -150,7 +150,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
                 if ( needToReset ) {
                     eligibilityTrace.reset(weightIndex);
                 } else {
-                    eligibilityTrace.updateTrace(weightIndex, derivatedOutput); //TODO si es random move... se actualiza? o se deja en 0?
+                    eligibilityTrace.updateTrace(weightIndex, derivatedOutput);
                 }
             }
         }

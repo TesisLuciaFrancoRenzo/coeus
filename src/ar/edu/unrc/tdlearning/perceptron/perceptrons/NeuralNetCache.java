@@ -78,16 +78,6 @@ public class NeuralNetCache {
         return layers.get(layerIndex);
     }
 
-//    /**
-//     *
-//     * @param layerIndex  indica de una capa
-//     * @param neuronIndex indice de una neurona
-//     * <p>
-//     * @return una neurona
-//     */
-//    public PartialNeuron getNeuron(int layerIndex, int neuronIndex) {
-//        return layers.get(layerIndex).getNeuron(neuronIndex); //FIXME sacar esto ya que es menos eficiente
-//    }
     /**
      *
      * @return indice de la ultima capa (capa de salida)

@@ -36,7 +36,7 @@ public class MaximalListConsumer implements Consumer<ActionPrediction> {
      *
      */
     public MaximalListConsumer() {
-        list = new ArrayList<>(); //TODO optimizar: es mejor esta implementacion?
+        list = new ArrayList<>();
     }
 
     @Override

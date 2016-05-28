@@ -78,29 +78,6 @@ public class EligibilityTraceForNTuple {
             }
         }
     }
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String[] args) {
-//        EligibilityTraceForNTuple e = new EligibilityTraceForNTuple(5, 10, 1, 0.7, 3, false, false);
-//        //turno 1
-//        e.compute(1, 0.5, 0.1, false);
-//        e.compute(4, 0.2, 0.2, false);
-//        e.processNotUsedTraces();
-//        //turno 2
-//        e.compute(1, 0.5, 0.1, false);
-//        e.processNotUsedTraces();
-//        //turno 3
-//        e.compute(4, 0.5, 0.1, false);
-//        e.compute(2, 0.2, 0.2, false);
-//        e.processNotUsedTraces();
-//        //turno 4
-//        e.processNotUsedTraces();
-//        e.processNotUsedTraces();
-//        e.processNotUsedTraces();
-//        e.processNotUsedTraces();
-//        e.processNotUsedTraces();
-//    }
 
     /**
      *
@@ -131,7 +108,6 @@ public class EligibilityTraceForNTuple {
     public synchronized void updateTrace(int weightIndex, double derivatedOutput) {
         ValueUsagePair trace = eligibilityTrace[weightIndex];
         trace.setValue(derivatedOutput); //falta la multiplicacion por la neurona de entrada
-        //TODO hacer el otro metodo de calcular trazas, como en perceptrones
         trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
         usedTraces.add(weightIndex);
     }

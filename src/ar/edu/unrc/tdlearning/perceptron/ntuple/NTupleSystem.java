@@ -246,13 +246,11 @@ public class NTupleSystem {
      *
      */
     public void reset() {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //TODO implementar
         IntStream
                 .range(0, lut.length)
                 .parallel()
                 .forEach(weightIndex -> {
-                    lut[weightIndex] = (Math.random() - 0.5d) / 5;
+                    lut[weightIndex] = (Math.random() * 2d - 1d);
                 });
     }
 

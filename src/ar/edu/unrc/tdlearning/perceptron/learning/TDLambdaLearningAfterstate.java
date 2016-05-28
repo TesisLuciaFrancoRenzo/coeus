@@ -105,7 +105,6 @@ public class TDLambdaLearningAfterstate extends TDLambdaLearning {
             // Teoricamente la evaluacion obtenida por el perceptronInterface en el ultimo afterstate,
             // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
             // afterstate para que prediga el final del problema
-            //TODO verificar que este correctamente y concuerde con la teoria http://www.bkgm.com/articles/tesauro/tdl.html#h1:temporal_difference_learning
             if ( canCollectStatistics ) {
                 time = System.currentTimeMillis();
             }

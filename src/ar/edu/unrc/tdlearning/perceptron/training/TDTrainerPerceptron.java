@@ -159,14 +159,13 @@ public final class TDTrainerPerceptron implements ITrainer {
      *
      */
     public void resetEligibilityCache() {
-        //FIXME esta seccion se puede hacer cuando se actualiza por ultima vez en el ultimo turno??
         int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
         for ( int layerIndex = 0; layerIndex < perceptron.getLayerQuantity(); layerIndex++ ) {
             int neuronQuantityInLayer = perceptron.getNeuronQuantityInLayer(layerIndex);
             for ( int neuronIndex = 0; neuronIndex < neuronQuantityInLayer; neuronIndex++ ) {
                 if ( layerIndex != 0 ) {
                     int neuronQuantityInPreviousLayer = perceptron.getNeuronQuantityInLayer(layerIndex - 1);
-                    if ( perceptron.hasBias(layerIndex) ) {//TODO recordar cambiar hasbias para soportar por capa y no por perceptron
+                    if ( perceptron.hasBias(layerIndex) ) {
                         neuronQuantityInPreviousLayer++;
                     }
                     for ( int previousNeuronIndex = 0; previousNeuronIndex < neuronQuantityInPreviousLayer; previousNeuronIndex++ ) {
@@ -290,7 +289,7 @@ public final class TDTrainerPerceptron implements ITrainer {
                                     oldWeight + newDiferential);
 
                         }
-                    } else { //TODO revisar la condicion
+                    } else {
                         //TODO asegurar safethread con estas funciones!
                         updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isARandomMove); //FIXME corregir esto para momentum?
                     }
