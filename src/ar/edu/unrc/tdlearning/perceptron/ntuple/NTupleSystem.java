@@ -47,7 +47,7 @@ public class NTupleSystem {
      * @param mapSamplePointStates <p>
      * @return
      */
-    public static int calculateIndex(int nTupleIndex, int[] nTuplesLenght, IStateNTuple state, Map<SamplePointState, Integer> mapSamplePointStates) {
+    public static int calculateLocalIndex(int nTupleIndex, int[] nTuplesLenght, IStateNTuple state, Map<SamplePointState, Integer> mapSamplePointStates) {
         SamplePointState[] ntuple = state.getNTuple(nTupleIndex);
         int index = 0;
         for ( int j = 0; j < nTuplesLenght[nTupleIndex]; j++ ) {
@@ -91,7 +91,7 @@ public class NTupleSystem {
             nTuplesWeightQuantity[i] = (int) Math.pow(mapSamplePointStates.size(), nTuplesLenght[i]);
             lutSize += nTuplesWeightQuantity[i];
             if ( i > 0 ) {
-                nTuplesWeightQuantityIndex[i] = nTuplesWeightQuantity[i - 1];
+                nTuplesWeightQuantityIndex[i] = nTuplesWeightQuantityIndex[i - 1] + nTuplesWeightQuantity[i - 1];
             }
         }
         lut = new double[lutSize];
@@ -132,13 +132,13 @@ public class NTupleSystem {
         }
         int[] indexes = new int[nTuplesLenght.length];
         double sum = stream.mapToDouble(v -> {
-            indexes[v] = nTuplesWeightQuantityIndex[v] + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
+            indexes[v] = nTuplesWeightQuantityIndex[v] + calculateLocalIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
             return lut[indexes[v]];
         }).sum();
 
 //        double sum2 = 0d;
 //        for ( int v = 0; v < nTuplesLenght.length; v++ ) {
-//            indexes[v] = nTuplesWeightQuantityIndex[v] + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
+//            indexes[v] = nTuplesWeightQuantityIndex[v] + calculateLocalIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
 //            sum2 += lut[indexes[v]];
 //        }
         ComplexNTupleComputation output = new ComplexNTupleComputation();
@@ -162,12 +162,12 @@ public class NTupleSystem {
             stream = stream.sequential();
         }
         double sum = stream.mapToDouble(v -> {
-            return lut[nTuplesWeightQuantityIndex[v] + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
+            return lut[nTuplesWeightQuantityIndex[v] + calculateLocalIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
         }).sum();
 
 //        double sum = 0d;
 //        for ( int v = 0; v < nTuplesLenght.length; v++ ) {
-//            sum += lut[nTuplesWeightQuantityIndex[v] + calculateIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
+//            sum += lut[nTuplesWeightQuantityIndex[v] + calculateLocalIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
 //        }
         return getActivationFunction().apply(sum);
     }
