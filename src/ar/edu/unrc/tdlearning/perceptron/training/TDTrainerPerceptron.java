@@ -259,7 +259,7 @@ public final class TDTrainerPerceptron implements ITrainer {
                 PartialNeuron currentNeuron = currentLayer.getNeuron(neuronIndexJ);
                 IntStream layerKStream = IntStream.rangeClosed(0, maxIndexK);
 
-                if ( concurrencyInLayer[layerIndexJ] ) {
+                if ( concurrencyInLayer[layerIndexK] ) {
                     layerKStream = layerKStream.parallel();
                 } else {
                     layerKStream = layerKStream.sequential();
@@ -631,7 +631,7 @@ public final class TDTrainerPerceptron implements ITrainer {
                 IntStream nextLayerStream = IntStream
                         .range(0, nextLayer.getNeurons().size());
 
-                if ( concurrencyInLayer[layerIndex + 1] ) {
+                if ( concurrencyInLayer[layerIndex + 1] ) { //TODO revisar si ESTO ESTA CORRECTO!!!!!
                     nextLayerStream = nextLayerStream.parallel();
                 } else {
                     nextLayerStream = nextLayerStream.sequential();

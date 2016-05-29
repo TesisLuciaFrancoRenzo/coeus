@@ -231,25 +231,25 @@ public abstract class TDLambdaLearning {
         }
 
         if ( alpha == null ) {
-            initialAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
-            for ( int i = 0; i < perceptronInterface.getLayerQuantity() - 1; i++ ) {
+            initialAlpha = new double[perceptronInterface.getLayerQuantity()];
+            for ( int i = 0; i < perceptronInterface.getLayerQuantity(); i++ ) {
                 if ( perceptronInterface.getNeuronQuantityInLayer(i) <= 0 ) {
                     throw new IllegalArgumentException("la capa " + i + " debe tener 1 o mas neuronas");
                 }
                 initialAlpha[i] = 1d / perceptronInterface.getNeuronQuantityInLayer(i);
             }
         } else {
-            if ( alpha.length != perceptronInterface.getLayerQuantity() - 1 ) {
-                throw new IllegalArgumentException("alpha.length debe ser igual a perceptronInterface.getLayerQuantity() - 1 = " + (perceptronInterface.getLayerQuantity() - 1) + " y es = " + alpha.length);
+            if ( alpha.length != perceptronInterface.getLayerQuantity() ) {
+                throw new IllegalArgumentException("alpha.length debe ser igual a perceptronInterface.getLayerQuantity() = " + (perceptronInterface.getLayerQuantity() - 1) + " y es = " + alpha.length);
             }
             this.initialAlpha = alpha;
         }
 
-        if ( this.initialAlpha.length + 1 != concurrencyInLayer.length ) {
-            throw new IllegalArgumentException("alpha.lenght+1 and concurrencyInLayer.lenght must be the same");
+        if ( perceptronInterface.getLayerQuantity() != concurrencyInLayer.length || perceptronInterface.getLayerQuantity() != initialAlpha.length ) {
+            throw new IllegalArgumentException("alpha.lenght, concurrencyInLayer.lenght and perceptronInterface.getLayerQuantity() must be the same");
         }
 
-        this.currentAlpha = new double[perceptronInterface.getLayerQuantity() - 1];
+        this.currentAlpha = new double[perceptronInterface.getLayerQuantity()];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
         this.gamma = gamma;
@@ -293,17 +293,23 @@ public abstract class TDLambdaLearning {
         }
 
         if ( alpha == null ) {
-            initialAlpha = new double[1];
+            initialAlpha = new double[2];
             initialAlpha[0] = 1d / nTupleSystem.getnTuplesLenght().length;
+            initialAlpha[1] = 1; //No se usa
         } else {
-            initialAlpha = new double[1];
+            initialAlpha = new double[2];
             initialAlpha[0] = alpha;
+            initialAlpha[1] = alpha; //No se usa
+        }
+
+        if ( 2 != concurrencyInLayer.length || 2 != initialAlpha.length ) {
+            throw new IllegalArgumentException("alpha.lenght, concurrencyInLayer.lenght and perceptronInterface.getLayerQuantity() must be the same");
         }
 
 //        if ( this.initialAlpha.length + 1 != concurrencyInLayer.length ) {
 //            throw new IllegalArgumentException("alpha.lenght+1 and concurrencyInLayer.lenght must be the same");
 //        }
-        this.currentAlpha = new double[1];
+        this.currentAlpha = new double[2];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
         this.gamma = gamma;
