@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -222,11 +223,23 @@ public class NTupleSystem {
      * @throws ClassNotFoundException
      */
     public void load(File weightsFile) throws IOException, ClassNotFoundException {
-        // leemos del disco utilizando FileInputStream
         FileInputStream f_in = new FileInputStream(weightsFile);
+        load(f_in);
+    }
+
+    /**
+     *
+     * @param weightsFile <p>
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    public void load(InputStream weightsFile) throws IOException, ClassNotFoundException {
+        if ( weightsFile == null ) {
+            throw new IllegalArgumentException("weightsFile can't be null");
+        }
 
         // descomprimimos
-        GZIPInputStream gz = new GZIPInputStream(f_in);
+        GZIPInputStream gz = new GZIPInputStream(weightsFile);
 
         // leemos le objeto utilizando ObjectInputStream
         ObjectInputStream obj_in = new ObjectInputStream(gz);
