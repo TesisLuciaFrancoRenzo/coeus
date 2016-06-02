@@ -52,10 +52,10 @@ public class NTupleSystem {
         SamplePointState[] ntuple = state.getNTuple(nTupleIndex);
         int index = 0;
         for ( int j = 0; j < nTuplesLenght[nTupleIndex]; j++ ) {
-            SamplePointState object = ntuple[j];
-            Integer sampleIndex = mapSamplePointStates.get(object);
-            int size = mapSamplePointStates.size();
-            int pow = (int) Math.pow(size, j);
+//            SamplePointState object = ntuple[j];
+//            Integer sampleIndex = mapSamplePointStates.get(object);
+//            int size = mapSamplePointStates.size();
+//            int pow = (int) Math.pow(size, j);
             index += mapSamplePointStates.get(ntuple[j]) * (int) Math.pow(mapSamplePointStates.size(), j); //FIXME hacer comparables?
         }
         return index;
