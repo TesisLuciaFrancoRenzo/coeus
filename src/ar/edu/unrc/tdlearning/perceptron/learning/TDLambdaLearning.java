@@ -21,7 +21,8 @@ package ar.edu.unrc.tdlearning.perceptron.learning;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemRunner;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemToTrain;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import static ar.edu.unrc.tdlearning.perceptron.learning.EExplorationRateAlgorithms.linear;
 import static ar.edu.unrc.tdlearning.perceptron.learning.ELearningRateAdaptation.annealing;
@@ -46,7 +47,7 @@ import java.util.stream.Stream;
  * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public abstract class TDLambdaLearning {
+public class TDLambdaLearning {
 
     /**
      * If we keep initialAlpha fixed, however, these same fluctuations prevent
@@ -104,6 +105,177 @@ public abstract class TDLambdaLearning {
         }
     }
 
+    //TODO REESCRIBIRRRR ayuda
+    /**
+     * Computa la mejor accion posible dado un estado inicial. No invocar sobre
+     * estados finales o estados que no tiene posibles acciones a realizar.
+     * {@code tempTurnInitialState} y todas las posibles acciones a tomar
+     * {@code possibleActions}
+     * <p>
+     * @param problem
+     * @param learningStyle
+     * @param turnInitialState                       estado inicial
+     * <p>
+     * <p>
+     * @param allPossibleActionsFromTurnInitialState <p>
+     * @param player                                 jugador actual
+     * <p>
+     * @param computeParallelBestPossibleAction
+     * @param bestPossibleActionTimes
+     *
+     * @return la mejor accion de todas
+     */
+    public static IAction computeBestPossibleAction(
+            final IProblemRunner problem,
+            final ELearningStyle learningStyle,
+            final IState turnInitialState,
+            final List<IAction> allPossibleActionsFromTurnInitialState,
+            final IActor player,
+            final boolean computeParallelBestPossibleAction,
+            final LinkedList<Long> bestPossibleActionTimes) {
+        Stream<IAction> stream;
+        long time = 0;
+        if ( bestPossibleActionTimes != null ) {
+            time = System.currentTimeMillis();
+        }
+        if ( computeParallelBestPossibleAction ) {
+            stream = allPossibleActionsFromTurnInitialState.parallelStream();
+        } else {
+            stream = allPossibleActionsFromTurnInitialState.stream();
+        }
+        List<ActionPrediction> bestActiones
+                = stream
+                .map(possibleAction -> {
+                    switch ( learningStyle ) {
+                        case afterState: {
+                            return evaluateAfterstate(problem, turnInitialState, possibleAction, player);
+                        }
+                        default: {
+                            throw new UnsupportedOperationException("Not supported yet.");
+                        }
+                    }
+                })
+                .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
+                .getList();
+        IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
+        if ( bestPossibleActionTimes != null ) {
+            time = System.currentTimeMillis() - time;
+            bestPossibleActionTimes.add(time);
+        }
+        return bestAction;
+    }
+
+    //TODO REESCRIBIRRRR ayuda
+    /**
+     * Calcula la prediccion del resultado final del juego al aplicar la accion
+     * {@code action} en el estado {@code turnInitialState}, utilizando un
+     * metodo entre varios dependiendo de la implementacion de IProblemToTrain.
+     * Por ejemplo si utilizas una red neuronal esta funcion deberia devolver la
+     * salida de la misma. Se debe asegurar que la ejecucion en paralelo de este
+     * metodo no cause efectos colaterales (deb ser safethread implementando
+     * {@code IsolatedComputation}).
+     * <p>
+     * @param problem          a resolver
+     * @param turnInitialState estado del problema al comienzo del turno
+     * @param action           accion a tomar
+     * <p>
+     * <p>
+     * @param player           jugador actual
+     * <p>
+     * @return Tupla que contiene 2 elementos: la accion {@code action}, y la
+     *         prediccion del valor final del juego si aplico {@code action} al
+     *         estado {@code turnInitialState}
+     */
+    public static ActionPrediction evaluateAfterstate(IProblemRunner problem, IState turnInitialState, IAction action, IActor player) {
+        IState afterstate = problem.computeAfterState(turnInitialState, action);
+        Object[] output = problem.evaluateBoardWithPerceptron(afterstate);
+        for ( int i = 0; i < output.length; i++ ) {
+            output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]) + afterstate.getStateReward(i);
+        }
+        return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, player));
+    }
+
+    //TODO REESCRIBIRRRR ayuda
+    /**
+     * Metodo que implementa el entrenamiento de una red mediante la experiencia
+     * de la solucion de un paso del problema.
+     * <p>
+     * @param problem                           a resolver
+     * @param trainer
+     * @param turnInitialState                  estado del problema al comienzo
+     *                                          del turno
+     * @param action                            accion a tomar
+     * @param afterstate                        estado de transicion de aplicar
+     *                                          la accion {@code action} al
+     *                                          estado {@code turnInitialState}
+     * @param nextTurnState                     estado del problema en el
+     *                                          proximo turno, luego de aplicar
+     *                                          las acciones/efectos no
+     *                                          deterministicos a
+     * <p>
+     * @param isARandomMove                     <p>
+     * @param currentAlpha
+     * @param concurrencyInLayer
+     * @param computeParallelBestPossibleAction
+     * @param bestPossibleActionTimes
+     * @param trainingTimes
+     *
+     * @currentState
+     */
+    public static void learnEvaluationAfterstate(
+            final IProblemToTrain problem,
+            final ITrainer trainer,
+            final IState turnInitialState,
+            final IAction action,
+            final IState afterstate,
+            final IState nextTurnState,
+            final boolean isARandomMove,
+            final double[] currentAlpha,
+            final boolean[] concurrencyInLayer,
+            final boolean computeParallelBestPossibleAction,
+            final LinkedList<Long> bestPossibleActionTimes,
+            final LinkedList<Long> trainingTimes) {
+        long time = 0;
+        if ( !nextTurnState.isTerminalState() ) {
+            // evaluamos cada accion posible aplicada al estado nextState y elegimos la mejor
+            // accion basada las predicciones del problema
+            List<IAction> possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
+            IAction bestActionForNextTurn = computeBestPossibleAction(
+                    problem,
+                    ELearningStyle.afterState,
+                    nextTurnState,
+                    possibleActionsNextTurn,
+                    problem.getActorToTrain(),
+                    computeParallelBestPossibleAction,
+                    bestPossibleActionTimes);
+            // aplicamos la accion 'bestActionForNextTurn' al estado (turno) siguiente 'nextState',
+            // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
+            IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
+            //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
+            if ( trainingTimes != null ) {
+                time = System.currentTimeMillis();
+            }
+            trainer.train(problem, afterstate, afterStateNextTurn, currentAlpha, concurrencyInLayer, isARandomMove);
+            if ( trainingTimes != null ) {
+                time = System.currentTimeMillis() - time;
+                trainingTimes.add(time);
+            }
+        } else {
+            // Si nextTurnState es un estado final, no podemos calcular el bestActionForNextTurn.
+            // Teoricamente la evaluacion obtenida por el perceptronInterface en el ultimo afterstate,
+            // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
+            // afterstate para que prediga el final del problema
+            if ( trainingTimes != null ) {
+                time = System.currentTimeMillis();
+            }
+            trainer.train(problem, afterstate, nextTurnState, currentAlpha, concurrencyInLayer, isARandomMove);
+            if ( trainingTimes != null ) {
+                time = System.currentTimeMillis() - time;
+                trainingTimes.add(time);
+            }
+        }
+    }
+
     /**
      * calcula un numero al azar entre los limites dados, inclusive estos.
      * <p>
@@ -133,6 +305,7 @@ public abstract class TDLambdaLearning {
     private int explorationRateFinishDecrementing;
     private double explorationRateInitialValue;
     private int explorationRateStartDecrementing;
+    private ELearningStyle learningStyle;
     private NTupleSystem nTupleSystem;
     private final ENeuralNetworkType neuralNetworkType;
     /**
@@ -143,7 +316,7 @@ public abstract class TDLambdaLearning {
     /**
      *
      */
-    protected LinkedList<Long> bestPissibleActionTimes;
+    protected LinkedList<Long> bestPossibleActionTimes;
 
     /**
      *
@@ -196,6 +369,7 @@ public abstract class TDLambdaLearning {
 
     /**
      *
+     * @param learningStyle
      * @param perceptronInterface    implementacion de la interfaz entre nuestra
      *                               red neuronal y el perceptronInterface que
      *                               utilizara el problema. Este puede estar
@@ -214,8 +388,9 @@ public abstract class TDLambdaLearning {
      * @param collectStatistics      guarda estadisticas relevante a los tiempos
      *                               de cálculo
      */
-    protected TDLambdaLearning(
+    public TDLambdaLearning(
             final IPerceptronInterface perceptronInterface,
+            final ELearningStyle learningStyle,
             final double[] alpha,
             final double lambda,
             final double gamma,
@@ -225,10 +400,16 @@ public abstract class TDLambdaLearning {
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
-
         if ( concurrencyInLayer == null ) {
             throw new IllegalArgumentException("concurrencyInLayer can't be null");
         }
+        if ( learningStyle == null ) {
+            throw new IllegalArgumentException("learningStyle can't be null");
+        } else if ( learningStyle == ELearningStyle.state ) {
+            throw new IllegalArgumentException("El estilo de entrenamiento por estado no esta implementado, utilice el metodo after state");
+        }
+
+        this.learningStyle = learningStyle;
 
         if ( alpha == null ) {
             initialAlpha = new double[perceptronInterface.getLayerQuantity()];
@@ -261,13 +442,14 @@ public abstract class TDLambdaLearning {
         this.canCollectStatistics = collectStatistics;
 
         if ( collectStatistics ) {
-            this.bestPissibleActionTimes = new LinkedList<>();
+            this.bestPossibleActionTimes = new LinkedList<>();
             this.trainingTimes = new LinkedList<>();
         }
     }
 
     /**
      *
+     * @param learningStyle
      * @param nTupleSystem
      * @param alpha
      * @param lambda
@@ -276,8 +458,9 @@ public abstract class TDLambdaLearning {
      * @param resetEligibilitiTraces
      * @param collectStatistics
      */
-    protected TDLambdaLearning(
+    public TDLambdaLearning(
             final NTupleSystem nTupleSystem,
+            final ELearningStyle learningStyle,
             final Double alpha,
             final double lambda,
             final double gamma,
@@ -291,6 +474,14 @@ public abstract class TDLambdaLearning {
         if ( concurrencyInLayer == null ) {
             throw new IllegalArgumentException("concurrencyInLayer can't be null");
         }
+
+        if ( learningStyle == null ) {
+            throw new IllegalArgumentException("learningStyle can't be null");
+        } else if ( learningStyle == ELearningStyle.state ) {
+            throw new IllegalArgumentException("El estilo de entrenamiento por estado no esta implementado, utilice el metodo after state");
+        }
+
+        this.learningStyle = learningStyle;
 
         if ( alpha == null ) {
             initialAlpha = new double[2];
@@ -321,7 +512,7 @@ public abstract class TDLambdaLearning {
         this.canCollectStatistics = collectStatistics;
 
         if ( collectStatistics ) {
-            this.bestPissibleActionTimes = new LinkedList<>();
+            this.bestPossibleActionTimes = new LinkedList<>();
             this.trainingTimes = new LinkedList<>();
         }
     }
@@ -335,45 +526,6 @@ public abstract class TDLambdaLearning {
     }
 
     /**
-     * Computa la mejor accion posible dado un estado inicial. No invocar sobre
-     * estados finales o estados que no tiene posibles acciones a realizar.
-     * {@code tempTurnInitialState} y todas las posibles acciones a tomar
-     * {@code possibleActions}
-     * <p>
-     * @param problem
-     * @param turnInitialState                       estado inicial
-     * <p>
-     * <p>
-     * @param allPossibleActionsFromTurnInitialState <p>
-     * @param player                                 jugador actual
-     * <p>
-     * @return la mejor accion de todas
-     */
-    public IAction computeBestPossibleAction(IProblem problem, IState turnInitialState, List<IAction> allPossibleActionsFromTurnInitialState, IActor player) {
-        Stream<IAction> stream;
-        long time = 0;
-        if ( canCollectStatistics ) {
-            time = System.currentTimeMillis();
-        }
-        if ( computeParallelBestPossibleAction ) {
-            stream = allPossibleActionsFromTurnInitialState.parallelStream();
-        } else {
-            stream = allPossibleActionsFromTurnInitialState.stream();
-        }
-        List<ActionPrediction> bestActiones
-                = stream
-                .map(possibleAction -> evaluate(problem, turnInitialState, possibleAction, player))
-                .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
-                .getList();
-        IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
-        if ( canCollectStatistics ) {
-            time = System.currentTimeMillis() - time;
-            bestPissibleActionTimes.add(time);
-        }
-        return bestAction;
-    }
-
-    /**
      * @return the annealingT
      */
     public int getAnnealingT() {
@@ -384,8 +536,8 @@ public abstract class TDLambdaLearning {
      *
      * @return
      */
-    public LinkedList<Long> getBestPissibleActionTimes() {
-        return bestPissibleActionTimes;
+    public LinkedList<Long> getBestPossibleActionTimes() {
+        return bestPossibleActionTimes;
     }
 
     /**
@@ -484,7 +636,7 @@ public abstract class TDLambdaLearning {
      * @param t       cantiad de veces qeu se ejecuto el metodo
      *                solveAndTrainOnce
      */
-    public void solveAndTrainOnce(IProblem problem, int t) {
+    public void solveAndTrainOnce(IProblemToTrain problem, int t) {
         if ( learningRateAdaptation == null ) {
             throw new IllegalArgumentException("learningRateAdaptation can't be null");
         }
@@ -572,7 +724,13 @@ public abstract class TDLambdaLearning {
             if ( !randomChoise ) {
                 // evaluamos cada accion aplicada al estado inicial y elegimos la mejor
                 // accion basada en las predicciones del problema
-                bestAction = computeBestPossibleAction(problem, turnInitialState, possibleActions, problem.getActorToTrain());
+                bestAction = computeBestPossibleAction(problem,
+                        learningStyle,
+                        turnInitialState,
+                        possibleActions,
+                        problem.getActorToTrain(),
+                        computeParallelBestPossibleAction,
+                        bestPossibleActionTimes);
             } else {
                 bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1));
             }
@@ -592,51 +750,31 @@ public abstract class TDLambdaLearning {
             // entrenamos el problema para que recuerde las predicciones de t+1
             // (que en este caso es nextState o el afterstate dependiendo de las
             // implementaciones de esta clase abstracta). Si es un movimiento al azar se actualizan trazas pero no se actualizan pesos
-            learnEvaluation(problem, turnInitialState, bestAction, afterState, nextTurnState, randomChoise);
+            switch ( learningStyle ) {
+                case afterState: {
+                    learnEvaluationAfterstate(problem,
+                            trainer,
+                            turnInitialState,
+                            bestAction,
+                            afterState,
+                            nextTurnState,
+                            randomChoise,
+                            currentAlpha,
+                            concurrencyInLayer,
+                            computeParallelBestPossibleAction,
+                            bestPossibleActionTimes,
+                            trainingTimes);
+                    break;
+                }
+                default: {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+            }
 
             // recordamos el nuevo estado del problema luago de aplicar todas
             // las acciones necesarias para avanzar en la solucion del problema
             turnInitialState = nextTurnState;
         }
     }
-
-    /**
-     * Calcula la prediccion del resultado final del juego al aplicar la accion
-     * {@code action} en el estado {@code turnInitialState}, utilizando un
-     * metodo entre varios dependiendo de la implementacion de IProblem. Por
-     * ejemplo si utilizas una red neuronal esta funcion deberia devolver la
-     * salida de la misma. Se debe asegurar que la ejecucion en paralelo de este
-     * metodo no cause efectos colaterales (deb ser safethread implementando
-     * {@code IsolatedComputation}).
-     * <p>
-     * @param problem          a resolver
-     * @param turnInitialState estado del problema al comienzo del turno
-     * @param action           accion a tomar
-     * <p>
-     * <p>
-     * @param player           jugador actual
-     * <p>
-     * @return Tupla que contiene 2 elementos: la accion {@code action}, y la
-     *         prediccion del valor final del juego si aplico {@code action} al
-     *         estado {@code turnInitialState}
-     */
-    protected abstract ActionPrediction evaluate(IProblem problem, IState turnInitialState, IAction action, IActor player);
-
-    /**
-     * Metodo que implementa el entrenamiento de una red mediante la experiencia
-     * de la solucion de un paso del problema.
-     * <p>
-     * @param problem          a resolver
-     * @param turnInitialState estado del problema al comienzo del turno
-     * @param action           accion a tomar
-     * @param afterstate       estado de transicion de aplicar la accion
-     *                         {@code action} al estado {@code turnInitialState}
-     * @param nextTurnState    estado del problema en el proximo turno, luego de
-     *                         aplicar las acciones/efectos no deterministicos a
-     * <p>
-     * @param isARandomMove    <p>
-     * @currentState
-     */
-    protected abstract void learnEvaluation(IProblem problem, IState turnInitialState, IAction action, IState afterstate, IState nextTurnState, boolean isARandomMove);
 
 }

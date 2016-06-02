@@ -25,9 +25,18 @@ package ar.edu.unrc.tdlearning.perceptron.ntuple;
  */
 public interface SamplePointState {
 
+    /**
+     *
+     * @param other
+     * @return
+     */
     @Override
     public abstract boolean equals(Object other);
 
+    /**
+     *
+     * @return
+     */
     @Override
     public abstract int hashCode();
 }

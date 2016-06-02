@@ -25,11 +25,11 @@ import java.util.List;
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public interface IProblemState extends IProblem {
+public interface IProblemState extends IProblemToTrain {
 
     /**
      * Solo se necesita implementar para el modo de aprendizaje
-     * TDLambdaLearningAfterstate
+     * TDLambdaLearning
      * <p>
      * @param afterState estado intermedio que contiene las acciones
      *                   deterministicas tomadas hasta el momento.

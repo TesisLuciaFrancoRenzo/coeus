@@ -21,7 +21,7 @@ package ar.edu.unrc.tdlearning.perceptron.training;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemToTrain;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
 import ar.edu.unrc.tdlearning.perceptron.learning.FunctionUtils;
@@ -251,7 +251,7 @@ public class TDTrainerTest {
             }
         };
 
-        IProblem problem = new IProblem() {
+        IProblemToTrain problem = new IProblemToTrain() {
             @Override
             public IState computeAfterState(IState turnInitialState, IAction action) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -502,7 +502,7 @@ public class TDTrainerTest {
             }
         };
 
-        IProblem problem = new IProblem() {
+        IProblemToTrain problem = new IProblemToTrain() {
             @Override
             public IState computeAfterState(IState turnInitialState, IAction action) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -752,7 +752,7 @@ public class TDTrainerTest {
             }
         };
 
-        IProblem problem = new IProblem() {
+        IProblemToTrain problem = new IProblemToTrain() {
             @Override
             public IState computeAfterState(IState turnInitialState, IAction action) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

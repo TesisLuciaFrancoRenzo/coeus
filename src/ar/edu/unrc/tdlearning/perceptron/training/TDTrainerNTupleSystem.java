@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.training;
 
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemToTrain;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStateNTuple;
 import ar.edu.unrc.tdlearning.perceptron.ntuple.ComplexNTupleComputation;
@@ -118,7 +118,7 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * @param isARandomMove <p>
      */
     @Override
-    public void train(final IProblem problem, final IState state, final IState nextTurnState, final double[] alpha, final boolean[] concurrencyInLayer, final boolean isARandomMove) {
+    public void train(final IProblemToTrain problem, final IState state, final IState nextTurnState, final double[] alpha, final boolean[] concurrencyInLayer, final boolean isARandomMove) {
 
         //computamos
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state);

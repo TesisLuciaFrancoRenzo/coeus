@@ -20,7 +20,7 @@ package ar.edu.unrc.tdlearning.perceptron.auxiliarData;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IAction;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IActor;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemToTrain;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import org.encog.util.arrayutil.NormalizedField;
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public final class BestOf3one2one implements IProblem {
+public final class BestOf3one2one implements IProblemToTrain {
 
     /**
      * @param args the command line arguments

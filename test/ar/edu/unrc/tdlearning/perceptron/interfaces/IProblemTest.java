@@ -71,7 +71,7 @@ public class IProblemTest {
     }
 
     /**
-     * Test of computeAfterState method, of class IProblem.
+     * Test of computeAfterState method, of class IProblemToTrain.
      */
     @Test
     public void testComputeAfterState() {
@@ -80,7 +80,7 @@ public class IProblemTest {
         Boardone2one newBoard = new Boardone2one();
         Boardone2one newBoard1 = newBoard.getCopy();
         newBoard1.board[action.getX()][action.getX()] = true;
-        IProblem instance = new IProblemImpl();
+        IProblemToTrain instance = new IProblemImpl();
         IState expResult = newBoard1;
         IState result = instance.computeAfterState(newBoard, action);
         assertEquals(((Boardone2one) expResult).board[0][0], ((Boardone2one) result).board[0][0]);
@@ -90,7 +90,7 @@ public class IProblemTest {
     /**
      *
      */
-    public class IProblemImpl implements IProblem {
+    public class IProblemImpl implements IProblemToTrain {
 
         @Override
         public IState computeAfterState(IState turnInitialState, IAction action) {

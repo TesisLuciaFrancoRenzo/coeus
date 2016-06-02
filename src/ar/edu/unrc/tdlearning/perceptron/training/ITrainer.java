@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.training;
 
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemToTrain;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 
 /**
@@ -41,5 +41,5 @@ public interface ITrainer {
      * @param concurrencyInLayer
      * @param aRandomMove
      */
-    public void train(final IProblem problem, final IState state, final IState nextTurnState, final double[] currentAlpha, final boolean[] concurrencyInLayer, final boolean aRandomMove);
+    public void train(final IProblemToTrain problem, final IState state, final IState nextTurnState, final double[] currentAlpha, final boolean[] concurrencyInLayer, final boolean aRandomMove);
 }

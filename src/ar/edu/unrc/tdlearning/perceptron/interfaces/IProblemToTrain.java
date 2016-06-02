@@ -18,37 +18,17 @@
  */
 package ar.edu.unrc.tdlearning.perceptron.interfaces;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public interface IProblem {
+public interface IProblemToTrain extends IProblemRunner {
 
     /**
      *
      * @return el Actor (jugador si es un juego) que se va a entrenar
      */
     public IActor getActorToTrain();
-
-    /**
-     *
-     * @param output salida del perceptron no normalizada.<p>
-     * @param actor  jugador actual que necesita interpretar {@code output}
-     *               desde su punto de vista
-     * <p>
-     * @return un valor representativo que interpreta la salida del perceptron
-     *         {@code output} desde el punto de vista del jugador {@code player}
-     */
-    public Double computeNumericRepresentationFor(Object[] output, IActor actor);
-
-    /**
-     *
-     * @param value <p>
-     * @return
-     */
-    public double denormalizeValueFromPerceptronOutput(Object value);
 
     /**
      *
@@ -67,31 +47,6 @@ public interface IProblem {
      * @return Inicializa el problema y devuelve su estado inicial
      */
     public IState initialize(IActor actor);
-
-    /**
-     *
-     * @param turnInitialState estado del poblema sobre el cual hacer calculos
-     * <p>
-     * @return una lista de todas las acciones validas que se pueden aplicar al
-     *         estado s
-     */
-    public ArrayList<IAction> listAllPossibleActions(IState turnInitialState);
-
-    /**
-     * Calcula el estado intermedio del turno, que es el estado al que llega el
-     * problema inmediatamente luego de aplicar la accion deterministica 'a',
-     * pero antes de aplicar las acciones no deterministicas. Al computar el
-     * afterstate se debe cargar la puntuacion parcial obtenida en
-     * {@code turnInitialState} para ser utilizado en diferentes algorimos.
-     * <p>
-     * @param turnInitialState estado inicial
-     * @param action           accion a aplicar
-     * <p>
-     * @return estado intermedio deterministico resulante de aplicar la accion
-     *         'a' al estado 's', con su recompensa parcial en caso de ser
-     *         utilizado el calculo acumulativo en TDLearning
-     */
-    public IState computeAfterState(IState turnInitialState, IAction action);
 
     //TODO actualizar descripcion!
     /**
@@ -124,18 +79,6 @@ public interface IProblem {
      * @param nextTurnState nuevo estado inicial
      */
     public void setCurrentState(IState nextTurnState);
-
-    /**
-     * Prediccion realizada por el perceptron de que tan bueno es el estado
-     * {@code state}.
-     * <p>
-     * @param state estado intermedio si se utiliza afterstate, o inicio de
-     *              estado
-     * <p>
-     * @return prediccion del perceptron, normalizado (si la funcion de
-     *         activacion necesita normalizacion).
-     */
-    public Object[] evaluateBoardWithPerceptron(IState state);
 
     /**
      *

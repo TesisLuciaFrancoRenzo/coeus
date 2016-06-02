@@ -19,7 +19,7 @@
 package ar.edu.unrc.tdlearning.perceptron.training;
 
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IPerceptronInterface;
-import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblem;
+import ar.edu.unrc.tdlearning.perceptron.interfaces.IProblemToTrain;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IState;
 import ar.edu.unrc.tdlearning.perceptron.interfaces.IStatePerceptron;
 import ar.edu.unrc.tdlearning.perceptron.perceptrons.Layer;
@@ -48,7 +48,7 @@ public final class TDTrainerPerceptron implements ITrainer {
      * Quinta componente: turno (m) de la traza de eligibilidad
      */
     private List<List<List<List<Double>>>> elegibilityTraces;
-    private IProblem problem;
+    private IProblemToTrain problem;
     /**
      * constante de tasa de aprendizaje
      */
@@ -196,7 +196,7 @@ public final class TDTrainerPerceptron implements ITrainer {
      * @param isARandomMove
      */
     @Override
-    public void train(final IProblem problem, final IState state, final IState nextTurnState, final double[] alpha, final boolean[] concurrencyInLayer, final boolean isARandomMove) {
+    public void train(final IProblemToTrain problem, final IState state, final IState nextTurnState, final double[] alpha, final boolean[] concurrencyInLayer, final boolean isARandomMove) {
         this.alpha = alpha;
         this.problem = problem;
         this.concurrencyInLayer = concurrencyInLayer;
