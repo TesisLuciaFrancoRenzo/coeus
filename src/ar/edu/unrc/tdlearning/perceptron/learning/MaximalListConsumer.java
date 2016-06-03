@@ -40,7 +40,7 @@ public class MaximalListConsumer implements Consumer<ActionPrediction> {
     }
 
     @Override
-    public void accept(ActionPrediction actionPrediction) {
+    public void accept(final ActionPrediction actionPrediction) {
         if ( list.isEmpty() ) {
             list.add(actionPrediction);
         } else {
@@ -58,7 +58,7 @@ public class MaximalListConsumer implements Consumer<ActionPrediction> {
      *
      * @param other
      */
-    public void combine(MaximalListConsumer other) {
+    public void combine(final MaximalListConsumer other) {
         if ( list.isEmpty() ) {
             list = other.list;
         } else if ( !other.list.isEmpty() ) {

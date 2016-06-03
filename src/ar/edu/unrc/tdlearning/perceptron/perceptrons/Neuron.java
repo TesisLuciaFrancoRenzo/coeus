@@ -37,7 +37,7 @@ public class Neuron extends PartialNeuron {
      * @param weightsQuantity
      * @param outputLayerNeuronQuantity
      */
-    public Neuron(int weightsQuantity, int outputLayerNeuronQuantity) {
+    public Neuron(final int weightsQuantity, final int outputLayerNeuronQuantity) {
         super(weightsQuantity, outputLayerNeuronQuantity);
         if ( outputLayerNeuronQuantity > 0 ) {
             deltas = new ArrayList<>(outputLayerNeuronQuantity);
@@ -64,7 +64,7 @@ public class Neuron extends PartialNeuron {
      *
      * @return
      */
-    public Double getDelta(int outputNeuronIndex) {
+    public Double getDelta(final int outputNeuronIndex) {
         return getDeltas().get(outputNeuronIndex);
     }
 
@@ -85,7 +85,7 @@ public class Neuron extends PartialNeuron {
     /**
      * @param derivatedOutput the derivatedOutput to set
      */
-    public void setDerivatedOutput(Double derivatedOutput) {
+    public void setDerivatedOutput(final Double derivatedOutput) {
         this.derivatedOutput = derivatedOutput;
     }
 
@@ -99,7 +99,7 @@ public class Neuron extends PartialNeuron {
     /**
      * @param output the output to set
      */
-    public void setOutput(Double output) {
+    public void setOutput(final Double output) {
         this.output = output;
     }
 
@@ -108,7 +108,7 @@ public class Neuron extends PartialNeuron {
      * @param outputNeuronIndex
      * @param delta
      */
-    public void setDelta(int outputNeuronIndex, Double delta) {
+    public void setDelta(final int outputNeuronIndex, final Double delta) {
         getDeltas().set(outputNeuronIndex, delta);
     }
 

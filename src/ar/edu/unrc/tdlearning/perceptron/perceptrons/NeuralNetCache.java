@@ -33,48 +33,19 @@ public class NeuralNetCache {
      *
      * @param layerQuantity cantidad de capas que posee la red neuronal
      */
-    public NeuralNetCache(int layerQuantity) {
+    public NeuralNetCache(final int layerQuantity) {
         layers = new ArrayList<>(layerQuantity);
         for ( int i = 0; i < layerQuantity; i++ ) {
             layers.add(null);
         }
     }
-//
-//    public void printDebug() {
-//        for ( int layerIndex = 1; layerIndex < layers.size(); layerIndex++ ) {
-//            for ( int neuronIndex = 0; neuronIndex < layers.get(layerIndex).getNeurons().size(); neuronIndex++ ) {
-//                Neuron neuron = getNeuron(layerIndex, neuronIndex);
-//                System.out.println("------ Neurona " + layerIndex + "," + neuronIndex + " ------");
-//                System.out.println("* salida = " + neuron.getOutput());
-//                System.out.println("* salida derivada = " + neuron.getDerivatedOutput());
-//                System.out.println("* bias = " + neuron.getBias());
-//                System.out.print("* pesos = {");
-//                for ( int weightIndex = 0; weightIndex < neuron.getWeights().size() - 1; weightIndex++ ) {
-//                    System.out.print(neuron.getWeights().get(weightIndex));
-//                    if ( weightIndex < neuron.getWeights().size() - 2 ) {
-//                        System.out.print(",");
-//                    }
-//                }
-//                System.out.println("}");
-//                System.out.print("* deltas = {");
-//                for ( int deltaIndex = 0; deltaIndex < neuron.getDeltas().size(); deltaIndex++ ) {
-//                    System.out.print(neuron.getDeltas().get(deltaIndex));
-//                    if ( deltaIndex < neuron.getDeltas().size() - 1 ) {
-//                        System.out.print(",");
-//                    }
-//                }
-//                System.out.println("}");
-//
-//            }
-//        }
-//    }
 
     /**
      *
      * @param layerIndex <p>
      * @return la capa indicada
      */
-    public Layer getLayer(int layerIndex) {
+    public Layer getLayer(final int layerIndex) {
         return layers.get(layerIndex);
     }
 
@@ -92,7 +63,7 @@ public class NeuralNetCache {
      * <p>
      * @return true si es la penultima capa
      */
-    public boolean isNextToLasyLayer(int layerIndex) {
+    public boolean isNextToLasyLayer(final int layerIndex) {
         return layerIndex == getOutputLayerIndex() - 1;
     }
 
@@ -102,7 +73,7 @@ public class NeuralNetCache {
      * <p>
      * @return true si es la ultima capa (capa de salida)
      */
-    public boolean isOutputLayer(int layerIndex) {
+    public boolean isOutputLayer(final int layerIndex) {
         return layerIndex == layers.size() - 1;
     }
 
@@ -112,7 +83,7 @@ public class NeuralNetCache {
      * @param layerIndex indice del destino de la nueva capa
      * @param layer      nueva capa a añadir a la cache
      */
-    public void setLayer(int layerIndex, Layer layer) {
+    public void setLayer(final int layerIndex, final Layer layer) {
         layers.set(layerIndex, layer);
     }
 }

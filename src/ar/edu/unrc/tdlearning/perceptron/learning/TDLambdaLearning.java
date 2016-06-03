@@ -186,7 +186,12 @@ public class TDLambdaLearning {
      *         prediccion del valor final del juego si aplico {@code action} al
      *         estado {@code turnInitialState}
      */
-    public static ActionPrediction evaluateAfterstate(IProblemRunner problem, IState turnInitialState, IAction action, IActor player) {
+    public static ActionPrediction evaluateAfterstate(
+            final IProblemRunner problem,
+            final IState turnInitialState,
+            final IAction action,
+            final IActor player
+    ) {
         IState afterstate = problem.computeAfterState(turnInitialState, action);
         Object[] output = problem.evaluateBoardWithPerceptron(afterstate);
         for ( int i = 0; i < output.length; i++ ) {
@@ -285,7 +290,7 @@ public class TDLambdaLearning {
      * @return aleatorio entre a y b
      * <p>
      */
-    public static int randomBetween(int a, int b) {
+    public static int randomBetween(final int a, final int b) {
         if ( a > b ) {
             throw new IllegalArgumentException("error: b debe ser mayor que a");
         } else if ( a == b ) {
@@ -551,7 +556,7 @@ public class TDLambdaLearning {
      *
      * @param value
      */
-    public void setExplorationRateToFixed(double value) {
+    public void setExplorationRateToFixed(final double value) {
         if ( value < 0 || value > 1 ) {
             throw new IllegalArgumentException("value debe estar en el intervalo [0,1]");
         }
@@ -563,7 +568,7 @@ public class TDLambdaLearning {
      *
      * @param annealingT
      */
-    public void setLearningRateAdaptationToAnnealing(int annealingT) {
+    public void setLearningRateAdaptationToAnnealing(final int annealingT) {
         if ( annealingT < 0 ) {
             throw new IllegalArgumentException("annealingT debe ser un valor mayor a 0");
         }
@@ -593,7 +598,7 @@ public class TDLambdaLearning {
      * @param computeParallelBestPossibleAction true si las evaluaciones deben
      *                                          ejecutarse en paralelo.
      */
-    public void setComputeParallelBestPossibleAction(boolean computeParallelBestPossibleAction) {
+    public void setComputeParallelBestPossibleAction(final boolean computeParallelBestPossibleAction) {
         this.computeParallelBestPossibleAction = computeParallelBestPossibleAction;
     }
 
@@ -604,7 +609,11 @@ public class TDLambdaLearning {
      * @param finalValue
      * @param finishDecrementing
      */
-    public void setExplorationRate(double initialValue, int startDecrementing, double finalValue, int finishDecrementing) {
+    public void setExplorationRate(
+            final double initialValue,
+            final int startDecrementing,
+            final double finalValue,
+            final int finishDecrementing) {
         if ( initialValue < 0 || initialValue > 1 ) {
             throw new IllegalArgumentException("initialValue debe estar en el intervalo [0,1]");
         }
@@ -636,7 +645,7 @@ public class TDLambdaLearning {
      * @param t       cantiad de veces qeu se ejecuto el metodo
      *                solveAndTrainOnce
      */
-    public void solveAndTrainOnce(IProblemToTrain problem, int t) {
+    public void solveAndTrainOnce(final IProblemToTrain problem, final int t) {
         if ( learningRateAdaptation == null ) {
             throw new IllegalArgumentException("learningRateAdaptation can't be null");
         }
@@ -752,7 +761,8 @@ public class TDLambdaLearning {
             // implementaciones de esta clase abstracta). Si es un movimiento al azar se actualizan trazas pero no se actualizan pesos
             switch ( learningStyle ) {
                 case afterState: {
-                    learnEvaluationAfterstate(problem,
+                    learnEvaluationAfterstate(
+                            problem,
                             trainer,
                             turnInitialState,
                             bestAction,
@@ -763,7 +773,8 @@ public class TDLambdaLearning {
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,
                             bestPossibleActionTimes,
-                            trainingTimes);
+                            trainingTimes
+                    );
                     break;
                 }
                 default: {

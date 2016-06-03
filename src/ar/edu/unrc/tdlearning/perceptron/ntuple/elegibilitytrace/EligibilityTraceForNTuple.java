@@ -43,7 +43,11 @@ public class EligibilityTraceForNTuple {
      * @param lambda
      * @param maxEligibilityTraceLenght
      */
-    public EligibilityTraceForNTuple(NTupleSystem nTupleSystem, double gamma, double lambda, int maxEligibilityTraceLenght) {
+    public EligibilityTraceForNTuple(
+            final NTupleSystem nTupleSystem,
+            final double gamma,
+            final double lambda,
+            final int maxEligibilityTraceLenght) {
         this.nTupleSystem = nTupleSystem;
         eligibilityTrace = new ValueUsagePair[nTupleSystem.getLut().length];
         for ( int i = 0; i < eligibilityTrace.length; i++ ) {
@@ -59,7 +63,7 @@ public class EligibilityTraceForNTuple {
      *
      * @param tDError
      */
-    public void processNotUsedTraces(double tDError) {
+    public void processNotUsedTraces(final double tDError) {
         if ( this.lambda > 0 ) {
             Iterator<Integer> it = usedTraces.iterator();
             while ( it.hasNext() ) {
@@ -95,7 +99,7 @@ public class EligibilityTraceForNTuple {
      *
      * @param weightIndex
      */
-    public void reset(int weightIndex) {
+    public void reset(final int weightIndex) {
         eligibilityTrace[weightIndex].reset();
         usedTraces.remove(weightIndex);
     }
@@ -105,7 +109,7 @@ public class EligibilityTraceForNTuple {
      * @param weightIndex
      * @param derivatedOutput
      */
-    public synchronized void updateTrace(int weightIndex, double derivatedOutput) {
+    public synchronized void updateTrace(final int weightIndex, final double derivatedOutput) {
         ValueUsagePair trace = eligibilityTrace[weightIndex];
         trace.setValue(derivatedOutput); //falta la multiplicacion por la neurona de entrada
         trace.setUsagesLeft(maxEligibilityTraceLenght + 1);

@@ -36,7 +36,7 @@ public class PartialNeuron {
      * @param weightsQuantity
      * @param outputLayerNeuronQuantity
      */
-    public PartialNeuron(int weightsQuantity, int outputLayerNeuronQuantity) {
+    public PartialNeuron(final int weightsQuantity, final int outputLayerNeuronQuantity) {
         if ( weightsQuantity > 0 ) {
             weights = new ArrayList(weightsQuantity + 1);
             for ( int i = 0; i < weightsQuantity + 1; i++ ) {
@@ -57,7 +57,7 @@ public class PartialNeuron {
     /**
      * @param newBias
      */
-    public void setBias(Double newBias) {
+    public void setBias(final Double newBias) {
         getWeights().set(getWeights().size() - 1, newBias);
     }
 
@@ -65,7 +65,7 @@ public class PartialNeuron {
      * @param previousLayerNeuronIndex <p>
      * @return the weights
      */
-    public Double getWeight(int previousLayerNeuronIndex) {
+    public Double getWeight(final int previousLayerNeuronIndex) {
         return getWeights().get(previousLayerNeuronIndex);
     }
 
@@ -80,7 +80,7 @@ public class PartialNeuron {
      * @param previousLayerNeuronIndex
      * @param weight
      */
-    public void setWeight(int previousLayerNeuronIndex, Double weight) {
+    public void setWeight(final int previousLayerNeuronIndex, final Double weight) {
         getWeights().set(previousLayerNeuronIndex, weight);
     }
 

@@ -23,5 +23,5 @@ package ar.edu.unrc.tdlearning.perceptron.interfaces;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface IActor {
-    // public String getName();
+
 }

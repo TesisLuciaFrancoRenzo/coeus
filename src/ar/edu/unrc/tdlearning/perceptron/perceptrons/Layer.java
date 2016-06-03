@@ -33,7 +33,7 @@ public class Layer {
      *
      * @param neuronQuantityInLayer
      */
-    public Layer(int neuronQuantityInLayer) {
+    public Layer(final int neuronQuantityInLayer) {
         neurons = new ArrayList<>(neuronQuantityInLayer);
         for ( int i = 0; i < neuronQuantityInLayer; i++ ) {
             neurons.add(null);
@@ -45,7 +45,7 @@ public class Layer {
      * @param neuronIndex <p>
      * @return the neurons
      */
-    public PartialNeuron getNeuron(int neuronIndex) {
+    public PartialNeuron getNeuron(final int neuronIndex) {
         return neurons.get(neuronIndex);
     }
 
@@ -61,7 +61,7 @@ public class Layer {
      * @param neuronIndex
      * @param neuron
      */
-    public void setNeuron(int neuronIndex, PartialNeuron neuron) {
+    public void setNeuron(final int neuronIndex, final PartialNeuron neuron) {
         neurons.set(neuronIndex, neuron);
     }
 

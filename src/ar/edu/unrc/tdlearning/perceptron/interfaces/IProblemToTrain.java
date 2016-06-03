@@ -36,7 +36,7 @@ public interface IProblemToTrain extends IProblemRunner {
      * @param outputNeuron <p>
      * @return
      */
-    public double getFinalReward(IState finalState, int outputNeuron);
+    public double getFinalReward(final IState finalState, final int outputNeuron);
 
     /**
      * Se debe inicializar el problema y avanzar hasta el punto en el que el
@@ -46,7 +46,7 @@ public interface IProblemToTrain extends IProblemRunner {
      * <p>
      * @return Inicializa el problema y devuelve su estado inicial
      */
-    public IState initialize(IActor actor);
+    public IState initialize(final IActor actor);
 
     //TODO actualizar descripcion!
     /**
@@ -68,7 +68,7 @@ public interface IProblemToTrain extends IProblemRunner {
      * @return el estado 'nextState', que representa el siguiente turno o
      *         siguiente estado inicial (ver descripcion para mas detalles)
      */
-    public IState computeNextTurnStateFromAfterstate(IState afterstate);
+    public IState computeNextTurnStateFromAfterstate(final IState afterstate);
 
     /**
      * Modifica el estado del problema para que el nuevo estado sea @newState.
@@ -78,13 +78,13 @@ public interface IProblemToTrain extends IProblemRunner {
      * <p>
      * @param nextTurnState nuevo estado inicial
      */
-    public void setCurrentState(IState nextTurnState);
+    public void setCurrentState(final IState nextTurnState);
 
     /**
      *
      * @param value <p>
      * @return
      */
-    public double normalizeValueToPerceptronOutput(Object value);
+    public double normalizeValueToPerceptronOutput(final Object value);
 
 }

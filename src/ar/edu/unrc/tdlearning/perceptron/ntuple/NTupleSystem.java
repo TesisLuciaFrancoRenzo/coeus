@@ -48,7 +48,11 @@ public class NTupleSystem {
      * @param mapSamplePointStates <p>
      * @return
      */
-    public static int calculateLocalIndex(int nTupleIndex, int[] nTuplesLenght, IStateNTuple state, Map<SamplePointState, Integer> mapSamplePointStates) {
+    public static int calculateLocalIndex(
+            final int nTupleIndex,
+            final int[] nTuplesLenght,
+            final IStateNTuple state,
+            final Map<SamplePointState, Integer> mapSamplePointStates) {
         SamplePointState[] ntuple = state.getNTuple(nTupleIndex);
         int index = 0;
         for ( int j = 0; j < nTuplesLenght[nTupleIndex]; j++ ) {
@@ -79,7 +83,13 @@ public class NTupleSystem {
      * @param derivatedActivationFunction
      * @param concurrency
      */
-    public NTupleSystem(List<SamplePointState> allSamplePointStates, int[] nTuplesLenght, Function<Double, Double> activationFunction, Function<Double, Double> derivatedActivationFunction, boolean concurrency) {
+    public NTupleSystem(
+            final List<SamplePointState> allSamplePointStates,
+            final int[] nTuplesLenght,
+            final Function<Double, Double> activationFunction,
+            final Function<Double, Double> derivatedActivationFunction,
+            final boolean concurrency
+    ) {
         this.mapSamplePointStates = new HashMap<>();
         for ( int i = 0; i < allSamplePointStates.size(); i++ ) {
             mapSamplePointStates.put(allSamplePointStates.get(i), i);
@@ -107,7 +117,7 @@ public class NTupleSystem {
      * @param currentWeightIndex
      * @param correction
      */
-    public void addCorrectionToWeight(int currentWeightIndex, double correction) {
+    public void addCorrectionToWeight(final int currentWeightIndex, final double correction) {
         lut[currentWeightIndex] += correction;
     }
 
@@ -123,7 +133,7 @@ public class NTupleSystem {
      * @param state <p>
      * @return
      */
-    public ComplexNTupleComputation getComplexComputation(IStateNTuple state) {
+    public ComplexNTupleComputation getComplexComputation(final IStateNTuple state) {
         IntStream stream = IntStream
                 .range(0, nTuplesLenght.length);
         if ( concurrency ) {
@@ -154,7 +164,7 @@ public class NTupleSystem {
      * @param state <p>
      * @return
      */
-    public Double getComputation(IStateNTuple state) {
+    public Double getComputation(final IStateNTuple state) {
         IntStream stream = IntStream
                 .range(0, nTuplesLenght.length);
         if ( concurrency ) {
@@ -198,7 +208,7 @@ public class NTupleSystem {
      *
      * @param value
      */
-    public void setWeights(double[] value) {
+    public void setWeights(final double[] value) {
         lut = value;
     }
 
@@ -222,7 +232,7 @@ public class NTupleSystem {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void load(File weightsFile) throws IOException, ClassNotFoundException {
+    public void load(final File weightsFile) throws IOException, ClassNotFoundException {
         FileInputStream f_in = new FileInputStream(weightsFile);
         load(f_in);
     }
@@ -233,7 +243,7 @@ public class NTupleSystem {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void load(InputStream weightsFile) throws IOException, ClassNotFoundException {
+    public void load(final InputStream weightsFile) throws IOException, ClassNotFoundException {
         if ( weightsFile == null ) {
             throw new IllegalArgumentException("weightsFile can't be null");
         }
@@ -272,7 +282,7 @@ public class NTupleSystem {
      * @param lutFile <p>
      * @throws IOException
      */
-    public void save(File lutFile) throws IOException {
+    public void save(final File lutFile) throws IOException {
         //definimos el stream de salida
         FileOutputStream fout = new FileOutputStream(lutFile);
         //comprimimos
@@ -288,7 +298,7 @@ public class NTupleSystem {
      * @param index
      * @param value
      */
-    public void setWeight(int index, double value) {
+    public void setWeight(final int index, final double value) {
         lut[index] = value;
     }
 

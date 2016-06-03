@@ -39,7 +39,7 @@ public class ComplexNTupleComputation {
     /**
      * @param derivatedOutput the derivatedOutput to set
      */
-    public void setDerivatedOutput(double derivatedOutput) {
+    public void setDerivatedOutput(final double derivatedOutput) {
         this.derivatedOutput = derivatedOutput;
     }
 
@@ -53,7 +53,7 @@ public class ComplexNTupleComputation {
     /**
      * @param indexes the indexes to set
      */
-    public void setIndexes(int[] indexes) {
+    public void setIndexes(final int[] indexes) {
         this.indexes = indexes;
     }
 
@@ -67,7 +67,7 @@ public class ComplexNTupleComputation {
     /**
      * @param output the output to set
      */
-    public void setOutput(double output) {
+    public void setOutput(final double output) {
         this.output = output;
     }
 }

@@ -30,7 +30,7 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {IProblemStateTest.class, IStatePerceptronTest.class, IProblemTest.class, IPerceptronInterfaceTest.class} )
+@Suite.SuiteClasses( {IStatePerceptronTest.class, IProblemTest.class, IPerceptronInterfaceTest.class} )
 public class InterfacesSuite {
 
     /**

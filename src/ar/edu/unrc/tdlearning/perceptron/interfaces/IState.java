@@ -30,7 +30,7 @@ public interface IState {
      * @return recompensa parcial que da este estado para la neurona
      *         {@code outputNeuron}.
      */
-    public double getStateReward(int outputNeuron);
+    public double getStateReward(final int outputNeuron);
 
     /**
      *

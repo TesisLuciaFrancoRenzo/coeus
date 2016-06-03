@@ -83,7 +83,12 @@ public class TDTrainerNTupleSystem implements ITrainer {
      *                                  azar
      * @param nTupleSystem
      */
-    public TDTrainerNTupleSystem(NTupleSystem nTupleSystem, int maxEligibilityTraceLenght, double lambda, double gamma, boolean resetEligibilitiTraces) {
+    public TDTrainerNTupleSystem(
+            final NTupleSystem nTupleSystem,
+            final int maxEligibilityTraceLenght,
+            final double lambda,
+            final double gamma,
+            final boolean resetEligibilitiTraces) {
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;
@@ -118,7 +123,14 @@ public class TDTrainerNTupleSystem implements ITrainer {
      * @param isARandomMove <p>
      */
     @Override
-    public void train(final IProblemToTrain problem, final IState state, final IState nextTurnState, final double[] alpha, final boolean[] concurrencyInLayer, final boolean isARandomMove) {
+    public void train(
+            final IProblemToTrain problem,
+            final IState state,
+            final IState nextTurnState,
+            final double[] alpha,
+            final boolean[] concurrencyInLayer,
+            final boolean isARandomMove
+    ) {
 
         //computamos
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state);

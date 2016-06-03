@@ -104,7 +104,7 @@ public final class TDTrainerPerceptron implements ITrainer {
      *                               en caso de movimientos al azar
      * @param perceptron
      */
-    public TDTrainerPerceptron(IPerceptronInterface perceptron, double lambda, double gamma, boolean resetEligibilitiTraces) {
+    public TDTrainerPerceptron(final IPerceptronInterface perceptron, final double lambda, final double gamma, final boolean resetEligibilitiTraces) {
         this.perceptron = perceptron;
         currentTurn = 1;
         elegibilityTraces = null;
@@ -196,7 +196,14 @@ public final class TDTrainerPerceptron implements ITrainer {
      * @param isARandomMove
      */
     @Override
-    public void train(final IProblemToTrain problem, final IState state, final IState nextTurnState, final double[] alpha, final boolean[] concurrencyInLayer, final boolean isARandomMove) {
+    public void train(
+            final IProblemToTrain problem,
+            final IState state,
+            final IState nextTurnState,
+            final double[] alpha,
+            final boolean[] concurrencyInLayer,
+            final boolean isARandomMove
+    ) {
         this.alpha = alpha;
         this.problem = problem;
         this.concurrencyInLayer = concurrencyInLayer;
@@ -348,7 +355,7 @@ public final class TDTrainerPerceptron implements ITrainer {
      * <p>
      * @return salida de una neurona
      */
-    protected Double calculateNeuronOutput(int layerIndex, int neuronIndex) {
+    protected Double calculateNeuronOutput(final int layerIndex, final int neuronIndex) {
         Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
         if ( neuronIndex == currentLayer.getNeurons().size() ) {
             //retorno la salida de la neurona falsa
@@ -364,7 +371,7 @@ public final class TDTrainerPerceptron implements ITrainer {
      * <p>
      * @param nextTurnState
      */
-    protected void calculateTDError(IStatePerceptron nextTurnState) {
+    protected void calculateTDError(final IStatePerceptron nextTurnState) {
         Layer outputLayerCurrentState = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex());
         int neuronQuantityAtOutput = outputLayerCurrentState.getNeurons().size();
 
@@ -405,7 +412,13 @@ public final class TDTrainerPerceptron implements ITrainer {
      * <p>
      * @return un valor correspondiente a la formula "e" de la teoria
      */
-    protected Double computeEligibilityTrace(int outputNeuronIndex, int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, boolean isRandomMove) {
+    protected Double computeEligibilityTrace(
+            final int outputNeuronIndex,
+            final int layerIndexJ,
+            final int neuronIndexJ,
+            final int layerIndexK,
+            final int neuronIndexK,
+            final boolean isRandomMove) {
         double derivatedOutput = delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
         if ( this.lambda > 0 ) {
             List<Double> neuronKEligibilityTrace = elegibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
@@ -431,7 +444,7 @@ public final class TDTrainerPerceptron implements ITrainer {
      *
      * @param nextTurnState
      */
-    protected void computeNextTurnOutputs(IStatePerceptron nextTurnState) {
+    protected void computeNextTurnOutputs(final IStatePerceptron nextTurnState) {
         this.nextTurnStateCache = createCache(nextTurnState, nextTurnStateCache);
         for ( int i = 0; i < this.nextTurnOutputs.size(); i++ ) {
             this.nextTurnOutputs.set(i, ((Neuron) nextTurnStateCache.getLayer(nextTurnStateCache.getOutputLayerIndex()).getNeuron(i)).getOutput());
@@ -447,7 +460,12 @@ public final class TDTrainerPerceptron implements ITrainer {
      * @param isRandomMove <p>
      * @return
      */
-    protected Double computeWeightError(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, boolean isRandomMove) {
+    protected Double computeWeightError(
+            final int layerIndexJ,
+            final int neuronIndexJ,
+            final int layerIndexK,
+            final int neuronIndexK,
+            final boolean isRandomMove) {
         int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
         if ( layerIndexJ == turnCurrentStateCache.getOutputLayerIndex() ) {
@@ -477,7 +495,7 @@ public final class TDTrainerPerceptron implements ITrainer {
      * @return
      */
     @SuppressWarnings( "null" )
-    protected NeuralNetCache createCache(IStatePerceptron state, NeuralNetCache oldCache) {
+    protected NeuralNetCache createCache(final IStatePerceptron state, final NeuralNetCache oldCache) {
         int outputLayerNeuronQuantity = perceptron.getNeuronQuantityInLayer(perceptron.getLayerQuantity() - 1);
 
         // inicializamos la Cache o reciclamos alguna vieja
@@ -527,13 +545,6 @@ public final class TDTrainerPerceptron implements ITrainer {
                                 neuron = (Neuron) oldCacheCurrentLayer.getNeuron(currentNeuronIndex);
                             }
                             neuron.setOutput(state.translateToPerceptronInput(currentNeuronIndex));
-//                                    if ( neuron.getOutput().isNaN() ) {
-//                                        try { //FIXME hacer mas lindo
-//                                            throw new Exception("wrong input translation state.translateToPerceptronInput(" + currentNeuronIndex + ")= " + neuron.getOutput());
-//                                        } catch ( Exception ex ) {
-//                                            Logger.getLogger(TDTrainerPerceptron.class.getName()).log(Level.SEVERE, null, ex);
-//                                        }
-//                                    }
                             neuron.setDerivatedOutput(null);
 
                         } else {
@@ -567,7 +578,6 @@ public final class TDTrainerPerceptron implements ITrainer {
                                 neuron.setWeight(previousLayerNeuronIndex,
                                         perceptron.getWeight(currentLayerIndex, currentNeuronIndex, previousLayerNeuronIndex));
                                 // devolvemmos la multiplicacion para luego sumar
-                                //  assert !((Neuron) currentCache.getNeuron(previousLayer, previousLayerNeuronIndex)).getOutput().isNaN();
                                 return ((Neuron) previousCurrentLayer.getNeuron(previousLayerNeuronIndex)).getOutput()
                                         * neuron.getWeight(previousLayerNeuronIndex);
                             }).sum();
@@ -575,10 +585,7 @@ public final class TDTrainerPerceptron implements ITrainer {
                                 net += neuron.getBias();
                             }
                             neuron.setOutput(perceptron.getActivationFunction(currentLayerIndex - 1).apply(net));
-
-                            //  assert !neuron.getOutput().isNaN();
                             neuron.setDerivatedOutput(perceptron.getDerivatedActivationFunction(currentLayerIndex - 1).apply(neuron.getOutput()));
-                            // assert !neuron.getDerivatedOutput().isNaN();
                         }
                         //cargamos la nueva neurona, si es que creamos una nueva cache
                         if ( oldCache == null ) {
@@ -603,7 +610,7 @@ public final class TDTrainerPerceptron implements ITrainer {
      */
     //TODO parallelComputation?? necesita ser threadsafe?
     @SuppressWarnings( "null" )
-    protected Double delta(int outputNeuronIndex, int layerIndex, int neuronIndex) {
+    protected Double delta(final int outputNeuronIndex, final int layerIndex, final int neuronIndex) {
         Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
         Layer nextLayer;
         if ( turnCurrentStateCache.isOutputLayer(layerIndex) ) {
@@ -680,7 +687,12 @@ public final class TDTrainerPerceptron implements ITrainer {
      * @param neuronIndexK indice de la neurona de mas hacia atras
      * @param isRandomMove si el ultimo movimiento fue elegido al azar
      */
-    protected void updateEligibilityTraceOnly(int layerIndexJ, int neuronIndexJ, int layerIndexK, int neuronIndexK, boolean isRandomMove) {
+    protected void updateEligibilityTraceOnly(
+            final int layerIndexJ,
+            final int neuronIndexJ,
+            final int layerIndexK,
+            final int neuronIndexK,
+            final boolean isRandomMove) {
         int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
 
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.

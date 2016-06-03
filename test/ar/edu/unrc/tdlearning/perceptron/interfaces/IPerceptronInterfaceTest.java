@@ -74,7 +74,7 @@ public class IPerceptronInterfaceTest {
     public void testGetActivationFunction() {
         System.out.println("getActivationFunction");
         int layerIndex = 0;
-        Function<Double, Double> sigmoid = FunctionUtils.sigmoid;
+        Function<Double, Double> sigmoid = FunctionUtils.SIGMOID;
         IPerceptronInterface instance = new IPerceptronInterfaceImpl();
         Function<Double, Double> result = instance.getActivationFunction(layerIndex);
         assertEquals(sigmoid, result);
@@ -104,7 +104,7 @@ public class IPerceptronInterfaceTest {
         System.out.println("getDerivatedActivationFunction");
         int layerIndex = 0;
         IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-        Function<Double, Double> expResult = FunctionUtils.derivatedSigmoid;
+        Function<Double, Double> expResult = FunctionUtils.SIGMOID_DERIVATED;
         Function<Double, Double> result = instance.getDerivatedActivationFunction(layerIndex);
         assertEquals(expResult, result);
     }
@@ -205,7 +205,7 @@ public class IPerceptronInterfaceTest {
 
         @Override
         public Function<Double, Double> getActivationFunction(int layerIndex) {
-            return FunctionUtils.sigmoid;
+            return FunctionUtils.SIGMOID;
         }
 
         @Override
@@ -215,7 +215,7 @@ public class IPerceptronInterfaceTest {
 
         @Override
         public Function<Double, Double> getDerivatedActivationFunction(int layerIndex) {
-            return FunctionUtils.derivatedSigmoid;
+            return FunctionUtils.SIGMOID_DERIVATED;
         }
 
         @Override

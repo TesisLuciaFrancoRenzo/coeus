@@ -41,7 +41,7 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
      *                              {@code ActionPrediction} cuando hay varias
      *                              neuronas de salida
      */
-    public ActionPrediction(IAction action, Double numericRepresentation) {
+    public ActionPrediction(final IAction action, final Double numericRepresentation) {
         this.action = action;
         this.numericRepresentation = numericRepresentation;
     }

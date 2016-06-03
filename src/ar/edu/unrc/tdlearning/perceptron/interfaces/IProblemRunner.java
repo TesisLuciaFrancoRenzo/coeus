@@ -35,14 +35,14 @@ public interface IProblemRunner {
      * @return un valor representativo que interpreta la salida del perceptron
      *         {@code output} desde el punto de vista del jugador {@code player}
      */
-    public Double computeNumericRepresentationFor(Object[] output, IActor actor);
+    public Double computeNumericRepresentationFor(final Object[] output, final IActor actor);
 
     /**
      *
      * @param value <p>
      * @return
      */
-    public double denormalizeValueFromPerceptronOutput(Object value);
+    public double denormalizeValueFromPerceptronOutput(final Object value);
 
     /**
      *
@@ -51,7 +51,7 @@ public interface IProblemRunner {
      * @return una lista de todas las acciones validas que se pueden aplicar al
      *         estado s
      */
-    public ArrayList<IAction> listAllPossibleActions(IState turnInitialState);
+    public ArrayList<IAction> listAllPossibleActions(final IState turnInitialState);
 
     /**
      * Calcula el estado intermedio del turno, que es el estado al que llega el
@@ -67,7 +67,7 @@ public interface IProblemRunner {
      *         'a' al estado 's', con su recompensa parcial en caso de ser
      *         utilizado el calculo acumulativo en TDLearning
      */
-    public IState computeAfterState(IState turnInitialState, IAction action);
+    public IState computeAfterState(final IState turnInitialState, final IAction action);
 
     /**
      * Prediccion realizada por el perceptron de que tan bueno es el estado
@@ -79,6 +79,6 @@ public interface IProblemRunner {
      * @return prediccion del perceptron, normalizado (si la funcion de
      *         activacion necesita normalizacion).
      */
-    public Object[] evaluateBoardWithPerceptron(IState state);
+    public Object[] evaluateBoardWithPerceptron(final IState state);
 
 }

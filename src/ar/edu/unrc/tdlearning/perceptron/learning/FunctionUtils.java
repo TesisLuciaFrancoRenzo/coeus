@@ -28,36 +28,36 @@ import java.util.function.Function;
 public class FunctionUtils {
 
     /**
-     * Función de activación linear
+     * Función de activación LINEAR
      */
-    public static final Function<Double, Double> derivatedLinear = (value) -> 1d;
+    public static final Function<Double, Double> LINEAR_DERIVATED = (value) -> 1d;
 
     /**
      * Derivada de la función de activación Sigmoideo. {@code fValue} debe ser
-     * sigmoid(value) por cuestiones de optimización
+     * SIGMOID(value) por cuestiones de optimización
      */
-    public static final Function<Double, Double> derivatedSigmoid = (fValue) -> fValue * (1d - fValue);
+    public static final Function<Double, Double> SIGMOID_DERIVATED = (fValue) -> fValue * (1d - fValue);
 
     /**
      * Derivada de la función de activación TANH. {@code fValue} debe ser
-     * tanh(value) por cuestiones de optimización
+     * TANH(value) por cuestiones de optimización
      */
-    public static final Function<Double, Double> derivatedTanh = (fValue) -> 1d - fValue * fValue;
+    public static final Function<Double, Double> TANH_DERIVATED = (fValue) -> 1d - fValue * fValue;
 
     /**
-     * Función de activación linear
+     * Función de activación LINEAR
      */
-    public static final Function<Double, Double> linear = (value) -> value;
+    public static final Function<Double, Double> LINEAR = (value) -> value;
 
     /**
      * Función de activación Sigmoideo
      */
-    public static final Function<Double, Double> sigmoid = (value) -> 1d / (1d + exp(-value));
+    public static final Function<Double, Double> SIGMOID = (value) -> 1d / (1d + exp(-value));
 
     /**
      * Función de activación TANH
      */
-    public static final Function<Double, Double> tanh = (value) -> Math.tanh(value);
+    public static final Function<Double, Double> TANH = (value) -> Math.tanh(value);
 
     private FunctionUtils() {
     }

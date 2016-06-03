@@ -76,11 +76,11 @@ public class TDTrainerTest {
      */
     @BeforeClass
     public static void setUpClass() {
-        activationFunctionOutput = FunctionUtils.sigmoid;
-        derivatedActivationFunctionOutput = FunctionUtils.derivatedSigmoid;
+        activationFunctionOutput = FunctionUtils.SIGMOID;
+        derivatedActivationFunctionOutput = FunctionUtils.SIGMOID_DERIVATED;
 
-        activationFunctionHidden = FunctionUtils.sigmoid;
-        derivatedActivationFunctionHidden = FunctionUtils.derivatedSigmoid;
+        activationFunctionHidden = FunctionUtils.SIGMOID;
+        derivatedActivationFunctionHidden = FunctionUtils.SIGMOID_DERIVATED;
     }
 
     /**
@@ -838,8 +838,8 @@ public class TDTrainerTest {
 
         //calculamos valores que deberian resultar
         fnetK[0] = input1;
-        fnetJ[0] = FunctionUtils.sigmoid.apply(fnetK[0] * wKJ[0] + biasJ[0]);
-        fnetI[0] = FunctionUtils.sigmoid.apply(fnetJ[0] * wJI[0] + biasI[0]);
+        fnetJ[0] = FunctionUtils.SIGMOID.apply(fnetK[0] * wKJ[0] + biasJ[0]);
+        fnetI[0] = FunctionUtils.SIGMOID.apply(fnetJ[0] * wJI[0] + biasI[0]);
 
         double[] expResultArrayt = {fnetI[0]};
         double[] resultArray = outut.getData();
@@ -851,8 +851,8 @@ public class TDTrainerTest {
 
         //calculamos valores que deberian resultar
         fnetK[1] = input1Tp1;
-        fnetJ[1] = FunctionUtils.sigmoid.apply(fnetK[1] * wKJ[0] + biasJ[0]);
-        fnetI[1] = FunctionUtils.sigmoid.apply(fnetJ[1] * wJI[0] + biasI[0]);
+        fnetJ[1] = FunctionUtils.SIGMOID.apply(fnetK[1] * wKJ[0] + biasJ[0]);
+        fnetI[1] = FunctionUtils.SIGMOID.apply(fnetJ[1] * wJI[0] + biasI[0]);
 
         double[] expResultArraytp1 = {fnetI[1]};
         resultArray = outut.getData();
@@ -868,8 +868,8 @@ public class TDTrainerTest {
         biasI[1] = neuralNetwork.getWeight(1, 1, 0);
 
         //calculamos valores que deberian resultar
-        deltaII[0] = FunctionUtils.derivatedSigmoid.apply(fnetI[0]);
-        deltaIJ[0] = deltaII[0] * FunctionUtils.derivatedSigmoid.apply(fnetJ[0]) * wJI[0];
+        deltaII[0] = FunctionUtils.SIGMOID_DERIVATED.apply(fnetI[0]);
+        deltaIJ[0] = deltaII[0] * FunctionUtils.SIGMOID_DERIVATED.apply(fnetJ[0]) * wJI[0];
 
         //W(k,J)
         double expectedNewWKJ = alpha[0] * (fnetI[1] - fnetI[0])
@@ -951,8 +951,8 @@ public class TDTrainerTest {
 
         //calculamos valores que deberian resultar
         fnetK[1] = input1_2;
-        fnetJ[1] = FunctionUtils.sigmoid.apply(fnetK[1] * wKJ[1] + biasJ[1]);
-        fnetI[1] = FunctionUtils.sigmoid.apply(fnetJ[1] * wJI[1] + biasI[1]);
+        fnetJ[1] = FunctionUtils.SIGMOID.apply(fnetK[1] * wKJ[1] + biasJ[1]);
+        fnetI[1] = FunctionUtils.SIGMOID.apply(fnetJ[1] * wJI[1] + biasI[1]);
 
         double[] expResultArrayt_2 = {fnetI[1]};
         resultArray = outut.getData();
@@ -964,8 +964,8 @@ public class TDTrainerTest {
 
         //calculamos valores que deberian resultar
         fnetK[2] = input1Tp1_2;
-        fnetJ[2] = FunctionUtils.sigmoid.apply(fnetK[2] * wKJ[1] + biasJ[1]);
-        fnetI[2] = FunctionUtils.sigmoid.apply(fnetJ[2] * wJI[1] + biasI[1]);
+        fnetJ[2] = FunctionUtils.SIGMOID.apply(fnetK[2] * wKJ[1] + biasJ[1]);
+        fnetI[2] = FunctionUtils.SIGMOID.apply(fnetJ[2] * wJI[1] + biasI[1]);
 
         double[] expResultArraytp1_2 = {fnetI[2]};
         resultArray = outut.getData();
@@ -980,8 +980,8 @@ public class TDTrainerTest {
         biasI[2] = neuralNetwork.getWeight(1, 1, 0);
 
         //calculamos valores que deberian resultar
-        deltaII[1] = FunctionUtils.derivatedSigmoid.apply(fnetI[1]);
-        deltaIJ[1] = deltaII[1] * FunctionUtils.derivatedSigmoid.apply(fnetJ[1]) * wJI[1];
+        deltaII[1] = FunctionUtils.SIGMOID_DERIVATED.apply(fnetI[1]);
+        deltaIJ[1] = deltaII[1] * FunctionUtils.SIGMOID_DERIVATED.apply(fnetJ[1]) * wJI[1];
 
         double error = alpha[0] * (fnetI[2] - fnetI[1]); //error = (double) 2.1083069642169328E-5
         //W(k,J)
@@ -1071,8 +1071,8 @@ public class TDTrainerTest {
 
         //calculamos valores que deberian resultar
         fnetK[2] = input1_3;
-        fnetJ[2] = FunctionUtils.sigmoid.apply(fnetK[2] * wKJ[2] + biasJ[2]);
-        fnetI[2] = FunctionUtils.sigmoid.apply(fnetJ[2] * wJI[2] + biasI[2]);
+        fnetJ[2] = FunctionUtils.SIGMOID.apply(fnetK[2] * wKJ[2] + biasJ[2]);
+        fnetI[2] = FunctionUtils.SIGMOID.apply(fnetJ[2] * wJI[2] + biasI[2]);
 
         double[] expResultArrayt_3 = {fnetI[2]};
         resultArray = outut.getData();
@@ -1094,8 +1094,8 @@ public class TDTrainerTest {
         biasI[3] = neuralNetwork.getWeight(1, 1, 0);
 
         //calculamos valores que deberian resultar
-        deltaII[2] = FunctionUtils.derivatedSigmoid.apply(fnetI[2]);
-        deltaIJ[2] = deltaII[2] * FunctionUtils.derivatedSigmoid.apply(fnetJ[2]) * wJI[2];
+        deltaII[2] = FunctionUtils.SIGMOID_DERIVATED.apply(fnetI[2]);
+        deltaIJ[2] = deltaII[2] * FunctionUtils.SIGMOID_DERIVATED.apply(fnetJ[2]) * wJI[2];
 
         error = alpha[0] * (fnetIFinal - fnetI[2]); //
 

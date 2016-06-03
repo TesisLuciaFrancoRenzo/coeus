@@ -45,7 +45,7 @@ public class ValueUsagePair {
     /**
      * @param usagesLeft the usagesLeft to set
      */
-    public void setUsagesLeft(int usagesLeft) {
+    public void setUsagesLeft(final int usagesLeft) {
         this.usagesLeft = usagesLeft;
     }
 
@@ -59,7 +59,7 @@ public class ValueUsagePair {
     /**
      * @param value the value to set
      */
-    public void setValue(double value) {
+    public void setValue(final double value) {
         this.value = value;
     }
 

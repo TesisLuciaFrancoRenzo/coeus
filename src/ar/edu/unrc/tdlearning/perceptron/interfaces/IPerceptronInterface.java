@@ -34,7 +34,7 @@ public interface IPerceptronInterface {
      * <p>
      * @return valor de la bias de la neurona
      */
-    public double getBias(int layerIndex, int neuronIndex);
+    public double getBias(final int layerIndex, final int neuronIndex);
 
     /**
      * Funcion de activacion de todas las neuronas del perceptron en la capa
@@ -43,7 +43,7 @@ public interface IPerceptronInterface {
      * @param layerIndex <p>
      * @return fución de activación, cuyo parametro es "net"
      */
-    public Function<Double, Double> getActivationFunction(int layerIndex);
+    public Function<Double, Double> getActivationFunction(final int layerIndex);
 
     /**
      * Derivada de la funcion de activacion de las neuronas del perceptron.
@@ -59,7 +59,7 @@ public interface IPerceptronInterface {
      * @return derivada de la fución de activación, cuyo parametro es "f(net)" y
      *         no "net"
      */
-    public Function<Double, Double> getDerivatedActivationFunction(int layerIndex);
+    public Function<Double, Double> getDerivatedActivationFunction(final int layerIndex);
 
     /**
      *
@@ -75,7 +75,7 @@ public interface IPerceptronInterface {
      * <p>
      * @return
      */
-    public int getNeuronQuantityInLayer(int layerIndex);
+    public int getNeuronQuantityInLayer(final int layerIndex);
 
     /**
      * Peso de la conexion entre dos neuronas. Las dos neuronas deben estar en
@@ -94,7 +94,7 @@ public interface IPerceptronInterface {
      * @return peso entre las dos neuronas especificadas con las coordenadas
      *         establecidas en los otros parametros
      */
-    public double getWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer);
+    public double getWeight(final int layerIndex, final int neuronIndex, final int neuronIndexPreviousLayer);
 
     /**
      *
@@ -103,7 +103,7 @@ public interface IPerceptronInterface {
      * @return true si el perceptron posee bias en todas las neuronas de la capa
      *         {@code layerIndex}
      */
-    public boolean hasBias(int layerIndex);
+    public boolean hasBias(final int layerIndex);
 
     /**
      * Cambia el valor de la bias de una neurona con el valor de
@@ -113,7 +113,7 @@ public interface IPerceptronInterface {
      * @param neuronIndex   indice de una neurona
      * @param correctedBias nueva bias corregida para la neurona indicada
      */
-    public void setBias(int layerIndex, int neuronIndex, double correctedBias);
+    public void setBias(final int layerIndex, final int neuronIndex, final double correctedBias);
 
     /**
      * Cambia el peso entre dos neuronas con el valor de {@code correctedWeight}
@@ -126,5 +126,5 @@ public interface IPerceptronInterface {
      * @param correctedWeight          nuevo peso corregido entre las dos
      *                                 neuronas indicadas
      */
-    public void setWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer, double correctedWeight);
+    public void setWeight(final int layerIndex, final int neuronIndex, final int neuronIndexPreviousLayer, final double correctedWeight);
 }
