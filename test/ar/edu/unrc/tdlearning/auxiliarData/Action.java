@@ -16,53 +16,59 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc.tdlearning;
+package ar.edu.unrc.tdlearning.auxiliarData;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import ar.edu.unrc.tdlearning.interfaces.IAction;
 
 /**
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.tdlearning.learning.LearningSuite.class, ar.edu.unrc.tdlearning.training.perceptrons.PerceptronsSuite.class, ar.edu.unrc.tdlearning.interfaces.InterfacesSuite.class, ar.edu.unrc.tdlearning.training.TrainingSuite.class} )
-public class TdlearningSuite {
+public class Action implements IAction {
+
+    private int x;
+    private int y;
 
     /**
      *
-     * @throws Exception
+     * @param x
+     * @param y
      */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
+    public Action(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
-     *
-     * @throws Exception
+     * @return the x
      */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+    public int getX() {
+        return x;
     }
 
     /**
-     *
-     * @throws Exception
+     * @param x the x to set
      */
-    @Before
-    public void setUp() throws Exception {
+    public void setX(int x) {
+        this.x = x;
     }
 
     /**
-     *
-     * @throws Exception
+     * @return the y
      */
-    @After
-    public void tearDown() throws Exception {
+    public int getY() {
+        return y;
     }
 
+    /**
+     * @param y the y to set
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
 }

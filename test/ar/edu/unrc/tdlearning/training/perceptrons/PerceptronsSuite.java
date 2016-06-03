@@ -16,7 +16,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc.tdlearning;
+package ar.edu.unrc.tdlearning.training.perceptrons;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -30,8 +30,8 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.tdlearning.learning.LearningSuite.class, ar.edu.unrc.tdlearning.training.perceptrons.PerceptronsSuite.class, ar.edu.unrc.tdlearning.interfaces.InterfacesSuite.class, ar.edu.unrc.tdlearning.training.TrainingSuite.class} )
-public class TdlearningSuite {
+@Suite.SuiteClasses( {NeuronTest.class, PartialNeuronTest.class, LayerTest.class, NeuralNetCacheTest.class} )
+public class PerceptronsSuite {
 
     /**
      *

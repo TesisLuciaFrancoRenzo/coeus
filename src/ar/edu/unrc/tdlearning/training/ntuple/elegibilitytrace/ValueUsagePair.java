@@ -16,53 +16,63 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc.tdlearning;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+package ar.edu.unrc.tdlearning.training.ntuple.elegibilitytrace;
 
 /**
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.tdlearning.learning.LearningSuite.class, ar.edu.unrc.tdlearning.training.perceptrons.PerceptronsSuite.class, ar.edu.unrc.tdlearning.interfaces.InterfacesSuite.class, ar.edu.unrc.tdlearning.training.TrainingSuite.class} )
-public class TdlearningSuite {
+public class ValueUsagePair {
+
+    private int usagesLeft;
+    private double value;
 
     /**
      *
-     * @throws Exception
      */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
+    public ValueUsagePair() {
+        value = 0;
+        usagesLeft = 0;
+    }
+
+    /**
+     * @return the usagesLeft
+     */
+    public int getUsagesLeft() {
+        return usagesLeft;
+    }
+
+    /**
+     * @param usagesLeft the usagesLeft to set
+     */
+    public void setUsagesLeft(final int usagesLeft) {
+        this.usagesLeft = usagesLeft;
+    }
+
+    /**
+     * @return the value
+     */
+    public double getValue() {
+        return value;
+    }
+
+    /**
+     * @param value the value to set
+     */
+    public void setValue(final double value) {
+        this.value = value;
     }
 
     /**
      *
-     * @throws Exception
      */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+    public void use() {
+        usagesLeft--;
     }
 
-    /**
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @After
-    public void tearDown() throws Exception {
+    void reset() {
+        value = 0;
+        usagesLeft = 0;
     }
 
 }

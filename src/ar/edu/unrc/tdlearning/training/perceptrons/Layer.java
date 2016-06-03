@@ -16,53 +16,53 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc.tdlearning;
+package ar.edu.unrc.tdlearning.training.perceptrons;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.tdlearning.learning.LearningSuite.class, ar.edu.unrc.tdlearning.training.perceptrons.PerceptronsSuite.class, ar.edu.unrc.tdlearning.interfaces.InterfacesSuite.class, ar.edu.unrc.tdlearning.training.TrainingSuite.class} )
-public class TdlearningSuite {
+public class Layer {
+
+    private final List<PartialNeuron> neurons;
 
     /**
      *
-     * @throws Exception
+     * @param neuronQuantityInLayer
      */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
+    public Layer(final int neuronQuantityInLayer) {
+        neurons = new ArrayList<>(neuronQuantityInLayer);
+        for ( int i = 0; i < neuronQuantityInLayer; i++ ) {
+            neurons.add(null);
+        }
+
+    }
+
+    /**
+     * @param neuronIndex <p>
+     * @return the neurons
+     */
+    public PartialNeuron getNeuron(final int neuronIndex) {
+        return neurons.get(neuronIndex);
+    }
+
+    /**
+     * @return the neurons
+     */
+    public List<PartialNeuron> getNeurons() {
+        return neurons;
     }
 
     /**
      *
-     * @throws Exception
+     * @param neuronIndex
+     * @param neuron
      */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @After
-    public void tearDown() throws Exception {
+    public void setNeuron(final int neuronIndex, final PartialNeuron neuron) {
+        neurons.set(neuronIndex, neuron);
     }
 
 }
