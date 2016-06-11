@@ -16,53 +16,27 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 
 /**
- *
+ * Se debe asegurar la implementacion de equals ya que se utilizaran en HashMaps
+ * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.coeus.CoeusSuite.class} )
-public class UnrcSuite {
+public interface SamplePointState {
 
     /**
      *
-     * @throws Exception
+     * @param other
+     * @return
      */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+    @Override
+    public abstract boolean equals(Object other);
 
     /**
      *
-     * @throws Exception
+     * @return
      */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @After
-    public void tearDown() throws Exception {
-    }
-
+    @Override
+    public abstract int hashCode();
 }

@@ -16,53 +16,28 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
- *
+ * Estado del problema. Un estado debe poder ser traducido a entradas de un
+ * Perceptrón mediante alguna fórmula adecuada.
+ * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.coeus.CoeusSuite.class} )
-public class UnrcSuite {
+public interface IStatePerceptron extends IState {
 
     /**
-     *
-     * @throws Exception
+     * Codifica un Estado del Problema como entradas al perceptron utilizado, y
+     * devuelve el valor de la neurona de entrada con el indice
+     * {@code neuronIndex}. Recordar normalizar las entradas y salidas del
+     * Perceptron.
+     * <p>
+     * @param neuronIndex neurona de la capa de entrada (la neurona 0 es la
+     *                    primera)
+     * <p>
+     * @return valor de entrada normalizado a la neurona con el indice
+     *         {@code neuronIndex}
      */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @After
-    public void tearDown() throws Exception {
-    }
+    public Double translateToPerceptronInput(final int neuronIndex);
 
 }

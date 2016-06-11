@@ -16,53 +16,13 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
- *
+ * Posible accion que puede elegir la Inteligencia Artificial cuando es su turno
+ * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.coeus.CoeusSuite.class} )
-public class UnrcSuite {
-
-    /**
-     *
-     * @throws Exception
-     */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @After
-    public void tearDown() throws Exception {
-    }
+public interface IAction {
 
 }

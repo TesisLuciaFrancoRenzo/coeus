@@ -16,8 +16,9 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc;
+package ar.edu.unrc.coeus.tdlearning.training;
 
+import ar.edu.unrc.coeus.tdlearning.training.perceptrons.PerceptronsSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,8 +31,8 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.coeus.CoeusSuite.class} )
-public class UnrcSuite {
+@Suite.SuiteClasses( {PerceptronsSuite.class, TDTrainerTest.class} )
+public class TrainingSuite {
 
     /**
      *

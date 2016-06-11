@@ -16,53 +16,21 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+package ar.edu.unrc.coeus.tdlearning.learning;
 
 /**
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.coeus.CoeusSuite.class} )
-public class UnrcSuite {
+public enum ELearningRateAdaptation {
 
     /**
-     *
-     * @throws Exception
+     * las constantes de aprendizaje van disminuyendo a travez del tiempo
+     * mediante la formula: µ(t) = µ(0)/(1 + t/T)
      */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
+    annealing,
     /**
-     *
-     * @throws Exception
+     * Utiliza los valores de alpha fijos a travez del tiempo
      */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @After
-    public void tearDown() throws Exception {
-    }
-
+    fixed
 }
