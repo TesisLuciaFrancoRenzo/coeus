@@ -50,47 +50,76 @@ import java.util.stream.Stream;
 public class TDLambdaLearning {
 
     /**
-     * If we keep initialAlpha fixed, however, these same fluctuations prevent the network from ever
-     * properly converging to the minimum - instead we end up randomly dancing around it. In order
-     * to actually reach the minimum, and stay there, we must anneal (gradually lower) the global
-     * learning rate. A simple, non-adaptive annealing schedule for this purpose is the
-     * search-then-converge schedule. Its name derives from the fact that it keeps initialAlpha
-     * nearly constant for the first T training patterns, allowing the network to find the general
-     * location of the minimum, before annealing it at a (very slow) pace that is known from theory
-     * to guarantee convergence to the minimum. The characteristic time T of this schedule is a new
-     * free parameter that must be determined by trial and error.
-     * <p>
-     * @param initialAlpha initial learning rate
-     * @param t            current T in time
-     * @param T            the characteristic time T of this schedule is a new free parameter that
-     *                     must be determined by trial and error. It specifi when the initialAlpha
-     *                     will become initialAlpha/2
-     * <p>
-     * @return
+     * Calcula un valor de "enfriamiento" o "recocido" (nombrado diferente dependiendo la
+     * bibliografía) sobre el valor inicial {@code initialValue} en el tiempo {@code t}.
+     *
+     * @param initialValue valor inicial.
+     * @param t            valor de {@code T} actual.
+     * @param T            valor que indica el momento en el que {@code initialValue} disminuye
+     *                     hasta {@code initialValue}/2.
+     *
+     * @return alpha en el tiempo {@code t}.
      */
-    public static double annealingLearningRate(
-            final double initialAlpha,
+    public static double calculateAnnealing(
+            final double initialValue,
             final int t,
             final int T
     ) {
-        if ( initialAlpha > 1 || initialAlpha < 0 ) {
+        if ( initialValue > 1 || initialValue < 0 ) {
             throw new IllegalArgumentException(
-                    "initialAlpha=" + initialAlpha + " is out of range from a valid [0..1]");
+                    "initialValue=" + initialValue + " is out of range from a valid [0..1]");
         }
-        return initialAlpha / (1d + ((t * 1d) / (T * 1d)));
+        return initialValue / (1d + (((double) t) / ((double) T)));
     }
 
     /**
+     * Calcula un valor de "enfriamiento" o "recocido" lineal (nombrado diferente dependiendo la
+     * bibliografía) sobre el valor inicial {@code initialValue} en el tiempo {@code t}.
      *
-     * @param lambda <p>
+     * @param t                  tiempo actual.
+     * @param initialValue       valor inicial.
+     * @param finalValue         valor final.
+     * @param startDecrementing  tiempo {@code t} donde se comienza a disminuir el valor
+     *                           {@code initialValue}
+     * @param finishDecrementing tiempo {@code t} donde deja de disminuir el valor
+     *                           {@code initialValue}
+     *
      * @return
      */
-    public static Integer calculateBestEligibilityTraceLenght(
-            final double lambda
+    public static double calculateLinearAnnealing(
+            final int t,
+            final double initialValue,
+            final double finalValue,
+            final double startDecrementing,
+            final double finishDecrementing
     ) {
+        double currentValue;
+        if ( t < startDecrementing ) {
+            currentValue = initialValue;
+        } else if ( t > finishDecrementing ) {
+            currentValue = finalValue;
+        } else {
+            currentValue
+                    = ((t - startDecrementing)
+                    / (finishDecrementing - startDecrementing))
+                    * (finalValue - initialValue)
+                    + initialValue;
+        }
+        return currentValue;
+    }
+
+    /**
+     * Heurística que ayuda a establecer la longitud de la traza de elegibilidad según los valores
+     * de {@code lambda}.
+     *
+     * @param lambda
+     *
+     * @return valor óptimo para longitud de la traza de elegibilidad.
+     */
+    public static Integer calculateBestEligibilityTraceLenght(final double lambda) {
         if ( lambda > 1 || lambda < 0 ) {
             throw new IllegalArgumentException(
-                    "lambda=" + lambda + " is out of range from a valid [0..1]");
+                    "lambda=" + lambda + " is out of range from a valid [0..1]"); //FIXME asegurar qeu todas las excepciones esten en ingles
         } else if ( lambda > 0.99 ) {
             return Integer.MAX_VALUE;
         } else if ( lambda == 0 ) {
@@ -110,33 +139,35 @@ public class TDLambdaLearning {
         }
     }
 
-    //TODO REESCRIBIRRRR ayuda
     /**
-     * Computa la mejor accion posible dado un estado inicial. No invocar sobre estados finales o
-     * estados que no tiene posibles acciones a realizar. {@code tempTurnInitialState} y todas las
-     * posibles acciones a tomar {@code possibleActions}
-     * <p>
-     * @param problem
-     * @param learningStyle
-     * @param turnInitialState                       estado inicial
-     * <p>
-     * <p>
-     * @param allPossibleActionsFromTurnInitialState <p>
-     * @param player                                 jugador actual
-     * <p>
-     * @param computeParallelBestPossibleAction
-     * @param bestPossibleActionTimes
+     * Computa la mejor {@code IAction} posible a realizar dado un {@code IState} utilizando la rede
+     * neuronal. No invocar sobre estados finales.
      *
-     * @return la mejor accion de todas
+     * @param problem                                problema a resolver.
+     * @param learningStyle                          estilo de aprendizaje utilizado.
+     * @param turnInitialState                       estado del problema al comienzo del turno
+     *                                               actual.
+     * @param allPossibleActionsFromTurnInitialState todas las posibles acciones que {@code actor}
+     *                                               puede tomar en {@code turnInitialState}.
+     * @param actor                                  actor en el turno actual.
+     * @param computeParallelBestPossibleAction      true si la solución se debe computar
+     *                                               concurrentemente.
+     * @param bestPossibleActionTimes                para almacenar estadísticas de tiempos
+     *                                               demorados. Si no se desea utilizar, debe ser
+     *                                               null.
+     *
+     * @return la mejor {@code IAction} de todas las posibles para el {@code actor} en el
+     *         {@code turnInitialState} actual.
      */
     public static IAction computeBestPossibleAction(
             final IProblemRunner problem,
             final ELearningStyle learningStyle,
             final IState turnInitialState,
             final List<IAction> allPossibleActionsFromTurnInitialState,
-            final IActor player,
+            final IActor actor,
             final boolean computeParallelBestPossibleAction,
-            final LinkedList<Long> bestPossibleActionTimes) {
+            final LinkedList<Long> bestPossibleActionTimes
+    ) {
         Stream<IAction> stream;
         long time = 0;
         if ( bestPossibleActionTimes != null ) {
@@ -155,7 +186,7 @@ public class TDLambdaLearning {
                                 case afterState: {
                                     return evaluateAfterstate(problem,
                                             turnInitialState,
-                                            possibleAction, player);
+                                            possibleAction, actor);
                                 }
                                 default: {
                                     throw new UnsupportedOperationException(
@@ -163,7 +194,8 @@ public class TDLambdaLearning {
                                 }
                             }
                         })
-                .collect(MaximalActionPredictionConsumer::new, MaximalActionPredictionConsumer::accept,
+                .collect(MaximalActionPredictionConsumer::new,
+                        MaximalActionPredictionConsumer::accept,
                         MaximalActionPredictionConsumer::combine)
                 .getList();
         IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.
@@ -175,30 +207,24 @@ public class TDLambdaLearning {
         return bestAction;
     }
 
-    //TODO REESCRIBIRRRR ayuda
     /**
-     * Calcula la prediccion del resultado final del juego al aplicar la accion {@code action} en el
-     * estado {@code turnInitialState}, utilizando un metodo entre varios dependiendo de la
-     * implementacion de IProblemToTrain. Por ejemplo si utilizas una red neuronal esta funcion
-     * deberia devolver la salida de la misma. Se debe asegurar que la ejecucion en paralelo de este
-     * metodo no cause efectos colaterales (deb ser safethread implementando
-     * {@code IsolatedComputation}).
-     * <p>
-     * @param problem          a resolver
-     * @param turnInitialState estado del problema al comienzo del turno
-     * @param action           accion a tomar
-     * <p>
-     * <p>
-     * @param player           jugador actual
-     * <p>
-     * @return Tupla que contiene 2 elementos: la accion {@code action}, y la prediccion del valor
-     *         final del juego si aplico {@code action} al estado {@code turnInitialState}
+     * Calcula una predicción de la recompensa final del juego utilizando un {@code IState} obtenido
+     * tras de aplicar {@code action} en {@code turnInitialState}.
+     *
+     * @param problem          problema a resolver.
+     * @param turnInitialState estado del problema al comienzo del turno.
+     * @param action           acción a tomar.
+     * @param actor            actor en el turno actual.
+     *
+     * @return Tupla {@code ActionPrediction} que contiene 2 elementos: la acción a tomar
+     *         {@code action}, y la prediccion de la recompensa final del juego asociada a dicha
+     *         acción.
      */
     public static ActionPrediction evaluateAfterstate(
             final IProblemRunner problem,
             final IState turnInitialState,
             final IAction action,
-            final IActor player
+            final IActor actor
     ) {
         IState afterstate = problem.computeAfterState(turnInitialState, action);
         Object[] output = problem.evaluateBoardWithPerceptron(afterstate);
@@ -206,38 +232,36 @@ public class TDLambdaLearning {
             output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]) + afterstate.
                     getStateReward(i);
         }
-        return new ActionPrediction(action, problem.
-                computeNumericRepresentationFor(output, player));
+        return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, actor));
     }
 
-    //TODO REESCRIBIRRRR ayuda
     /**
-     * Metodo que implementa el entrenamiento de una red mediante la experiencia de la solucion de
-     * un paso del problema.
-     * <p>
-     * @param problem                           a resolver
-     * @param trainer
-     * @param turnInitialState                  estado del problema al comienzo del turno
-     * @param action                            accion a tomar
-     * @param afterstate                        estado de transicion de aplicar la accion
-     *                                          {@code action} al estado {@code turnInitialState}
-     * @param nextTurnState                     estado del problema en el proximo turno, luego de
-     *                                          aplicar las acciones/efectos no deterministicos a
-     * <p>
-     * @param isARandomMove                     <p>
-     * @param currentAlpha
-     * @param concurrencyInLayer
-     * @param computeParallelBestPossibleAction
-     * @param bestPossibleActionTimes
-     * @param trainingTimes
+     * Entrena de una red neuronal mediante la experiencia de la solución de un turno del problema.
+     *
+     * @param problem                           problema a resolver.
+     * @param trainer                           método de entrenamiento elegido, según el tipo de
+     *                                          red neuronal.
+     * @param afterstate                        estado de transición luego de aplicar la mejor
+     *                                          {@code action} al estado {@code turnInitialState}.
+     * @param nextTurnState                     estado del problema en el próximo turno, luego de
+     *                                          aplicar las acciones/efectos no determinísticos.
+     * @param isARandomMove                     true si el movimiento actual fue elegido al azar.
+     * @param currentAlpha                      alpha actual.
+     * @param concurrencyInLayer                capas que deben ser computadas concurrentemente.
+     * @param computeParallelBestPossibleAction true si se deben evaluar las mejores acciones
+     *                                          concurrentemente.
+     * @param bestPossibleActionTimes           tiempos de respuestas al evaluar las mejores
+     *                                          acciones posibles, para realizar estadísticas. Debe
+     *                                          ser null si no se utiliza.
+     * @param trainingTimes                     tiempos de respuestas al entrenar la red neuronal,
+     *                                          para realizar estadísticas. Debe ser null si no se
+     *                                          utiliza.
      *
      * @currentState
      */
     public static void learnEvaluationAfterstate(
             final IProblemToTrain problem,
             final Trainer trainer,
-            final IState turnInitialState,
-            final IAction action,
             final IState afterstate,
             final IState nextTurnState,
             final boolean isARandomMove,
@@ -249,8 +273,8 @@ public class TDLambdaLearning {
     ) {
         long time = 0;
         if ( !nextTurnState.isTerminalState() ) {
-            // Evaluamos cada accion posible aplicada al estado nextState y
-            // elegimos la mejor accion basada las predicciones del problema
+            // Evaluamos cada acción posible aplicada al estado nextState y
+            // elegimos la mejor acción basada las predicciones del problema
             List<IAction> possibleActionsNextTurn = problem.
                     listAllPossibleActions(nextTurnState);
             IAction bestActionForNextTurn = computeBestPossibleAction(
@@ -261,7 +285,7 @@ public class TDLambdaLearning {
                     problem.getActorToTrain(),
                     computeParallelBestPossibleAction,
                     bestPossibleActionTimes);
-            // Aplicamos la accion 'bestActionForNextTurn' al estado (turno)
+            // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transicion
             // (deterministico) del proximo estado (turno).
             IState afterStateNextTurn = problem.computeAfterState(nextTurnState,
@@ -297,20 +321,19 @@ public class TDLambdaLearning {
     }
 
     /**
-     * calcula un numero al azar entre los limites dados, inclusive estos.
-     * <p>
-     * @param a numero desde
-     * @param b numero hasta
-     * <p>
-     * @return aleatorio entre a y b
-     * <p>
+     * Genera un numero al azar entre los limites {@code a} y {@code a}, incluyendo a estos.
+     *
+     * @param a limite inferior (inclusive)
+     * @param b limite superior (inclusive)
+     *
+     * @return número aleatorio entre a y b
      */
     public static int randomBetween(
             final int a,
             final int b
     ) {
         if ( a > b ) {
-            throw new IllegalArgumentException("error: b debe ser mayor que a");
+            throw new IllegalArgumentException("error: b must be greater or equal than a");
         } else if ( a == b ) {
             return a;
         } else {
@@ -319,9 +342,6 @@ public class TDLambdaLearning {
     }
 
     private boolean computeParallelBestPossibleAction = false;
-    /**
-     * tasa de aprendizaje actual para cada capa de pesos
-     */
     private double[] currentAlpha;
     private EExplorationRateAlgorithms explorationRate;
     private double explorationRateFinalValue;
@@ -331,81 +351,36 @@ public class TDLambdaLearning {
     private ELearningStyle learningStyle;
     private NTupleSystem nTupleSystem;
     private final ENeuralNetworkType neuralNetworkType;
+    private int alphaAnnealingT;
+    private boolean canCollectStatistics;
+    private final boolean[] concurrencyInLayer;
+    private double gamma;
+    private double[] initialAlpha;
+    private double lambda;
+    private ELearningRateAdaptation learningRateAdaptation;
+    private final IPerceptronInterface perceptronInterface;
+    private boolean replaceEligibilityTraces;
+    private LinkedList<Long> statisticsBestPossibleActionTimes;
+    private LinkedList<Long> statisticsTrainingTimes;
+    private Trainer trainer;
+
     /**
+     * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD
+     * Learning.
      *
-     */
-    protected int annealingT;
-
-    /**
-     *
-     */
-    protected boolean canCollectStatistics;
-
-    /**
-     *
-     */
-    protected final boolean[] concurrencyInLayer;
-
-    /**
-     *
-     */
-    protected double gamma;
-
-    /**
-     * constante de tasa de aprendizaje para cada capa de pesos
-     */
-    protected double[] initialAlpha;
-
-    /**
-     * constante que se encuentra en el intervalo [0,1]
-     */
-    protected double lambda;
-
-    /**
-     *
-     */
-    protected ELearningRateAdaptation learningRateAdaptation;
-
-    /**
-     *
-     */
-    protected final IPerceptronInterface perceptronInterface;
-
-    /**
-     *
-     */
-    protected boolean replaceEligibilityTraces;
-
-    /**
-     *
-     */
-    protected LinkedList<Long> statisticsBestPossibleActionTimes;
-
-    /**
-     *
-     */
-    protected LinkedList<Long> statisticsTrainingTimes;
-
-    /**
-     *
-     */
-    protected Trainer trainer;
-
-    /**
-     *
-     * @param learningStyle
-     * @param perceptronInterface      implementacion de la interfaz entre nuestra red neuronal y el
-     *                                 perceptronInterface que utilizara el problema. Este puede
-     *                                 estar implementado con cualquier libreria o codigo.
-     * @param lambda                   constante que se encuentra en el intervalo [0,1]
-     * @param alpha                    Constantes de tasa de aprendizaje para cada capa. Si es null,
-     *                                 se inicializa cada initialAlpha con la formula 1/num_neuronas
-     *                                 de la capa anterior.
-     * @param gamma                    tasa de descuento
-     * @param concurrencyInLayer
-     * @param replaceEligibilityTraces permite resetear las trazas de elegibilidad en caso de
-     *                                 movimientos al azar
-     * @param collectStatistics        guarda estadisticas relevante a los tiempos de cálculo
+     * @param learningStyle            tipo de aprendizaje utilizado.
+     * @param perceptronInterface      red neuronal que se desea entrenar, la cual implementa la
+     *                                 interfaz {@code IPerceptronInterface}, permitiendo así el
+     *                                 acceso a su representacion interna.
+     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de
+     *                                 elegibilidad, entre [0,1].
+     * @param alpha                    tasa de aprendizaje para cada capa. Si es null, se inicializa
+     *                                 cada alpha con la formula 1/num_neuronas de la capa anterior.
+     * @param gamma                    tasa de descuento entre [0,1].
+     * @param concurrencyInLayer       true en las capas que se deben computar concurrentemente.
+     * @param replaceEligibilityTraces permite reiniciar las trazas de elegibilidad en caso de
+     *                                 movimientos al azar durante el entrenamiento.
+     * @param collectStatistics        true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public TDLambdaLearning(
             final IPerceptronInterface perceptronInterface,
@@ -429,7 +404,7 @@ public class TDLambdaLearning {
             throw new IllegalArgumentException("learningStyle can't be null");
         } else if ( learningStyle == ELearningStyle.state ) {
             throw new IllegalArgumentException(
-                    "El estilo de entrenamiento por estado no esta implementado, utilice el metodo after state");
+                    "learningStyle = state is not implemented, yet");
         }
 
         this.learningStyle = learningStyle;
@@ -439,7 +414,7 @@ public class TDLambdaLearning {
             for ( int i = 0; i < perceptronInterface.getLayerQuantity(); i++ ) {
                 if ( perceptronInterface.getNeuronQuantityInLayer(i) <= 0 ) {
                     throw new IllegalArgumentException(
-                            "la capa " + i + " debe tener 1 o mas neuronas");
+                            "the layer " + i + " must have 1 or more neurons");
                 }
                 initialAlpha[i] = 1d / perceptronInterface.
                         getNeuronQuantityInLayer(i);
@@ -447,7 +422,7 @@ public class TDLambdaLearning {
         } else {
             if ( alpha.length != perceptronInterface.getLayerQuantity() ) {
                 throw new IllegalArgumentException(
-                        "alpha.length=" + alpha.length + " debe ser igual a perceptronInterface.getLayerQuantity()=" + perceptronInterface.
+                        "alpha.length=" + alpha.length + " must be equal to perceptronInterface.getLayerQuantity()=" + perceptronInterface.
                         getLayerQuantity());
             }
             this.initialAlpha = alpha;
@@ -477,15 +452,19 @@ public class TDLambdaLearning {
     }
 
     /**
+     * Algoritmo de entrenamiento de redes neuronales NTupla, mediante TD Learning.
      *
-     * @param learningStyle
-     * @param nTupleSystem
-     * @param alpha
-     * @param lambda
-     * @param gamma
-     * @param concurrencyInLayer
-     * @param replaceEligibilityTraces
-     * @param collectStatistics
+     * @param nTupleSystem             red NTupla a entrenar.
+     * @param learningStyle            tipo de aprendizaje utilizado.
+     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de
+     *                                 elegibilidad, entre [0,1].
+     * @param alpha                    tasa de aprendizaje. Si es null, se inicializa cada alpha con
+     *                                 la formula 1/num_neuronas de la capa anterior.
+     * @param gamma                    tasa de descuento entre [0,1].
+     * @param concurrencyInLayer       true en las capas que se deben computar concurrentemente.
+     * @param replaceEligibilityTraces permite reiniciar las trazas de elegibilidad en caso de
+     *                                 movimientos al azar durante el entrenamiento.
+     * @param collectStatistics        true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public TDLambdaLearning(
             final NTupleSystem nTupleSystem,
@@ -509,15 +488,15 @@ public class TDLambdaLearning {
             throw new IllegalArgumentException("learningStyle can't be null");
         } else if ( learningStyle == ELearningStyle.state ) {
             throw new IllegalArgumentException(
-                    "El estilo de entrenamiento por estado no esta implementado, utilice el metodo after state");
+                    "learningStyle = state is not implemented, yet");
         }
 
         this.learningStyle = learningStyle;
 
         if ( alpha == null ) {
             initialAlpha = new double[2];
-            initialAlpha[0] = 1d / nTupleSystem.getnTuplesLenght().length;
-            initialAlpha[1] = 1; //No se usa
+            initialAlpha[0] = 1d / nTupleSystem.getNTuplesLenght().length;
+            initialAlpha[1] = 1d; //No se usa
         } else {
             initialAlpha = new double[2];
             initialAlpha[0] = alpha;
@@ -548,31 +527,35 @@ public class TDLambdaLearning {
 
     /**
      *
-     * @return
+     * @return true si se esta recolectando estadísticas sobre los tiempos de cómputos de la
+     *         librería.
      */
     public boolean canCollectStatistics() {
         return canCollectStatistics;
     }
 
     /**
-     * @return the annealingT
+     * @return valor T ({@code alphaAnnealingT}) que indica el momento en el entrenamiento que alpha
+     *         = initialAlpha/2 utilizado en {@code calculateAnnealing}.
      */
-    public int getAnnealingT() {
-        return annealingT;
+    public int getAlphaAnnealingT() {
+        return alphaAnnealingT;
     }
 
     /**
-     * @return the currentAlpha
+     * @return el alpha en el turno actual, de cada capa.
      */
     public double[] getCurrentAlpha() {
         return currentAlpha;
     }
 
     /**
+     * Establece una tasa de exploración fija. El valor elegido es la probabilidad de que el
+     * movimiento elegido sea al azar, en lugar de calculado mediante la red neuronal.
      *
-     * @param value
+     * @param value tasa de exploración.
      */
-    public void setExplorationRateToFixed(final double value) {
+    public void setFixedExplorationRate(final double value) {
         if ( value < 0 || value > 1 ) {
             throw new IllegalArgumentException(
                     "value debe estar en el intervalo [0,1]");
@@ -582,21 +565,30 @@ public class TDLambdaLearning {
     }
 
     /**
+     * Si mantenemos el valor de alpha fijo, las fluctuaciones de la red previenen que en lugar de
+     * converger en un mínimo local, terminemos danzando al azar alrededor. Para alcanzar el mínimo,
+     * y quedarnos ahí, debemos utilizar técnicas de templado (disminuir gradualmente) la tasa de
+     * aprendizaje "alpha". Una técnica simple es la de mantener constante alpha durante un
+     * {@code alphaAnnealingT} entrenamientos, permitiendo a la red encontrar el mínimo local, antes
+     * de empezar a disminuir muy lentamente, lo cual esta demostrado por teoría que garantiza
+     * convergencia en un mínimo. Los valores de {@code T} se determinan por prueba y error.
      *
-     * @param annealingT
+     * @param alphaAnnealingT valor T ({@code alphaAnnealingT}) que indica el momento en el
+     *                        entrenamiento que alpha = initialAlpha/2 utilizado en
+     *                        {@code calculateAnnealing}.
      */
-    public void setLearningRateAdaptationToAnnealing(final int annealingT) {
-        if ( annealingT < 0 ) {
+    public void setAnnealingLearningRate(final int alphaAnnealingT) {
+        if ( alphaAnnealingT < 0 ) {
             throw new IllegalArgumentException(
-                    "annealingT debe ser un valor mayor a 0");
+                    "alphaAnnealingT must be greater or equal to 0");
         }
         this.learningRateAdaptation = ELearningRateAdaptation.annealing;
-        this.annealingT = annealingT;
+        this.alphaAnnealingT = alphaAnnealingT;
     }
 
     /**
      *
-     * @return
+     * @return tiempos de demora al calcular la mejor posible acción, útil para estadísticas.
      */
     public LinkedList<Long> getStatisticsBestPossibleActionTimes() {
         return statisticsBestPossibleActionTimes;
@@ -604,23 +596,22 @@ public class TDLambdaLearning {
 
     /**
      *
-     * @return
+     * @return tiempos de demora al entrenar la red neuronal, útil para estadísticas.
      */
     public LinkedList<Long> getStatisticsTrainingTimes() {
         return statisticsTrainingTimes;
     }
 
     /**
-     * @return the computeParallelBestPossibleAction
+     * @return true si se esta calculando la mejor acción concurrentemente.
      */
     public boolean isComputeParallelBestPossibleAction() {
         return computeParallelBestPossibleAction;
     }
 
     /**
-     * Asegurarse que la funcion {@code evaluate} este implementada de modo que pueda ser ejecutada
-     * concurrentemente.
-     * <p>
+     * Establece si el cálculo de la mejor acción debe realizarse concurrentemente.
+     *
      * @param computeParallelBestPossibleAction true si las evaluaciones deben ejecutarse en
      *                                          paralelo.
      */
@@ -630,13 +621,15 @@ public class TDLambdaLearning {
     }
 
     /**
-     *
+     * Establece una tasa de exploración variable con el tiempo, la cual comienza a decrementarse en
+     * el turno {@code startDecrementing} y finaliza en {@code finishDecrementing}.
+     * <p>
      * @param initialValue
      * @param startDecrementing
      * @param finalValue
      * @param finishDecrementing
      */
-    public void setExplorationRate(
+    public void setLinearExplorationRate(
             final double initialValue,
             final int startDecrementing,
             final double finalValue,
@@ -660,23 +653,22 @@ public class TDLambdaLearning {
     /**
      *
      */
-    public void setLearningRateAdaptationToFixed() {
+    public void setFixedLearningRate() {
         this.learningRateAdaptation = ELearningRateAdaptation.fixed;
-        this.annealingT = 0;
+        this.alphaAnnealingT = 0;
     }
 
     /**
-     * Entrena la Inteligencia Artificial con lo que aprende de la experiencia de resolver una sola
-     * vez un {@code problem} de comienzo a fin, durante 1 o mas turnos hasta alñcanzar su objetivo
-     * o fracasar.
-     * <p>
-     * @param problem problema a resolver
-     * <p>
-     * @param t       cantiad de veces qeu se ejecuto el metodo solveAndTrainOnce
+     * Entrena la red neuronal con lo que aprende de la experiencia de resolver una sola vez
+     * {@code problem} de comienzo a fin, durante 1 o mas turnos hasta alcanzar su objetivo o
+     * fracasar.
+     *
+     * @param problem     problema a resolver
+     * @param currentTurn cantidad de veces que se ejecutó {@code solveAndTrainOnce}
      */
     public void solveAndTrainOnce(
             final IProblemToTrain problem,
-            final int t
+            final int currentTurn
     ) {
         if ( learningRateAdaptation == null ) {
             throw new IllegalArgumentException(
@@ -685,8 +677,8 @@ public class TDLambdaLearning {
         if ( explorationRate == null ) {
             throw new IllegalArgumentException("explorationRate can't be null");
         }
-        if ( t < 0 ) {
-            throw new IllegalArgumentException("t debe ser un valor mayor a 0");
+        if ( currentTurn < 0 ) {
+            throw new IllegalArgumentException("currentTurn must be grater or equal to 0");
         }
         //inicializamos las constantes de aprendizaje
         switch ( this.learningRateAdaptation ) {
@@ -698,15 +690,16 @@ public class TDLambdaLearning {
                 // Ajustamos las alphas segun el metodo de annealing
                 // µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
-                if ( this.currentAlpha.length > 1_000 ) {
+                if ( this.currentAlpha.length > 100 ) {
                     rangeStream = rangeStream.parallel();
                 } else {
                     rangeStream = rangeStream.sequential();
                 }
                 rangeStream.forEach(index ->
                         {
-                            currentAlpha[index] = annealingLearningRate(
-                                    this.initialAlpha[index], t, annealingT);
+                            currentAlpha[index] = calculateAnnealing(initialAlpha[index],
+                                    currentTurn,
+                                    alphaAnnealingT);
                         });
                 break;
             }
@@ -722,17 +715,21 @@ public class TDLambdaLearning {
             }
             case linear: {
                 //factor ajustado linealmente entre dos puntos
-                if ( t < explorationRateStartDecrementing ) {
-                    currentExplorationRate = explorationRateInitialValue;
-                } else if ( t > explorationRateFinishDecrementing ) {
-                    currentExplorationRate = explorationRateFinalValue;
-                } else {
-                    currentExplorationRate
-                            = ((t - explorationRateStartDecrementing)
-                            / (explorationRateFinishDecrementing - explorationRateStartDecrementing))
-                            * (explorationRateFinalValue - explorationRateInitialValue)
-                            + explorationRateInitialValue;
-                }
+                currentExplorationRate = calculateLinearAnnealing(currentTurn,
+                        explorationRateInitialValue, explorationRateFinalValue,
+                        explorationRateStartDecrementing, explorationRateFinishDecrementing);
+//                if ( currentTurn < explorationRateStartDecrementing ) {
+//                    currentExplorationRate = explorationRateInitialValue;
+//                } else if ( currentTurn > explorationRateFinishDecrementing ) {
+//                    currentExplorationRate = explorationRateFinalValue;
+//                } else {
+//                    currentExplorationRate
+//                            = ((currentTurn - explorationRateStartDecrementing)
+//                            / (explorationRateFinishDecrementing - explorationRateStartDecrementing))
+//                            * (explorationRateFinalValue - explorationRateInitialValue)
+//                            + explorationRateInitialValue;
+//                }
+                //TODO testear este cambio!!!
                 break;
             }
         }
@@ -773,8 +770,8 @@ public class TDLambdaLearning {
             List<IAction> possibleActions = problem.listAllPossibleActions(
                     turnInitialState);
             if ( !randomChoise ) {
-                // evaluamos cada accion aplicada al estado inicial y elegimos la mejor
-                // accion basada en las predicciones del problema
+                // evaluamos cada acción aplicada al estado inicial y elegimos la mejor
+                // de éstas basada en las predicciones de recompensas final del problema
                 bestAction = computeBestPossibleAction(problem,
                         learningStyle,
                         turnInitialState,
@@ -787,14 +784,14 @@ public class TDLambdaLearning {
                         possibleActions.size() - 1));
             }
 
-            // aplicamos la accion 'bestAction' al estado actual 'currentState',
-            // y obtenemos su estado de transicion deterministico.
+            // aplicamos la acción 'bestAction' al estado actual 'currentState',
+            // y obtenemos su estado de transición determínistico.
             IState afterState = problem.computeAfterState(turnInitialState,
                     bestAction);
 
-            // hacemos que el problema aplique la accion 'bestAction' de la IA,
+            // hacemos que el problema aplique la acción 'bestAction' de la red neuronal,
             // y retorne el estado del turno siguiente, luego de aplicar acciones
-            // no deterministicas pertinentes para terminar el turno
+            // no determinósticas pertinentes para terminar el turno
             IState nextTurnState = problem.computeNextTurnStateFromAfterstate(
                     afterState);
 
@@ -809,8 +806,6 @@ public class TDLambdaLearning {
                 case afterState: {
                     learnEvaluationAfterstate(problem,
                             trainer,
-                            turnInitialState,
-                            bestAction,
                             afterState,
                             nextTurnState,
                             randomChoise,

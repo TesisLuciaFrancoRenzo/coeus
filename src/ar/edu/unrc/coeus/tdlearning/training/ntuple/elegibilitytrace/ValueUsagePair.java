@@ -19,6 +19,8 @@
 package ar.edu.unrc.coeus.tdlearning.training.ntuple.elegibilitytrace;
 
 /**
+ * Par que almacena valores de los pesos de la traza de elegibilidad, en conjunto a la cantidad de
+ * usos que le queda dentro de la traza antes de desaparecer o ser actualizado con un nuevo valor.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -28,7 +30,7 @@ public class ValueUsagePair {
     private double value;
 
     /**
-     *
+     * Elemento de la traza de elegibilidad.
      */
     public ValueUsagePair() {
         value = 0;
@@ -36,35 +38,35 @@ public class ValueUsagePair {
     }
 
     /**
-     * @return the usagesLeft
+     * @return cantidad de usos que le queda dentro de la traza.
      */
     public int getUsagesLeft() {
         return usagesLeft;
     }
 
     /**
-     * @param usagesLeft the usagesLeft to set
+     * @param usagesLeft nueva cantidad de usos dentro de la traza.
      */
     public void setUsagesLeft(final int usagesLeft) {
         this.usagesLeft = usagesLeft;
     }
 
     /**
-     * @return the value
+     * @return valor actual del elemento de la traza.
      */
     public double getValue() {
         return value;
     }
 
     /**
-     * @param value the value to set
+     * @param value nuevo valor del elemento de la traza.
      */
     public void setValue(final double value) {
         this.value = value;
     }
 
     /**
-     *
+     * Utiliza el elemento de la traza, disminuyendo su vida.
      */
     public void use() {
         usagesLeft--;

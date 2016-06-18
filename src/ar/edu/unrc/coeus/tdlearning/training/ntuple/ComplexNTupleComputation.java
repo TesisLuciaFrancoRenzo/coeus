@@ -19,6 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 
 /**
+ * resultado que se obtiene al computar la salida de una red neuronal de tipo NTupla.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -30,42 +31,42 @@ public class ComplexNTupleComputation {
     private double output;
 
     /**
-     * @return the derivatedOutput
+     * @return la derivada de la salida de la red neuronal.
      */
     public double getDerivatedOutput() {
         return derivatedOutput;
     }
 
     /**
-     * @param derivatedOutput the derivatedOutput to set
+     * @param derivatedOutput nueva derivada de la salida de la red neuronal.
      */
     public void setDerivatedOutput(final double derivatedOutput) {
         this.derivatedOutput = derivatedOutput;
     }
 
     /**
-     * @return the indexes
+     * @return los índices involucrados en el cálculo de la salida de la red neuronal.
      */
     public int[] getIndexes() {
         return indexes;
     }
 
     /**
-     * @param indexes the indexes to set
+     * @param indexes los índices involucrados en el cálculo de la salida de la red neuronal.
      */
     public void setIndexes(final int[] indexes) {
         this.indexes = indexes;
     }
 
     /**
-     * @return the output
+     * @return salida de la red neuronal.
      */
     public double getOutput() {
         return output;
     }
 
     /**
-     * @param output the output to set
+     * @param output nueva salida de la red neuronal.
      */
     public void setOutput(final double output) {
         this.output = output;

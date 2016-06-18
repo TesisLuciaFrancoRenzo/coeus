@@ -387,7 +387,7 @@ public final class TDTrainerPerceptron extends Trainer {
             return 1d;
         } else {
             // si es la coordenada de una neurona, devuelvo su f(net) o la entrada (si es capa de entrada)
-            return ((Neuron) currentLayer.getNeuron(neuronIndex)).getOutput();
+            return currentLayer.getNeuron(neuronIndex).getOutput();
         }
     }
 

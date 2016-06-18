@@ -19,24 +19,24 @@
 package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 
 /**
- * Se debe asegurar la implementacion de equals ya que se utilizaran en HashMaps
- * <p>
+ * Posible valore dentro de una muestra de NTupla.
+ *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface SamplePointState {
 
     /**
      *
-     * @param other
+     * @param other otro objeto para comparar
      *
-     * @return
+     * @return true si son el mismo objeto, semánticamente.
      */
     @Override
     public abstract boolean equals(final Object other);
 
     /**
      *
-     * @return
+     * @return hashcode unico para identificar un {@code SamplePointState}
      */
     @Override
     public abstract int hashCode();

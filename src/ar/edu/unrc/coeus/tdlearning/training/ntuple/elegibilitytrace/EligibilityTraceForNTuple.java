@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
+ * Implementación de trazas de elegibilidad para NTuplas.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -37,11 +38,13 @@ public class EligibilityTraceForNTuple {
     private final Set<Integer> usedTraces;
 
     /**
+     * Traza de elegibilidad especializada para redes neuronales de tipo NTuplas.
      *
-     * @param nTupleSystem
-     * @param gamma
-     * @param lambda
-     * @param maxEligibilityTraceLenght
+     * @param nTupleSystem              red neuronal utilizada.
+     * @param gamma                     tasa de descuento entre [0,1].
+     * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de
+     *                                  elegibilidad, entre [0,1].
+     * @param maxEligibilityTraceLenght longitud máxima de la traza de elegibilidad.
      */
     public EligibilityTraceForNTuple(
             final NTupleSystem nTupleSystem,
@@ -54,15 +57,16 @@ public class EligibilityTraceForNTuple {
         for ( int i = 0; i < eligibilityTrace.length; i++ ) {
             eligibilityTrace[i] = new ValueUsagePair();
         }
-        usedTraces = new HashSet<>(nTupleSystem.getnTuplesLenght().length);
+        usedTraces = new HashSet<>(nTupleSystem.getNTuplesLenght().length);
         this.maxEligibilityTraceLenght = maxEligibilityTraceLenght;
         this.gamma = gamma;
         this.lambda = lambda;
     }
 
     /**
+     * Ajusta los valores de la traza de elegibilidad en los pesos no actualizados.
      *
-     * @param tDError
+     * @param tDError errores calculados en los pesos.
      */
     public void processNotUsedTraces(final double tDError) {
         if ( this.lambda > 0 ) {
@@ -86,7 +90,7 @@ public class EligibilityTraceForNTuple {
     }
 
     /**
-     *
+     * Reinicia la traza de elegibilidad completa.
      */
     public void reset() {
         Iterator<Integer> it = usedTraces.iterator();
@@ -98,8 +102,9 @@ public class EligibilityTraceForNTuple {
     }
 
     /**
+     * Reinicia un elemento de la traza de elegibilidad.
      *
-     * @param weightIndex
+     * @param weightIndex índice del peso de la traza a reiniciar.
      */
     public void reset(final int weightIndex) {
         eligibilityTrace[weightIndex].reset();
@@ -107,9 +112,10 @@ public class EligibilityTraceForNTuple {
     }
 
     /**
+     * Actualiza el contenido de la traza de elegibilidad en el índice {@code weightIndex}
      *
-     * @param weightIndex
-     * @param derivatedOutput
+     * @param weightIndex     índice del peso a actualizar en la traza.
+     * @param derivatedOutput valor de actualización.
      */
     public synchronized void updateTrace(
             final int weightIndex,

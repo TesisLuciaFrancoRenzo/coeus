@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Capa de una red neuronal genérica.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -30,8 +31,9 @@ public class Layer {
     private final List<PartialNeuron> neurons;
 
     /**
+     * Capa de una red neuronal genérica.
      *
-     * @param neuronQuantityInLayer
+     * @param neuronQuantityInLayer cantidad de neuronas en la capa.
      */
     public Layer(final int neuronQuantityInLayer) {
         neurons = new ArrayList<>(neuronQuantityInLayer);
@@ -42,7 +44,8 @@ public class Layer {
     }
 
     /**
-     * @param neuronIndex <p>
+     * @param neuronIndex indice de la neurona.
+     *
      * @return the neurons
      */
     public PartialNeuron getNeuron(final int neuronIndex) {
