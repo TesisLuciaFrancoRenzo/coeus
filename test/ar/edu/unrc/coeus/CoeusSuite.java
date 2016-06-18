@@ -30,7 +30,8 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.coeus.tdlearning.TdlearningSuite.class, ar.edu.unrc.coeus.interfaces.InterfacesSuite.class} )
+@Suite.SuiteClasses( {ar.edu.unrc.coeus.tdlearning.TdlearningSuite.class,
+    ar.edu.unrc.coeus.interfaces.InterfacesSuite.class} )
 public class CoeusSuite {
 
     /**

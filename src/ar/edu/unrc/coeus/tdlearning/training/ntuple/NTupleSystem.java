@@ -52,7 +52,8 @@ public class NTupleSystem {
             final int nTupleIndex,
             final int[] nTuplesLenght,
             final IStateNTuple state,
-            final Map<SamplePointState, Integer> mapSamplePointStates) {
+            final Map<SamplePointState, Integer> mapSamplePointStates
+    ) {
         SamplePointState[] ntuple = state.getNTuple(nTupleIndex);
         int index = 0;
         for ( int j = 0; j < nTuplesLenght[nTupleIndex]; j++ ) {
@@ -60,7 +61,8 @@ public class NTupleSystem {
 //            Integer sampleIndex = mapSamplePointStates.get(object);
 //            int size = mapSamplePointStates.size();
 //            int pow = (int) Math.pow(size, j);
-            index += mapSamplePointStates.get(ntuple[j]) * (int) Math.pow(mapSamplePointStates.size(), j); //FIXME hacer comparables?
+            index += mapSamplePointStates.get(ntuple[j]) * (int) Math.pow(
+                    mapSamplePointStates.size(), j); //FIXME hacer comparables?
         }
         return index;
     }
@@ -99,7 +101,8 @@ public class NTupleSystem {
         nTuplesWeightQuantityIndex = new int[nTuplesLenght.length];
         nTuplesWeightQuantityIndex[0] = 0;
         for ( int i = 0; i < nTuplesLenght.length; i++ ) {
-            nTuplesWeightQuantity[i] = (int) Math.pow(mapSamplePointStates.size(), nTuplesLenght[i]);
+            nTuplesWeightQuantity[i] = (int) Math.pow(mapSamplePointStates.
+                    size(), nTuplesLenght[i]);
             lutSize += nTuplesWeightQuantity[i];
             if ( i > 0 ) {
                 nTuplesWeightQuantityIndex[i] = nTuplesWeightQuantityIndex[i - 1] + nTuplesWeightQuantity[i - 1];
@@ -117,7 +120,8 @@ public class NTupleSystem {
      * @param currentWeightIndex
      * @param correction
      */
-    public void addCorrectionToWeight(final int currentWeightIndex, final double correction) {
+    public void addCorrectionToWeight(final int currentWeightIndex,
+            final double correction) {
         lut[currentWeightIndex] += correction;
     }
 
@@ -133,7 +137,9 @@ public class NTupleSystem {
      * @param state <p>
      * @return
      */
-    public ComplexNTupleComputation getComplexComputation(final IStateNTuple state) {
+    public ComplexNTupleComputation getComplexComputation(
+            final IStateNTuple state
+    ) {
         IntStream stream = IntStream
                 .range(0, nTuplesLenght.length);
         if ( concurrency ) {
@@ -142,20 +148,18 @@ public class NTupleSystem {
             stream = stream.sequential();
         }
         int[] indexes = new int[nTuplesLenght.length];
-        double sum = stream.mapToDouble(v -> {
-            indexes[v] = nTuplesWeightQuantityIndex[v] + calculateLocalIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
-            return lut[indexes[v]];
-        }).sum();
-
-//        double sum2 = 0d;
-//        for ( int v = 0; v < nTuplesLenght.length; v++ ) {
-//            indexes[v] = nTuplesWeightQuantityIndex[v] + calculateLocalIndex(v, getnTuplesLenght(), state, getMapSamplePointStates());
-//            sum2 += lut[indexes[v]];
-//        }
+        double sum = stream.mapToDouble(v ->
+                {
+                    indexes[v] = nTuplesWeightQuantityIndex[v]
+                            + calculateLocalIndex(v, getnTuplesLenght(), state,
+                                    getMapSamplePointStates());
+                    return lut[indexes[v]];
+                }).sum();
         ComplexNTupleComputation output = new ComplexNTupleComputation();
         output.setIndexes(indexes);
         output.setOutput(getActivationFunction().apply(sum));
-        output.setDerivatedOutput(getDerivatedActivationFunction().apply(output.getOutput()));
+        output.setDerivatedOutput(
+                getDerivatedActivationFunction().apply(output.getOutput()));
         return output;
     }
 
@@ -172,14 +176,12 @@ public class NTupleSystem {
         } else {
             stream = stream.sequential();
         }
-        double sum = stream.mapToDouble(v -> {
-            return lut[nTuplesWeightQuantityIndex[v] + calculateLocalIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
-        }).sum();
-
-//        double sum = 0d;
-//        for ( int v = 0; v < nTuplesLenght.length; v++ ) {
-//            sum += lut[nTuplesWeightQuantityIndex[v] + calculateLocalIndex(v, getnTuplesLenght(), state, getMapSamplePointStates())];
-//        }
+        double sum = stream.mapToDouble(v ->
+                {
+                    return lut[nTuplesWeightQuantityIndex[v]
+                            + calculateLocalIndex(v, getnTuplesLenght(), state,
+                                    getMapSamplePointStates())];
+                }).sum();
         return getActivationFunction().apply(sum);
     }
 
@@ -232,7 +234,8 @@ public class NTupleSystem {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void load(final File weightsFile) throws IOException, ClassNotFoundException {
+    public void load(final File weightsFile) throws IOException,
+            ClassNotFoundException {
         FileInputStream f_in = new FileInputStream(weightsFile);
         load(f_in);
     }
@@ -243,7 +246,8 @@ public class NTupleSystem {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void load(final InputStream weightsFile) throws IOException, ClassNotFoundException {
+    public void load(final InputStream weightsFile) throws IOException,
+            ClassNotFoundException {
         if ( weightsFile == null ) {
             throw new IllegalArgumentException("weightsFile can't be null");
         }
@@ -272,9 +276,10 @@ public class NTupleSystem {
         IntStream
                 .range(0, lut.length)
                 .parallel()
-                .forEach(weightIndex -> {
-                    lut[weightIndex] = (Math.random() * 2d - 1d);
-                });
+                .forEach(weightIndex ->
+                        {
+                            lut[weightIndex] = (Math.random() * 2d - 1d);
+                        });
     }
 
     /**
@@ -298,7 +303,8 @@ public class NTupleSystem {
      * @param index
      * @param value
      */
-    public void setWeight(final int index, final double value) {
+    public void setWeight(final int index,
+            final double value) {
         lut[index] = value;
     }
 

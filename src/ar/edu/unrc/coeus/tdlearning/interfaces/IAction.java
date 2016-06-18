@@ -19,8 +19,8 @@
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
- * Posible accion que puede elegir la Inteligencia Artificial cuando es su turno
- * <p>
+ * Posible acción que puede elegir la Inteligencia Artificial cuando es su turno
+ *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface IAction {

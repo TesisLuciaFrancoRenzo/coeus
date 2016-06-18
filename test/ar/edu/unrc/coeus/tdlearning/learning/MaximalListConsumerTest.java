@@ -19,7 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.learning;
 
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
-import ar.edu.unrc.coeus.tdlearning.utils.MaximalListConsumer;
+import ar.edu.unrc.coeus.tdlearning.utils.MaximalActionPredictionConsumer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -60,7 +60,8 @@ public class MaximalListConsumerTest {
         }
 
         @Override
-        public void add(int index, ActionPrediction element) {
+        public void add(int index,
+                ActionPrediction element) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -70,7 +71,8 @@ public class MaximalListConsumerTest {
         }
 
         @Override
-        public boolean addAll(int index, Collection<? extends ActionPrediction> c) {
+        public boolean addAll(int index,
+                Collection<? extends ActionPrediction> c) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -145,7 +147,8 @@ public class MaximalListConsumerTest {
         }
 
         @Override
-        public ActionPrediction set(int index, ActionPrediction element) {
+        public ActionPrediction set(int index,
+                ActionPrediction element) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -155,7 +158,8 @@ public class MaximalListConsumerTest {
         }
 
         @Override
-        public List<ActionPrediction> subList(int fromIndex, int toIndex) {
+        public List<ActionPrediction> subList(int fromIndex,
+                int toIndex) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -192,7 +196,7 @@ public class MaximalListConsumerTest {
     }
 
     /**
-     * Test of accept method, of class MaximalListConsumer.
+     * Test of accept method, of class MaximalActionPredictionConsumer.
      */
     @Test
     public void testAccept() {
@@ -200,7 +204,7 @@ public class MaximalListConsumerTest {
         //lista vacia
         ActionPrediction actionPrediction = new ActionPrediction(new IAction() {
         }, 2d);
-        MaximalListConsumer instance = new MaximalListConsumer();
+        MaximalActionPredictionConsumer instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         assertEquals(1, instance.getList().size());
 
@@ -213,28 +217,28 @@ public class MaximalListConsumerTest {
 
         actionPrediction = new ActionPrediction(new IAction() {
         }, 2d);
-        instance = new MaximalListConsumer();
+        instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         assertEquals(1, instance.getList().size());
     }
 
     /**
-     * Test of combine method, of class MaximalListConsumer.
+     * Test of combine method, of class MaximalActionPredictionConsumer.
      */
     @Test
     public void testCombine() {
         System.out.println("combine");
         //lista vacia
-        MaximalListConsumer other = new MaximalListConsumer();
-        MaximalListConsumer instance = new MaximalListConsumer();
+        MaximalActionPredictionConsumer other = new MaximalActionPredictionConsumer();
+        MaximalActionPredictionConsumer instance = new MaximalActionPredictionConsumer();
         instance.combine(other);
         assertEquals(0, instance.getList().size());
         //lista con un elemento
-        other = new MaximalListConsumer();
+        other = new MaximalActionPredictionConsumer();
         ActionPrediction actionPrediction = new ActionPrediction(new IAction() {
         }, 2d);
         other.accept(actionPrediction);
-        instance = new MaximalListConsumer();
+        instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
         assertEquals(2, instance.getList().size());
@@ -242,7 +246,7 @@ public class MaximalListConsumerTest {
         actionPrediction = new ActionPrediction(new IAction() {
         }, 3d);
         other.accept(actionPrediction);
-        instance = new MaximalListConsumer();
+        instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
         assertEquals(2, instance.getList().size());
@@ -250,7 +254,7 @@ public class MaximalListConsumerTest {
         actionPrediction = new ActionPrediction(new IAction() {
         }, 1d);
         other.accept(actionPrediction);
-        instance = new MaximalListConsumer();
+        instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
         assertEquals(1, instance.getList().size());

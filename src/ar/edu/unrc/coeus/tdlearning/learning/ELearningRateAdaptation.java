@@ -19,18 +19,19 @@
 package ar.edu.unrc.coeus.tdlearning.learning;
 
 /**
+ * Establece como aumenta, disminuye o se mantiene Alpha durante el entrenamiento.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public enum ELearningRateAdaptation {
 
     /**
-     * las constantes de aprendizaje van disminuyendo a travez del tiempo
-     * mediante la formula: µ(t) = µ(0)/(1 + t/T)
+     * Las constantes de aprendizaje alpha dejan de ser constantes, y van disminuyendo a través del
+     * tiempo mediante la formula: µ(t) = µ(0)/(1 + t/T)
      */
     annealing,
     /**
-     * Utiliza los valores de alpha fijos a travez del tiempo
+     * Utiliza valores de alpha fijos a través del tiempo
      */
     fixed
 }

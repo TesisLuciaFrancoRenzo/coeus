@@ -19,28 +19,32 @@
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
+ * Representa el estado del problema en diferentes turnos (y entre-turnos) del problema.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface IState {
 
     /**
+     * Retorna la recompensa parcial calculada tras realizar las acciones deterministas, según la
+     * neurona de salida {@code outputNeuron}.
      *
-     * @param outputNeuron neurona de salida<p>
-     * @return recompensa parcial que da este estado para la neurona
-     *         {@code outputNeuron}.
+     * @param outputNeuron neurona de salida
+     *
+     * @return recompensa parcial luego de aplicar la acción determinística que da este estado a la
+     *         neurona {@code outputNeuron}.
      */
     public double getStateReward(final int outputNeuron);
 
     /**
      *
-     * @return true si el estado es final para el problema
+     * @return true si el estado es final para el problema.
      */
     public boolean isTerminalState();
 
     /**
      *
-     * @return
+     * @return una copia del {@code IState}.
      */
     public IState getCopy();
 

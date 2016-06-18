@@ -28,10 +28,11 @@ public interface SamplePointState {
     /**
      *
      * @param other
+     *
      * @return
      */
     @Override
-    public abstract boolean equals(Object other);
+    public abstract boolean equals(final Object other);
 
     /**
      *

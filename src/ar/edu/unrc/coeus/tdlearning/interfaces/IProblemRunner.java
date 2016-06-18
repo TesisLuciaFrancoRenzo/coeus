@@ -21,63 +21,74 @@ package ar.edu.unrc.coeus.tdlearning.interfaces;
 import java.util.ArrayList;
 
 /**
+ * Debe ser extendido por las clases que pueden hacer uso de los algoritmos provistos en esta
+ * librería con el objetivo de hacer simulaciones una vez entrenada la red neuronal.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface IProblemRunner {
 
     /**
+     * Calcula una representación numérica de la salida de la red neuronal. Este valor es utilizado
+     * para comparar diferentes {@code IState} y elegir el mejor. Mientras mas grande el valor, mas
+     * importante se considerará el {@code IState}.
      *
-     * @param output salida del perceptron no normalizada.<p>
-     * @param actor  jugador actual que necesita interpretar {@code output}
-     *               desde su punto de vista
-     * <p>
-     * @return un valor representativo que interpreta la salida del perceptron
-     *         {@code output} desde el punto de vista del jugador {@code player}
+     * @param output salida de la red neuronal desnormalizada.
+     * @param actor  actor corriente que necesita interpretar {@code output} desde su punto de
+     *               vista.
+     *
+     * @return un valor representativo que interpreta la salida de la red neuronal desde el punto de
+     *         vista del actor {@code player}
      */
-    public Double computeNumericRepresentationFor(final Object[] output, final IActor actor);
+    public Double computeNumericRepresentationFor(final Object[] output,
+            final IActor actor);
 
     /**
+     * Desnormaliza el valor {@code value} que es el resultado obtenido en una de las neuronas de
+     * salida. Se asume que las neuronas de la capa de salida utilizan la misma función de
+     * normalización.
      *
-     * @param value <p>
-     * @return
+     * @param value resultado de una neurona de salida, tras evaluar la red neuronal.
+     *
+     * @return {@code value} desnormalizado.
      */
     public double denormalizeValueFromPerceptronOutput(final Object value);
 
     /**
+     * Lista todas las posibles acciones validas aplicables al estado {@code turnInitialState}.
      *
-     * @param turnInitialState estado del poblema sobre el cual hacer calculos
-     * <p>
-     * @return una lista de todas las acciones validas que se pueden aplicar al
-     *         estado s
+     * @param turnInitialState estado del problema sobre el cual hacer cálculos.
+     *
+     * @return una lista de todas las acciones validas que se pueden aplicar al estado
+     *         {@code turnInitialState}.
      */
-    public ArrayList<IAction> listAllPossibleActions(final IState turnInitialState);
+    public ArrayList<IAction> listAllPossibleActions(
+            final IState turnInitialState);
 
     /**
-     * Calcula el estado intermedio del turno, que es el estado al que llega el
-     * problema inmediatamente luego de aplicar la accion deterministica 'a',
-     * pero antes de aplicar las acciones no deterministicas. Al computar el
-     * afterstate se debe cargar la puntuacion parcial obtenida en
-     * {@code turnInitialState} para ser utilizado en diferentes algorimos.
-     * <p>
+     * Calcula el estado intermedio del turno, que es el estado al que se llega inmediatamente luego
+     * de aplicar la acción determinística {@code action}, pero antes de aplicar las acciones no
+     * determinísticas. Tras computar el afterstate, se debe almacenar la recompensa parcial
+     * obtenida dentro del {@code IState} retornado para ser utilizado en diferentes algoritmos.
+     *
      * @param turnInitialState estado inicial
-     * @param action           accion a aplicar
-     * <p>
-     * @return estado intermedio deterministico resulante de aplicar la accion
-     *         'a' al estado 's', con su recompensa parcial en caso de ser
-     *         utilizado el calculo acumulativo en TDLearning
+     * @param action           acción determinística para aplicar
+     *
+     * @return estado intermedio determinístico resultante de aplicar la acción {@code action} al
+     *         estado {@code turnInitialState}, con su recompensa parcial, para ser utilizado en el
+     *         cálculo acumulativo de TDLearning
      */
-    public IState computeAfterState(final IState turnInitialState, final IAction action);
+    public IState computeAfterState(final IState turnInitialState,
+            final IAction action);
 
     /**
-     * Prediccion realizada por el perceptron de que tan bueno es el estado
-     * {@code state}.
-     * <p>
-     * @param state estado intermedio si se utiliza afterstate, o inicio de
-     *              estado
-     * <p>
-     * @return prediccion del perceptron, normalizado (si la funcion de
-     *         activacion necesita normalizacion).
+     * Evaluación realizada por la red neuronal sobre {@code state}.
+     *
+     * @param state estado intermedio si se utiliza afterstate, o estado inicial del turno en caso
+     *              contrario.
+     *
+     * @return predicción realizada por la red neuronal, normalizada (si es que la función de
+     *         activación fue normalizada).
      */
     public Object[] evaluateBoardWithPerceptron(final IState state);
 

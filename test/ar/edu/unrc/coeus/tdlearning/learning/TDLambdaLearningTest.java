@@ -65,31 +65,30 @@ public class TDLambdaLearningTest {
     public void tearDown() {
     }
 
-
     /**
-     * Test of calculateBestEligibilityTraceLenght method, of class
-     * TDLambdaLearning.
+     * Test of calculateBestEligibilityTraceLenght method, of class TDLambdaLearning.
      */
     @Test
     public void testCalculateBestEligibilityTraceLenght() {
         System.out.println("calculateBestEligibilityTraceLenght");
         Double lambda = 0.7;
         Integer expResult = 21;
-        Integer result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        Integer result = TDLambdaLearning.calculateBestEligibilityTraceLenght(
+                lambda);
         System.out.println("result " + result);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of calculateBestEligibilityTraceLenght method, of class
-     * TDLambdaLearning.
+     * Test of calculateBestEligibilityTraceLenght method, of class TDLambdaLearning.
      */
     @Test
     public void testCalculateBestEligibilityTraceLenght_Double() {
         System.out.println("calculateBestEligibilityTraceLenght");
         Double lambda = 0.99;
         Integer expResult = Integer.MAX_VALUE;
-        Integer result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
+        Integer result = TDLambdaLearning.calculateBestEligibilityTraceLenght(
+                lambda);
         assertEquals(expResult, result);
 
         lambda = 0.975;
@@ -127,9 +126,9 @@ public class TDLambdaLearningTest {
         result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
         assertEquals(expResult, result);
     }
+
     /**
-     * Test of calculateBestEligibilityTraceLenght method, of class
-     * TDLambdaLearning.
+     * Test of calculateBestEligibilityTraceLenght method, of class TDLambdaLearning.
      */
     @Test
     public void testRandomBetween() {

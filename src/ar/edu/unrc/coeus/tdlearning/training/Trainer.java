@@ -25,12 +25,27 @@ import ar.edu.unrc.coeus.tdlearning.interfaces.IState;
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public interface ITrainer {
+public abstract class Trainer {
 
     /**
      *
      */
-    public void reset();
+    protected double gamma;
+
+    /**
+     * Constante que se encuentra en el intervalo [0,1]
+     */
+    protected double lambda;
+
+    /**
+     *
+     */
+    protected boolean replaceEligibilityTraces;
+
+    /**
+     *
+     */
+    public abstract void reset();
 
     /**
      *
@@ -41,7 +56,7 @@ public interface ITrainer {
      * @param concurrencyInLayer
      * @param aRandomMove
      */
-    public void train(
+    public abstract void train(
             final IProblemToTrain problem,
             final IState state,
             final IState nextTurnState,

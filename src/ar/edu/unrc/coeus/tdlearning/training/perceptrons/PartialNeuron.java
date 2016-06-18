@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Util ara el calculo de cache de momentums ya que no es necesario todos los
- * otros valores
+ * Util ara el calculo de cache de momentums ya que no es necesario todos los otros valores
  * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -36,7 +35,8 @@ public class PartialNeuron {
      * @param weightsQuantity
      * @param outputLayerNeuronQuantity
      */
-    public PartialNeuron(final int weightsQuantity, final int outputLayerNeuronQuantity) {
+    public PartialNeuron(final int weightsQuantity,
+            final int outputLayerNeuronQuantity) {
         if ( weightsQuantity > 0 ) {
             weights = new ArrayList(weightsQuantity + 1);
             for ( int i = 0; i < weightsQuantity + 1; i++ ) {
@@ -80,7 +80,8 @@ public class PartialNeuron {
      * @param previousLayerNeuronIndex
      * @param weight
      */
-    public void setWeight(final int previousLayerNeuronIndex, final Double weight) {
+    public void setWeight(final int previousLayerNeuronIndex,
+            final Double weight) {
         getWeights().set(previousLayerNeuronIndex, weight);
     }
 

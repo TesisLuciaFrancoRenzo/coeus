@@ -83,7 +83,8 @@ public class NeuralNetCache {
      * @param layerIndex indice del destino de la nueva capa
      * @param layer      nueva capa a añadir a la cache
      */
-    public void setLayer(final int layerIndex, final Layer layer) {
+    public void setLayer(final int layerIndex,
+            final Layer layer) {
         layers.set(layerIndex, layer);
     }
 }

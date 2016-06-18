@@ -27,35 +27,41 @@ import java.util.function.Function;
  */
 public class FunctionUtils {
 
-
     /**
      * Función de activación LINEAR
      */
-    public static final Function<Double, Double> LINEAR = (value) -> value;
+    public static final Function<Double, Double> LINEAR = (value) ->
+            value;
     /**
      * Función de activación LINEAR
      */
-    public static final Function<Double, Double> LINEAR_DERIVATED = (value) -> 1d;
+    public static final Function<Double, Double> LINEAR_DERIVATED = (value) ->
+            1d;
 
     /**
      * Función de activación Sigmoideo
      */
-    public static final Function<Double, Double> SIGMOID = (value) -> 1d / (1d + exp(-value));
+    public static final Function<Double, Double> SIGMOID = (value) ->
+            1d / (1d + exp(-value));
     /**
-     * Derivada de la función de activación Sigmoideo. {@code fValue} debe ser
-     * SIGMOID(value) por cuestiones de optimización
+     * Derivada de la función de activación Sigmoideo. {@code fValue} debe ser SIGMOID(value) por
+     * cuestiones de optimización
      */
-    public static final Function<Double, Double> SIGMOID_DERIVATED = (fValue) -> fValue * (1d - fValue);
+    public static final Function<Double, Double> SIGMOID_DERIVATED = (fValue) ->
+            fValue * (1d - fValue);
 
     /**
      * Función de activación TANH
      */
-    public static final Function<Double, Double> TANH = (value) -> Math.tanh(value);
+    public static final Function<Double, Double> TANH = (value) ->
+            Math.tanh(
+                    value);
     /**
-     * Derivada de la función de activación TANH. {@code fValue} debe ser
-     * TANH(value) por cuestiones de optimización
+     * Derivada de la función de activación TANH. {@code fValue} debe ser TANH(value) por cuestiones
+     * de optimización
      */
-    public static final Function<Double, Double> TANH_DERIVATED = (fValue) -> 1d - fValue * fValue;
+    public static final Function<Double, Double> TANH_DERIVATED = (fValue) ->
+            1d - fValue * fValue;
 
     private FunctionUtils() {
     }

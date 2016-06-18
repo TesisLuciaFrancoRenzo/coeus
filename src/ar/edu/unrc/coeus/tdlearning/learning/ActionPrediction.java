@@ -21,45 +21,48 @@ package ar.edu.unrc.coeus.tdlearning.learning;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
 
 /**
- * Tupla que contiene una acción y la predicción que calcula el perceptron sobre
- * el final del problema, si es que se toma dicha acción
- * <p>
+ * Tupla que contiene una acción y la predicción que calcula la red neuronal sobre la recompensa
+ * final del problema, si es que se toma dicha acción.
+ *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class ActionPrediction implements Comparable<ActionPrediction> {
 
-    /**
-     * Acción asociada a la prediccion de llegar al final del juego.
-     */
     private final IAction action;
     private final Double numericRepresentation;
 
     /**
+     * Tupla que relaciona la salida de una red neuronal a una representación numérica
+     * {@code numericRepresentation} (útil en caso de que existan varias neuronas de salida).
+     * Mientras mayor se el valor de {@code numericRepresentation}, mas importancia se le dará a
+     * esta tupla a la hora de ser elegida.
      *
      * @param action                acción relacionada a {@code prediction}
-     * @param numericRepresentation para comparar diferentes
-     *                              {@code ActionPrediction} cuando hay varias
-     *                              neuronas de salida
+     * @param numericRepresentation para comparar diferentes {@code ActionPrediction} cuando hay
+     *                              varias neuronas de salida
      */
-    public ActionPrediction(final IAction action, final Double numericRepresentation) {
+    public ActionPrediction(final IAction action,
+            final Double numericRepresentation) {
         this.action = action;
         this.numericRepresentation = numericRepresentation;
     }
 
     @Override
-    public int compareTo(ActionPrediction other) {
+    public int compareTo(final ActionPrediction other) {
         return numericRepresentation.compareTo(other.getNumericRepresentation());
     }
 
     /**
-     * @return acción asociada a la prediccíon del final del problema
+     * @return acción asociada a la predicción de la recompensa final del problema.
      */
     public IAction getAction() {
         return action;
     }
 
     /**
-     * @return the numericRepresentation
+     * @return la representación numérica de esta acción. Mientras mayor se el valor de
+     *         {@code numericRepresentation}, mas importancia se le dará a esta tupla a la hora de
+     *         ser elegida.
      */
     public double getNumericRepresentation() {
         return numericRepresentation;

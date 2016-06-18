@@ -18,10 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
-import ar.edu.unrc.coeus.tdlearning.learning.StateProbability;
 import java.util.ArrayList;
-import java.util.List;
-import static junit.framework.Assert.assertEquals;
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.basic.BasicMLData;
@@ -31,6 +28,7 @@ import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.arrayutil.NormalizedField;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,7 +38,6 @@ import org.junit.Test;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class IProblemTest {
-
 
     /**
      *
@@ -89,9 +86,11 @@ public class IProblemTest {
         IProblemToTrain instance = new IProblemImpl();
         IState expResult = newBoard1;
         IState result = instance.computeAfterState(newBoard, action);
-        assertEquals(((Boardone2one) expResult).board[0][0], ((Boardone2one) result).board[0][0]);
+        assertEquals(((Boardone2one) expResult).board[0][0],
+                ((Boardone2one) result).board[0][0]);
 
     }
+
     /**
      *
      * @author lucia bressan, franco pellegrini, renzo bianchini
@@ -106,7 +105,8 @@ public class IProblemTest {
          * @param x
          * @param y
          */
-        public Action(int x, int y) {
+        public Action(int x,
+                int y) {
             this.x = x;
             this.y = y;
         }
@@ -164,9 +164,12 @@ public class IProblemTest {
         }
 
         @Override
-        public IState computeAfterState(IState turnInitialState, IAction action) {
-            Boardone2one afterstate = ((Boardone2one) turnInitialState).getCopy();
-            afterstate.getBoard()[((Action) action).getX()][((Action) action).getY()] = true;
+        public IState computeAfterState(IState turnInitialState,
+                IAction action) {
+            Boardone2one afterstate = ((Boardone2one) turnInitialState).
+                    getCopy();
+            afterstate.getBoard()[((Action) action).getX()][((Action) action).
+                    getY()] = true;
             return afterstate;
         }
 
@@ -176,27 +179,36 @@ public class IProblemTest {
         }
 
         @Override
-        public Double computeNumericRepresentationFor(Object[] output, IActor actor) {
+        public Double computeNumericRepresentationFor(Object[] output,
+                IActor actor) {
             assert output.length == 1;
             return (Double) output[0];
         }
 
         @Override
         public double denormalizeValueFromPerceptronOutput(Object value) {
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == false ) {
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
+                    getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.
+                    getBoard()[1][1] == false ) {
                 return 13d;
             }
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == false
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
+                    getBoard()[0][1] == false
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.
+                    getBoard()[1][1] == true ) {
                 return 15d;
             }
-            if ( currentBoard.getBoard()[0][0] == false && currentBoard.getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == false && currentBoard.
+                    getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.
+                    getBoard()[1][1] == true ) {
                 return 6d;
             }
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == false && currentBoard.getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
+                    getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == false && currentBoard.
+                    getBoard()[1][1] == true ) {
                 return 14d;
             }
             throw new UnsupportedOperationException("Not supported yet.");
@@ -206,7 +218,8 @@ public class IProblemTest {
         public Object[] evaluateBoardWithPerceptron(IState state) {
             double[] inputs = new double[4];
             for ( int i = 0; i < 4; i++ ) {
-                inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i);
+                inputs[i] = ((IStatePerceptron) state).
+                        translateToPerceptronInput(i);
             } //TODO reeemplazar esto por algo mas elegante
             MLData inputData = new BasicMLData(inputs);
             MLData output = (encogPerceptron).compute(inputData);
@@ -242,7 +255,8 @@ public class IProblemTest {
         }
 
         @Override
-        public double getFinalReward(IState finalState, int outputNeuron) {
+        public double getFinalReward(IState finalState,
+                int outputNeuron) {
             return this.currentBoard.getScore();
         }
 
@@ -258,8 +272,10 @@ public class IProblemTest {
         public void initializeEncogPerceptron() {
             setEncogPerceptron(new BasicNetwork());
             getEncogPerceptron().addLayer(new BasicLayer(null, true, 4));
-            getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), true, 2));
-            getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
+            getEncogPerceptron().addLayer(
+                    new BasicLayer(new ActivationSigmoid(), true, 2));
+            getEncogPerceptron().addLayer(
+                    new BasicLayer(new ActivationSigmoid(), false, 1));
             getEncogPerceptron().getStructure().finalizeStructure();
             getEncogPerceptron().reset();
         }
@@ -286,21 +302,30 @@ public class IProblemTest {
 
         @Override
         public double normalizeValueToPerceptronOutput(Object value) {
-            NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize, null, 15, 6, 1, 0);
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == false ) {
+            NormalizedField normOutput = new NormalizedField(
+                    NormalizationAction.Normalize, null, 15, 6, 1, 0);
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
+                    getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.
+                    getBoard()[1][1] == false ) {
                 return normOutput.normalize(13);
             }
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == false
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
+                    getBoard()[0][1] == false
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.
+                    getBoard()[1][1] == true ) {
                 return normOutput.normalize(15);
             }
-            if ( currentBoard.getBoard()[0][0] == false && currentBoard.getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == false && currentBoard.
+                    getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.
+                    getBoard()[1][1] == true ) {
                 return normOutput.normalize(6);
             }
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == false && currentBoard.getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
+                    getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == false && currentBoard.
+                    getBoard()[1][1] == true ) {
                 return normOutput.normalize(14);
             }
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -323,7 +348,8 @@ public class IProblemTest {
         /**
          *
          */
-        public NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize,
+        public NormalizedField normOutput = new NormalizedField(
+                NormalizationAction.Normalize,
                 null, 15, 6, 1, 0);
 
         /**
@@ -435,7 +461,8 @@ public class IProblemTest {
     public class IProblemImpl implements IProblemToTrain {
 
         @Override
-        public IState computeAfterState(IState turnInitialState, IAction action) {
+        public IState computeAfterState(IState turnInitialState,
+                IAction action) {
             Boardone2one boardcast = (Boardone2one) turnInitialState;
             boardcast.board[((Action) action).getX()][((Action) action).getY()] = true;
             return boardcast;
@@ -457,7 +484,8 @@ public class IProblemTest {
         }
 
         @Override
-        public Double computeNumericRepresentationFor(Object[] output, IActor actor) {
+        public Double computeNumericRepresentationFor(Object[] output,
+                IActor actor) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -490,7 +518,8 @@ public class IProblemTest {
         }
 
         @Override
-        public double getFinalReward(IState finalState, int outputNeuron) {
+        public double getFinalReward(IState finalState,
+                int outputNeuron) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -509,15 +538,6 @@ public class IProblemTest {
 
         @Override
         public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
-            return null;
-        }
-
-        /**
-         *
-         * @param afterState <p>
-         * @return
-         */
-        public List<StateProbability> listAllPossibleNextTurnStateFromAfterstate(IState afterState) {
             return null;
         }
 

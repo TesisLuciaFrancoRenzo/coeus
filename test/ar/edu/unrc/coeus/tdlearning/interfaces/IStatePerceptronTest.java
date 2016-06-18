@@ -36,7 +36,8 @@ public class IStatePerceptronTest {
     /**
      *
      */
-    public static NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize,
+    public static NormalizedField normOutput = new NormalizedField(
+            NormalizationAction.Normalize,
             null, 15, 6, 1, 0);
 
     /**
@@ -52,7 +53,8 @@ public class IStatePerceptronTest {
     @AfterClass
     public static void tearDownClass() {
     }
-    private final boolean[][] board = {{false, false}, {false, false}, {false, false}, {false, false}};
+    private final boolean[][] board = {{false, false}, {false, false}, {false,
+        false}, {false, false}};
 
     /**
      *

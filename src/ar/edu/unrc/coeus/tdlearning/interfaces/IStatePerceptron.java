@@ -19,24 +19,21 @@
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
- * Estado del problema. Un estado debe poder ser traducido a entradas de un
- * Perceptrón mediante alguna fórmula adecuada.
- * <p>
+ * Representación de un estado del problema, especializado para NTuplas. Un estado debe poder ser
+ * traducido a entradas de una Red Neuronal mediante alguna fórmula.
+ *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface IStatePerceptron extends IState {
 
     /**
-     * Codifica un Estado del Problema como entradas al perceptron utilizado, y
-     * devuelve el valor de la neurona de entrada con el indice
-     * {@code neuronIndex}. Recordar normalizar las entradas y salidas del
-     * Perceptron.
-     * <p>
-     * @param neuronIndex neurona de la capa de entrada (la neurona 0 es la
-     *                    primera)
-     * <p>
-     * @return valor de entrada normalizado a la neurona con el indice
-     *         {@code neuronIndex}
+     * Codifica un Estado del Problema como entradas a la red neuronal utilizada, y devuelve el
+     * valor de la neurona de entrada con el índice {@code neuronIndex}. Recordar normalizar las
+     * entradas y salidas de la red neuronal de ser necesario.
+     *
+     * @param neuronIndex neurona de la capa de entrada (la neurona 0 es la primera)
+     *
+     * @return valor de entrada normalizado a la neurona con el índice {@code neuronIndex}
      */
     public Double translateToPerceptronInput(final int neuronIndex);
 

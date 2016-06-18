@@ -19,17 +19,18 @@
 package ar.edu.unrc.coeus.tdlearning.learning;
 
 /**
+ * Tipo de red neuronal utilizada.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public enum ENeuralNetworkType {
 
     /**
-     *
+     * Redes neuronales genéricas. Soporte de múltiples capas.
      */
-    perceptron,
+    perceptron, //FIXME perceptron usa capa itnermedia???
     /**
-     *
+     * Redes neuronales NTuplas. No soporta múltiples capas.
      */
     ntuple
 }

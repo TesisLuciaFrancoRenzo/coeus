@@ -19,6 +19,8 @@
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
+ * Posible actor que esta utilizando el turno actual. Útil para evaluar las con las redes neuronales
+ * y saber interpretar el resultado.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */

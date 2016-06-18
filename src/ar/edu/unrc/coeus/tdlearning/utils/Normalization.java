@@ -24,7 +24,6 @@ package ar.edu.unrc.coeus.tdlearning.utils;
  */
 public class Normalization {
 
-
     /**
      *
      * @param value          Value to denormalize.
@@ -35,13 +34,18 @@ public class Normalization {
      *
      * @return denormalized value
      */
-    public final static double deNormalize(final double value, final double actualHigh, final double actualLow, final double normalizedHigh, final double normalizedLow) {
+    public final static double deNormalize(final double value,
+            final double actualHigh,
+            final double actualLow,
+            final double normalizedHigh,
+            final double normalizedLow) {
         final double result = ((actualLow - actualHigh) * value
                 - normalizedHigh * actualLow + actualHigh
                 * normalizedLow)
                 / (normalizedLow - normalizedHigh);
         return result;
     }
+
     /**
      *
      * @param value          Value to normalize.
@@ -52,7 +56,11 @@ public class Normalization {
      *
      * @return normalized value
      */
-    public final static double normalize(final double value, final double actualHigh, final double actualLow, final double normalizedHigh, final double normalizedLow) {
+    public final static double normalize(final double value,
+            final double actualHigh,
+            final double actualLow,
+            final double normalizedHigh,
+            final double normalizedLow) {
         if ( value > actualHigh ) {
             return normalizedHigh;
         } else if ( value < actualLow ) {

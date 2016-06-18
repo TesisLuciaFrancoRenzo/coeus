@@ -61,7 +61,8 @@ public class Layer {
      * @param neuronIndex
      * @param neuron
      */
-    public void setNeuron(final int neuronIndex, final PartialNeuron neuron) {
+    public void setNeuron(final int neuronIndex,
+            final PartialNeuron neuron) {
         neurons.set(neuronIndex, neuron);
     }
 

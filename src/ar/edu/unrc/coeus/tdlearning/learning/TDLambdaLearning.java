@@ -29,11 +29,11 @@ import static ar.edu.unrc.coeus.tdlearning.learning.ELearningRateAdaptation.anne
 import static ar.edu.unrc.coeus.tdlearning.learning.ELearningRateAdaptation.fixed;
 import static ar.edu.unrc.coeus.tdlearning.learning.ENeuralNetworkType.ntuple;
 import static ar.edu.unrc.coeus.tdlearning.learning.ENeuralNetworkType.perceptron;
-import ar.edu.unrc.coeus.tdlearning.training.ITrainer;
 import ar.edu.unrc.coeus.tdlearning.training.TDTrainerNTupleSystem;
 import ar.edu.unrc.coeus.tdlearning.training.TDTrainerPerceptron;
+import ar.edu.unrc.coeus.tdlearning.training.Trainer;
 import ar.edu.unrc.coeus.tdlearning.training.ntuple.NTupleSystem;
-import ar.edu.unrc.coeus.tdlearning.utils.MaximalListConsumer;
+import ar.edu.unrc.coeus.tdlearning.utils.MaximalActionPredictionConsumer;
 import static java.lang.Math.random;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,40 +41,41 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * Este método de aprendizaje de TD lambda learning necesita Trazas de
- * elegibilidad como método de asigancion de crédito temporal. Utiliza
- * Perceptrones para recordar los patrones aprendidos durante la solucion del
- * problema
- * <p>
+ * Este método de aprendizaje de TD lambda learning necesita Trazas de elegibilidad como método de
+ * asignación de crédito temporal, el cual puede ser ajustado a preferencia. Utiliza redes
+ * neuronales para recordar los patrones aprendidos durante la solución del problema.
+ *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class TDLambdaLearning {
 
     /**
-     * If we keep initialAlpha fixed, however, these same fluctuations prevent
-     * the network from ever properly converging to the minimum - instead we end
-     * up randomly dancing around it. In order to actually reach the minimum,
-     * and stay there, we must anneal (gradually lower) the global learning
-     * rate. A simple, non-adaptive annealing schedule for this purpose is the
-     * search-then-converge schedule. Its name derives from the fact that it
-     * keeps initialAlpha nearly constant for the first T training patterns,
-     * allowing the network to find the general location of the minimum, before
-     * annealing it at a (very slow) pace that is known from theory to guarantee
-     * convergence to the minimum. The characteristic time T of this schedule is
-     * a new free parameter that must be determined by trial and error.
+     * If we keep initialAlpha fixed, however, these same fluctuations prevent the network from ever
+     * properly converging to the minimum - instead we end up randomly dancing around it. In order
+     * to actually reach the minimum, and stay there, we must anneal (gradually lower) the global
+     * learning rate. A simple, non-adaptive annealing schedule for this purpose is the
+     * search-then-converge schedule. Its name derives from the fact that it keeps initialAlpha
+     * nearly constant for the first T training patterns, allowing the network to find the general
+     * location of the minimum, before annealing it at a (very slow) pace that is known from theory
+     * to guarantee convergence to the minimum. The characteristic time T of this schedule is a new
+     * free parameter that must be determined by trial and error.
      * <p>
      * @param initialAlpha initial learning rate
      * @param t            current T in time
-     * @param T            the characteristic time T of this schedule is a new
-     *                     free parameter that must be determined by trial and
-     *                     error. It specifi when the initialAlpha will become
-     *                     initialAlpha/2
+     * @param T            the characteristic time T of this schedule is a new free parameter that
+     *                     must be determined by trial and error. It specifi when the initialAlpha
+     *                     will become initialAlpha/2
      * <p>
      * @return
      */
-    public static double annealingLearningRate(double initialAlpha, int t, int T) {
+    public static double annealingLearningRate(
+            final double initialAlpha,
+            final int t,
+            final int T
+    ) {
         if ( initialAlpha > 1 || initialAlpha < 0 ) {
-            throw new IllegalArgumentException("initialAlpha=" + initialAlpha + " is out of range from a valid [0..1]");
+            throw new IllegalArgumentException(
+                    "initialAlpha=" + initialAlpha + " is out of range from a valid [0..1]");
         }
         return initialAlpha / (1d + ((t * 1d) / (T * 1d)));
     }
@@ -84,9 +85,12 @@ public class TDLambdaLearning {
      * @param lambda <p>
      * @return
      */
-    public static Integer calculateBestEligibilityTraceLenght(Double lambda) {
+    public static Integer calculateBestEligibilityTraceLenght(
+            final double lambda
+    ) {
         if ( lambda > 1 || lambda < 0 ) {
-            throw new IllegalArgumentException("lambda=" + lambda + " is out of range from a valid [0..1]");
+            throw new IllegalArgumentException(
+                    "lambda=" + lambda + " is out of range from a valid [0..1]");
         } else if ( lambda > 0.99 ) {
             return Integer.MAX_VALUE;
         } else if ( lambda == 0 ) {
@@ -108,10 +112,9 @@ public class TDLambdaLearning {
 
     //TODO REESCRIBIRRRR ayuda
     /**
-     * Computa la mejor accion posible dado un estado inicial. No invocar sobre
-     * estados finales o estados que no tiene posibles acciones a realizar.
-     * {@code tempTurnInitialState} y todas las posibles acciones a tomar
-     * {@code possibleActions}
+     * Computa la mejor accion posible dado un estado inicial. No invocar sobre estados finales o
+     * estados que no tiene posibles acciones a realizar. {@code tempTurnInitialState} y todas las
+     * posibles acciones a tomar {@code possibleActions}
      * <p>
      * @param problem
      * @param learningStyle
@@ -146,19 +149,25 @@ public class TDLambdaLearning {
         }
         List<ActionPrediction> bestActiones
                 = stream
-                .map(possibleAction -> {
-                    switch ( learningStyle ) {
-                        case afterState: {
-                            return evaluateAfterstate(problem, turnInitialState, possibleAction, player);
-                        }
-                        default: {
-                            throw new UnsupportedOperationException("Not supported yet.");
-                        }
-                    }
-                })
-                .collect(MaximalListConsumer::new, MaximalListConsumer::accept, MaximalListConsumer::combine)
+                .map(possibleAction ->
+                        {
+                            switch ( learningStyle ) {
+                                case afterState: {
+                                    return evaluateAfterstate(problem,
+                                            turnInitialState,
+                                            possibleAction, player);
+                                }
+                                default: {
+                                    throw new UnsupportedOperationException(
+                                            "Not supported yet.");
+                                }
+                            }
+                        })
+                .collect(MaximalActionPredictionConsumer::new, MaximalActionPredictionConsumer::accept,
+                        MaximalActionPredictionConsumer::combine)
                 .getList();
-        IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
+        IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.
+                size() - 1)).getAction();
         if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis() - time;
             bestPossibleActionTimes.add(time);
@@ -168,11 +177,10 @@ public class TDLambdaLearning {
 
     //TODO REESCRIBIRRRR ayuda
     /**
-     * Calcula la prediccion del resultado final del juego al aplicar la accion
-     * {@code action} en el estado {@code turnInitialState}, utilizando un
-     * metodo entre varios dependiendo de la implementacion de IProblemToTrain.
-     * Por ejemplo si utilizas una red neuronal esta funcion deberia devolver la
-     * salida de la misma. Se debe asegurar que la ejecucion en paralelo de este
+     * Calcula la prediccion del resultado final del juego al aplicar la accion {@code action} en el
+     * estado {@code turnInitialState}, utilizando un metodo entre varios dependiendo de la
+     * implementacion de IProblemToTrain. Por ejemplo si utilizas una red neuronal esta funcion
+     * deberia devolver la salida de la misma. Se debe asegurar que la ejecucion en paralelo de este
      * metodo no cause efectos colaterales (deb ser safethread implementando
      * {@code IsolatedComputation}).
      * <p>
@@ -183,9 +191,8 @@ public class TDLambdaLearning {
      * <p>
      * @param player           jugador actual
      * <p>
-     * @return Tupla que contiene 2 elementos: la accion {@code action}, y la
-     *         prediccion del valor final del juego si aplico {@code action} al
-     *         estado {@code turnInitialState}
+     * @return Tupla que contiene 2 elementos: la accion {@code action}, y la prediccion del valor
+     *         final del juego si aplico {@code action} al estado {@code turnInitialState}
      */
     public static ActionPrediction evaluateAfterstate(
             final IProblemRunner problem,
@@ -196,28 +203,26 @@ public class TDLambdaLearning {
         IState afterstate = problem.computeAfterState(turnInitialState, action);
         Object[] output = problem.evaluateBoardWithPerceptron(afterstate);
         for ( int i = 0; i < output.length; i++ ) {
-            output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]) + afterstate.getStateReward(i);
+            output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]) + afterstate.
+                    getStateReward(i);
         }
-        return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, player));
+        return new ActionPrediction(action, problem.
+                computeNumericRepresentationFor(output, player));
     }
 
     //TODO REESCRIBIRRRR ayuda
     /**
-     * Metodo que implementa el entrenamiento de una red mediante la experiencia
-     * de la solucion de un paso del problema.
+     * Metodo que implementa el entrenamiento de una red mediante la experiencia de la solucion de
+     * un paso del problema.
      * <p>
      * @param problem                           a resolver
      * @param trainer
-     * @param turnInitialState                  estado del problema al comienzo
-     *                                          del turno
+     * @param turnInitialState                  estado del problema al comienzo del turno
      * @param action                            accion a tomar
-     * @param afterstate                        estado de transicion de aplicar
-     *                                          la accion {@code action} al
-     *                                          estado {@code turnInitialState}
-     * @param nextTurnState                     estado del problema en el
-     *                                          proximo turno, luego de aplicar
-     *                                          las acciones/efectos no
-     *                                          deterministicos a
+     * @param afterstate                        estado de transicion de aplicar la accion
+     *                                          {@code action} al estado {@code turnInitialState}
+     * @param nextTurnState                     estado del problema en el proximo turno, luego de
+     *                                          aplicar las acciones/efectos no deterministicos a
      * <p>
      * @param isARandomMove                     <p>
      * @param currentAlpha
@@ -230,7 +235,7 @@ public class TDLambdaLearning {
      */
     public static void learnEvaluationAfterstate(
             final IProblemToTrain problem,
-            final ITrainer trainer,
+            final Trainer trainer,
             final IState turnInitialState,
             final IAction action,
             final IState afterstate,
@@ -240,12 +245,14 @@ public class TDLambdaLearning {
             final boolean[] concurrencyInLayer,
             final boolean computeParallelBestPossibleAction,
             final LinkedList<Long> bestPossibleActionTimes,
-            final LinkedList<Long> trainingTimes) {
+            final LinkedList<Long> trainingTimes
+    ) {
         long time = 0;
         if ( !nextTurnState.isTerminalState() ) {
-            // evaluamos cada accion posible aplicada al estado nextState y elegimos la mejor
-            // accion basada las predicciones del problema
-            List<IAction> possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
+            // Evaluamos cada accion posible aplicada al estado nextState y
+            // elegimos la mejor accion basada las predicciones del problema
+            List<IAction> possibleActionsNextTurn = problem.
+                    listAllPossibleActions(nextTurnState);
             IAction bestActionForNextTurn = computeBestPossibleAction(
                     problem,
                     ELearningStyle.afterState,
@@ -254,27 +261,34 @@ public class TDLambdaLearning {
                     problem.getActorToTrain(),
                     computeParallelBestPossibleAction,
                     bestPossibleActionTimes);
-            // aplicamos la accion 'bestActionForNextTurn' al estado (turno) siguiente 'nextState',
-            // y obtenemos el estado de transicion (deterministico) del proximo estado (turno).
-            IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
-            //V (s') ← V (s') + α(rnext + V (s'next) − V (s'))      -> matematica sin trazas de elegibilidad
+            // Aplicamos la accion 'bestActionForNextTurn' al estado (turno)
+            // siguiente 'nextState', y obtenemos el estado de transicion
+            // (deterministico) del proximo estado (turno).
+            IState afterStateNextTurn = problem.computeAfterState(nextTurnState,
+                    bestActionForNextTurn);
+            // V (s') ← V (s') + α(rnext + V (s'next) − V (s'))
+            // (matematica sin trazas de elegibilidad)
             if ( trainingTimes != null ) {
                 time = System.currentTimeMillis();
             }
-            trainer.train(problem, afterstate, afterStateNextTurn, currentAlpha, concurrencyInLayer, isARandomMove);
+            trainer.train(problem, afterstate, afterStateNextTurn, currentAlpha,
+                    concurrencyInLayer, isARandomMove);
             if ( trainingTimes != null ) {
                 time = System.currentTimeMillis() - time;
                 trainingTimes.add(time);
             }
         } else {
-            // Si nextTurnState es un estado final, no podemos calcular el bestActionForNextTurn.
-            // Teoricamente la evaluacion obtenida por el perceptronInterface en el ultimo afterstate,
-            // deberia ser el resultado final real del juego, por lo tanto entrenamos el ultimo
-            // afterstate para que prediga el final del problema
+            // Si nextTurnState es un estado final, no podemos calcular el
+            // bestActionForNextTurn.
+            // Teoricamente la evaluacion obtenida por el perceptronInterface
+            // en el ultimo afterstate, deberia ser el resultado final real del
+            // juego, por lo tanto entrenamos el ultimo afterstate para que
+            // prediga el final del problema
             if ( trainingTimes != null ) {
                 time = System.currentTimeMillis();
             }
-            trainer.train(problem, afterstate, nextTurnState, currentAlpha, concurrencyInLayer, isARandomMove);
+            trainer.train(problem, afterstate, nextTurnState, currentAlpha,
+                    concurrencyInLayer, isARandomMove);
             if ( trainingTimes != null ) {
                 time = System.currentTimeMillis() - time;
                 trainingTimes.add(time);
@@ -291,7 +305,10 @@ public class TDLambdaLearning {
      * @return aleatorio entre a y b
      * <p>
      */
-    public static int randomBetween(final int a, final int b) {
+    public static int randomBetween(
+            final int a,
+            final int b
+    ) {
         if ( a > b ) {
             throw new IllegalArgumentException("error: b debe ser mayor que a");
         } else if ( a == b ) {
@@ -322,11 +339,6 @@ public class TDLambdaLearning {
     /**
      *
      */
-    protected LinkedList<Long> bestPossibleActionTimes;
-
-    /**
-     *
-     */
     protected boolean canCollectStatistics;
 
     /**
@@ -338,6 +350,7 @@ public class TDLambdaLearning {
      *
      */
     protected double gamma;
+
     /**
      * constante de tasa de aprendizaje para cada capa de pesos
      */
@@ -361,38 +374,38 @@ public class TDLambdaLearning {
     /**
      *
      */
-    protected boolean resetEligibilitiTraces;
+    protected boolean replaceEligibilityTraces;
 
     /**
      *
      */
-    protected ITrainer trainer;
+    protected LinkedList<Long> statisticsBestPossibleActionTimes;
 
     /**
      *
      */
-    protected LinkedList<Long> trainingTimes;
+    protected LinkedList<Long> statisticsTrainingTimes;
+
+    /**
+     *
+     */
+    protected Trainer trainer;
 
     /**
      *
      * @param learningStyle
-     * @param perceptronInterface    implementacion de la interfaz entre nuestra
-     *                               red neuronal y el perceptronInterface que
-     *                               utilizara el problema. Este puede estar
-     *                               implementado con cualquier libreria o
-     *                               codigo.
-     * @param lambda                 constante que se encuentra en el intervalo
-     *                               [0,1]
-     * @param alpha                  Constantes de tasa de aprendizaje para cada
-     *                               capa. Si es null, se inicializa cada
-     *                               initialAlpha con la formula 1/num_neuronas
-     *                               de la capa anterior.
-     * @param gamma                  tasa de descuento
+     * @param perceptronInterface      implementacion de la interfaz entre nuestra red neuronal y el
+     *                                 perceptronInterface que utilizara el problema. Este puede
+     *                                 estar implementado con cualquier libreria o codigo.
+     * @param lambda                   constante que se encuentra en el intervalo [0,1]
+     * @param alpha                    Constantes de tasa de aprendizaje para cada capa. Si es null,
+     *                                 se inicializa cada initialAlpha con la formula 1/num_neuronas
+     *                                 de la capa anterior.
+     * @param gamma                    tasa de descuento
      * @param concurrencyInLayer
-     * @param resetEligibilitiTraces permite resetear las trazas de elegibilidad
-     *                               en caso de movimientos al azar
-     * @param collectStatistics      guarda estadisticas relevante a los tiempos
-     *                               de cálculo
+     * @param replaceEligibilityTraces permite resetear las trazas de elegibilidad en caso de
+     *                                 movimientos al azar
+     * @param collectStatistics        guarda estadisticas relevante a los tiempos de cálculo
      */
     public TDLambdaLearning(
             final IPerceptronInterface perceptronInterface,
@@ -401,18 +414,22 @@ public class TDLambdaLearning {
             final double lambda,
             final double gamma,
             final boolean[] concurrencyInLayer,
-            final boolean resetEligibilitiTraces,
-            final boolean collectStatistics) {
+            final boolean replaceEligibilityTraces,
+            final boolean collectStatistics
+    ) {
         if ( perceptronInterface == null ) {
-            throw new IllegalArgumentException("perceptronInterface can't be null");
+            throw new IllegalArgumentException(
+                    "perceptronInterface can't be null");
         }
         if ( concurrencyInLayer == null ) {
-            throw new IllegalArgumentException("concurrencyInLayer can't be null");
+            throw new IllegalArgumentException(
+                    "concurrencyInLayer can't be null");
         }
         if ( learningStyle == null ) {
             throw new IllegalArgumentException("learningStyle can't be null");
         } else if ( learningStyle == ELearningStyle.state ) {
-            throw new IllegalArgumentException("El estilo de entrenamiento por estado no esta implementado, utilice el metodo after state");
+            throw new IllegalArgumentException(
+                    "El estilo de entrenamiento por estado no esta implementado, utilice el metodo after state");
         }
 
         this.learningStyle = learningStyle;
@@ -421,19 +438,25 @@ public class TDLambdaLearning {
             initialAlpha = new double[perceptronInterface.getLayerQuantity()];
             for ( int i = 0; i < perceptronInterface.getLayerQuantity(); i++ ) {
                 if ( perceptronInterface.getNeuronQuantityInLayer(i) <= 0 ) {
-                    throw new IllegalArgumentException("la capa " + i + " debe tener 1 o mas neuronas");
+                    throw new IllegalArgumentException(
+                            "la capa " + i + " debe tener 1 o mas neuronas");
                 }
-                initialAlpha[i] = 1d / perceptronInterface.getNeuronQuantityInLayer(i);
+                initialAlpha[i] = 1d / perceptronInterface.
+                        getNeuronQuantityInLayer(i);
             }
         } else {
             if ( alpha.length != perceptronInterface.getLayerQuantity() ) {
-                throw new IllegalArgumentException("alpha.length=" + alpha.length + " debe ser igual a perceptronInterface.getLayerQuantity()=" + perceptronInterface.getLayerQuantity());
+                throw new IllegalArgumentException(
+                        "alpha.length=" + alpha.length + " debe ser igual a perceptronInterface.getLayerQuantity()=" + perceptronInterface.
+                        getLayerQuantity());
             }
             this.initialAlpha = alpha;
         }
 
-        if ( perceptronInterface.getLayerQuantity() != concurrencyInLayer.length || perceptronInterface.getLayerQuantity() != initialAlpha.length ) {
-            throw new IllegalArgumentException("alpha.lenght, concurrencyInLayer.lenght and perceptronInterface.getLayerQuantity() must be the same");
+        if ( perceptronInterface.getLayerQuantity() != concurrencyInLayer.length || perceptronInterface.
+                getLayerQuantity() != initialAlpha.length ) {
+            throw new IllegalArgumentException(
+                    "alpha.lenght, concurrencyInLayer.lenght and perceptronInterface.getLayerQuantity() must be the same");
         }
 
         this.currentAlpha = new double[perceptronInterface.getLayerQuantity()];
@@ -444,12 +467,12 @@ public class TDLambdaLearning {
         this.perceptronInterface = perceptronInterface;
         this.nTupleSystem = null;
         this.concurrencyInLayer = concurrencyInLayer;
-        this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.replaceEligibilityTraces = replaceEligibilityTraces;
         this.canCollectStatistics = collectStatistics;
 
         if ( collectStatistics ) {
-            this.bestPossibleActionTimes = new LinkedList<>();
-            this.trainingTimes = new LinkedList<>();
+            this.statisticsBestPossibleActionTimes = new LinkedList<>();
+            this.statisticsTrainingTimes = new LinkedList<>();
         }
     }
 
@@ -461,7 +484,7 @@ public class TDLambdaLearning {
      * @param lambda
      * @param gamma
      * @param concurrencyInLayer
-     * @param resetEligibilitiTraces
+     * @param replaceEligibilityTraces
      * @param collectStatistics
      */
     public TDLambdaLearning(
@@ -471,20 +494,22 @@ public class TDLambdaLearning {
             final double lambda,
             final double gamma,
             final boolean[] concurrencyInLayer,
-            final boolean resetEligibilitiTraces,
+            final boolean replaceEligibilityTraces,
             final boolean collectStatistics) {
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
 
         if ( concurrencyInLayer == null ) {
-            throw new IllegalArgumentException("concurrencyInLayer can't be null");
+            throw new IllegalArgumentException(
+                    "concurrencyInLayer can't be null");
         }
 
         if ( learningStyle == null ) {
             throw new IllegalArgumentException("learningStyle can't be null");
         } else if ( learningStyle == ELearningStyle.state ) {
-            throw new IllegalArgumentException("El estilo de entrenamiento por estado no esta implementado, utilice el metodo after state");
+            throw new IllegalArgumentException(
+                    "El estilo de entrenamiento por estado no esta implementado, utilice el metodo after state");
         }
 
         this.learningStyle = learningStyle;
@@ -500,12 +525,10 @@ public class TDLambdaLearning {
         }
 
         if ( 2 != concurrencyInLayer.length || 2 != initialAlpha.length ) {
-            throw new IllegalArgumentException("alpha.lenght, concurrencyInLayer.lenght and perceptronInterface.getLayerQuantity() must be the same");
+            throw new IllegalArgumentException(
+                    "alpha.lenght, concurrencyInLayer.lenght and perceptronInterface.getLayerQuantity() must be the same");
         }
 
-//        if ( this.initialAlpha.length + 1 != concurrencyInLayer.length ) {
-//            throw new IllegalArgumentException("alpha.lenght+1 and concurrencyInLayer.lenght must be the same");
-//        }
         this.currentAlpha = new double[2];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
@@ -514,12 +537,12 @@ public class TDLambdaLearning {
         this.perceptronInterface = null;
         this.nTupleSystem = nTupleSystem;
         this.concurrencyInLayer = concurrencyInLayer;
-        this.resetEligibilitiTraces = resetEligibilitiTraces;
+        this.replaceEligibilityTraces = replaceEligibilityTraces;
         this.canCollectStatistics = collectStatistics;
 
         if ( collectStatistics ) {
-            this.bestPossibleActionTimes = new LinkedList<>();
-            this.trainingTimes = new LinkedList<>();
+            this.statisticsBestPossibleActionTimes = new LinkedList<>();
+            this.statisticsTrainingTimes = new LinkedList<>();
         }
     }
 
@@ -539,14 +562,6 @@ public class TDLambdaLearning {
     }
 
     /**
-     *
-     * @return
-     */
-    public LinkedList<Long> getBestPossibleActionTimes() {
-        return bestPossibleActionTimes;
-    }
-
-    /**
      * @return the currentAlpha
      */
     public double[] getCurrentAlpha() {
@@ -559,7 +574,8 @@ public class TDLambdaLearning {
      */
     public void setExplorationRateToFixed(final double value) {
         if ( value < 0 || value > 1 ) {
-            throw new IllegalArgumentException("value debe estar en el intervalo [0,1]");
+            throw new IllegalArgumentException(
+                    "value debe estar en el intervalo [0,1]");
         }
         this.explorationRate = EExplorationRateAlgorithms.fixed;
         this.explorationRateInitialValue = value;
@@ -571,7 +587,8 @@ public class TDLambdaLearning {
      */
     public void setLearningRateAdaptationToAnnealing(final int annealingT) {
         if ( annealingT < 0 ) {
-            throw new IllegalArgumentException("annealingT debe ser un valor mayor a 0");
+            throw new IllegalArgumentException(
+                    "annealingT debe ser un valor mayor a 0");
         }
         this.learningRateAdaptation = ELearningRateAdaptation.annealing;
         this.annealingT = annealingT;
@@ -581,8 +598,16 @@ public class TDLambdaLearning {
      *
      * @return
      */
-    public LinkedList<Long> getTrainingTimes() {
-        return trainingTimes;
+    public LinkedList<Long> getStatisticsBestPossibleActionTimes() {
+        return statisticsBestPossibleActionTimes;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public LinkedList<Long> getStatisticsTrainingTimes() {
+        return statisticsTrainingTimes;
     }
 
     /**
@@ -593,13 +618,14 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Asegurarse que la funcion {@code evaluate} este implementada de modo que
-     * pueda ser ejecutada concurrentemente.
+     * Asegurarse que la funcion {@code evaluate} este implementada de modo que pueda ser ejecutada
+     * concurrentemente.
      * <p>
-     * @param computeParallelBestPossibleAction true si las evaluaciones deben
-     *                                          ejecutarse en paralelo.
+     * @param computeParallelBestPossibleAction true si las evaluaciones deben ejecutarse en
+     *                                          paralelo.
      */
-    public void setComputeParallelBestPossibleAction(final boolean computeParallelBestPossibleAction) {
+    public void setComputeParallelBestPossibleAction(
+            final boolean computeParallelBestPossibleAction) {
         this.computeParallelBestPossibleAction = computeParallelBestPossibleAction;
     }
 
@@ -614,12 +640,15 @@ public class TDLambdaLearning {
             final double initialValue,
             final int startDecrementing,
             final double finalValue,
-            final int finishDecrementing) {
+            final int finishDecrementing
+    ) {
         if ( initialValue < 0 || initialValue > 1 ) {
-            throw new IllegalArgumentException("initialValue debe estar en el intervalo [0,1]");
+            throw new IllegalArgumentException(
+                    "initialValue debe estar en el intervalo [0,1]");
         }
         if ( finalValue < 0 || finalValue > 1 ) {
-            throw new IllegalArgumentException("finalValue debe estar en el intervalo [0,1]");
+            throw new IllegalArgumentException(
+                    "finalValue debe estar en el intervalo [0,1]");
         }
         this.explorationRate = EExplorationRateAlgorithms.linear;
         this.explorationRateInitialValue = initialValue;
@@ -637,18 +666,21 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Entrena la Inteligencia Artificial con lo que aprende de la experiencia
-     * de resolver una sola vez un {@code problem} de comienzo a fin, durante 1
-     * o mas turnos hasta alñcanzar su objetivo o fracasar.
+     * Entrena la Inteligencia Artificial con lo que aprende de la experiencia de resolver una sola
+     * vez un {@code problem} de comienzo a fin, durante 1 o mas turnos hasta alñcanzar su objetivo
+     * o fracasar.
      * <p>
      * @param problem problema a resolver
      * <p>
-     * @param t       cantiad de veces qeu se ejecuto el metodo
-     *                solveAndTrainOnce
+     * @param t       cantiad de veces qeu se ejecuto el metodo solveAndTrainOnce
      */
-    public void solveAndTrainOnce(final IProblemToTrain problem, final int t) {
+    public void solveAndTrainOnce(
+            final IProblemToTrain problem,
+            final int t
+    ) {
         if ( learningRateAdaptation == null ) {
-            throw new IllegalArgumentException("learningRateAdaptation can't be null");
+            throw new IllegalArgumentException(
+                    "learningRateAdaptation can't be null");
         }
         if ( explorationRate == null ) {
             throw new IllegalArgumentException("explorationRate can't be null");
@@ -663,16 +695,19 @@ public class TDLambdaLearning {
                 break;
             }
             case annealing: {
-                //ajustamos las alphas segun el metodo de annealing µ(t) = µ(0)/(1 + t/T)
+                // Ajustamos las alphas segun el metodo de annealing
+                // µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
                 if ( this.currentAlpha.length > 1_000 ) {
                     rangeStream = rangeStream.parallel();
                 } else {
                     rangeStream = rangeStream.sequential();
                 }
-                rangeStream.forEach(index -> {
-                    currentAlpha[index] = annealingLearningRate(this.initialAlpha[index], t, annealingT);
-                });
+                rangeStream.forEach(index ->
+                        {
+                            currentAlpha[index] = annealingLearningRate(
+                                    this.initialAlpha[index], t, annealingT);
+                        });
                 break;
             }
         }
@@ -693,7 +728,8 @@ public class TDLambdaLearning {
                     currentExplorationRate = explorationRateFinalValue;
                 } else {
                     currentExplorationRate
-                            = ((t - explorationRateStartDecrementing) / (explorationRateFinishDecrementing - explorationRateStartDecrementing))
+                            = ((t - explorationRateStartDecrementing)
+                            / (explorationRateFinishDecrementing - explorationRateStartDecrementing))
                             * (explorationRateFinalValue - explorationRateInitialValue)
                             + explorationRateInitialValue;
                 }
@@ -702,15 +738,19 @@ public class TDLambdaLearning {
         }
         assert currentExplorationRate >= 0 && currentExplorationRate <= 1;
 
-        //inicializamos el problema y las variables del entrenador, o reutilizamos el ultimo Trainer para reciclar sus variables
+        // Inicializamos el problema y las variables del entrenador, o reutilizamos
+        // el ultimo Trainer para reciclar sus variables
         if ( trainer == null ) {
             switch ( neuralNetworkType ) {
                 case perceptron: {
-                    trainer = new TDTrainerPerceptron(perceptronInterface, lambda, gamma, resetEligibilitiTraces);
+                    trainer = new TDTrainerPerceptron(perceptronInterface,
+                            lambda, gamma, replaceEligibilityTraces);
                     break;
                 }
                 case ntuple: {
-                    trainer = new TDTrainerNTupleSystem(nTupleSystem, calculateBestEligibilityTraceLenght(lambda), lambda, gamma, resetEligibilitiTraces);
+                    trainer = new TDTrainerNTupleSystem(nTupleSystem,
+                            calculateBestEligibilityTraceLenght(lambda), lambda,
+                            gamma, replaceEligibilityTraces);
                     break;
                 }
             }
@@ -730,7 +770,8 @@ public class TDLambdaLearning {
                 randomChoise = Math.random() <= currentExplorationRate;
             }
 
-            List<IAction> possibleActions = problem.listAllPossibleActions(turnInitialState);
+            List<IAction> possibleActions = problem.listAllPossibleActions(
+                    turnInitialState);
             if ( !randomChoise ) {
                 // evaluamos cada accion aplicada al estado inicial y elegimos la mejor
                 // accion basada en las predicciones del problema
@@ -740,30 +781,33 @@ public class TDLambdaLearning {
                         possibleActions,
                         problem.getActorToTrain(),
                         computeParallelBestPossibleAction,
-                        bestPossibleActionTimes);
+                        statisticsBestPossibleActionTimes);
             } else {
-                bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1));
+                bestAction = possibleActions.get(randomBetween(0,
+                        possibleActions.size() - 1));
             }
 
             // aplicamos la accion 'bestAction' al estado actual 'currentState',
             // y obtenemos su estado de transicion deterministico.
-            IState afterState = problem.computeAfterState(turnInitialState, bestAction);
+            IState afterState = problem.computeAfterState(turnInitialState,
+                    bestAction);
 
             // hacemos que el problema aplique la accion 'bestAction' de la IA,
             // y retorne el estado del turno siguiente, luego de aplicar acciones
             // no deterministicas pertinentes para terminar el turno
-            IState nextTurnState = problem.computeNextTurnStateFromAfterstate(afterState);
+            IState nextTurnState = problem.computeNextTurnStateFromAfterstate(
+                    afterState);
 
             // hacemos efectivo los cambios realizados por la IA en la logica del problema
             problem.setCurrentState(nextTurnState);
 
             // entrenamos el problema para que recuerde las predicciones de t+1
             // (que en este caso es nextState o el afterstate dependiendo de las
-            // implementaciones de esta clase abstracta). Si es un movimiento al azar se actualizan trazas pero no se actualizan pesos
+            // implementaciones de esta clase abstracta). Si es un movimiento al
+            // azar se actualizan trazas pero no se actualizan pesos
             switch ( learningStyle ) {
                 case afterState: {
-                    learnEvaluationAfterstate(
-                            problem,
+                    learnEvaluationAfterstate(problem,
                             trainer,
                             turnInitialState,
                             bestAction,
@@ -773,8 +817,8 @@ public class TDLambdaLearning {
                             currentAlpha,
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,
-                            bestPossibleActionTimes,
-                            trainingTimes
+                            statisticsBestPossibleActionTimes,
+                            statisticsTrainingTimes
                     );
                     break;
                 }

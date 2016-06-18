@@ -21,15 +21,19 @@ package ar.edu.unrc.coeus.tdlearning.interfaces;
 import ar.edu.unrc.coeus.tdlearning.training.ntuple.SamplePointState;
 
 /**
+ * Representación de un estado del problema, especializado para NTuplas. Un estado debe poder ser
+ * traducido a entradas de una Red Neuronal mediante alguna fórmula relacionada con NTuplas.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface IStateNTuple extends IState {
 
     /**
+     * Calcula la NTupla con el índice {@code nTupleIndex} del estado.
      *
-     * @param nTupleIndex <p>
-     * @return estado de la NTupla con el indice {@code nTupleIndex}
+     * @param nTupleIndex
+     *
+     * @return cálculo de la NTupla con el índice {@code nTupleIndex}
      */
     public SamplePointState[] getNTuple(final int nTupleIndex);
 

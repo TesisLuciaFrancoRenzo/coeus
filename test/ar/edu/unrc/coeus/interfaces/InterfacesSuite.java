@@ -30,7 +30,8 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {ar.edu.unrc.coeus.interfaces.IPerceptronInterfaceTest.class} )
+@Suite.SuiteClasses( {
+    ar.edu.unrc.coeus.interfaces.IPerceptronInterfaceTest.class} )
 public class InterfacesSuite {
 
     /**

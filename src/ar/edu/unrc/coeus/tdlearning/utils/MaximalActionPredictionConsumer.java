@@ -24,19 +24,18 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Utilizado para acumular Predicciones y calcular la maxima o mas prometedora
- * de ellas
+ * Utilizado para acumular Predicciones y calcular la maxima o mas prometedora de ellas
  * <p>
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public class MaximalListConsumer implements Consumer<ActionPrediction> {
+public class MaximalActionPredictionConsumer implements Consumer<ActionPrediction> {
 
     private List<ActionPrediction> list;
 
     /**
      *
      */
-    public MaximalListConsumer() {
+    public MaximalActionPredictionConsumer() {
         list = new ArrayList<>();
     }
 
@@ -59,7 +58,7 @@ public class MaximalListConsumer implements Consumer<ActionPrediction> {
      *
      * @param other
      */
-    public void combine(final MaximalListConsumer other) {
+    public void combine(final MaximalActionPredictionConsumer other) {
         if ( list.isEmpty() ) {
             list = other.list;
         } else if ( !other.list.isEmpty() ) {

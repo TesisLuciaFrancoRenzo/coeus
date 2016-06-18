@@ -19,71 +19,77 @@
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
+ * Debe ser extendido por las clases que pueden hacer uso de los algoritmos provistos en esta
+ * librería con el objetivo de entrenar redes neuronales.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public interface IProblemToTrain extends IProblemRunner {
 
     /**
+     * En caso de que un problema se resuelva entre varios actores, esta función debe retornar al
+     * actor del turno corriente del entrenamiento.
      *
-     * @return el Actor (jugador si es un juego) que se va a entrenar
+     * @return el Actor que se va a entrenar en el turno actual.
      */
     public IActor getActorToTrain();
 
     /**
+     * Retorna la recompensa final total obtenida al llegar al final del problema, por cada neurona
+     * de salida.
      *
-     * @param finalState
-     * @param outputNeuron <p>
+     * @param finalState   estado final del problema.
+     * @param outputNeuron neurona de salida.
+     *
      * @return
      */
-    public double getFinalReward(final IState finalState, final int outputNeuron);
+    public double getFinalReward(final IState finalState,
+            final int outputNeuron);
 
     /**
-     * Se debe inicializar el problema y avanzar hasta el punto en el que el
-     * {@code actor} le toque actuar por primera vez
-     * <p>
-     * @param actor que se va a aentrenar durante el problema.
-     * <p>
-     * @return Inicializa el problema y devuelve su estado inicial
+     * Se debe inicializar el problema y avanzar hasta el punto en el que el {@code actor} le toque
+     * actuar por primera vez
+     *
+     * @param actor que se va a entrenar durante el problema.
+     *
+     * @return estado inicial del problema en el momento que le toque actual al {@code actor}.
      */
     public IState initialize(final IActor actor);
 
-    //TODO actualizar descripcion!
     /**
-     * Este metodo debe:
+     * Este método debe:
      * <p>
-     * 1) crear un estado que llamaremos 'nextState', que comineza siendo igual
-     * a @afterstate.
+     * <ol>
+     * <li>Crear un estado que llamaremos 'nextState', que comienza siendo igual a
+     * {@code afterstate}, el cual ya contiene la acciones determinísticas aplicada.
+     * <li>Modificar 'nextState' aplicándole las acciones no determinísticas hasta que llegue al
+     * próximo estado.
+     * <li>retornar 'nextState'
+     * </ol>
      * <p>
-     * 2) modificar 'nextState' aplicandole las acciones no deterministicas que
-     * se aplican luego de las acciones deterministicas realizadas en
-     * <p>
-     * @afterstate, hasta llegar al proximo estado (turno)
-     * <p>
-     * 3) retornar 'nextState'
-     * <p>
-     * @param afterstate estado de transicion (luego de aplicar una accion
-     *                   deterministica al estado actual del problema)
-     * <p>
-     * @return el estado 'nextState', que representa el siguiente turno o
-     *         siguiente estado inicial (ver descripcion para mas detalles)
+     * @param afterstate estado de transición, luego de aplicar una acción determinística.
+     *
+     * @return el estado 'nextState', que representa el siguiente turno o siguiente estado inicial,
+     *         tras aplicar acciones no determinísticas.
      */
     public IState computeNextTurnStateFromAfterstate(final IState afterstate);
 
     /**
-     * Modifica el estado del problema para que el nuevo estado sea @newState.
-     * En otras palabras, simboliza el final del turno anterior y se hacen
-     * efectivos todos los movimientos de la IA y de lascciones no
-     * deterministicas que le siguen.
-     * <p>
+     * Modifica el estado del problema para que el nuevo estado sea {@code nextTurnState}. En otras
+     * palabras, simboliza el final del turno anterior y se hacen efectivos todos los movimientos de
+     * la IA y de las acciones no determinísticas que se aplicaron al calcular.
+     *
      * @param nextTurnState nuevo estado inicial
      */
     public void setCurrentState(final IState nextTurnState);
 
     /**
+     * Normaliza {@code value} entre los valores permitidos para la salida de la red neuronal,
+     * asumiendo que todas las neuronas de salida utilizan la misma función de normalización.
      *
-     * @param value <p>
-     * @return
+     * @param value a normalizar.
+     *
+     * @return {@code value} normalizado.
      */
     public double normalizeValueToPerceptronOutput(final Object value);
 

@@ -76,7 +76,8 @@ public class IPerceptronInterfaceTest {
         int layerIndex = 1;
         Function<Double, Double> sigmoid = FunctionUtils.SIGMOID;
         IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-        Function<Double, Double> result = instance.getActivationFunction(layerIndex);
+        Function<Double, Double> result = instance.getActivationFunction(
+                layerIndex);
         assertEquals(sigmoid, result);
     }
 
@@ -96,8 +97,7 @@ public class IPerceptronInterfaceTest {
     }
 
     /**
-     * Test of getDerivatedActivationFunction method, of class
-     * IPerceptronInterface.
+     * Test of getDerivatedActivationFunction method, of class IPerceptronInterface.
      */
     @Test
     public void testGetDerivatedActivationFunction() {
@@ -105,7 +105,8 @@ public class IPerceptronInterfaceTest {
         int layerIndex = 1;
         IPerceptronInterface instance = new IPerceptronInterfaceImpl();
         Function<Double, Double> expResult = FunctionUtils.SIGMOID_DERIVATED;
-        Function<Double, Double> result = instance.getDerivatedActivationFunction(layerIndex);
+        Function<Double, Double> result = instance.
+                getDerivatedActivationFunction(layerIndex);
         assertEquals(expResult, result);
     }
 
@@ -146,8 +147,10 @@ public class IPerceptronInterfaceTest {
         int neuronIndexPreviousLayer = 0;
         IPerceptronInterface instance = new IPerceptronInterfaceImpl();
         double expResult = 0.3556;
-        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, expResult);
-        double result = instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer);
+        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer,
+                expResult);
+        double result = instance.getWeight(layerIndex, neuronIndex,
+                neuronIndexPreviousLayer);
         assertEquals(expResult, result);
 
     }
@@ -190,8 +193,10 @@ public class IPerceptronInterfaceTest {
         int neuronIndexPreviousLayer = 0;
         double correctedWeight = 0.3556;
         IPerceptronInterface instance = new IPerceptronInterfaceImpl();
-        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, correctedWeight);
-        assertEquals(instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer), correctedWeight);
+        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer,
+                correctedWeight);
+        assertEquals(instance.getWeight(layerIndex, neuronIndex,
+                neuronIndexPreviousLayer), correctedWeight);
     }
 
     /**
@@ -209,12 +214,14 @@ public class IPerceptronInterfaceTest {
         }
 
         @Override
-        public double getBias(int layerIndex, int neuronIndex) {
+        public double getBias(int layerIndex,
+                int neuronIndex) {
             return biasB;
         }
 
         @Override
-        public Function<Double, Double> getDerivatedActivationFunction(int layerIndex) {
+        public Function<Double, Double> getDerivatedActivationFunction(
+                int layerIndex) {
             return FunctionUtils.SIGMOID_DERIVATED;
         }
 
@@ -229,7 +236,9 @@ public class IPerceptronInterfaceTest {
         }
 
         @Override
-        public double getWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer) {
+        public double getWeight(int layerIndex,
+                int neuronIndex,
+                int neuronIndexPreviousLayer) {
             return weight;
         }
 
@@ -239,12 +248,17 @@ public class IPerceptronInterfaceTest {
         }
 
         @Override
-        public void setBias(int layerIndex, int neuronIndex, double correctedBias) {
+        public void setBias(int layerIndex,
+                int neuronIndex,
+                double correctedBias) {
             biasB = correctedBias;
         }
 
         @Override
-        public void setWeight(int layerIndex, int neuronIndex, int neuronIndexPreviousLayer, double correctedWeight) {
+        public void setWeight(int layerIndex,
+                int neuronIndex,
+                int neuronIndexPreviousLayer,
+                double correctedWeight) {
             weight = correctedWeight;
         }
     }

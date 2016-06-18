@@ -92,7 +92,8 @@ public class NeuralNetCacheTest {
         PartialNeuron expResult = new Neuron(1, 1);
         layer.setNeuron(neuronIndex, expResult);
         instance.setLayer(layerIndex, layer);
-        PartialNeuron result = instance.getLayer(layerIndex).getNeuron(neuronIndex);
+        PartialNeuron result = instance.getLayer(layerIndex).getNeuron(
+                neuronIndex);
         assertEquals(expResult, result);
     }
 
