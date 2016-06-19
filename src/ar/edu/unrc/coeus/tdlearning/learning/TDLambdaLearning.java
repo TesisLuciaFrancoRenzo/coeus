@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning.learning;
 
-import ar.edu.unrc.coeus.interfaces.IPerceptronInterface;
+import ar.edu.unrc.coeus.interfaces.INeuralNetworkInterface;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IActor;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IProblemRunner;
@@ -73,6 +73,38 @@ public class TDLambdaLearning {
     }
 
     /**
+     * Heurística que ayuda a establecer la longitud de la traza de elegibilidad según los valores
+     * de {@code lambda}.
+     *
+     * @param lambda escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre
+     *               [0,1].
+     *
+     * @return valor óptimo para longitud de la traza de elegibilidad.
+     */
+    public static Integer calculateBestEligibilityTraceLenght(final double lambda) {
+        if ( lambda > 1 || lambda < 0 ) {
+            throw new IllegalArgumentException(
+                    "lambda=" + lambda + " is out of range from a valid [0..1]"); //FIXME asegurar qeu todas las excepciones esten en ingles
+        } else if ( lambda > 0.99 ) {
+            return Integer.MAX_VALUE;
+        } else if ( lambda == 0 ) {
+            return 0;
+        }
+        int lenght = 0;
+        while ( true ) {
+            double pow = Math.pow(lambda, lenght);
+            double threshold = 0.001 * lambda;
+            if ( pow < threshold ) {
+                return lenght;
+            }
+            lenght++;
+            if ( lenght >= 500 ) {
+                return Integer.MAX_VALUE;
+            }
+        }
+    }
+
+    /**
      * Calcula un valor de "enfriamiento" o "recocido" lineal (nombrado diferente dependiendo la
      * bibliografía) sobre el valor inicial {@code initialValue} en el tiempo {@code t}.
      *
@@ -106,37 +138,6 @@ public class TDLambdaLearning {
                     + initialValue;
         }
         return currentValue;
-    }
-
-    /**
-     * Heurística que ayuda a establecer la longitud de la traza de elegibilidad según los valores
-     * de {@code lambda}.
-     *
-     * @param lambda
-     *
-     * @return valor óptimo para longitud de la traza de elegibilidad.
-     */
-    public static Integer calculateBestEligibilityTraceLenght(final double lambda) {
-        if ( lambda > 1 || lambda < 0 ) {
-            throw new IllegalArgumentException(
-                    "lambda=" + lambda + " is out of range from a valid [0..1]"); //FIXME asegurar qeu todas las excepciones esten en ingles
-        } else if ( lambda > 0.99 ) {
-            return Integer.MAX_VALUE;
-        } else if ( lambda == 0 ) {
-            return 0;
-        }
-        int lenght = 0;
-        while ( true ) {
-            double pow = Math.pow(lambda, lenght);
-            double threshold = 0.001 * lambda;
-            if ( pow < threshold ) {
-                return lenght;
-            }
-            lenght++;
-            if ( lenght >= 500 ) {
-                return Integer.MAX_VALUE;
-            }
-        }
     }
 
     /**
@@ -340,25 +341,25 @@ public class TDLambdaLearning {
             return a + (int) ((b - a + 1d) * random());
         }
     }
+    private int alphaAnnealingT;
+    private boolean canCollectStatistics;
 
     private boolean computeParallelBestPossibleAction = false;
+    private final boolean[] concurrencyInLayer;
     private double[] currentAlpha;
     private EExplorationRateAlgorithms explorationRate;
     private double explorationRateFinalValue;
     private int explorationRateFinishDecrementing;
     private double explorationRateInitialValue;
     private int explorationRateStartDecrementing;
-    private ELearningStyle learningStyle;
-    private NTupleSystem nTupleSystem;
-    private final ENeuralNetworkType neuralNetworkType;
-    private int alphaAnnealingT;
-    private boolean canCollectStatistics;
-    private final boolean[] concurrencyInLayer;
     private double gamma;
     private double[] initialAlpha;
     private double lambda;
     private ELearningRateAdaptation learningRateAdaptation;
-    private final IPerceptronInterface perceptronInterface;
+    private ELearningStyle learningStyle;
+    private NTupleSystem nTupleSystem;
+    private final ENeuralNetworkType neuralNetworkType;
+    private final INeuralNetworkInterface perceptronInterface;
     private boolean replaceEligibilityTraces;
     private LinkedList<Long> statisticsBestPossibleActionTimes;
     private LinkedList<Long> statisticsTrainingTimes;
@@ -370,20 +371,20 @@ public class TDLambdaLearning {
      *
      * @param learningStyle            tipo de aprendizaje utilizado.
      * @param perceptronInterface      red neuronal que se desea entrenar, la cual implementa la
-     *                                 interfaz {@code IPerceptronInterface}, permitiendo así el
+     *                                 interfaz {@code INeuralNetworkInterface}, permitiendo así el
      *                                 acceso a su representacion interna.
      * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de
      *                                 elegibilidad, entre [0,1].
      * @param alpha                    tasa de aprendizaje para cada capa. Si es null, se inicializa
      *                                 cada alpha con la formula 1/num_neuronas de la capa anterior.
-     * @param gamma                    tasa de descuento entre [0,1].
+     * @param gamma                    tasa de descuento, entre [0,1].
      * @param concurrencyInLayer       true en las capas que se deben computar concurrentemente.
-     * @param replaceEligibilityTraces permite reiniciar las trazas de elegibilidad en caso de
-     *                                 movimientos al azar durante el entrenamiento.
+     * @param replaceEligibilityTraces true si se permite reiniciar las trazas de elegibilidad en
+     *                                 caso de movimientos al azar durante el entrenamiento.
      * @param collectStatistics        true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public TDLambdaLearning(
-            final IPerceptronInterface perceptronInterface,
+            final INeuralNetworkInterface perceptronInterface,
             final ELearningStyle learningStyle,
             final double[] alpha,
             final double lambda,
@@ -543,28 +544,6 @@ public class TDLambdaLearning {
     }
 
     /**
-     * @return el alpha en el turno actual, de cada capa.
-     */
-    public double[] getCurrentAlpha() {
-        return currentAlpha;
-    }
-
-    /**
-     * Establece una tasa de exploración fija. El valor elegido es la probabilidad de que el
-     * movimiento elegido sea al azar, en lugar de calculado mediante la red neuronal.
-     *
-     * @param value tasa de exploración.
-     */
-    public void setFixedExplorationRate(final double value) {
-        if ( value < 0 || value > 1 ) {
-            throw new IllegalArgumentException(
-                    "value debe estar en el intervalo [0,1]");
-        }
-        this.explorationRate = EExplorationRateAlgorithms.fixed;
-        this.explorationRateInitialValue = value;
-    }
-
-    /**
      * Si mantenemos el valor de alpha fijo, las fluctuaciones de la red previenen que en lugar de
      * converger en un mínimo local, terminemos danzando al azar alrededor. Para alcanzar el mínimo,
      * y quedarnos ahí, debemos utilizar técnicas de templado (disminuir gradualmente) la tasa de
@@ -584,6 +563,28 @@ public class TDLambdaLearning {
         }
         this.learningRateAdaptation = ELearningRateAdaptation.annealing;
         this.alphaAnnealingT = alphaAnnealingT;
+    }
+
+    /**
+     * @return el alpha en el turno actual, de cada capa.
+     */
+    public double[] getCurrentAlpha() {
+        return currentAlpha;
+    }
+
+    /**
+     * Establece una tasa de exploración fija. El valor elegido es la probabilidad de que el
+     * movimiento elegido sea al azar, en lugar de calculado mediante la red neuronal.
+     *
+     * @param value tasa de exploración.
+     */
+    public void setFixedExplorationRate(final double value) {
+        if ( value < 0 || value > 1 ) {
+            throw new IllegalArgumentException(
+                    "value debe estar en el intervalo [0,1]");
+        }
+        this.explorationRate = EExplorationRateAlgorithms.fixed;
+        this.explorationRateInitialValue = value;
     }
 
     /**
@@ -621,6 +622,14 @@ public class TDLambdaLearning {
     }
 
     /**
+     *
+     */
+    public void setFixedLearningRate() {
+        this.learningRateAdaptation = ELearningRateAdaptation.fixed;
+        this.alphaAnnealingT = 0;
+    }
+
+    /**
      * Establece una tasa de exploración variable con el tiempo, la cual comienza a decrementarse en
      * el turno {@code startDecrementing} y finaliza en {@code finishDecrementing}.
      * <p>
@@ -648,14 +657,6 @@ public class TDLambdaLearning {
         this.explorationRateStartDecrementing = startDecrementing;
         this.explorationRateFinalValue = finalValue;
         this.explorationRateFinishDecrementing = finishDecrementing;
-    }
-
-    /**
-     *
-     */
-    public void setFixedLearningRate() {
-        this.learningRateAdaptation = ELearningRateAdaptation.fixed;
-        this.alphaAnnealingT = 0;
     }
 
     /**

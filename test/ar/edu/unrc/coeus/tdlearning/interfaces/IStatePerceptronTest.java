@@ -18,11 +18,11 @@
  */
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
-import static junit.framework.Assert.assertEquals;
 import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.arrayutil.NormalizedField;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Utilizado para acumular Predicciones y calcular la maxima o mas prometedora de ellas
- * <p>
+ * Utilizado para acumular predicciones de recompensas y calcular la mas prometedora.
+ *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class MaximalActionPredictionConsumer implements Consumer<ActionPrediction> {
@@ -33,7 +33,7 @@ public class MaximalActionPredictionConsumer implements Consumer<ActionPredictio
     private List<ActionPrediction> list;
 
     /**
-     *
+     * Utilizado para acumular predicciones de recompensas y calcular la mas prometedora.
      */
     public MaximalActionPredictionConsumer() {
         list = new ArrayList<>();
@@ -56,7 +56,7 @@ public class MaximalActionPredictionConsumer implements Consumer<ActionPredictio
 
     /**
      *
-     * @param other
+     * @param other para combinar
      */
     public void combine(final MaximalActionPredictionConsumer other) {
         if ( list.isEmpty() ) {
@@ -73,7 +73,8 @@ public class MaximalActionPredictionConsumer implements Consumer<ActionPredictio
     }
 
     /**
-     * @return the list
+     * @return lista de todas las {@code ActionPrediction} con mejor {@code numericRepresentation}.
+     *         Todas tienen los mismos valores de {@code numericRepresentation}.
      */
     public List<ActionPrediction> getList() {
         return list;

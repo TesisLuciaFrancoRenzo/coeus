@@ -25,14 +25,15 @@ package ar.edu.unrc.coeus.tdlearning.utils;
 public class Normalization {
 
     /**
+     * Desnormaliza un valor.
      *
-     * @param value          Value to denormalize.
-     * @param actualHigh     The actual high from the sample data.
-     * @param actualLow      The actual low from the sample data.
-     * @param normalizedHigh The desired normalized high.
-     * @param normalizedLow  The desired normalized low from the sample data.
+     * @param value          valor a desnormalizar.
+     * @param actualHigh     valor mas alto posible de la muestra.
+     * @param actualLow      valor mas bajo posible de la muestra.
+     * @param normalizedHigh valor mas alto deseado a normalizar.
+     * @param normalizedLow  valor mas bajo deseado a normalizar.
      *
-     * @return denormalized value
+     * @return valor desnormalizado.
      */
     public final static double deNormalize(final double value,
             final double actualHigh,
@@ -47,14 +48,15 @@ public class Normalization {
     }
 
     /**
+     * Normaliza un valor.
      *
-     * @param value          Value to normalize.
-     * @param actualHigh     The actual high from the sample data.
-     * @param actualLow      The actual low from the sample data.
-     * @param normalizedHigh The desired normalized high.
-     * @param normalizedLow  The desired normalized low from the sample data.
+     * @param value          valor a normalizar.
+     * @param actualHigh     valor mas alto posible de la muestra.
+     * @param actualLow      valor mas bajo posible de la muestra.
+     * @param normalizedHigh valor mas alto deseado a normalizar.
+     * @param normalizedLow  valor mas bajo deseado a normalizar.
      *
-     * @return normalized value
+     * @return valor normalizado.
      */
     public final static double normalize(final double value,
             final double actualHigh,

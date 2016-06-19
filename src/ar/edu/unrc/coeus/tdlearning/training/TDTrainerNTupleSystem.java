@@ -26,38 +26,30 @@ import ar.edu.unrc.coeus.tdlearning.training.ntuple.NTupleSystem;
 import ar.edu.unrc.coeus.tdlearning.training.ntuple.elegibilitytrace.EligibilityTraceForNTuple;
 
 /**
+ * Algoritmos de entrenamiento para redes neuronales de tipo NTuplas.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class TDTrainerNTupleSystem extends Trainer {
 
+    /**
+     * traza de elegibilidad.
+     */
     private EligibilityTraceForNTuple eligibilityTrace;
+    /**
+     * red neuronal a entrenar.
+     */
+    private final NTupleSystem nTupleSystem;
 
     /**
-     * constante de tasa de aprendizaje
-     */
-    protected double alpha;
-    /**
-     * Vector de errores TD para la capa de salida, comparando el turno actual con el siguiente
-     */
-    protected double error;
-
-    /**
+     * Inicializa el algoritmo que entrena sistemas NTuplas.
      *
-     */
-    protected final NTupleSystem nTupleSystem;
-
-    /**
-     *
-     */
-    protected double nextTurnOutputs;
-
-    /**
-     * @param lambda                    constante que se encuentra en el intervalo [0,1]
+     * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de
+     *                                  elegibilidad, entre [0,1].
      * @param maxEligibilityTraceLenght
-     * @param gamma                     tasa de descuento
-     * @param replaceEligibilityTraces  permite resetear las trazas de elegibilidad en caso de
-     *                                  movimientos al azar
+     * @param gamma                     tasa de descuento, entre [0,1].
+     * @param replaceEligibilityTraces  true si se permite reiniciar las trazas de elegibilidad en
+     *                                  caso de movimientos al azar durante el entrenamiento.
      * @param nTupleSystem
      */
     public TDTrainerNTupleSystem(
@@ -86,18 +78,6 @@ public class TDTrainerNTupleSystem extends Trainer {
         }
     }
 
-    /**
-     * Entrenamos la red neuronal con un turno. Incluye la actualizacion de las bias. Es necesario
-     * invocar el metodo {@code train} desde el turno 1, esto significa que si llamamos a este
-     * metodo desde el turno 6, primero hay que llamarlo desde el tunro 5, y para llamarlo desde el
-     * turno 5, primero hay que invocarlo desde el turno 4, etc.
-     * <p>
-     * @param state         estado del problema en el turno {@code currentTurn}
-     * @param nextTurnState estado del problema en el turno que sigue de {@code currentTurn}
-     * <p>
-     * @param alpha         constante de tasa de aprendizaje
-     * @param isARandomMove <p>
-     */
     @Override
     public void train(
             final IProblemToTrain problem,
@@ -107,11 +87,9 @@ public class TDTrainerNTupleSystem extends Trainer {
             final boolean[] concurrencyInLayer,
             final boolean isARandomMove
     ) {
-
         //computamos
         ComplexNTupleComputation normalizedStateOutput = nTupleSystem.
                 getComplexComputation((IStateNTuple) state);
-
         double output = normalizedStateOutput.getOutput();
         double derivatedOutput = normalizedStateOutput.getDerivatedOutput();
         double nextTurnOutput = nTupleSystem.getComputation(
@@ -120,6 +98,7 @@ public class TDTrainerNTupleSystem extends Trainer {
                 normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDerror
+        double error;
         if ( !nextTurnState.isTerminalState() ) {
             //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
             error = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;

@@ -22,18 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Estructura de datos utilizada para almacenar cálculos temporales y optimizar tiempos de
+ * resultados de una red neuronal genérica.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public class NeuralNetCache {
+public class NeuralNetworkCache {
 
     private final List<Layer> layers;
 
     /**
+     * Nueva estructura de datos para almacenar cálculos temporales y optimizaciones sobre redes
+     * neuronales genéricas.
      *
      * @param layerQuantity cantidad de capas que posee la red neuronal
      */
-    public NeuralNetCache(final int layerQuantity) {
+    public NeuralNetworkCache(final int layerQuantity) {
         layers = new ArrayList<>(layerQuantity);
         for ( int i = 0; i < layerQuantity; i++ ) {
             layers.add(null);
@@ -41,9 +45,11 @@ public class NeuralNetCache {
     }
 
     /**
+     * Obtiene la capa número {@code layerIndex}.
      *
-     * @param layerIndex <p>
-     * @return la capa indicada
+     * @param layerIndex numero de la capa a obtener.
+     *
+     * @return la capa número {@code layerIndex}.
      */
     public Layer getLayer(final int layerIndex) {
         return layers.get(layerIndex);
@@ -51,7 +57,7 @@ public class NeuralNetCache {
 
     /**
      *
-     * @return indice de la ultima capa (capa de salida)
+     * @return índice de la ultima capa (capa de salida)
      */
     public int getOutputLayerIndex() {
         return layers.size() - 1;
@@ -59,11 +65,11 @@ public class NeuralNetCache {
 
     /**
      *
-     * @param layerIndex indice de una capa
-     * <p>
-     * @return true si es la penultima capa
+     * @param layerIndex índice de una capa.
+     *
+     * @return true si es la penúltima capa.
      */
-    public boolean isNextToLasyLayer(final int layerIndex) {
+    public boolean isNextToLastLayer(final int layerIndex) {
         return layerIndex == getOutputLayerIndex() - 1;
     }
 
@@ -71,17 +77,17 @@ public class NeuralNetCache {
      *
      * @param layerIndex indica de una capa
      * <p>
-     * @return true si es la ultima capa (capa de salida)
+     * @return true si es la última capa (capa de salida).
      */
     public boolean isOutputLayer(final int layerIndex) {
         return layerIndex == layers.size() - 1;
     }
 
     /**
-     * Agrega una capa en la posicion indicada
-     * <p>
-     * @param layerIndex indice del destino de la nueva capa
-     * @param layer      nueva capa a añadir a la cache
+     * Agrega una capa en la posición indicada dentro de ésta estructura.
+     *
+     * @param layerIndex índice destino de la nueva capa.
+     * @param layer      nueva capa.
      */
     public void setLayer(final int layerIndex,
             final Layer layer) {

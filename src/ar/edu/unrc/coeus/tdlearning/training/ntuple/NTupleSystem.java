@@ -216,14 +216,6 @@ public class NTupleSystem {
         return mapSamplePointStates;
     }
 
-    /**
-     * Cambia todos los pesos de la red neuronal con los valores de {@code value}
-     *
-     * @param value nuevos valores para los pesos de la red neuronal.
-     */
-    public void setWeights(final double[] value) {
-        lut = value;
-    }
 
     /**
      * @return las longitudes de las NTuplas.
@@ -237,6 +229,14 @@ public class NTupleSystem {
      */
     public int[] getNTuplesWeightQuantity() {
         return nTuplesWeightQuantity;
+    }
+    /**
+     * Cambia todos los pesos de la red neuronal con los valores de {@code value}
+     *
+     * @param value nuevos valores para los pesos de la red neuronal.
+     */
+    public void setWeights(final double[] value) {
+        lut = value;
     }
 
     /**

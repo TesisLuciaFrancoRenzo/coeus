@@ -20,9 +20,9 @@ package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
 import java.util.ArrayList;
 import java.util.List;
-import static junit.framework.Assert.assertEquals;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -75,10 +75,10 @@ public class LayerTest {
         System.out.println("getNeuron");
         int neuronIndex = 0;
         Layer instance = new Layer(1);
-        PartialNeuron expResult = new Neuron(1, 1);
+        Neuron expResult = new Neuron(1, 1);
         instance.setNeuron(0, expResult);
 
-        PartialNeuron result = instance.getNeuron(neuronIndex);
+        Neuron result = instance.getNeuron(neuronIndex);
         assertEquals(expResult, result);
     }
 
@@ -90,10 +90,10 @@ public class LayerTest {
         System.out.println("getNeurons");
         Layer instance = new Layer(2);
         instance.setNeuron(0, new Neuron(1, 1));
-        List<PartialNeuron> expResult = new ArrayList<>(1);
+        List<Neuron> expResult = new ArrayList<>(1);
         expResult.add(new Neuron(1, 1));
         expResult.add(new Neuron(1, 1));
-        List<PartialNeuron> result = instance.getNeurons();
+        List<Neuron> result = instance.getNeurons();
         assertEquals(expResult.size(), result.size());
     }
 
@@ -104,7 +104,7 @@ public class LayerTest {
     public void testSetNeuron() {
         System.out.println("setNeuron");
         int neuronIndex = 0;
-        PartialNeuron neuron = new Neuron(1, 1);
+        Neuron neuron = new Neuron(1, 1);
         Layer instance = new Layer(1);
         instance.setNeuron(neuronIndex, neuron);
         assertEquals(instance.getNeuron(0), neuron);

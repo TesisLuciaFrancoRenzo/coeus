@@ -31,8 +31,7 @@ import org.junit.runners.Suite;
  */
 @RunWith( Suite.class )
 @Suite.SuiteClasses(
-         {NeuronTest.class, PartialNeuronTest.class, LayerTest.class,
-            NeuralNetCacheTest.class} )
+         {NeuronTest.class, LayerTest.class, NeuralNetCacheTest.class} )
 public class PerceptronsSuite {
 
     /**

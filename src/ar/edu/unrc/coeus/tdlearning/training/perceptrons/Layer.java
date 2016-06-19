@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class Layer {
 
-    private final List<PartialNeuron> neurons;
+    private final List<Neuron> neurons;
 
     /**
      * Capa de una red neuronal genérica.
@@ -40,32 +40,34 @@ public class Layer {
         for ( int i = 0; i < neuronQuantityInLayer; i++ ) {
             neurons.add(null);
         }
-
     }
 
     /**
-     * @param neuronIndex indice de la neurona.
+     * Obtiene una neurona dentro de una capa.
      *
-     * @return the neurons
+     * @param neuronIndex índice de la neurona dentro de la capa.
+     *
+     * @return neurona
      */
-    public PartialNeuron getNeuron(final int neuronIndex) {
+    public Neuron getNeuron(final int neuronIndex) {
         return neurons.get(neuronIndex);
     }
 
     /**
-     * @return the neurons
+     * @return todas las neuronas de la capa.
      */
-    public List<PartialNeuron> getNeurons() {
+    public List<Neuron> getNeurons() {
         return neurons;
     }
 
     /**
+     * Cambia una neurona dentro de la capa por otra.
      *
-     * @param neuronIndex
-     * @param neuron
+     * @param neuronIndex índice de la neurona a cambiar.
+     * @param neuron      nueva neurona.
      */
     public void setNeuron(final int neuronIndex,
-            final PartialNeuron neuron) {
+            final Neuron neuron) {
         neurons.set(neuronIndex, neuron);
     }
 

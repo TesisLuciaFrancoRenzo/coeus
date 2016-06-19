@@ -20,9 +20,9 @@ package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
 import java.util.ArrayList;
 import java.util.List;
-import static junit.framework.Assert.assertEquals;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -77,6 +77,18 @@ public class NeuronTest {
         instance.clearDeltas();
         Double result = instance.getDelta(0);
         Double expResult = null;
+        assertEquals(expResult, result);
+    }
+    /**
+     * Test of getBias method, of class PartialNeuron.
+     */
+    @Test
+    public void testGetBias() {
+        System.out.println("getBias");
+        Neuron instance = new Neuron(1, 1);
+        instance.setBias(1.325);
+        Double expResult = 1.325;
+        Double result = instance.getBias();
         assertEquals(expResult, result);
     }
 
@@ -134,6 +146,50 @@ public class NeuronTest {
         assertEquals(expResult, result);
     }
 
+
+    /**
+     * Test of getWeight method, of class PartialNeuron.
+     */
+    @Test
+    public void testGetWeight() {
+        System.out.println("getWeight");
+        int previousLayerNeuronIndex = 0;
+        Neuron instance = new Neuron(1, 1);
+        instance.setWeight(0, 0.356);
+        Double expResult = 0.356;
+        Double result = instance.getWeight(previousLayerNeuronIndex);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getWeights method, of class PartialNeuron.
+     */
+    @Test
+    public void testGetWeights() {
+        System.out.println("getWeights");
+        Neuron instance = new Neuron(1, 1);
+        instance.setWeight(0, 0.3);
+        instance.setWeight(1, 0.4);
+        List<Double> expResult = new ArrayList(1);
+        expResult.add(0.3);
+        expResult.add(0.4);
+        List<Double> result = instance.getWeights();
+        assertEquals(expResult.get(0), result.get(0));
+        assertEquals(expResult.get(1), result.get(01));
+    }
+
+    /**
+     * Test of setBias method, of class PartialNeuron.
+     */
+    @Test
+    public void testSetBias() {
+        System.out.println("setBias");
+        Double newBias = 0.356;
+        Neuron instance = new Neuron(1, 1);
+        instance.setBias(newBias);
+        assertEquals(instance.getBias(), newBias);
+
+    }
     /**
      * Test of setDelta method, of class Neuron.
      */
@@ -146,7 +202,6 @@ public class NeuronTest {
         instance.setDelta(outputNeuronIndex, delta);
         assertEquals(instance.getDeltas().get(outputNeuronIndex), delta);
     }
-
     /**
      * Test of setDerivatedOutput method, of class Neuron.
      */
@@ -158,7 +213,6 @@ public class NeuronTest {
         instance.setDerivatedOutput(derivatedOutput);
         assertEquals(instance.getDerivatedOutput(), derivatedOutput);
     }
-
     /**
      * Test of setOutput method, of class Neuron.
      */
@@ -169,6 +223,19 @@ public class NeuronTest {
         Neuron instance = new Neuron(1, 1);
         instance.setOutput(output);
         assertEquals(instance.getOutput(), output);
+    }
+
+    /**
+     * Test of setWeight method, of class PartialNeuron.
+     */
+    @Test
+    public void testSetWeight() {
+        System.out.println("setWeight");
+        int previousLayerNeuronIndex = 0;
+        Double weight = 0.256;
+        Neuron instance = new Neuron(1, 1);
+        instance.setWeight(previousLayerNeuronIndex, weight);
+        assertEquals(instance.getWeight(0), weight);
     }
 
 }

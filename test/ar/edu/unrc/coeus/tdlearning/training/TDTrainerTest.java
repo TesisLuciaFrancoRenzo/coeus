@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning.training;
 
-import ar.edu.unrc.coeus.interfaces.IPerceptronInterface;
+import ar.edu.unrc.coeus.interfaces.INeuralNetworkInterface;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IActor;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IProblemToTrain;
@@ -27,7 +27,6 @@ import ar.edu.unrc.coeus.tdlearning.interfaces.IStatePerceptron;
 import ar.edu.unrc.coeus.tdlearning.utils.FunctionUtils;
 import java.util.ArrayList;
 import java.util.function.Function;
-import static junit.framework.Assert.assertEquals;
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.basic.BasicMLData;
@@ -36,6 +35,7 @@ import org.encog.neural.networks.layers.BasicLayer;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -78,7 +78,6 @@ public class TDTrainerTest {
     public static void setUpClass() {
         activationFunctionOutput = FunctionUtils.SIGMOID;
         derivatedActivationFunctionOutput = FunctionUtils.SIGMOID_DERIVATED;
-
         activationFunctionHidden = FunctionUtils.SIGMOID;
         derivatedActivationFunctionHidden = FunctionUtils.SIGMOID_DERIVATED;
     }
@@ -186,7 +185,7 @@ public class TDTrainerTest {
             }
         };
 
-        IPerceptronInterface perceptronInterface = new IPerceptronInterface() {
+        INeuralNetworkInterface perceptronInterface = new INeuralNetworkInterface() {
 
             @Override
             public Function<Double, Double> getActivationFunction(int layerIndex) {
@@ -371,14 +370,7 @@ public class TDTrainerTest {
 
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 0);
         double calculatedFinalBias = neuralNetwork.getWeight(1, 1, 0);
-        if ( DEBUG ) {
-            System.out.println(
-                    "\n*** =========== Cache del caso de prueba 1 =========== ****");
-            trainer.printLastCache();
-            System.out.println(
-                    "\n*** =========== Red neuronal actualizada del caso de prueba 1  =========== ****");
-            neuralNetwork.toString(); //FIXME deberia imprimir la red neuronal de encog
-        }
+
         assertEquals("Nuevo peso para el caso de prueba 1", expectedFinalWeight,
                 calculatedFinalWeight, 0.0000000000000001);
         assertEquals("Nuevo bias para el caso de prueba 1", expectedFinalBias,
@@ -467,7 +459,7 @@ public class TDTrainerTest {
             }
         };
 
-        IPerceptronInterface perceptronInterface = new IPerceptronInterface() {
+        INeuralNetworkInterface perceptronInterface = new INeuralNetworkInterface() {
 
             @Override
             public Function<Double, Double> getActivationFunction(int layerIndex) {
@@ -651,15 +643,6 @@ public class TDTrainerTest {
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 1);
         double calculatedFinalBias = neuralNetwork.getWeight(0, 2, 1);
 
-        if ( DEBUG ) {
-            System.out.println(
-                    "\n**** =========== Cache del caso de prueba 2 =========== ****");
-            trainer.printLastCache();
-            System.out.println(
-                    "\n*** =========== Red neuronal actualizada del caso de prueba 2 =========== ****");
-            neuralNetwork.toString(); //FIXME arreglar el grafico de la red neuronal
-        }
-
         assertEquals("Nuevo peso para el caso de prueba 2", expectedFinalWeight,
                 calculatedFinalWeight, 0.0000000000000001);
         assertEquals("Nueva bias para el caso de prueba 2", expectedFinalBias,
@@ -747,7 +730,7 @@ public class TDTrainerTest {
             }
         };
 
-        IPerceptronInterface perceptronInterface = new IPerceptronInterface() {
+        INeuralNetworkInterface perceptronInterface = new INeuralNetworkInterface() {
 
             @Override
             public Function<Double, Double> getActivationFunction(int layerIndex) {
