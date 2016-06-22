@@ -41,17 +41,15 @@ import java.util.zip.GZIPOutputStream;
 public class NTupleSystem {
 
     /**
-     * Dado la NTupla número {@code nTupleIndex} extraída de {@code state}, esta función calcula a
-     * que peso corresponde dentro de la red neuronal.
+     * Dado la NTupla número {@code nTupleIndex} extraída de {@code state}, esta función calcula a que peso corresponde
+     * dentro de la red neuronal.
      *
      * @param nTupleIndex          NTupla observada en {@code state}.
      * @param nTuplesLenght        longitudes de las NTuplas.
      * @param state                estado del cual se extrae la NTupla.
-     * @param mapSamplePointStates mapa de los posibles valores dentro de una muestra de NTupla,
-     *                             asociado a su índice.
+     * @param mapSamplePointStates mapa de los posibles valores dentro de una muestra de NTupla, asociado a su índice.
      *
-     * @return peso correspondiente en la red neuronal de la NTupla numero {@code nTupleIndex}
-     *         dentro de {@code state}.
+     * @return peso correspondiente en la red neuronal de la NTupla numero {@code nTupleIndex} dentro de {@code state}.
      */
     public static int calculateLocalIndex(
             final int nTupleIndex,
@@ -66,8 +64,7 @@ public class NTupleSystem {
 //            Integer sampleIndex = mapSamplePointStates.get(object);
 //            int size = mapSamplePointStates.size();
 //            int pow = (int) Math.pow(size, j);
-            index += mapSamplePointStates.get(ntuple[j]) * (int) Math.pow(
-                    mapSamplePointStates.size(), j); //FIXME hacer comparables?
+            index += mapSamplePointStates.get(ntuple[j]) * (int) Math.pow(mapSamplePointStates.size(), j); //FIXME hacer comparables?
         }
         return index;
     }
@@ -84,8 +81,7 @@ public class NTupleSystem {
     /**
      * Red neuronal optimizada para usos de NTuplas.
      *
-     * @param allSamplePointStates        todos los posibles valores dentro de una muestra de
-     *                                    NTupla.
+     * @param allSamplePointStates        todos los posibles valores dentro de una muestra de NTupla.
      * @param nTuplesLenght               longitudes de las NTuplas.
      * @param activationFunction          función de activación.
      * @param derivatedActivationFunction derivada de la función de activación.
@@ -122,8 +118,7 @@ public class NTupleSystem {
     }
 
     /**
-     * Añade {@code correction} al peso con el índice {@code currentWeightIndex} dentro de la red
-     * neuronal.
+     * Añade {@code correction} al peso con el índice {@code currentWeightIndex} dentro de la red neuronal.
      *
      * @param currentWeightIndex índice del peso en la red neuronal.
      * @param correction         valor a añadir.
@@ -216,7 +211,6 @@ public class NTupleSystem {
         return mapSamplePointStates;
     }
 
-
     /**
      * @return las longitudes de las NTuplas.
      */
@@ -230,6 +224,7 @@ public class NTupleSystem {
     public int[] getNTuplesWeightQuantity() {
         return nTuplesWeightQuantity;
     }
+
     /**
      * Cambia todos los pesos de la red neuronal con los valores de {@code value}
      *
@@ -316,8 +311,7 @@ public class NTupleSystem {
     }
 
     /**
-     * Cambia el valor del peso de la red neuronal con el índice {@code index} al valor
-     * {@code value}.
+     * Cambia el valor del peso de la red neuronal con el índice {@code index} al valor {@code value}.
      *
      * @param index índice del peso a modificar.
      * @param value nuevo valor del peso a modificar.

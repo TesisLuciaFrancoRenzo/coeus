@@ -244,7 +244,7 @@ public class TDTrainerTest {
 
             @Override
             public boolean hasBias(int layerIndex) {
-                return true; //FIXME hacer que consulte realmente si tiene bias la capa o no
+                return true;
             }
 
             @Override
@@ -297,7 +297,7 @@ public class TDTrainerTest {
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
                     inputs[i] = ((IStatePerceptron) state).
                             translateToPerceptronInput(i);
-                } //todo reeemplazar esot po algo ams elegante
+                }
 
                 MLData inputData = new BasicMLData(inputs);
                 MLData output = neuralNetwork.compute(inputData);
@@ -518,7 +518,7 @@ public class TDTrainerTest {
 
             @Override
             public boolean hasBias(int layerIndex) {
-                return true; //FIXME hacer que consulte realmente si tiene bias la capa o no
+                return true;
             }
 
             @Override
@@ -569,9 +569,8 @@ public class TDTrainerTest {
                 double[] inputs = new double[neuralNetwork.
                         getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
-                    inputs[i] = ((IStatePerceptron) state).
-                            translateToPerceptronInput(i);
-                } //todo reeemplazar esot po algo ams elegante
+                    inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i);
+                }
 
                 MLData inputData = new BasicMLData(inputs);
                 MLData output = neuralNetwork.compute(inputData);
@@ -789,7 +788,7 @@ public class TDTrainerTest {
 
             @Override
             public boolean hasBias(int layerIndex) {
-                return true; //FIXME hacer que consulte realmente si tiene bias la capa o no
+                return true;
             }
 
             @Override
@@ -842,7 +841,7 @@ public class TDTrainerTest {
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
                     inputs[i] = ((IStatePerceptron) state).
                             translateToPerceptronInput(i);
-                } //todo reeemplazar esot po algo ams elegante
+                }
 
                 MLData inputData = new BasicMLData(inputs);
                 MLData output = neuralNetwork.compute(inputData);

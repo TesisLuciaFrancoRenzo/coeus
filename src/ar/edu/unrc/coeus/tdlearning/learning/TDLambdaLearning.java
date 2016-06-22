@@ -69,7 +69,7 @@ public class TDLambdaLearning {
             throw new IllegalArgumentException(
                     "initialValue=" + initialValue + " is out of range from a valid [0..1]");
         }
-        return initialValue / (1d + (((double) t) / ((double) T)));
+        return initialValue / (1d + (t / ((double) T)));
     }
 
     /**

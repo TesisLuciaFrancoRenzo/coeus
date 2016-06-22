@@ -148,7 +148,7 @@ public class IProblemTest {
     /**
      *
      */
-    public final class BestOf3one2one implements IProblemToTrain {
+    public class BestOf3one2one implements IProblemToTrain {
 
         private Boardone2one currentBoard;
         private BasicNetwork encogPerceptron;
@@ -218,9 +218,8 @@ public class IProblemTest {
         public Object[] evaluateBoardWithPerceptron(IState state) {
             double[] inputs = new double[4];
             for ( int i = 0; i < 4; i++ ) {
-                inputs[i] = ((IStatePerceptron) state).
-                        translateToPerceptronInput(i);
-            } //TODO reeemplazar esto por algo mas elegante
+                inputs[i] = ((IStatePerceptron) state).translateToPerceptronInput(i);
+            }
             MLData inputData = new BasicMLData(inputs);
             MLData output = (encogPerceptron).compute(inputData);
             Double[] out = new Double[output.getData().length];

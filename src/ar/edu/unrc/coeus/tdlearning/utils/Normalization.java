@@ -35,7 +35,7 @@ public class Normalization {
      *
      * @return valor desnormalizado.
      */
-    public final static double deNormalize(final double value,
+    public static double deNormalize(final double value,
             final double actualHigh,
             final double actualLow,
             final double normalizedHigh,
@@ -58,7 +58,7 @@ public class Normalization {
      *
      * @return valor normalizado.
      */
-    public final static double normalize(final double value,
+    public static double normalize(final double value,
             final double actualHigh,
             final double actualLow,
             final double normalizedHigh,
@@ -72,6 +72,9 @@ public class Normalization {
                     * (normalizedHigh - normalizedLow)
                     + normalizedLow;
         }
+    }
+
+    private Normalization() {
     }
 
 }
