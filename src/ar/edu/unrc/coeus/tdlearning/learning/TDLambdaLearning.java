@@ -41,22 +41,22 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * Este método de aprendizaje de TD lambda learning necesita Trazas de elegibilidad como método de
- * asignación de crédito temporal, el cual puede ser ajustado a preferencia. Utiliza redes
- * neuronales para recordar los patrones aprendidos durante la solución del problema.
+ * Este método de aprendizaje de TD lambda learning necesita Trazas de elegibilidad como método de asignación de crédito
+ * temporal, el cual puede ser ajustado a preferencia. Utiliza redes neuronales para recordar los patrones aprendidos
+ * durante la solución del problema.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public class TDLambdaLearning {
 
     /**
-     * Calcula un valor de "enfriamiento" o "recocido" (nombrado diferente dependiendo la
-     * bibliografía) sobre el valor inicial {@code initialValue} en el tiempo {@code t}.
+     * Calcula un valor de "enfriamiento" o "recocido" (nombrado diferente dependiendo la bibliografía) sobre el valor
+     * inicial {@code initialValue} en el tiempo {@code t}.
      *
      * @param initialValue valor inicial.
      * @param t            valor de {@code T} actual.
-     * @param T            valor que indica el momento en el que {@code initialValue} disminuye
-     *                     hasta {@code initialValue}/2.
+     * @param T            valor que indica el momento en el que {@code initialValue} disminuye hasta
+     *                     {@code initialValue}/2.
      *
      * @return alpha en el tiempo {@code t}.
      */
@@ -73,11 +73,9 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Heurística que ayuda a establecer la longitud de la traza de elegibilidad según los valores
-     * de {@code lambda}.
+     * Heurística que ayuda a establecer la longitud de la traza de elegibilidad según los valores de {@code lambda}.
      *
-     * @param lambda escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre
-     *               [0,1].
+     * @param lambda escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
      *
      * @return valor óptimo para longitud de la traza de elegibilidad.
      */
@@ -105,16 +103,14 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Calcula un valor de "enfriamiento" o "recocido" lineal (nombrado diferente dependiendo la
-     * bibliografía) sobre el valor inicial {@code initialValue} en el tiempo {@code t}.
+     * Calcula un valor de "enfriamiento" o "recocido" lineal (nombrado diferente dependiendo la bibliografía) sobre el
+     * valor inicial {@code initialValue} en el tiempo {@code t}.
      *
      * @param t                  tiempo actual.
      * @param initialValue       valor inicial.
      * @param finalValue         valor final.
-     * @param startDecrementing  tiempo {@code t} donde se comienza a disminuir el valor
-     *                           {@code initialValue}
-     * @param finishDecrementing tiempo {@code t} donde deja de disminuir el valor
-     *                           {@code initialValue}
+     * @param startDecrementing  tiempo {@code t} donde se comienza a disminuir el valor {@code initialValue}
+     * @param finishDecrementing tiempo {@code t} donde deja de disminuir el valor {@code initialValue}
      *
      * @return
      */
@@ -141,24 +137,21 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Computa la mejor {@code IAction} posible a realizar dado un {@code IState} utilizando la rede
-     * neuronal. No invocar sobre estados finales.
+     * Computa la mejor {@code IAction} posible a realizar dado un {@code IState} utilizando la rede neuronal. No
+     * invocar sobre estados finales.
      *
      * @param problem                                problema a resolver.
      * @param learningStyle                          estilo de aprendizaje utilizado.
-     * @param turnInitialState                       estado del problema al comienzo del turno
-     *                                               actual.
-     * @param allPossibleActionsFromTurnInitialState todas las posibles acciones que {@code actor}
-     *                                               puede tomar en {@code turnInitialState}.
+     * @param turnInitialState                       estado del problema al comienzo del turno actual.
+     * @param allPossibleActionsFromTurnInitialState todas las posibles acciones que {@code actor} puede tomar en
+     *                                               {@code turnInitialState}.
      * @param actor                                  actor en el turno actual.
-     * @param computeParallelBestPossibleAction      true si la solución se debe computar
-     *                                               concurrentemente.
-     * @param bestPossibleActionTimes                para almacenar estadísticas de tiempos
-     *                                               demorados. Si no se desea utilizar, debe ser
-     *                                               null.
+     * @param computeParallelBestPossibleAction      true si la solución se debe computar concurrentemente.
+     * @param bestPossibleActionTimes                para almacenar estadísticas de tiempos demorados. Si no se desea
+     *                                               utilizar, debe ser null.
      *
-     * @return la mejor {@code IAction} de todas las posibles para el {@code actor} en el
-     *         {@code turnInitialState} actual.
+     * @return la mejor {@code IAction} de todas las posibles para el {@code actor} en el {@code turnInitialState}
+     *         actual.
      */
     public static IAction computeBestPossibleAction(
             final IProblemRunner problem,
@@ -209,17 +202,16 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Calcula una predicción de la recompensa final del juego utilizando un {@code IState} obtenido
-     * tras de aplicar {@code action} en {@code turnInitialState}.
+     * Calcula una predicción de la recompensa final del juego utilizando un {@code IState} obtenido tras de aplicar
+     * {@code action} en {@code turnInitialState}.
      *
      * @param problem          problema a resolver.
      * @param turnInitialState estado del problema al comienzo del turno.
      * @param action           acción a tomar.
      * @param actor            actor en el turno actual.
      *
-     * @return Tupla {@code ActionPrediction} que contiene 2 elementos: la acción a tomar
-     *         {@code action}, y la prediccion de la recompensa final del juego asociada a dicha
-     *         acción.
+     * @return Tupla {@code ActionPrediction} que contiene 2 elementos: la acción a tomar {@code action}, y la
+     *         prediccion de la recompensa final del juego asociada a dicha acción.
      */
     public static ActionPrediction evaluateAfterstate(
             final IProblemRunner problem,
@@ -240,23 +232,19 @@ public class TDLambdaLearning {
      * Entrena de una red neuronal mediante la experiencia de la solución de un turno del problema.
      *
      * @param problem                           problema a resolver.
-     * @param trainer                           método de entrenamiento elegido, según el tipo de
-     *                                          red neuronal.
-     * @param afterstate                        estado de transición luego de aplicar la mejor
-     *                                          {@code action} al estado {@code turnInitialState}.
-     * @param nextTurnState                     estado del problema en el próximo turno, luego de
-     *                                          aplicar las acciones/efectos no determinísticos.
+     * @param trainer                           método de entrenamiento elegido, según el tipo de red neuronal.
+     * @param afterstate                        estado de transición luego de aplicar la mejor {@code action} al estado
+     *                                          {@code turnInitialState}.
+     * @param nextTurnState                     estado del problema en el próximo turno, luego de aplicar las
+     *                                          acciones/efectos no determinísticos.
      * @param isARandomMove                     true si el movimiento actual fue elegido al azar.
      * @param currentAlpha                      alpha actual.
      * @param concurrencyInLayer                capas que deben ser computadas concurrentemente.
-     * @param computeParallelBestPossibleAction true si se deben evaluar las mejores acciones
-     *                                          concurrentemente.
-     * @param bestPossibleActionTimes           tiempos de respuestas al evaluar las mejores
-     *                                          acciones posibles, para realizar estadísticas. Debe
-     *                                          ser null si no se utiliza.
-     * @param trainingTimes                     tiempos de respuestas al entrenar la red neuronal,
-     *                                          para realizar estadísticas. Debe ser null si no se
-     *                                          utiliza.
+     * @param computeParallelBestPossibleAction true si se deben evaluar las mejores acciones concurrentemente.
+     * @param bestPossibleActionTimes           tiempos de respuestas al evaluar las mejores acciones posibles, para
+     *                                          realizar estadísticas. Debe ser null si no se utiliza.
+     * @param trainingTimes                     tiempos de respuestas al entrenar la red neuronal, para realizar
+     *                                          estadísticas. Debe ser null si no se utiliza.
      *
      * @currentState
      */
@@ -366,21 +354,20 @@ public class TDLambdaLearning {
     private Trainer trainer;
 
     /**
-     * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD
-     * Learning.
+     * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
      *
      * @param learningStyle            tipo de aprendizaje utilizado.
-     * @param perceptronInterface      red neuronal que se desea entrenar, la cual implementa la
-     *                                 interfaz {@code INeuralNetworkInterface}, permitiendo así el
-     *                                 acceso a su representacion interna.
-     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de
-     *                                 elegibilidad, entre [0,1].
-     * @param alpha                    tasa de aprendizaje para cada capa. Si es null, se inicializa
-     *                                 cada alpha con la formula 1/num_neuronas de la capa anterior.
+     * @param perceptronInterface      red neuronal que se desea entrenar, la cual implementa la interfaz
+     *                                 {@code INeuralNetworkInterface}, permitiendo así el acceso a su representacion
+     *                                 interna.
+     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre
+     *                                 [0,1].
+     * @param alpha                    tasa de aprendizaje para cada capa. Si es null, se inicializa cada alpha con la
+     *                                 formula 1/num_neuronas de la capa anterior.
      * @param gamma                    tasa de descuento, entre [0,1].
      * @param concurrencyInLayer       true en las capas que se deben computar concurrentemente.
-     * @param replaceEligibilityTraces true si se permite reiniciar las trazas de elegibilidad en
-     *                                 caso de movimientos al azar durante el entrenamiento.
+     * @param replaceEligibilityTraces true si se permite reiniciar las trazas de elegibilidad en caso de movimientos al
+     *                                 azar durante el entrenamiento.
      * @param collectStatistics        true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public TDLambdaLearning(
@@ -457,14 +444,14 @@ public class TDLambdaLearning {
      *
      * @param nTupleSystem             red NTupla a entrenar.
      * @param learningStyle            tipo de aprendizaje utilizado.
-     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de
-     *                                 elegibilidad, entre [0,1].
-     * @param alpha                    tasa de aprendizaje. Si es null, se inicializa cada alpha con
-     *                                 la formula 1/num_neuronas de la capa anterior.
+     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre
+     *                                 [0,1].
+     * @param alpha                    tasa de aprendizaje. Si es null, se inicializa cada alpha con la formula
+     *                                 1/num_neuronas de la capa anterior.
      * @param gamma                    tasa de descuento entre [0,1].
      * @param concurrencyInLayer       true en las capas que se deben computar concurrentemente.
-     * @param replaceEligibilityTraces permite reiniciar las trazas de elegibilidad en caso de
-     *                                 movimientos al azar durante el entrenamiento.
+     * @param replaceEligibilityTraces permite reiniciar las trazas de elegibilidad en caso de movimientos al azar
+     *                                 durante el entrenamiento.
      * @param collectStatistics        true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public TDLambdaLearning(
@@ -528,33 +515,30 @@ public class TDLambdaLearning {
 
     /**
      *
-     * @return true si se esta recolectando estadísticas sobre los tiempos de cómputos de la
-     *         librería.
+     * @return true si se esta recolectando estadísticas sobre los tiempos de cómputos de la librería.
      */
     public boolean canCollectStatistics() {
         return canCollectStatistics;
     }
 
     /**
-     * @return valor T ({@code alphaAnnealingT}) que indica el momento en el entrenamiento que alpha
-     *         = initialAlpha/2 utilizado en {@code calculateAnnealing}.
+     * @return valor T ({@code alphaAnnealingT}) que indica el momento en el entrenamiento que alpha = initialAlpha/2
+     *         utilizado en {@code calculateAnnealing}.
      */
     public int getAlphaAnnealingT() {
         return alphaAnnealingT;
     }
 
     /**
-     * Si mantenemos el valor de alpha fijo, las fluctuaciones de la red previenen que en lugar de
-     * converger en un mínimo local, terminemos danzando al azar alrededor. Para alcanzar el mínimo,
-     * y quedarnos ahí, debemos utilizar técnicas de templado (disminuir gradualmente) la tasa de
-     * aprendizaje "alpha". Una técnica simple es la de mantener constante alpha durante un
-     * {@code alphaAnnealingT} entrenamientos, permitiendo a la red encontrar el mínimo local, antes
-     * de empezar a disminuir muy lentamente, lo cual esta demostrado por teoría que garantiza
+     * Si mantenemos el valor de alpha fijo, las fluctuaciones de la red previenen que en lugar de converger en un
+     * mínimo local, terminemos danzando al azar alrededor. Para alcanzar el mínimo, y quedarnos ahí, debemos utilizar
+     * técnicas de templado (disminuir gradualmente) la tasa de aprendizaje "alpha". Una técnica simple es la de
+     * mantener constante alpha durante un {@code alphaAnnealingT} entrenamientos, permitiendo a la red encontrar el
+     * mínimo local, antes de empezar a disminuir muy lentamente, lo cual esta demostrado por teoría que garantiza
      * convergencia en un mínimo. Los valores de {@code T} se determinan por prueba y error.
      *
-     * @param alphaAnnealingT valor T ({@code alphaAnnealingT}) que indica el momento en el
-     *                        entrenamiento que alpha = initialAlpha/2 utilizado en
-     *                        {@code calculateAnnealing}.
+     * @param alphaAnnealingT valor T ({@code alphaAnnealingT}) que indica el momento en el entrenamiento que alpha =
+     *                        initialAlpha/2 utilizado en {@code calculateAnnealing}.
      */
     public void setAnnealingLearningRate(final int alphaAnnealingT) {
         if ( alphaAnnealingT < 0 ) {
@@ -573,8 +557,8 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Establece una tasa de exploración fija. El valor elegido es la probabilidad de que el
-     * movimiento elegido sea al azar, en lugar de calculado mediante la red neuronal.
+     * Establece una tasa de exploración fija. El valor elegido es la probabilidad de que el movimiento elegido sea al
+     * azar, en lugar de calculado mediante la red neuronal.
      *
      * @param value tasa de exploración.
      */
@@ -613,8 +597,7 @@ public class TDLambdaLearning {
     /**
      * Establece si el cálculo de la mejor acción debe realizarse concurrentemente.
      *
-     * @param computeParallelBestPossibleAction true si las evaluaciones deben ejecutarse en
-     *                                          paralelo.
+     * @param computeParallelBestPossibleAction true si las evaluaciones deben ejecutarse en paralelo.
      */
     public void setComputeParallelBestPossibleAction(
             final boolean computeParallelBestPossibleAction) {
@@ -622,7 +605,7 @@ public class TDLambdaLearning {
     }
 
     /**
-     *
+     * Establece constante de aprendizaje, no variable con el tiempo.
      */
     public void setFixedLearningRate() {
         this.learningRateAdaptation = ELearningRateAdaptation.fixed;
@@ -630,9 +613,9 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Establece una tasa de exploración variable con el tiempo, la cual comienza a decrementarse en
-     * el turno {@code startDecrementing} y finaliza en {@code finishDecrementing}.
-     * <p>
+     * Establece una tasa de exploración variable con el tiempo, la cual comienza a decrementarse en el turno
+     * {@code startDecrementing} y finaliza en {@code finishDecrementing}.
+     *
      * @param initialValue
      * @param startDecrementing
      * @param finalValue
@@ -660,9 +643,8 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Entrena la red neuronal con lo que aprende de la experiencia de resolver una sola vez
-     * {@code problem} de comienzo a fin, durante 1 o mas turnos hasta alcanzar su objetivo o
-     * fracasar.
+     * Entrena la red neuronal con lo que aprende de la experiencia de resolver una sola vez {@code problem} de comienzo
+     * a fin, durante 1 o mas turnos hasta alcanzar su objetivo o fracasar.
      *
      * @param problem     problema a resolver
      * @param currentTurn cantidad de veces que se ejecutó {@code solveAndTrainOnce}
