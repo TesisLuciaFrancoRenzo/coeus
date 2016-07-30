@@ -103,8 +103,9 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Calcula un valor de "enfriamiento" o "recocido" del tipo Interpolación Lineal (nombrado diferente dependiendo la
-     * bibliografía) sobre el valor inicial {@code initialValue} en el tiempo {@code t}.
+     * Dada la Interpolación Lineal entre los puntos (-Infinito, {@code initialValue}) , ({@code startInterpolation},
+     * {@code initialValue}), ({@code finishInterpolation}, {@code finalValue}) y (Infinito, {@code finalValue}) calcula
+     * el valor en el tiempo {@code t}.
      *
      * @param t                   tiempo actual.
      * @param initialValue        valor inicial.

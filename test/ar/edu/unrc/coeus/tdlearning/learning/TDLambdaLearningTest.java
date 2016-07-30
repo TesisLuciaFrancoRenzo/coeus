@@ -18,9 +18,11 @@
  */
 package ar.edu.unrc.coeus.tdlearning.learning;
 
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -128,7 +130,127 @@ public class TDLambdaLearningTest {
     }
 
     /**
-     * Test of calculateBestEligibilityTraceLenght method, of class TDLambdaLearning.
+     * Test of calculateLinearInterpolation method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testcalculateLinearInterpolation_Ascending() {
+        System.out.println("testcalculateLinearInterpolation");
+        int t = -50;
+        double initialValue = 0d;
+        double finalValue = 10d;
+        double startInterpolation = 0d;
+        double finishInterpolation = 10d;
+        double expResult = initialValue;
+        double result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 0;
+        expResult = initialValue;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 3;
+        expResult = 3d;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 5;
+        expResult = 5d;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 8;
+        expResult = 8d;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 10;
+        expResult = finalValue;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 100;
+        expResult = finalValue;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+    }
+
+    /**
+     * Test of calculateLinearInterpolation method, of class TDLambdaLearning.
+     */
+    @Test
+    public void testcalculateLinearInterpolation_Descending() {
+        System.out.println("testcalculateLinearInterpolation");
+        int t = -50;
+        double initialValue = 10d;
+        double finalValue = 0d;
+        double startInterpolation = 0d;
+        double finishInterpolation = 10d;
+        double expResult = initialValue;
+        double result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 0;
+        expResult = initialValue;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 3;
+        expResult = 7d;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 5;
+        expResult = 5d;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 8;
+        expResult = 2d;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 10;
+        expResult = finalValue;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+
+        t = 100;
+        expResult = finalValue;
+        result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation,
+                finishInterpolation);
+        System.out.println("result=" + result);
+        assertThat(result, is(expResult));
+    }
+
+    /**
+     * Test of RandomBetween method, of class TDLambdaLearning.
      */
     @Test
     public void testRandomBetween() {
