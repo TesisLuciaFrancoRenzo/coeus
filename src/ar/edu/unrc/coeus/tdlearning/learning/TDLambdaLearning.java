@@ -103,33 +103,33 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Calcula un valor de "enfriamiento" o "recocido" lineal (nombrado diferente dependiendo la bibliografía) sobre el
-     * valor inicial {@code initialValue} en el tiempo {@code t}.
+     * Calcula un valor de "enfriamiento" o "recocido" del tipo Interpolación Lineal (nombrado diferente dependiendo la
+     * bibliografía) sobre el valor inicial {@code initialValue} en el tiempo {@code t}.
      *
-     * @param t                  tiempo actual.
-     * @param initialValue       valor inicial.
-     * @param finalValue         valor final.
-     * @param startDecrementing  tiempo {@code t} donde se comienza a disminuir el valor {@code initialValue}
-     * @param finishDecrementing tiempo {@code t} donde deja de disminuir el valor {@code initialValue}
+     * @param t                   tiempo actual.
+     * @param initialValue        valor inicial.
+     * @param finalValue          valor final.
+     * @param startInterpolation  tiempo {@code t} donde se comienza a disminuir el valor {@code initialValue}
+     * @param finishInterpolation tiempo {@code t} donde deja de disminuir el valor {@code initialValue}
      *
      * @return
      */
-    public static double calculateLinearAnnealing(
+    public static double calculateLinearInterpolation(
             final int t,
             final double initialValue,
             final double finalValue,
-            final double startDecrementing,
-            final double finishDecrementing
+            final double startInterpolation,
+            final double finishInterpolation
     ) {
         double currentValue;
-        if ( t < startDecrementing ) {
+        if ( t < startInterpolation ) {
             currentValue = initialValue;
-        } else if ( t > finishDecrementing ) {
+        } else if ( t > finishInterpolation ) {
             currentValue = finalValue;
         } else {
             currentValue
-                    = ((t - startDecrementing)
-                    / (finishDecrementing - startDecrementing))
+                    = ((t - startInterpolation)
+                    / (finishInterpolation - startInterpolation))
                     * (finalValue - initialValue)
                     + initialValue;
         }
@@ -137,8 +137,8 @@ public class TDLambdaLearning {
     }
 
     /**
-     * Computa la mejor {@code IAction} posible a realizar dado un {@code IState} utilizando la rede neuronal. No
-     * invocar sobre estados finales.
+     * Computa la mejor {@code IAction} posible a realizar dado un {@code IState} utilizando la red neuronal. No invocar
+     * sobre estados finales.
      *
      * @param problem                                problema a resolver.
      * @param learningStyle                          estilo de aprendizaje utilizado.
@@ -211,7 +211,7 @@ public class TDLambdaLearning {
      * @param actor            actor en el turno actual.
      *
      * @return Tupla {@code ActionPrediction} que contiene 2 elementos: la acción a tomar {@code action}, y la
-     *         prediccion de la recompensa final del juego asociada a dicha acción.
+     *         predicción de la recompensa final del juego asociada a dicha acción.
      */
     public static ActionPrediction evaluateAfterstate(
             final IProblemRunner problem,
@@ -337,9 +337,9 @@ public class TDLambdaLearning {
     private double[] currentAlpha;
     private EExplorationRateAlgorithms explorationRate;
     private double explorationRateFinalValue;
-    private int explorationRateFinishDecrementing;
+    private int explorationRateFinishInterpolation;
     private double explorationRateInitialValue;
-    private int explorationRateStartDecrementing;
+    private int explorationRateStartInterpolation;
     private double gamma;
     private double[] initialAlpha;
     private double lambda;
@@ -637,9 +637,9 @@ public class TDLambdaLearning {
         }
         this.explorationRate = EExplorationRateAlgorithms.linear;
         this.explorationRateInitialValue = initialValue;
-        this.explorationRateStartDecrementing = startDecrementing;
+        this.explorationRateStartInterpolation = startDecrementing;
         this.explorationRateFinalValue = finalValue;
-        this.explorationRateFinishDecrementing = finishDecrementing;
+        this.explorationRateFinishInterpolation = finishDecrementing;
     }
 
     /**
@@ -698,21 +698,9 @@ public class TDLambdaLearning {
             }
             case linear: {
                 //factor ajustado linealmente entre dos puntos
-                currentExplorationRate = calculateLinearAnnealing(currentTurn,
+                currentExplorationRate = calculateLinearInterpolation(currentTurn,
                         explorationRateInitialValue, explorationRateFinalValue,
-                        explorationRateStartDecrementing, explorationRateFinishDecrementing);
-//                if ( currentTurn < explorationRateStartDecrementing ) {
-//                    currentExplorationRate = explorationRateInitialValue;
-//                } else if ( currentTurn > explorationRateFinishDecrementing ) {
-//                    currentExplorationRate = explorationRateFinalValue;
-//                } else {
-//                    currentExplorationRate
-//                            = ((currentTurn - explorationRateStartDecrementing)
-//                            / (explorationRateFinishDecrementing - explorationRateStartDecrementing))
-//                            * (explorationRateFinalValue - explorationRateInitialValue)
-//                            + explorationRateInitialValue;
-//                }
-                //TODO testear este cambio!!!
+                        explorationRateStartInterpolation, explorationRateFinishInterpolation);
                 break;
             }
         }
