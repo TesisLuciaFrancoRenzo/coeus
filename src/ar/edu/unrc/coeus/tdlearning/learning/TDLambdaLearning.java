@@ -193,8 +193,7 @@ public class TDLambdaLearning {
                         MaximalActionPredictionConsumer::accept,
                         MaximalActionPredictionConsumer::combine)
                 .getList();
-        IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.
-                size() - 1)).getAction();
+        IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
         if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis() - time;
             bestPossibleActionTimes.add(time);
