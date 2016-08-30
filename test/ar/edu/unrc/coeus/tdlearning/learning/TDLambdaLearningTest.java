@@ -128,6 +128,7 @@ public class TDLambdaLearningTest {
         result = TDLambdaLearning.calculateBestEligibilityTraceLenght(lambda);
         assertEquals(expResult, result);
     }
+
     /**
      * Test of RandomBetween method, of class TDLambdaLearning.
      */
@@ -269,6 +270,5 @@ public class TDLambdaLearningTest {
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
     }
-
 
 }

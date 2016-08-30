@@ -26,13 +26,13 @@ package ar.edu.unrc.coeus.tdlearning.interfaces;
 public interface IState {
 
     /**
-     * Retorna la recompensa parcial calculada tras realizar las acciones deterministas, según la
-     * neurona de salida {@code outputNeuron}.
+     * Retorna la recompensa parcial calculada tras realizar las acciones deterministas, según la neurona de salida
+     * {@code outputNeuron}.
      *
      * @param outputNeuron neurona de salida
      *
-     * @return recompensa parcial luego de aplicar la acción determinística que da este estado a la
-     *         neurona {@code outputNeuron}.
+     * @return recompensa parcial luego de aplicar la acción determinística que da este estado a la neurona
+     *         {@code outputNeuron}.
      */
     public double getStateReward(final int outputNeuron);
 

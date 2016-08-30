@@ -79,6 +79,7 @@ public class NeuronTest {
         Double expResult = null;
         assertEquals(expResult, result);
     }
+
     /**
      * Test of getBias method, of class PartialNeuron.
      */
@@ -146,7 +147,6 @@ public class NeuronTest {
         assertEquals(expResult, result);
     }
 
-
     /**
      * Test of getWeight method, of class PartialNeuron.
      */
@@ -190,6 +190,7 @@ public class NeuronTest {
         assertEquals(instance.getBias(), newBias);
 
     }
+
     /**
      * Test of setDelta method, of class Neuron.
      */
@@ -202,6 +203,7 @@ public class NeuronTest {
         instance.setDelta(outputNeuronIndex, delta);
         assertEquals(instance.getDeltas().get(outputNeuronIndex), delta);
     }
+
     /**
      * Test of setDerivatedOutput method, of class Neuron.
      */
@@ -213,6 +215,7 @@ public class NeuronTest {
         instance.setDerivatedOutput(derivatedOutput);
         assertEquals(instance.getDerivatedOutput(), derivatedOutput);
     }
+
     /**
      * Test of setOutput method, of class Neuron.
      */

@@ -26,8 +26,8 @@ package ar.edu.unrc.coeus.tdlearning.learning;
 public enum ELearningRateAdaptation {
 
     /**
-     * Las constantes de aprendizaje alpha dejan de ser constantes, y van disminuyendo a través del
-     * tiempo mediante la formula: µ(t) = µ(0)/(1 + t/T)
+     * Las constantes de aprendizaje alpha dejan de ser constantes, y van disminuyendo a través del tiempo mediante la
+     * formula: µ(t) = µ(0)/(1 + t/T)
      */
     annealing,
     /**

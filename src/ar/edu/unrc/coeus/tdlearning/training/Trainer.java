@@ -39,8 +39,7 @@ public abstract class Trainer {
     protected double lambda;
 
     /**
-     * true si se permite reiniciar las trazas de elegibilidad en caso de movimientos al azar
-     * durante el entrenamiento.
+     * true si se permite reiniciar las trazas de elegibilidad en caso de movimientos al azar durante el entrenamiento.
      */
     protected boolean replaceEligibilityTraces;
 
@@ -50,18 +49,17 @@ public abstract class Trainer {
     public abstract void reset();
 
     /**
-     * Entrenamos la red neuronal con un turno. Incluye la actualización de las bias. Es necesario
-     * invocar el método {@code train} desde el turno 1. Esto significa que si llamamos a este
-     * método desde el turno 6, primero hay que llamarlo desde el turno 5. Para llamarlo desde el
-     * turno 5, primero hay que invocarlo desde el turno 4, etc.
+     * Entrenamos la red neuronal con un turno. Incluye la actualización de las bias. Es necesario invocar el método
+     * {@code train} desde el turno 1. Esto significa que si llamamos a este método desde el turno 6, primero hay que
+     * llamarlo desde el turno 5. Para llamarlo desde el turno 5, primero hay que invocarlo desde el turno 4, etc.
      *
      * @param problem            problema a solucionar.
      * @param state              estado del problema en el turno {@code currentTurn}
      * @param nextTurnState      estado del problema en el turno siguiente a {@code currentTurn}
      * @param alpha              tasa de aprendizaje.
      * @param concurrencyInLayer true en las capas que se puede calcular usando concurrencia.
-     * @param isARandomMove      true si la acción realizada en el turno {@code currentTurn} fue al
-     *                           azar en lugar de calculada por la red neuronal.
+     * @param isARandomMove      true si la acción realizada en el turno {@code currentTurn} fue al azar en lugar de
+     *                           calculada por la red neuronal.
      */
     public abstract void train(
             final IProblemToTrain problem,

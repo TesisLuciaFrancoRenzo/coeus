@@ -19,8 +19,8 @@
 package ar.edu.unrc.coeus.tdlearning.training.ntuple.elegibilitytrace;
 
 /**
- * Par que almacena valores de los pesos de la traza de elegibilidad, en conjunto a la cantidad de
- * usos que le queda dentro de la traza antes de desaparecer o ser actualizado con un nuevo valor.
+ * Par que almacena valores de los pesos de la traza de elegibilidad, en conjunto a la cantidad de usos que le queda
+ * dentro de la traza antes de desaparecer o ser actualizado con un nuevo valor.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */

@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Estructura de datos utilizada para almacenar cálculos temporales y optimizar tiempos de
- * resultados de una red neuronal genérica.
+ * Estructura de datos utilizada para almacenar cálculos temporales y optimizar tiempos de resultados de una red
+ * neuronal genérica.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -32,8 +32,7 @@ public class NeuralNetworkCache {
     private final List<Layer> layers;
 
     /**
-     * Nueva estructura de datos para almacenar cálculos temporales y optimizaciones sobre redes
-     * neuronales genéricas.
+     * Nueva estructura de datos para almacenar cálculos temporales y optimizaciones sobre redes neuronales genéricas.
      *
      * @param layerQuantity cantidad de capas que posee la red neuronal
      */

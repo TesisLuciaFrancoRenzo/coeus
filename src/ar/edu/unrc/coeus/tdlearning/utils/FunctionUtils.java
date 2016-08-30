@@ -46,8 +46,7 @@ public class FunctionUtils {
             1d / (1d + exp(-value));
 
     /**
-     * Derivada de la función Sigmoideo. {@code fValue} debe ser SIGMOID(value) por cuestiones de
-     * optimización.
+     * Derivada de la función Sigmoideo. {@code fValue} debe ser SIGMOID(value) por cuestiones de optimización.
      */
     public static final Function<Double, Double> SIGMOID_DERIVATED = (fValue) ->
             fValue * (1d - fValue);
@@ -59,8 +58,7 @@ public class FunctionUtils {
             Math.tanh(value);
 
     /**
-     * Derivada de la función tangente hiperbólica. {@code fValue} debe ser TANH(value) por
-     * cuestiones de optimización.
+     * Derivada de la función tangente hiperbólica. {@code fValue} debe ser TANH(value) por cuestiones de optimización.
      */
     public static final Function<Double, Double> TANH_DERIVATED = (fValue) ->
             1d - fValue * fValue;

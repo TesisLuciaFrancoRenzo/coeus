@@ -44,12 +44,12 @@ public class TDTrainerNTupleSystem extends Trainer {
     /**
      * Inicializa el algoritmo que entrena sistemas NTuplas.
      *
-     * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de
-     *                                  elegibilidad, entre [0,1].
+     * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre
+     *                                  [0,1].
      * @param maxEligibilityTraceLenght
      * @param gamma                     tasa de descuento, entre [0,1].
-     * @param replaceEligibilityTraces  true si se permite reiniciar las trazas de elegibilidad en
-     *                                  caso de movimientos al azar durante el entrenamiento.
+     * @param replaceEligibilityTraces  true si se permite reiniciar las trazas de elegibilidad en caso de movimientos
+     *                                  al azar durante el entrenamiento.
      * @param nTupleSystem
      */
     public TDTrainerNTupleSystem(

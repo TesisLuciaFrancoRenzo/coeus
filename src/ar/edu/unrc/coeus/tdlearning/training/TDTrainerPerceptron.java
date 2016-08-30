@@ -282,7 +282,6 @@ public class TDTrainerPerceptron extends Trainer {
         }
     }
 
-
     /**
      * Calcula la salida de una neurona, mediante la formula a(k,m)
      *
@@ -592,6 +591,7 @@ public class TDTrainerPerceptron extends Trainer {
                         });
         return currentCache;
     }
+
     /**
      * Crea una estructura para almacenar y reciclar cálculos temporales.
      */

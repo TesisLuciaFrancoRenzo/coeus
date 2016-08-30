@@ -23,7 +23,7 @@ package ar.edu.unrc.coeus.tdlearning.training.ntuple;
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public interface SamplePointState {
+public interface SamplePointValue {
 
     /**
      *
@@ -36,7 +36,7 @@ public interface SamplePointState {
 
     /**
      *
-     * @return hashcode unico para identificar un {@code SamplePointState}
+     * @return hashcode unico para identificar un {@code SamplePointValue}
      */
     @Override
     public abstract int hashCode();

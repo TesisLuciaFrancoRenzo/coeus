@@ -133,8 +133,8 @@ public class Neuron {
     /**
      * @param previousLayerNeuronIndex índice de la neurona de la capa anterior.
      *
-     * @return peso de la conexión desde ésta neurona hasta la número
-     *         {@code previousLayerNeuronIndex} en la capa anterior.
+     * @return peso de la conexión desde ésta neurona hasta la número {@code previousLayerNeuronIndex} en la capa
+     *         anterior.
      */
     public Double getWeight(final int previousLayerNeuronIndex) {
         return weights.get(previousLayerNeuronIndex);
@@ -148,8 +148,7 @@ public class Neuron {
     }
 
     /**
-     * Establece un nuevo delta asociada a la neurona con índice {@code outputNeuronIndex} de la
-     * capa de salida.
+     * Establece un nuevo delta asociada a la neurona con índice {@code outputNeuronIndex} de la capa de salida.
      *
      * @param outputNeuronIndex índice de la neurona de salida.
      * @param delta             nuevo delta.
@@ -162,8 +161,7 @@ public class Neuron {
     }
 
     /**
-     * Establece un nuevo peso asociada a la neurona con índice {@code previousLayerNeuronIndex} de
-     * la capa anterior.
+     * Establece un nuevo peso asociada a la neurona con índice {@code previousLayerNeuronIndex} de la capa anterior.
      *
      * @param previousLayerNeuronIndex índice de la neurona de la capa anterior.
      * @param weight                   nuevo peso.

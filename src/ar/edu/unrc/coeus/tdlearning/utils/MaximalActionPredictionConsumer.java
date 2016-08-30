@@ -73,8 +73,8 @@ public class MaximalActionPredictionConsumer implements Consumer<ActionPredictio
     }
 
     /**
-     * @return lista de todas las {@code ActionPrediction} con mejor {@code numericRepresentation}.
-     *         Todas tienen los mismos valores de {@code numericRepresentation}.
+     * @return lista de todas las {@code ActionPrediction} con mejor {@code numericRepresentation}. Todas tienen los
+     *         mismos valores de {@code numericRepresentation}.
      */
     public List<ActionPrediction> getList() {
         return list;

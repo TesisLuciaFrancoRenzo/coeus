@@ -44,10 +44,11 @@ public class NTupleSystem {
      * Dado la NTupla número {@code nTupleIndex} extraída de {@code state}, esta función calcula a que peso corresponde
      * dentro de la red neuronal.
      *
-     * @param nTupleIndex          NTupla observada en {@code state}.
-     * @param nTuplesLenght        longitudes de las NTuplas.
-     * @param state                estado del cual se extrae la NTupla.
-     * @param mapSamplePointStates mapa de los posibles valores dentro de una muestra de NTupla, asociado a su índice.
+     * @param nTupleIndex               NTupla observada en {@code state}.
+     * @param nTuplesLenght             longitudes de las NTuplas.
+     * @param state                     estado del cual se extrae la NTupla.
+     * @param mapSamplePointValuesIndex mapa de los posibles valores dentro de una muestra de NTupla, asociado a su
+     *                                  índice.
      *
      * @return peso correspondiente en la red neuronal de la NTupla numero {@code nTupleIndex} dentro de {@code state}.
      */
@@ -55,16 +56,17 @@ public class NTupleSystem {
             final int nTupleIndex,
             final int[] nTuplesLenght,
             final IStateNTuple state,
-            final Map<SamplePointState, Integer> mapSamplePointStates
+            final Map<SamplePointValue, Integer> mapSamplePointValuesIndex
     ) {
-        SamplePointState[] ntuple = state.getNTuple(nTupleIndex);
+        SamplePointValue[] ntuple = state.getNTuple(nTupleIndex);
         int index = 0;
         for ( int j = 0; j < nTuplesLenght[nTupleIndex]; j++ ) {
-//            SamplePointState object = ntuple[j];
-//            Integer sampleIndex = mapSamplePointStates.get(object);
-//            int size = mapSamplePointStates.size();
+//            SamplePointValue object = ntuple[j];
+//            Integer sampleIndex = mapSamplePointValuesIndex.get(object);
+//            int size = mapSamplePointValuesIndex.size();
 //            int pow = (int) Math.pow(size, j);
-            index += mapSamplePointStates.get(ntuple[j]) * (int) Math.pow(mapSamplePointStates.size(), j); //FIXME hacer comparables?
+            index += mapSamplePointValuesIndex.get(ntuple[j]) * (int) Math.
+                    pow(mapSamplePointValuesIndex.size(), j);
         }
         return index;
     }
@@ -73,7 +75,7 @@ public class NTupleSystem {
     private final boolean concurrency;
     private final Function<Double, Double> derivatedActivationFunction;
     private double[] lut;
-    private final Map<SamplePointState, Integer> mapSamplePointStates;
+    private final Map<SamplePointValue, Integer> mapSamplePointValuesIndex;
     private final int[] nTuplesLenght;
     private final int[] nTuplesWeightQuantity;
     private final int[] nTuplesWeightQuantityIndex;
@@ -81,29 +83,29 @@ public class NTupleSystem {
     /**
      * Red neuronal optimizada para usos de NTuplas.
      *
-     * @param allSamplePointStates        todos los posibles valores dentro de una muestra de NTupla.
-     * @param nTuplesLenght               longitudes de las NTuplas.
-     * @param activationFunction          función de activación.
-     * @param derivatedActivationFunction derivada de la función de activación.
-     * @param concurrency                 true si se permite concurrencia en los cálculos.
+     * @param allSamplePointPossibleValues todos los posibles valores dentro de un punto muestral de las NTupla.
+     * @param nTuplesLenght                longitudes de las NTuplas.
+     * @param activationFunction           función de activación.
+     * @param derivatedActivationFunction  derivada de la función de activación.
+     * @param concurrency                  true si se permite concurrencia en los cálculos.
      */
     public NTupleSystem(
-            final List<SamplePointState> allSamplePointStates,
+            final List<SamplePointValue> allSamplePointPossibleValues,
             final int[] nTuplesLenght,
             final Function<Double, Double> activationFunction,
             final Function<Double, Double> derivatedActivationFunction,
             final boolean concurrency
     ) {
-        this.mapSamplePointStates = new HashMap<>();
-        for ( int i = 0; i < allSamplePointStates.size(); i++ ) {
-            mapSamplePointStates.put(allSamplePointStates.get(i), i);
+        this.mapSamplePointValuesIndex = new HashMap<>();
+        for ( int i = 0; i < allSamplePointPossibleValues.size(); i++ ) {
+            mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(i), i);
         }
         int lutSize = 0;
         nTuplesWeightQuantity = new int[nTuplesLenght.length];
         nTuplesWeightQuantityIndex = new int[nTuplesLenght.length];
         nTuplesWeightQuantityIndex[0] = 0;
         for ( int i = 0; i < nTuplesLenght.length; i++ ) {
-            nTuplesWeightQuantity[i] = (int) Math.pow(mapSamplePointStates.
+            nTuplesWeightQuantity[i] = (int) Math.pow(mapSamplePointValuesIndex.
                     size(), nTuplesLenght[i]);
             lutSize += nTuplesWeightQuantity[i];
             if ( i > 0 ) {
@@ -155,7 +157,7 @@ public class NTupleSystem {
                 {
                     indexes[v] = nTuplesWeightQuantityIndex[v]
                             + calculateLocalIndex(v, getNTuplesLenght(), state,
-                                    getMapSamplePointStates());
+                                    getMapSamplePointValuesIndex());
                     return lut[indexes[v]];
                 }).sum();
         ComplexNTupleComputation output = new ComplexNTupleComputation();
@@ -185,7 +187,7 @@ public class NTupleSystem {
                 {
                     return lut[nTuplesWeightQuantityIndex[v]
                             + calculateLocalIndex(v, getNTuplesLenght(), state,
-                                    getMapSamplePointStates())];
+                                    getMapSamplePointValuesIndex())];
                 }).sum();
         return getActivationFunction().apply(sum);
     }
@@ -207,8 +209,8 @@ public class NTupleSystem {
     /**
      * @return mapa de los posibles valores dentro de una muestra de NTupla, asociado a su índice.
      */
-    public Map<SamplePointState, Integer> getMapSamplePointStates() {
-        return mapSamplePointStates;
+    public Map<SamplePointValue, Integer> getMapSamplePointValuesIndex() {
+        return mapSamplePointValuesIndex;
     }
 
     /**

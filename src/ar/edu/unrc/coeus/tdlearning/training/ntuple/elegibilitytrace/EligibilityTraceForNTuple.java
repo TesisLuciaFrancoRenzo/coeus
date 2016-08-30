@@ -42,8 +42,8 @@ public class EligibilityTraceForNTuple {
      *
      * @param nTupleSystem              red neuronal utilizada.
      * @param gamma                     tasa de descuento entre [0,1].
-     * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de
-     *                                  elegibilidad, entre [0,1].
+     * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre
+     *                                  [0,1].
      * @param maxEligibilityTraceLenght longitud máxima de la traza de elegibilidad.
      */
     public EligibilityTraceForNTuple(
