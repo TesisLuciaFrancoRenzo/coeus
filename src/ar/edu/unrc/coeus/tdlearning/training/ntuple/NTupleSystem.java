@@ -60,13 +60,9 @@ public class NTupleSystem {
     ) {
         SamplePointValue[] ntuple = state.getNTuple(nTupleIndex);
         int index = 0;
-        for ( int j = 0; j < nTuplesLenght[nTupleIndex]; j++ ) {
-//            SamplePointValue object = ntuple[j];
-//            Integer sampleIndex = mapSamplePointValuesIndex.get(object);
-//            int size = mapSamplePointValuesIndex.size();
-//            int pow = (int) Math.pow(size, j);
-            index += mapSamplePointValuesIndex.get(ntuple[j]) * (int) Math.
-                    pow(mapSamplePointValuesIndex.size(), j);
+        for ( int spvIndex = 0; spvIndex < nTuplesLenght[nTupleIndex]; spvIndex++ ) {
+            index += mapSamplePointValuesIndex.get(ntuple[spvIndex]) * (int) Math.pow(mapSamplePointValuesIndex.size(),
+                    spvIndex);
         }
         return index;
     }
@@ -104,12 +100,13 @@ public class NTupleSystem {
         nTuplesWeightQuantity = new int[nTuplesLenght.length];
         nTuplesWeightQuantityIndex = new int[nTuplesLenght.length];
         nTuplesWeightQuantityIndex[0] = 0;
-        for ( int i = 0; i < nTuplesLenght.length; i++ ) {
-            nTuplesWeightQuantity[i] = (int) Math.pow(mapSamplePointValuesIndex.
-                    size(), nTuplesLenght[i]);
-            lutSize += nTuplesWeightQuantity[i];
-            if ( i > 0 ) {
-                nTuplesWeightQuantityIndex[i] = nTuplesWeightQuantityIndex[i - 1] + nTuplesWeightQuantity[i - 1];
+        for ( int nTupleIndex = 0; nTupleIndex < nTuplesLenght.length; nTupleIndex++ ) {
+            nTuplesWeightQuantity[nTupleIndex] = (int) Math.pow(mapSamplePointValuesIndex.size(),
+                    nTuplesLenght[nTupleIndex]);
+            lutSize += nTuplesWeightQuantity[nTupleIndex];
+            if ( nTupleIndex > 0 ) {
+                nTuplesWeightQuantityIndex[nTupleIndex] = nTuplesWeightQuantityIndex[nTupleIndex - 1]
+                        + nTuplesWeightQuantity[nTupleIndex - 1];
             }
         }
         lut = new double[lutSize];
@@ -153,12 +150,11 @@ public class NTupleSystem {
             stream = stream.sequential();
         }
         int[] indexes = new int[nTuplesLenght.length];
-        double sum = stream.mapToDouble(v ->
+        double sum = stream.mapToDouble(nTupleIndex ->
                 {
-                    indexes[v] = nTuplesWeightQuantityIndex[v]
-                            + calculateLocalIndex(v, getNTuplesLenght(), state,
-                                    getMapSamplePointValuesIndex());
-                    return lut[indexes[v]];
+                    indexes[nTupleIndex] = nTuplesWeightQuantityIndex[nTupleIndex]
+                            + calculateLocalIndex(nTupleIndex, getNTuplesLenght(), state, getMapSamplePointValuesIndex());
+                    return lut[indexes[nTupleIndex]];
                 }).sum();
         ComplexNTupleComputation output = new ComplexNTupleComputation();
         output.setIndexes(indexes);
@@ -176,18 +172,16 @@ public class NTupleSystem {
      * @return predicción de a red neuronal.
      */
     public Double getComputation(final IStateNTuple state) {
-        IntStream stream = IntStream
-                .range(0, nTuplesLenght.length);
+        IntStream stream = IntStream.range(0, nTuplesLenght.length);
         if ( concurrency ) {
             stream = stream.parallel();
         } else {
             stream = stream.sequential();
         }
-        double sum = stream.mapToDouble(v ->
+        double sum = stream.mapToDouble(nTupleIndex ->
                 {
-                    return lut[nTuplesWeightQuantityIndex[v]
-                            + calculateLocalIndex(v, getNTuplesLenght(), state,
-                                    getMapSamplePointValuesIndex())];
+                    return lut[nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(nTupleIndex,
+                            getNTuplesLenght(), state, getMapSamplePointValuesIndex())];
                 }).sum();
         return getActivationFunction().apply(sum);
     }

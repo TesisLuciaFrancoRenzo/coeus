@@ -139,6 +139,10 @@ public class IProblemTest {
             this.y = y;
         }
 
+        /**
+         *
+         * @return
+         */
         @Override
         public String toString() {
             return "(" + x + "," + y + ")";
@@ -384,6 +388,10 @@ public class IProblemTest {
             return count == 3;
         }
 
+        /**
+         *
+         * @return
+         */
         @Override
         public String toString() {
             return "Board{" + "board=\n" + getBoard()[0][0] + "," + getBoard()[0][1] + "\n" + getBoard()[1][0] + "," + getBoard()[1][1] + '}';

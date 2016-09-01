@@ -46,6 +46,11 @@ public class ActionPrediction implements Comparable<ActionPrediction> {
         this.numericRepresentation = numericRepresentation;
     }
 
+    /**
+     *
+     * @param other
+     * @return
+     */
     @Override
     public int compareTo(final ActionPrediction other) {
         return numericRepresentation.compareTo(other.getNumericRepresentation());

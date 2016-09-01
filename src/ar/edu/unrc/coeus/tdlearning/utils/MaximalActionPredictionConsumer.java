@@ -39,6 +39,10 @@ public class MaximalActionPredictionConsumer implements Consumer<ActionPredictio
         list = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param actionPrediction
+     */
     @Override
     public void accept(final ActionPrediction actionPrediction) {
         if ( list.isEmpty() ) {
