@@ -224,8 +224,7 @@ public class TDTrainerPerceptron extends Trainer {
             }
             Layer currentLayer = turnCurrentStateCache.getLayer(layerIndexJ);
 
-            IntStream layerJStream = IntStream
-                    .range(0, currentLayer.getNeurons().size());
+            IntStream layerJStream = IntStream.range(0, currentLayer.getNeurons().size());
             if ( concurrencyInLayer[layerIndexJ] ) {
                 layerJStream = layerJStream.parallel();
             } else {
