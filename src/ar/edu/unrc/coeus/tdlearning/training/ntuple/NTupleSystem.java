@@ -58,11 +58,37 @@ public class NTupleSystem {
             final IStateNTuple state,
             final Map<SamplePointValue, Integer> mapSamplePointValuesIndex
     ) {
-        SamplePointValue[] ntuple = state.getNTuple(nTupleIndex);
+        SamplePointValue[] nTuple = state.getNTuple(nTupleIndex);
         int index = 0;
-        for ( int spvIndex = 0; spvIndex < nTuplesLenght[nTupleIndex]; spvIndex++ ) {
-            index += mapSamplePointValuesIndex.get(ntuple[spvIndex]) * (int) Math.pow(mapSamplePointValuesIndex.size(),
-                    spvIndex);
+        for ( int nIndex = 0; nIndex < nTuplesLenght[nTupleIndex]; nIndex++ ) {
+            index += mapSamplePointValuesIndex.get(nTuple[nIndex]) * (int) Math.pow(mapSamplePointValuesIndex.size(),
+                    nIndex);
+        }
+        return index;
+    }
+
+    /**
+     * Dado la NTupla número {@code nTupleIndex} extraída de {@code state}, esta función calcula a que peso corresponde
+     * dentro de la red neuronal.
+     *
+     * @param nTupleIndex               NTupla observada en {@code state}.
+     * @param nTuplesLenght             longitudes de las NTuplas.
+     * @param nTuple                    nTupla del estado.
+     * @param mapSamplePointValuesIndex mapa de los posibles valores dentro de una muestra de NTupla, asociado a su
+     *                                  índice.
+     *
+     * @return peso correspondiente en la red neuronal de la NTupla numero {@code nTupleIndex} dentro de {@code state}.
+     */
+    public static int calculateLocalIndex(
+            final int nTupleIndex,
+            final int[] nTuplesLenght,
+            final SamplePointValue[] nTuple,
+            final Map<SamplePointValue, Integer> mapSamplePointValuesIndex
+    ) {
+        int index = 0;
+        for ( int nIndex = 0; nIndex < nTuplesLenght[nTupleIndex]; nIndex++ ) {
+            index += mapSamplePointValuesIndex.get(nTuple[nIndex]) * (int) Math.pow(mapSamplePointValuesIndex.size(),
+                    nIndex);
         }
         return index;
     }
