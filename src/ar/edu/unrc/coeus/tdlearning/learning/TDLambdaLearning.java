@@ -122,7 +122,7 @@ public class TDLambdaLearning {
             final double startInterpolation,
             final double finishInterpolation
     ) {
-        double currentValue;
+        final double currentValue;
         if ( t < startInterpolation ) {
             currentValue = initialValue;
         } else if ( t > finishInterpolation ) {
@@ -163,7 +163,7 @@ public class TDLambdaLearning {
             final boolean computeParallelBestPossibleAction,
             final LinkedList<Long> bestPossibleActionTimes
     ) {
-        Stream<IAction> stream;
+        final Stream<IAction> stream;
         long time = 0;
         if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis();
@@ -219,8 +219,8 @@ public class TDLambdaLearning {
             final IAction action,
             final IActor actor
     ) {
-        IState afterstate = problem.computeAfterState(turnInitialState, action);
-        Object[] output = problem.evaluateBoardWithPerceptron(afterstate);
+        final IState afterstate = problem.computeAfterState(turnInitialState, action);
+        final Object[] output = problem.evaluateBoardWithPerceptron(afterstate);
         for ( int i = 0; i < output.length; i++ ) {
             output[i] = problem.denormalizeValueFromPerceptronOutput(output[i]) + afterstate.
                     getStateReward(i);
@@ -264,9 +264,9 @@ public class TDLambdaLearning {
         if ( !nextTurnState.isTerminalState() ) {
             // Evaluamos cada acción posible aplicada al estado nextState y
             // elegimos la mejor acción basada las predicciones del problema
-            List<IAction> possibleActionsNextTurn = problem.
+            final List<IAction> possibleActionsNextTurn = problem.
                     listAllPossibleActions(nextTurnState);
-            IAction bestActionForNextTurn = computeBestPossibleAction(
+            final IAction bestActionForNextTurn = computeBestPossibleAction(
                     problem,
                     ELearningStyle.afterState,
                     nextTurnState,
@@ -277,7 +277,7 @@ public class TDLambdaLearning {
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transicion
             // (deterministico) del proximo estado (turno).
-            IState afterStateNextTurn = problem.computeAfterState(nextTurnState,
+            final IState afterStateNextTurn = problem.computeAfterState(nextTurnState,
                     bestActionForNextTurn);
             // V (s') ← V (s') + α(rnext + V (s'next) − V (s'))
             // (matematica sin trazas de elegibilidad)
@@ -329,9 +329,9 @@ public class TDLambdaLearning {
             return a + (int) ((b - a + 1d) * random());
         }
     }
+
     private int alphaAnnealingT;
     private boolean canCollectStatistics;
-
     private boolean computeParallelBestPossibleAction = false;
     private final boolean[] concurrencyInLayer;
     private double[] currentAlpha;
@@ -732,13 +732,13 @@ public class TDLambdaLearning {
         while ( !turnInitialState.isTerminalState() ) {
 
             // calculamos todas las acciones posibles para el estado inicial
-            IAction bestAction;
+            final IAction bestAction;
 
             if ( currentExplorationRate > 0 ) {
                 randomChoise = Math.random() <= currentExplorationRate;
             }
 
-            List<IAction> possibleActions = problem.listAllPossibleActions(
+            final List<IAction> possibleActions = problem.listAllPossibleActions(
                     turnInitialState);
             if ( !randomChoise ) {
                 // evaluamos cada acción aplicada al estado inicial y elegimos la mejor
@@ -757,13 +757,12 @@ public class TDLambdaLearning {
 
             // aplicamos la acción 'bestAction' al estado actual 'currentState',
             // y obtenemos su estado de transición determínistico.
-            IState afterState = problem.computeAfterState(turnInitialState,
-                    bestAction);
+            final IState afterState = problem.computeAfterState(turnInitialState, bestAction);
 
             // hacemos que el problema aplique la acción 'bestAction' de la red neuronal,
             // y retorne el estado del turno siguiente, luego de aplicar acciones
             // no determinósticas pertinentes para terminar el turno
-            IState nextTurnState = problem.computeNextTurnStateFromAfterstate(
+            final IState nextTurnState = problem.computeNextTurnStateFromAfterstate(
                     afterState);
 
             // hacemos efectivo los cambios realizados por la IA en la logica del problema

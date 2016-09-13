@@ -58,7 +58,7 @@ public class NTupleSystem {
             final IStateNTuple state,
             final Map<SamplePointValue, Integer> mapSamplePointValuesIndex
     ) {
-        SamplePointValue[] nTuple = state.getNTuple(nTupleIndex);
+        final SamplePointValue[] nTuple = state.getNTuple(nTupleIndex);
         int index = 0;
         for ( int nIndex = 0; nIndex < nTuplesLenght[nTupleIndex]; nIndex++ ) {
             index += mapSamplePointValuesIndex.get(nTuple[nIndex]) * (int) Math.pow(mapSamplePointValuesIndex.size(),
@@ -119,8 +119,8 @@ public class NTupleSystem {
             final boolean concurrency
     ) {
         this.mapSamplePointValuesIndex = new HashMap<>();
-        for ( int i = 0; i < allSamplePointPossibleValues.size(); i++ ) {
-            mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(i), i);
+        for ( int spvIndex = 0; spvIndex < allSamplePointPossibleValues.size(); spvIndex++ ) {
+            mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(spvIndex), spvIndex);
         }
         int lutSize = 0;
         nTuplesWeightQuantity = new int[nTuplesLenght.length];
@@ -174,14 +174,14 @@ public class NTupleSystem {
         } else {
             stream = stream.sequential();
         }
-        int[] indexes = new int[nTuplesLenght.length];
-        double sum = stream.mapToDouble(nTupleIndex ->
+        final int[] indexes = new int[nTuplesLenght.length];
+        final double sum = stream.mapToDouble(nTupleIndex ->
                 {
                     indexes[nTupleIndex] = getnTuplesWeightQuantityIndex()[nTupleIndex]
                             + calculateLocalIndex(nTupleIndex, getNTuplesLenght(), state, getMapSamplePointValuesIndex());
                     return lut[indexes[nTupleIndex]];
                 }).sum();
-        ComplexNTupleComputation output = new ComplexNTupleComputation();
+        final ComplexNTupleComputation output = new ComplexNTupleComputation();
         output.setIndexes(indexes);
         output.setOutput(getActivationFunction().apply(sum));
         output.setDerivatedOutput(getDerivatedActivationFunction().apply(output.getOutput()));
@@ -202,7 +202,7 @@ public class NTupleSystem {
         } else {
             stream = stream.sequential();
         }
-        double sum = stream.mapToDouble(nTupleIndex ->
+        final double sum = stream.mapToDouble(nTupleIndex ->
                 {
                     return lut[getnTuplesWeightQuantityIndex()[nTupleIndex] + calculateLocalIndex(nTupleIndex,
                             getNTuplesLenght(), state, getMapSamplePointValuesIndex())];
@@ -271,7 +271,7 @@ public class NTupleSystem {
      */
     public void load(final File weightsFile) throws IOException,
             ClassNotFoundException {
-        FileInputStream f_in = new FileInputStream(weightsFile);
+        final FileInputStream f_in = new FileInputStream(weightsFile);
         load(f_in);
     }
 
@@ -290,13 +290,13 @@ public class NTupleSystem {
         }
 
         // descomprimimos
-        GZIPInputStream gz = new GZIPInputStream(weightsInputStream);
+        final GZIPInputStream gz = new GZIPInputStream(weightsInputStream);
 
         // leemos le objeto utilizando ObjectInputStream
-        ObjectInputStream obj_in = new ObjectInputStream(gz);
+        final ObjectInputStream obj_in = new ObjectInputStream(gz);
 
         // creamos el objeto
-        Object obj = obj_in.readObject();
+        final Object obj = obj_in.readObject();
 
         //intentamos cargarlo en la variable correspondiente
         if ( obj instanceof double[] ) {
@@ -328,9 +328,9 @@ public class NTupleSystem {
      */
     public void save(final File lutFile) throws IOException {
         //definimos el stream de salida
-        FileOutputStream fout = new FileOutputStream(lutFile);
+        final FileOutputStream fout = new FileOutputStream(lutFile);
         //comprimimos
-        GZIPOutputStream gz = new GZIPOutputStream(fout);
+        final GZIPOutputStream gz = new GZIPOutputStream(fout);
         //escribimos el archivo el objeto
         try ( ObjectOutputStream oos = new ObjectOutputStream(gz) ) {
             oos.writeObject(lut);

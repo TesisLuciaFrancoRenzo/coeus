@@ -70,10 +70,10 @@ public class EligibilityTraceForNTuple {
      */
     public void processNotUsedTraces(final double tDError) {
         if ( this.lambda > 0 ) {
-            Iterator<Integer> it = usedTraces.iterator();
+            final Iterator<Integer> it = usedTraces.iterator();
             while ( it.hasNext() ) {
-                Integer traceIndex = it.next();
-                ValueUsagePair trace = eligibilityTrace[traceIndex];
+                final Integer traceIndex = it.next();
+                final ValueUsagePair trace = eligibilityTrace[traceIndex];
                 trace.use();
                 if ( trace.getUsagesLeft() <= 0 ) {
                     it.remove();
@@ -93,7 +93,7 @@ public class EligibilityTraceForNTuple {
      * Reinicia la traza de elegibilidad completa.
      */
     public void reset() {
-        Iterator<Integer> it = usedTraces.iterator();
+        final Iterator<Integer> it = usedTraces.iterator();
         while ( it.hasNext() ) {
             Integer traceIndex = it.next();
             eligibilityTrace[traceIndex].reset();
@@ -121,7 +121,7 @@ public class EligibilityTraceForNTuple {
             final int weightIndex,
             final double derivatedOutput
     ) {
-        ValueUsagePair trace = eligibilityTrace[weightIndex];
+        final ValueUsagePair trace = eligibilityTrace[weightIndex];
         trace.setValue(derivatedOutput);
         trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
         usedTraces.add(weightIndex);

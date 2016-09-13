@@ -35,7 +35,7 @@ public class TDTrainerNTupleSystem extends Trainer {
     /**
      * traza de elegibilidad.
      */
-    private EligibilityTraceForNTuple eligibilityTrace;
+    private final EligibilityTraceForNTuple eligibilityTrace;
     /**
      * red neuronal a entrenar.
      */
@@ -68,6 +68,8 @@ public class TDTrainerNTupleSystem extends Trainer {
                     nTupleSystem, gamma, lambda,
                     maxEligibilityTraceLenght
             );
+        } else {
+            eligibilityTrace = null;
         }
     }
 
@@ -88,45 +90,50 @@ public class TDTrainerNTupleSystem extends Trainer {
             final boolean isARandomMove
     ) {
         //computamos
-        ComplexNTupleComputation normalizedStateOutput = nTupleSystem.
+        final ComplexNTupleComputation normalizedStateOutput = nTupleSystem.
                 getComplexComputation((IStateNTuple) state);
-        double output = normalizedStateOutput.getOutput();
-        double derivatedOutput = normalizedStateOutput.getDerivatedOutput();
-        double nextTurnOutput = nTupleSystem.getComputation(
-                (IStateNTuple) nextTurnState);
-        double nextTurnStateBoardReward = problem.
+        final double output = normalizedStateOutput.getOutput();
+        final double derivatedOutput = normalizedStateOutput.getDerivatedOutput();
+        final double nextTurnOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState);
+        final double nextTurnStateBoardReward = problem.
                 normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDerror
-        double error;
+        final double finalError;
+        final double tdError;
         if ( !nextTurnState.isTerminalState() ) {
             //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
-            error = alpha[0] * (nextTurnStateBoardReward + gamma * nextTurnOutput - output) * derivatedOutput;
+            tdError = nextTurnStateBoardReward + gamma * nextTurnOutput - output;
         } else {
             //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
-            double finalReward = problem.normalizeValueToPerceptronOutput(
+            final double finalReward = problem.normalizeValueToPerceptronOutput(
                     problem.getFinalReward(nextTurnState, 0));
-            error = alpha[0] * (gamma * finalReward - output) * derivatedOutput;
+            tdError = gamma * finalReward - output;
         }
+        finalError = alpha[0] * tdError * derivatedOutput;
 
-        boolean needToReset = isARandomMove && replaceEligibilityTraces;
-
-        int weightIndex;
-        for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
-            weightIndex = normalizedStateOutput.getIndexes()[index];
-            if ( (!isARandomMove || nextTurnState.isTerminalState()) && error != 0 ) {
-                nTupleSystem.addCorrectionToWeight(weightIndex, error);
+        final boolean needToReset = isARandomMove && replaceEligibilityTraces;
+//        IntStream
+//                .range(0, nTupleSystem.getLut().length)
+//                .sequential() //TODO paralelizar esto, opcionalmente
+//                .forEach(weight ->
+//        {
+        for ( int weight = 0; weight < normalizedStateOutput.getIndexes().length; weight++ ) {
+            final int activeIndex = normalizedStateOutput.getIndexes()[weight];
+            if ( (!isARandomMove || nextTurnState.isTerminalState()) && finalError != 0 ) {
+                nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
             }
             if ( lambda != 0 ) {
                 if ( needToReset ) {
-                    eligibilityTrace.reset(weightIndex);
+                    eligibilityTrace.reset(activeIndex);
                 } else {
-                    eligibilityTrace.updateTrace(weightIndex, derivatedOutput);
+                    eligibilityTrace.updateTrace(activeIndex, derivatedOutput);
                 }
             }
         }
+//                        });
         if ( lambda != 0 ) {
-            this.eligibilityTrace.processNotUsedTraces(error);
+            this.eligibilityTrace.processNotUsedTraces(finalError);
         }
     }
 
