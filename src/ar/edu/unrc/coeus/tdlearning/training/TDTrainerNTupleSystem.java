@@ -112,8 +112,7 @@ public class TDTrainerNTupleSystem extends Trainer {
         boolean needToReset = isARandomMove && replaceEligibilityTraces;
 
         int weightIndex;
-        for ( int index = 0; index < normalizedStateOutput.getIndexes().length;
-                index++ ) {
+        for ( int index = 0; index < normalizedStateOutput.getIndexes().length; index++ ) {
             weightIndex = normalizedStateOutput.getIndexes()[index];
             if ( (!isARandomMove || nextTurnState.isTerminalState()) && error != 0 ) {
                 nTupleSystem.addCorrectionToWeight(weightIndex, error);

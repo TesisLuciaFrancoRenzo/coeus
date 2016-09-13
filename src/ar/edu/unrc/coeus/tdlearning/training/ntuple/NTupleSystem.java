@@ -177,7 +177,7 @@ public class NTupleSystem {
         int[] indexes = new int[nTuplesLenght.length];
         double sum = stream.mapToDouble(nTupleIndex ->
                 {
-                    indexes[nTupleIndex] = nTuplesWeightQuantityIndex[nTupleIndex]
+                    indexes[nTupleIndex] = getnTuplesWeightQuantityIndex()[nTupleIndex]
                             + calculateLocalIndex(nTupleIndex, getNTuplesLenght(), state, getMapSamplePointValuesIndex());
                     return lut[indexes[nTupleIndex]];
                 }).sum();
@@ -204,7 +204,7 @@ public class NTupleSystem {
         }
         double sum = stream.mapToDouble(nTupleIndex ->
                 {
-                    return lut[nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(nTupleIndex,
+                    return lut[getnTuplesWeightQuantityIndex()[nTupleIndex] + calculateLocalIndex(nTupleIndex,
                             getNTuplesLenght(), state, getMapSamplePointValuesIndex())];
                 }).sum();
         return getActivationFunction().apply(sum);
@@ -252,6 +252,13 @@ public class NTupleSystem {
      */
     public void setWeights(final double[] value) {
         lut = value;
+    }
+
+    /**
+     * @return the nTuplesWeightQuantityIndex
+     */
+    public int[] getnTuplesWeightQuantityIndex() {
+        return nTuplesWeightQuantityIndex;
     }
 
     /**
