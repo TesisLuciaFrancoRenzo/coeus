@@ -26,7 +26,6 @@ package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 public class ComplexNTupleComputation {
 
     private double derivatedOutput;
-
     private int[] indexes;
     private double output;
 

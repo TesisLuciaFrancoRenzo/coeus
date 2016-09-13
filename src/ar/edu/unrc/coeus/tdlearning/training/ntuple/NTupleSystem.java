@@ -168,8 +168,7 @@ public class NTupleSystem {
      * @return predicción de a red neuronal y los cálculos temporales utilizados en el proceso.
      */
     public ComplexNTupleComputation getComplexComputation(final IStateNTuple state) {
-        IntStream stream = IntStream
-                .range(0, nTuplesLenght.length);
+        IntStream stream = IntStream.range(0, nTuplesLenght.length);
         if ( concurrency ) {
             stream = stream.parallel();
         } else {
@@ -185,8 +184,7 @@ public class NTupleSystem {
         ComplexNTupleComputation output = new ComplexNTupleComputation();
         output.setIndexes(indexes);
         output.setOutput(getActivationFunction().apply(sum));
-        output.setDerivatedOutput(
-                getDerivatedActivationFunction().apply(output.getOutput()));
+        output.setDerivatedOutput(getDerivatedActivationFunction().apply(output.getOutput()));
         return output;
     }
 
