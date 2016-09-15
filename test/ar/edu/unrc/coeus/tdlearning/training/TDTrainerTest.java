@@ -32,10 +32,10 @@ import org.encog.ml.data.MLData;
 import org.encog.ml.data.basic.BasicMLData;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -205,8 +205,8 @@ public class TDTrainerTest {
             @Override
             public double getBias(int layerIndex,
                     int neuronIndex) {
-                return neuralNetwork.getWeight(layerIndex - 1, neuralNetwork.
-                        getLayerNeuronCount(layerIndex - 1), neuronIndex);
+                return neuralNetwork.getWeight(layerIndex - 1, neuralNetwork.getLayerNeuronCount(layerIndex - 1),
+                        neuronIndex);
             }
 
             @Override
@@ -251,8 +251,7 @@ public class TDTrainerTest {
             public void setBias(int layerIndex,
                     int neuronIndex,
                     double correctedBias) {
-                neuralNetwork.setWeight(layerIndex - 1, neuralNetwork.
-                        getLayerNeuronCount(layerIndex - 1), neuronIndex,
+                neuralNetwork.setWeight(layerIndex - 1, neuralNetwork.getLayerNeuronCount(layerIndex - 1), neuronIndex,
                         correctedBias);
             }
 
@@ -262,8 +261,7 @@ public class TDTrainerTest {
                     int neuronIndexPreviousLayer,
                     double correctedWeight) {
                 neuralNetwork.
-                        setWeight(layerIndex - 1, neuronIndexPreviousLayer,
-                                neuronIndex, correctedWeight);
+                        setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
             }
         };
 
@@ -351,8 +349,7 @@ public class TDTrainerTest {
 
         double[] expResultArrayt = {0.9946114783313552};
         double[] resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArrayt, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArrayt, is(resultArray));
 
         // testeamos la salida de t+1
         inputData = new BasicMLData(inputTp1);
@@ -360,21 +357,17 @@ public class TDTrainerTest {
 
         double[] expResultArraytp1 = {0.9946401272292515};
         resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArraytp1, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArraytp1, is(resultArray));
 
         //entrenamos
-        TDTrainerPerceptron trainer = new TDTrainerPerceptron(
-                perceptronInterface, lambda, 1d, false);
+        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
         trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
 
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 0);
         double calculatedFinalBias = neuralNetwork.getWeight(1, 1, 0);
 
-        assertEquals("Nuevo peso para el caso de prueba 1", expectedFinalWeight,
-                calculatedFinalWeight, 0.0000000000000001);
-        assertEquals("Nuevo bias para el caso de prueba 1", expectedFinalBias,
-                calculatedFinalBias, 0.0000000000000001);
+        assertThat("Nuevo peso para el caso de prueba 1", expectedFinalWeight, is(calculatedFinalWeight));
+        assertThat("Nuevo bias para el caso de prueba 1", expectedFinalBias, is(calculatedFinalBias));
     }
 
     /**
@@ -622,8 +615,7 @@ public class TDTrainerTest {
 
         double[] expResultArrayt = {0.7164779076006158, 0.8218381521799242};
         double[] resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArrayt, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArrayt, is(resultArray));
 
         // testeamos la salida de t+1
         inputData = new BasicMLData(inputTp1);
@@ -631,8 +623,7 @@ public class TDTrainerTest {
 
         double[] expResultArraytp1 = {0.6879369497348741, 0.7970369750469807};
         resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArraytp1, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArraytp1, is(resultArray));
 
         //entrenamos
         TDTrainerPerceptron trainer = new TDTrainerPerceptron(
@@ -642,10 +633,8 @@ public class TDTrainerTest {
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 1);
         double calculatedFinalBias = neuralNetwork.getWeight(0, 2, 1);
 
-        assertEquals("Nuevo peso para el caso de prueba 2", expectedFinalWeight,
-                calculatedFinalWeight, 0.0000000000000001);
-        assertEquals("Nueva bias para el caso de prueba 2", expectedFinalBias,
-                calculatedFinalBias, 0.0000000000000001);
+        assertThat("Nuevo peso para el caso de prueba 2", expectedFinalWeight, is(calculatedFinalWeight));
+        assertThat("Nuevo bias para el caso de prueba 2", expectedFinalBias, is(calculatedFinalBias));
     }
 
     /**
@@ -908,8 +897,7 @@ public class TDTrainerTest {
 
         double[] expResultArrayt = {fnetI[0]};
         double[] resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArrayt, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArrayt, is(resultArray));
 
         // testeamos la salida de t+1
         inputData = new BasicMLData(inputTp1);
@@ -922,8 +910,7 @@ public class TDTrainerTest {
 
         double[] expResultArraytp1 = {fnetI[1]};
         resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArraytp1, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArraytp1, is(resultArray));
 
         //---------- entrenamos---------------------------------------
         TDTrainerPerceptron trainer = new TDTrainerPerceptron(
@@ -943,26 +930,22 @@ public class TDTrainerTest {
         //W(k,J)
         double expectedNewWKJ = alpha[0] * (fnetI[1] - fnetI[0])
                 * deltaIJ[0] * fnetK[0] + wKJ[0];
-        assertEquals("expectedNewWKJ primera actualizacion", expectedNewWKJ,
-                wKJ[1], 0.0000000000000001);
+        assertThat("expectedNewWKJ primera actualizacion", expectedNewWKJ, is(wKJ[1]));
 
         //W(J,I)
         double expectedNewWJI = alpha[0] * (fnetI[1] - fnetI[0])
                 * deltaII[0] * fnetJ[0] + wJI[0];
-        assertEquals("expectedNewWJI primera actualizacion", expectedNewWJI,
-                wJI[1], 0.0000000000000001);
+        assertThat("expectedNewWKJ primera actualizacion", expectedNewWJI, is(wJI[1]));
 
         //bias(j)
         double expectedNewBiasJ = alpha[0] * (fnetI[1] - fnetI[0])
                 * deltaIJ[0] * 1 + biasJ[0];
-        assertEquals("expectedNewBiasJ primera actualizacion", expectedNewBiasJ,
-                biasJ[1], 0.0000000000000001);
+        assertThat("expectedNewBiasJ primera actualizacion", expectedNewBiasJ, is(biasJ[1]));
 
         //bias(I)
         double expectedNewBiasI = alpha[0] * (fnetI[1] - fnetI[0])
                 * deltaII[0] * 1 + biasI[0];
-        assertEquals("expectedNewBiasI primera actualizacion", expectedNewBiasI,
-                biasI[1], 0.0000000000000001);
+        assertThat("expectedNewBiasI primera actualizacion", expectedNewBiasI, is(biasI[1]));
 
         //=============== calculamos un segundo turno ==============================
         double input1_2 = input1Tp1; //entrada del perceptron en el tiempo t (es t+1 anterior)
@@ -1029,8 +1012,7 @@ public class TDTrainerTest {
 
         double[] expResultArrayt_2 = {fnetI[1]};
         resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArrayt_2, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArrayt_2, is(resultArray));
 
         // testeamos la salida de t+1
         inputData = new BasicMLData(inputTp1_2);
@@ -1043,8 +1025,7 @@ public class TDTrainerTest {
 
         double[] expResultArraytp1_2 = {fnetI[2]};
         resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArraytp1_2, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArraytp1_2, is(resultArray));
 
         //---------- entrenamos---------------------------------------
         trainer.train(problem, stateT_2, stateTp1_2, alpha, concurrency, false);
@@ -1066,8 +1047,7 @@ public class TDTrainerTest {
         double sumatoria = (Math.pow(lambda, 2 - 1) * trazat0) + (Math.pow(
                 lambda, 2 - 2) * trazat1); //sumatoria = (double) 0.007556947931615862
         expectedNewWKJ = error * sumatoria + wKJ[1]; //expectedNewWKJ = (double) 0.10000021201860962
-        assertEquals("expectedNewWKJ segunda actualizacion", expectedNewWKJ,
-                wKJ[2], 0.0000000000000001);
+        assertThat("expectedNewWKJ segunda actualizacion", expectedNewWKJ, is(wKJ[2]));
 
         //W(J,I)
         trazat0 = deltaII[0] * fnetJ[0]; //trazat0 = (double) 0.17390479362330252
@@ -1075,8 +1055,7 @@ public class TDTrainerTest {
         sumatoria = (Math.pow(lambda, 2 - 1) * trazat0) + (Math.pow(lambda,
                 2 - 2) * trazat1); //sumatoria = (double) 0.29606497088353756
         expectedNewWJI = error * sumatoria + wJI[1]; //expectedNewWJI = (double) 0.33000879273802003
-        assertEquals("expectedNewWJI segunda actualizacion", expectedNewWJI,
-                wJI[2], 0.0000000000000001);
+        assertThat("expectedNewWJI segunda actualizacion", expectedNewWJI, is(wJI[2]));
 
         //bias(j)
         trazat0 = deltaIJ[0]; //trazat0 = (double) 0.016329952877235036
@@ -1084,8 +1063,7 @@ public class TDTrainerTest {
         sumatoria = (Math.pow(lambda, 2 - 1) * trazat0) + (Math.pow(lambda,
                 2 - 2) * trazat1); //sumatoria = (double) 0.02769591923510216
         expectedNewBiasJ = error * sumatoria + biasJ[1]; //expectedNewBiasJ = (double) 0.9000008234374944
-        assertEquals("expectedNewBiasJ segunda actualizacion", expectedNewBiasJ,
-                biasJ[2], 0.0000000000000001);
+        assertThat("expectedNewBiasJ segunda actualizacion", expectedNewBiasJ, is(biasJ[2]));
 
         //bias(I)
         trazat0 = deltaII[0]; //trazat0 = (double) 0.24307069499125544
@@ -1093,8 +1071,7 @@ public class TDTrainerTest {
         sumatoria = (Math.pow(lambda, 2 - 1) * trazat0) + (Math.pow(lambda,
                 2 - 2) * trazat1); //sumatoria = (double) 0.4131955211247571
         expectedNewBiasI = error * sumatoria + biasI[1]; //expectedNewBiasI = (double) 0.10001227671277943
-        assertEquals("expectedNewBiasI segunda actualizacion", expectedNewBiasI,
-                biasI[2], 0.0000000000000001);
+        assertThat("expectedNewBiasI segunda actualizacion", expectedNewBiasI, is(biasI[2]));
 
         //=============== calculamos un tercer turno ==============================
         double input1_3 = input1Tp1_2; //entrada del perceptron en el tiempo t (es t+1 anterior)
@@ -1160,8 +1137,7 @@ public class TDTrainerTest {
 
         double[] expResultArrayt_3 = {fnetI[2]};
         resultArray = outut.getData();
-        Assert.assertArrayEquals(expResultArrayt_3, resultArray,
-                0.0000000000000001);
+        assertThat(expResultArrayt_3, is(resultArray));
 
         //calculamos valores que deberian resultar
         Object[] output = problem.evaluateBoardWithPerceptron(stateTp1_3);
@@ -1192,8 +1168,7 @@ public class TDTrainerTest {
         sumatoria = (Math.pow(lambda, 3 - 1) * trazat0) + (Math.pow(lambda,
                 3 - 2) * trazat1) + (Math.pow(lambda, 3 - 3) * trazat2); //
         expectedNewWKJ = error * sumatoria + wKJ[2]; //
-        assertEquals("expectedNewWKJ tercera actualizacion", expectedNewWKJ,
-                wKJ[3], 0.0000000000000001);
+        assertThat("expectedNewWKJ tercera actualizacion", expectedNewWKJ, is(wKJ[3]));
 
         //W(J,I)
         trazat0 = deltaII[0] * fnetJ[0]; //
@@ -1202,8 +1177,7 @@ public class TDTrainerTest {
         sumatoria = (Math.pow(lambda, 3 - 1) * trazat0) + (Math.pow(lambda,
                 3 - 2) * trazat1) + (Math.pow(lambda, 3 - 3) * trazat2); //
         expectedNewWJI = error * sumatoria + wJI[2]; //
-        assertEquals("expectedNewWJI tercera actualizacion", expectedNewWJI,
-                wJI[3], 0.0000000000000001);
+        assertThat("expectedNewWJI tercera actualizacion", expectedNewWJI, is(wJI[3]));
 
         //bias(j)
         trazat0 = deltaIJ[0]; //
@@ -1212,8 +1186,7 @@ public class TDTrainerTest {
         sumatoria = (Math.pow(lambda, 3 - 1) * trazat0) + (Math.pow(lambda,
                 3 - 2) * trazat1) + (Math.pow(lambda, 3 - 3) * trazat2); //
         expectedNewBiasJ = error * sumatoria + biasJ[2]; //
-        assertEquals("expectedNewBiasJ tercera actualizacion", expectedNewBiasJ,
-                biasJ[3], 0.0000000000000001);
+        assertThat("expectedNewBiasJ tercera actualizacion", expectedNewBiasJ, is(biasJ[3]));
 
         //bias(I)
         trazat0 = deltaII[0]; //
@@ -1222,7 +1195,6 @@ public class TDTrainerTest {
         sumatoria = (Math.pow(lambda, 3 - 1) * trazat0) + (Math.pow(lambda,
                 3 - 2) * trazat1) + (Math.pow(lambda, 3 - 3) * trazat2); //
         expectedNewBiasI = error * sumatoria + biasI[2]; //
-        assertEquals("expectedNewBiasI tercera actualizacion", expectedNewBiasI,
-                biasI[3], 0.0000000000000001);
+        assertThat("expectedNewBiasI tercera actualizacion", expectedNewBiasI, is(biasI[3]));
     }
 }

@@ -20,9 +20,10 @@ package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
 import java.util.ArrayList;
 import java.util.List;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -79,7 +80,7 @@ public class LayerTest {
         instance.setNeuron(0, expResult);
 
         Neuron result = instance.getNeuron(neuronIndex);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -94,7 +95,7 @@ public class LayerTest {
         expResult.add(new Neuron(1, 1));
         expResult.add(new Neuron(1, 1));
         List<Neuron> result = instance.getNeurons();
-        assertEquals(expResult.size(), result.size());
+        assertThat(result.size(), is(expResult.size()));
     }
 
     /**
@@ -107,6 +108,6 @@ public class LayerTest {
         Neuron neuron = new Neuron(1, 1);
         Layer instance = new Layer(1);
         instance.setNeuron(neuronIndex, neuron);
-        assertEquals(instance.getNeuron(0), neuron);
+        assertThat(instance.getNeuron(0), is(neuron));
     }
 }

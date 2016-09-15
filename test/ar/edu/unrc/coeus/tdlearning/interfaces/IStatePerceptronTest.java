@@ -20,9 +20,10 @@ package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.arrayutil.NormalizedField;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -86,7 +87,7 @@ public class IStatePerceptronTest {
         IStatePerceptron instance = new IStatePerceptronImpl();
         Double expResult = 0d;
         Double result = instance.translateToPerceptronInput(neuronIndex);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**

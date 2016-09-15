@@ -20,9 +20,10 @@ package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
 import java.util.ArrayList;
 import java.util.List;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -77,7 +78,7 @@ public class NeuronTest {
         instance.clearDeltas();
         Double result = instance.getDelta(0);
         Double expResult = null;
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -90,7 +91,7 @@ public class NeuronTest {
         instance.setBias(1.325);
         Double expResult = 1.325;
         Double result = instance.getBias();
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -104,7 +105,7 @@ public class NeuronTest {
         instance.setDelta(0, 1d);
         Double expResult = 1d;
         Double result = instance.getDelta(0);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -118,7 +119,7 @@ public class NeuronTest {
         expResult.add(null);
         expResult.add(null);
         List<Double> result = instance.getDeltas();
-        assertEquals(expResult.size(), result.size());
+        assertThat(result.size(), is(expResult.size()));
     }
 
     /**
@@ -131,7 +132,7 @@ public class NeuronTest {
         instance.setDerivatedOutput(0.33);
         Double expResult = 0.33;
         Double result = instance.getDerivatedOutput();
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -144,7 +145,7 @@ public class NeuronTest {
         instance.setOutput(0.5);
         Double expResult = 0.5;
         Double result = instance.getOutput();
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -158,7 +159,7 @@ public class NeuronTest {
         instance.setWeight(0, 0.356);
         Double expResult = 0.356;
         Double result = instance.getWeight(previousLayerNeuronIndex);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -174,8 +175,8 @@ public class NeuronTest {
         expResult.add(0.3);
         expResult.add(0.4);
         List<Double> result = instance.getWeights();
-        assertEquals(expResult.get(0), result.get(0));
-        assertEquals(expResult.get(1), result.get(01));
+        assertThat(result.get(0), is(expResult.get(0)));
+        assertThat(result.get(1), is(expResult.get(1)));
     }
 
     /**
@@ -187,8 +188,7 @@ public class NeuronTest {
         Double newBias = 0.356;
         Neuron instance = new Neuron(1, 1);
         instance.setBias(newBias);
-        assertEquals(instance.getBias(), newBias);
-
+        assertThat(instance.getBias(), is(newBias));
     }
 
     /**
@@ -201,7 +201,7 @@ public class NeuronTest {
         Double delta = 0.33;
         Neuron instance = new Neuron(1, 1);
         instance.setDelta(outputNeuronIndex, delta);
-        assertEquals(instance.getDeltas().get(outputNeuronIndex), delta);
+        assertThat(instance.getDeltas().get(outputNeuronIndex), is(delta));
     }
 
     /**
@@ -213,7 +213,7 @@ public class NeuronTest {
         Double derivatedOutput = 0.365;
         Neuron instance = new Neuron(1, 1);
         instance.setDerivatedOutput(derivatedOutput);
-        assertEquals(instance.getDerivatedOutput(), derivatedOutput);
+        assertThat(instance.getDerivatedOutput(), is(derivatedOutput));
     }
 
     /**
@@ -225,7 +225,7 @@ public class NeuronTest {
         Double output = 0.1111;
         Neuron instance = new Neuron(1, 1);
         instance.setOutput(output);
-        assertEquals(instance.getOutput(), output);
+        assertThat(instance.getOutput(), is(output));
     }
 
     /**
@@ -238,7 +238,7 @@ public class NeuronTest {
         Double weight = 0.256;
         Neuron instance = new Neuron(1, 1);
         instance.setWeight(previousLayerNeuronIndex, weight);
-        assertEquals(instance.getWeight(0), weight);
+        assertThat(instance.getWeight(0), is(weight));
     }
 
 }

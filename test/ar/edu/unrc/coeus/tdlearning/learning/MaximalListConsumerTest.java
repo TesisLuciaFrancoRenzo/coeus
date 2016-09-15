@@ -25,9 +25,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -206,20 +207,20 @@ public class MaximalListConsumerTest {
         }, 2d);
         MaximalActionPredictionConsumer instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
-        assertEquals(1, instance.getList().size());
+        assertThat(instance.getList().size(), is(1));
 
         //lista con un elemento
         actionPrediction = new ActionPrediction(new IAction() {
         }, 2d);
         instance.accept(actionPrediction);
-        assertEquals(2, instance.getList().size());
+        assertThat(instance.getList().size(), is(2));
         //lista con un valor numerico mas grande que el que esta en la lista.
 
         actionPrediction = new ActionPrediction(new IAction() {
         }, 2d);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
-        assertEquals(1, instance.getList().size());
+        assertThat(instance.getList().size(), is(1));
     }
 
     /**
@@ -232,7 +233,7 @@ public class MaximalListConsumerTest {
         MaximalActionPredictionConsumer other = new MaximalActionPredictionConsumer();
         MaximalActionPredictionConsumer instance = new MaximalActionPredictionConsumer();
         instance.combine(other);
-        assertEquals(0, instance.getList().size());
+        assertThat(instance.getList().size(), is(0));
         //lista con un elemento
         other = new MaximalActionPredictionConsumer();
         ActionPrediction actionPrediction = new ActionPrediction(new IAction() {
@@ -241,7 +242,7 @@ public class MaximalListConsumerTest {
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
-        assertEquals(2, instance.getList().size());
+        assertThat(instance.getList().size(), is(2));
         //con un elemento mas grande
         actionPrediction = new ActionPrediction(new IAction() {
         }, 3d);
@@ -249,7 +250,7 @@ public class MaximalListConsumerTest {
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
-        assertEquals(2, instance.getList().size());
+        assertThat(instance.getList().size(), is(2));
         //con un elemento mas chico
         actionPrediction = new ActionPrediction(new IAction() {
         }, 1d);
@@ -257,7 +258,7 @@ public class MaximalListConsumerTest {
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
-        assertEquals(1, instance.getList().size());
+        assertThat(instance.getList().size(), is(1));
     }
 
 }

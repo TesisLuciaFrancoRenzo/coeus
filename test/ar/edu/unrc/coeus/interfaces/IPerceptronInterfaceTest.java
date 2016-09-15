@@ -20,9 +20,10 @@ package ar.edu.unrc.coeus.interfaces;
 
 import ar.edu.unrc.coeus.tdlearning.utils.FunctionUtils;
 import java.util.function.Function;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -78,7 +79,7 @@ public class IPerceptronInterfaceTest {
         INeuralNetworkInterface instance = new IPerceptronInterfaceImpl();
         Function<Double, Double> result = instance.getActivationFunction(
                 layerIndex);
-        assertEquals(sigmoid, result);
+        assertThat(result, is(sigmoid));
     }
 
     /**
@@ -93,7 +94,7 @@ public class IPerceptronInterfaceTest {
         double expResult = 0.56;
         instance.setBias(layerIndex, neuronIndex, 0.56);
         double result = instance.getBias(layerIndex, neuronIndex);
-        assertEquals(expResult, result, 0.0000000000000001);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -107,7 +108,7 @@ public class IPerceptronInterfaceTest {
         Function<Double, Double> expResult = FunctionUtils.SIGMOID_DERIVATED;
         Function<Double, Double> result = instance.
                 getDerivatedActivationFunction(layerIndex);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -119,7 +120,7 @@ public class IPerceptronInterfaceTest {
         INeuralNetworkInterface instance = new IPerceptronInterfaceImpl();
         int expResult = 3;
         int result = instance.getLayerQuantity();
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
 
     }
 
@@ -133,7 +134,7 @@ public class IPerceptronInterfaceTest {
         INeuralNetworkInterface instance = new IPerceptronInterfaceImpl();
         int expResult = 3;
         int result = instance.getNeuronQuantityInLayer(layerIndex);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -151,7 +152,7 @@ public class IPerceptronInterfaceTest {
                 expResult);
         double result = instance.getWeight(layerIndex, neuronIndex,
                 neuronIndexPreviousLayer);
-        assertEquals(expResult, result, 0.0000000000000001);
+        assertThat(result, is(expResult));
 
     }
 
@@ -165,7 +166,7 @@ public class IPerceptronInterfaceTest {
         INeuralNetworkInterface instance = new IPerceptronInterfaceImpl();
         boolean expResult = true;
         boolean result = instance.hasBias(layerIndex);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -179,7 +180,7 @@ public class IPerceptronInterfaceTest {
         double correctedBias = 0.56;
         INeuralNetworkInterface instance = new IPerceptronInterfaceImpl();
         instance.setBias(layerIndex, neuronIndex, correctedBias);
-        assertEquals(instance.getBias(layerIndex, neuronIndex), correctedBias, 0.0000000000000001);
+        assertThat(correctedBias, is(instance.getBias(layerIndex, neuronIndex)));
     }
 
     /**
@@ -193,10 +194,8 @@ public class IPerceptronInterfaceTest {
         int neuronIndexPreviousLayer = 0;
         double correctedWeight = 0.3556;
         INeuralNetworkInterface instance = new IPerceptronInterfaceImpl();
-        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer,
-                correctedWeight);
-        assertEquals(instance.getWeight(layerIndex, neuronIndex,
-                neuronIndexPreviousLayer), correctedWeight, 0.0000000000000001);
+        instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, correctedWeight);
+        assertThat(correctedWeight, is(instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer)));
     }
 
     /**

@@ -26,9 +26,10 @@ import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.arrayutil.NormalizedField;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -86,9 +87,7 @@ public class IProblemTest {
         IProblemToTrain instance = new IProblemImpl();
         IState expResult = newBoard1;
         IState result = instance.computeAfterState(newBoard, action);
-        assertEquals(((Boardone2one) expResult).board[0][0],
-                ((Boardone2one) result).board[0][0]);
-
+        assertThat(((Boardone2one) expResult).board[0][0], is(((Boardone2one) result).board[0][0]));
     }
 
     /**

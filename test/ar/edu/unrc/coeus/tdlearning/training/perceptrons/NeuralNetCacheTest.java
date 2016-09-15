@@ -18,9 +18,10 @@
  */
 package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -76,7 +77,7 @@ public class NeuralNetCacheTest {
         Layer expResult = new Layer(1);
         instance.setLayer(layerIndex, expResult);
         Layer result = instance.getLayer(layerIndex);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -94,7 +95,7 @@ public class NeuralNetCacheTest {
         instance.setLayer(layerIndex, layer);
         Neuron result = instance.getLayer(layerIndex).getNeuron(
                 neuronIndex);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -109,7 +110,7 @@ public class NeuralNetCacheTest {
         instance.isOutputLayer(1);
         int expResult = 0;
         int result = instance.getOutputLayerIndex();
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -125,7 +126,7 @@ public class NeuralNetCacheTest {
         boolean expResult = true;
         System.out.println("isNextToLasyLayer" + instance.getOutputLayerIndex());
         boolean result = instance.isNextToLastLayer(0);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -140,7 +141,7 @@ public class NeuralNetCacheTest {
         instance.setLayer(1, new Layer(1));
         boolean expResult = true;
         boolean result = instance.isOutputLayer(1);
-        assertEquals(expResult, result);
+        assertThat(result, is(expResult));
     }
 
     /**
@@ -154,6 +155,6 @@ public class NeuralNetCacheTest {
         Layer layer = new Layer(1);
         instance.setLayer(layerIndex, layer);
         instance.setLayer(1, new Layer(1));
-        assertEquals(instance.getLayer(layerIndex), layer);
+        assertThat(instance.getLayer(layerIndex), is(layer));
     }
 }
