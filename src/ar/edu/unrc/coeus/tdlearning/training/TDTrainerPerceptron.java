@@ -239,17 +239,20 @@ public class TDTrainerPerceptron extends Trainer {
                                                 layerIndexJ, neuronIndexJ,
                                                 layerIndexK, neuronIndexK,
                                                 isARandomMove);
-                                        if ( neuronIndexK == neuronQuantityInK ) {
-                                            // Si se es una bias, actualizamos la bias en
-                                            // la red neuronal original
-                                            neuralNetwork.setBias(layerIndexJ, neuronIndexJ, oldWeight + newDiferential);
-                                        } else if ( newDiferential != 0 ) {
-                                            // Si se es un peso, actualizamos el peso en
-                                            // la red neuronal original
-                                            neuralNetwork.setWeight(layerIndexJ,
-                                                    neuronIndexJ,
-                                                    neuronIndexK,
-                                                    oldWeight + newDiferential);
+                                        if ( newDiferential != 0 ) {
+                                            if ( neuronIndexK == neuronQuantityInK ) {
+                                                // Si se es una bias, actualizamos la bias en
+                                                // la red neuronal original
+                                                neuralNetwork.setBias(layerIndexJ, neuronIndexJ,
+                                                        oldWeight + newDiferential);
+                                            } else {
+                                                // Si se es un peso, actualizamos el peso en
+                                                // la red neuronal original
+                                                neuralNetwork.setWeight(layerIndexJ,
+                                                        neuronIndexJ,
+                                                        neuronIndexK,
+                                                        oldWeight + newDiferential);
+                                            }
                                         }
                                     } else {
                                         updateEligibilityTraceOnly(
