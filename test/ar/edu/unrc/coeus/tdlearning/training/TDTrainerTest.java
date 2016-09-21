@@ -888,7 +888,7 @@ public class TDTrainerTest {
 
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 1);
 
-        assertThat("Nuevo peso para el caso de prueba 2", expectedFinalWeight, is(calculatedFinalWeight));
+        assertThat("Nuevo peso para el caso de prueba 2 (sin bias)", expectedFinalWeight, is(calculatedFinalWeight));
     }
 
     /**
