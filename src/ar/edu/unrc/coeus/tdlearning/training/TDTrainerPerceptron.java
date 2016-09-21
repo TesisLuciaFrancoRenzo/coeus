@@ -166,8 +166,8 @@ public class TDTrainerPerceptron extends Trainer {
             }
 
             //iniciamos vector con errores
-            final int neuronQuantityAtOutput = turnCurrentStateCache.getLayer(
-                    turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
+            final int neuronQuantityAtOutput = turnCurrentStateCache.getLayer(turnCurrentStateCache.
+                    getOutputLayerIndex()).getNeurons().size();
             if ( tDError == null ) {
                 this.tDError = new ArrayList<>(neuronQuantityAtOutput);
                 for ( int i = 0; i < neuronQuantityAtOutput; i++ ) {
@@ -239,20 +239,17 @@ public class TDTrainerPerceptron extends Trainer {
                                                 layerIndexJ, neuronIndexJ,
                                                 layerIndexK, neuronIndexK,
                                                 isARandomMove);
-                                        if ( newDiferential != 0 ) {
-                                            if ( neuronIndexK == neuronQuantityInK ) {
-                                                // Si se es una bias, actualizamos la bias en
-                                                // la red neuronal original
-                                                neuralNetwork.setBias(layerIndexJ, neuronIndexJ,
-                                                        oldWeight + newDiferential);
-                                            } else {
-                                                // Si se es un peso, actualizamos el peso en
-                                                // la red neuronal original
-                                                neuralNetwork.setWeight(layerIndexJ,
-                                                        neuronIndexJ,
-                                                        neuronIndexK,
-                                                        oldWeight + newDiferential);
-                                            }
+                                        if ( neuronIndexK == neuronQuantityInK ) {
+                                            // Si se es una bias, actualizamos la bias en
+                                            // la red neuronal original
+                                            neuralNetwork.setBias(layerIndexJ, neuronIndexJ, oldWeight + newDiferential);
+                                        } else if ( newDiferential != 0 ) {
+                                            // Si se es un peso, actualizamos el peso en
+                                            // la red neuronal original
+                                            neuralNetwork.setWeight(layerIndexJ,
+                                                    neuronIndexJ,
+                                                    neuronIndexK,
+                                                    oldWeight + newDiferential);
                                         }
                                     } else {
                                         updateEligibilityTraceOnly(
@@ -281,10 +278,10 @@ public class TDTrainerPerceptron extends Trainer {
     ) {
         final Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
         final int nextLayer = layerIndex + 1;
-        if ( neuralNetwork.hasBias(nextLayer) && neuronIndex == currentLayer.getNeurons().size() && turnCurrentStateCache.
-                getOutputLayerIndex() != layerIndex ) {
+        if ( neuronIndex == currentLayer.getNeurons().size() && turnCurrentStateCache.getOutputLayerIndex() != layerIndex && neuralNetwork.
+                hasBias(nextLayer) ) {
             //retorno la salida de la neurona falsa
-            return 1d;
+            return 1d; //FIXME y si no tiene bias??? TESTEAR CAMBIOS
         } else {
             // si es la coordenada de una neurona, devuelvo su f(net) o la entrada (si es capa de entrada)
             return currentLayer.getNeuron(neuronIndex).getOutput();
@@ -361,9 +358,8 @@ public class TDTrainerPerceptron extends Trainer {
                 neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
                 return newEligibilityTrace;
             } else {
-                final double newEligibilityTrace = neuronKEligibilityTrace.get(
-                        outputNeuronIndex) * lambda * gamma; //reutilizamos las viejas trazas
-                neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace + derivatedOutput);
+                final double newEligibilityTrace = (neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma) + derivatedOutput; //reutilizamos las viejas trazas
+                neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
                 return newEligibilityTrace;
             }
         } else {
@@ -452,8 +448,8 @@ public class TDTrainerPerceptron extends Trainer {
                                 layer = oldCache.getLayer(currentLayerIndex);
                             }
 
-                            IntStream currentLayerStream = IntStream
-                                    .range(0, neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex));
+                            IntStream currentLayerStream = IntStream.range(0, neuralNetwork.getNeuronQuantityInLayer(
+                                    currentLayerIndex));
 
                             if ( concurrencyInLayer[currentLayerIndex] ) {
                                 currentLayerStream = currentLayerStream.parallel();
