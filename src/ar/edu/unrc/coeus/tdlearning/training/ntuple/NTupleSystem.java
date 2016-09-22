@@ -271,8 +271,7 @@ public class NTupleSystem {
      */
     public void load(final File weightsFile) throws IOException,
             ClassNotFoundException {
-        final FileInputStream f_in = new FileInputStream(weightsFile);
-        load(f_in);
+        load(new FileInputStream(weightsFile));
     }
 
     /**

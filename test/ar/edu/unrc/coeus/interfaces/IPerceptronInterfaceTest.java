@@ -164,8 +164,13 @@ public class IPerceptronInterfaceTest {
         System.out.println("hasBias");
         int layerIndex = 0;
         INeuralNetworkInterface instance = new IPerceptronInterfaceImpl();
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = instance.hasBias(layerIndex);
+        assertThat(result, is(expResult));
+
+        layerIndex = 1;
+        expResult = true;
+        result = instance.hasBias(layerIndex);
         assertThat(result, is(expResult));
     }
 
@@ -205,6 +210,7 @@ public class IPerceptronInterfaceTest {
 
         double biasB;
         int layerQuantity = 3, neuronQuantityInLayer = 3;
+        boolean[] bias = {false, true, false, true};
         double weight;
 
         @Override
@@ -243,7 +249,7 @@ public class IPerceptronInterfaceTest {
 
         @Override
         public boolean hasBias(int layerIndex) {
-            return true;
+            return bias[layerIndex];
         }
 
         @Override

@@ -21,6 +21,7 @@ package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -77,8 +78,7 @@ public class NeuronTest {
         Neuron instance = new Neuron(1, 1);
         instance.clearDeltas();
         Double result = instance.getDelta(0);
-        Double expResult = null;
-        assertThat(result, is(expResult));
+        assertThat(result, nullValue());
     }
 
     /**

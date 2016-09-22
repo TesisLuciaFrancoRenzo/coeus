@@ -86,7 +86,7 @@ public class TDTrainerPerceptron extends Trainer {
             final boolean replaceEligibilityTraces
     ) {
         this.neuralNetwork = neuralNetwork;
-        firstTurn = true; //TODO chequear este cambio, asegurar que funciona con un booleano
+        firstTurn = true;
         elegibilityTraces = null;
         nextTurnStateCache = null;
         turnCurrentStateCache = null;
@@ -125,7 +125,7 @@ public class TDTrainerPerceptron extends Trainer {
         final int outputLayerNeuronQuantity = neuralNetwork.getNeuronQuantityInLayer(
                 neuralNetwork.getLayerQuantity() - 1);
         for ( int layerIndex = 0; layerIndex < neuralNetwork.getLayerQuantity(); layerIndex++ ) {
-            int neuronQuantityInLayer = neuralNetwork.getNeuronQuantityInLayer(layerIndex);
+            final int neuronQuantityInLayer = neuralNetwork.getNeuronQuantityInLayer(layerIndex);
             for ( int neuronIndex = 0; neuronIndex < neuronQuantityInLayer; neuronIndex++ ) {
                 if ( layerIndex != 0 ) {
                     int neuronQuantityInPreviousLayer = neuralNetwork.getNeuronQuantityInLayer(layerIndex - 1);

@@ -37,7 +37,7 @@ public class IStatePerceptronTest {
     /**
      *
      */
-    public static NormalizedField normOutput = new NormalizedField(
+    public static final NormalizedField normOutput = new NormalizedField(
             NormalizationAction.Normalize,
             null, 15, 6, 1, 0);
 

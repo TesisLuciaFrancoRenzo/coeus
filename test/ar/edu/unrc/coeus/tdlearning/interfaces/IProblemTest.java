@@ -169,10 +169,8 @@ public class IProblemTest {
         @Override
         public IState computeAfterState(IState turnInitialState,
                 IAction action) {
-            Boardone2one afterstate = ((Boardone2one) turnInitialState).
-                    getCopy();
-            afterstate.getBoard()[((Action) action).getX()][((Action) action).
-                    getY()] = true;
+            Boardone2one afterstate = ((Boardone2one) turnInitialState).getCopy();
+            afterstate.getBoard()[((Action) action).getX()][((Action) action).getY()] = true;
             return afterstate;
         }
 
@@ -274,10 +272,8 @@ public class IProblemTest {
         public void initializeEncogPerceptron() {
             setEncogPerceptron(new BasicNetwork());
             getEncogPerceptron().addLayer(new BasicLayer(null, true, 4));
-            getEncogPerceptron().addLayer(
-                    new BasicLayer(new ActivationSigmoid(), true, 2));
-            getEncogPerceptron().addLayer(
-                    new BasicLayer(new ActivationSigmoid(), false, 1));
+            getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), true, 2));
+            getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
             getEncogPerceptron().getStructure().finalizeStructure();
             getEncogPerceptron().reset();
         }
@@ -286,16 +282,17 @@ public class IProblemTest {
         public ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
             ArrayList<IAction> actions = new ArrayList<>();
             assert !turnInitialState.isTerminalState();
-            if ( ((Boardone2one) turnInitialState).getBoard()[0][0] == false ) {
+            boolean[][] board = ((Boardone2one) turnInitialState).getBoard();
+            if ( board[0][0] == false ) {
                 actions.add(new Action(0, 0));
             }
-            if ( ((Boardone2one) turnInitialState).getBoard()[0][1] == false ) {
+            if ( board[0][1] == false ) {
                 actions.add(new Action(0, 1));
             }
-            if ( ((Boardone2one) turnInitialState).getBoard()[1][0] == false ) {
+            if ( board[1][0] == false ) {
                 actions.add(new Action(1, 0));
             }
-            if ( ((Boardone2one) turnInitialState).getBoard()[1][1] == false ) {
+            if ( board[1][1] == false ) {
                 actions.add(new Action(1, 1));
             }
             assert !actions.isEmpty();
@@ -306,28 +303,20 @@ public class IProblemTest {
         public double normalizeValueToPerceptronOutput(Object value) {
             NormalizedField normOutput = new NormalizedField(
                     NormalizationAction.Normalize, null, 15, 6, 1, 0);
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
-                    getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.
-                    getBoard()[1][1] == false ) {
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == false ) {
                 return normOutput.normalize(13);
             }
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
-                    getBoard()[0][1] == false
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.
-                    getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == false
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
                 return normOutput.normalize(15);
             }
-            if ( currentBoard.getBoard()[0][0] == false && currentBoard.
-                    getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == true && currentBoard.
-                    getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == false && currentBoard.getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == true && currentBoard.getBoard()[1][1] == true ) {
                 return normOutput.normalize(6);
             }
-            if ( currentBoard.getBoard()[0][0] == true && currentBoard.
-                    getBoard()[0][1] == true
-                    && currentBoard.getBoard()[1][0] == false && currentBoard.
-                    getBoard()[1][1] == true ) {
+            if ( currentBoard.getBoard()[0][0] == true && currentBoard.getBoard()[0][1] == true
+                    && currentBoard.getBoard()[1][0] == false && currentBoard.getBoard()[1][1] == true ) {
                 return normOutput.normalize(14);
             }
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -347,12 +336,6 @@ public class IProblemTest {
          *
          */
         public boolean[][] board = {{false, false}, {false, false}};
-        /**
-         *
-         */
-        public NormalizedField normOutput = new NormalizedField(
-                NormalizationAction.Normalize,
-                null, 15, 6, 1, 0);
 
         /**
          * @return the board
@@ -413,44 +396,6 @@ public class IProblemTest {
             return 0d;
         }
 
-        //    @Override
-//    public double translateRewordToNormalizedPerceptronOutputFrom(int neuronIndex) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//    @Override
-//    public double translateThisFinalStateToPerceptronOutput(int neuronIndex) {
-//        //  |5|10|
-//        //  |5|10|
-//        if ( getBoard()[0][0] == true && getBoard()[0][1] == true && getBoard()[1][0] == true && getBoard()[1][1] == false ) {
-//            return normOutput.normalize(13);
-//        }
-//        if ( getBoard()[0][0] == true && getBoard()[0][1] == false && getBoard()[1][0] == true && getBoard()[1][1] == true ) {
-//            return normOutput.normalize(15);
-//        }
-//        if ( getBoard()[0][0] == false && getBoard()[0][1] == true && getBoard()[1][0] == true && getBoard()[1][1] == true ) {
-//            return normOutput.normalize(6);
-//        }
-//        if ( getBoard()[0][0] == true && getBoard()[0][1] == true && getBoard()[1][0] == false && getBoard()[1][1] == true ) {
-//            return normOutput.normalize(14);
-//        }
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//    @Override
-//    public double translateToPerceptronInput(int neuronIndex) {
-//        if ( getBoard()[0][0] == true && neuronIndex == 0 ) {
-//            return 1;
-//        }
-//        if ( getBoard()[0][1] == true && neuronIndex == 1 ) {
-//            return 1;
-//        }
-//        if ( getBoard()[1][0] == true && neuronIndex == 2 ) {
-//            return 1;
-//        }
-//        if ( getBoard()[1][1] == true && neuronIndex == 3 ) {
-//            return 1;
-//        }
-//        return 0;
-//    }
         int getScore() {
             int count = 0;
             count += (getBoard()[0][0] == true) ? 10 : 0;
