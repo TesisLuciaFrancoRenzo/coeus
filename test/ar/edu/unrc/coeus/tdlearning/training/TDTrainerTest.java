@@ -24,9 +24,15 @@ import ar.edu.unrc.coeus.tdlearning.interfaces.IActor;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IProblemToTrain;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IState;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IStatePerceptron;
+import ar.edu.unrc.coeus.tdlearning.training.perceptrons.Layer;
+import ar.edu.unrc.coeus.tdlearning.training.perceptrons.NeuralNetworkCache;
 import ar.edu.unrc.coeus.tdlearning.utils.FunctionUtils;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.function.Function;
+import static junit.framework.Assert.fail;
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.basic.BasicMLData;
@@ -472,8 +478,12 @@ public class TDTrainerTest {
             @Override
             public double getBias(int layerIndex,
                     int neuronIndex) {
-                return neuralNetwork.getWeight(layerIndex - 1, neuralNetwork.
-                        getLayerNeuronCount(layerIndex - 1), neuronIndex);
+                if ( hasBias(layerIndex) ) {
+                    return neuralNetwork.getWeight(layerIndex - 1, neuralNetwork.
+                            getLayerNeuronCount(layerIndex - 1), neuronIndex);
+                } else {
+                    throw new IllegalStateException("No hay bias en la capa " + layerIndex);
+                }
             }
 
             @Override
@@ -511,16 +521,20 @@ public class TDTrainerTest {
 
             @Override
             public boolean hasBias(int layerIndex) {
-                return true;
+                return neuralNetwork.isLayerBiased(layerIndex - 1);
             }
 
             @Override
             public void setBias(int layerIndex,
                     int neuronIndex,
                     double correctedBias) {
-                neuralNetwork.setWeight(layerIndex - 1, neuralNetwork.
-                        getLayerNeuronCount(layerIndex - 1), neuronIndex,
-                        correctedBias);
+                if ( hasBias(layerIndex) ) {
+                    neuralNetwork.setWeight(layerIndex - 1, neuralNetwork.
+                            getLayerNeuronCount(layerIndex - 1), neuronIndex,
+                            correctedBias);
+                } else {
+                    throw new IllegalStateException("No hay bias en la capa " + layerIndex);
+                }
             }
 
             @Override
@@ -611,19 +625,87 @@ public class TDTrainerTest {
         // manualmente y corresponden al caso de pureba numero 2 del informe.
         // testeamos la salida de t
         MLData inputData = new BasicMLData(input);
-        MLData outut = neuralNetwork.compute(inputData);
+        MLData output = neuralNetwork.compute(inputData);
 
-        double[] expResultArrayt = {0.7164779076006158, 0.8218381521799242};
-        double[] resultArray = outut.getData();
-        assertThat(expResultArrayt, is(resultArray));
+        double[] expResultArrayT = {0.7164779076006158, 0.8218381521799242};
+        assertThat(output.getData(), is(expResultArrayT));
 
         // testeamos la salida de t+1
         inputData = new BasicMLData(inputTp1);
-        outut = neuralNetwork.compute(inputData);
+        output = neuralNetwork.compute(inputData);
 
-        double[] expResultArraytp1 = {0.6879369497348741, 0.7970369750469807};
-        resultArray = outut.getData();
-        assertThat(expResultArraytp1, is(resultArray));
+        double[] expResultArrayTp1 = {0.6879369497348741, 0.7970369750469807};
+        assertThat(output.getData(), is(expResultArrayTp1));
+
+        // Verificamos que las fnet de las cache sean iguales a lo calculado por encog
+        Class[] argTypes = new Class[]{IStatePerceptron.class, NeuralNetworkCache.class};
+        Method method;
+
+        try {
+            method = TDTrainerPerceptron.class.getDeclaredMethod("createCache", argTypes);
+            NeuralNetworkCache cache = null;
+            try {
+                method.setAccessible(true);
+                Object[] args = {stateT, null};
+                TDTrainerPerceptron trainer2 = new TDTrainerPerceptron(
+                        perceptronInterface, lambda, 1d, false);
+                Field alphaField = TDTrainerPerceptron.class.getDeclaredField("alpha");
+                alphaField.setAccessible(true);
+                alphaField.set(trainer2, alpha);
+                Field problemField = TDTrainerPerceptron.class.getDeclaredField("problem");
+                problemField.setAccessible(true);
+                problemField.set(trainer2, problem);
+                Field concurrencyInLayerField = TDTrainerPerceptron.class.getDeclaredField("concurrencyInLayer");
+                concurrencyInLayerField.setAccessible(true);
+                concurrencyInLayerField.set(trainer2, concurrency);
+
+                cache = (NeuralNetworkCache) method.invoke(trainer2, args);
+            } catch ( NoSuchFieldException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex ) {
+                fail(ex.getLocalizedMessage());
+            }
+            if ( cache != null ) {
+                Layer lastLayer = cache.getLayer(cache.getOutputLayerIndex());
+                double[] cacheOutputs = {lastLayer.getNeuron(0).getOutput(), lastLayer.getNeuron(1).getOutput()};
+                assertThat(cacheOutputs, is(expResultArrayT));
+            } else {
+                fail("cache=null");
+            }
+        } catch ( NoSuchMethodException | SecurityException ex ) {
+            fail("No se encontro el metodo:" + ex.getLocalizedMessage());
+        }
+
+        try {
+            method = TDTrainerPerceptron.class.getDeclaredMethod("createCache", argTypes);
+            NeuralNetworkCache cache = null;
+            try {
+                method.setAccessible(true);
+                Object[] args = {stateTp1, null};
+                TDTrainerPerceptron trainer2 = new TDTrainerPerceptron(
+                        perceptronInterface, lambda, 1d, false);
+                Field alphaField = TDTrainerPerceptron.class.getDeclaredField("alpha");
+                alphaField.setAccessible(true);
+                alphaField.set(trainer2, alpha);
+                Field problemField = TDTrainerPerceptron.class.getDeclaredField("problem");
+                problemField.setAccessible(true);
+                problemField.set(trainer2, problem);
+                Field concurrencyInLayerField = TDTrainerPerceptron.class.getDeclaredField("concurrencyInLayer");
+                concurrencyInLayerField.setAccessible(true);
+                concurrencyInLayerField.set(trainer2, concurrency);
+
+                cache = (NeuralNetworkCache) method.invoke(trainer2, args);
+            } catch ( NoSuchFieldException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex ) {
+                fail(ex.getLocalizedMessage());
+            }
+            if ( cache != null ) {
+                Layer lastLayer = cache.getLayer(cache.getOutputLayerIndex());
+                double[] cacheOutputs = {lastLayer.getNeuron(0).getOutput(), lastLayer.getNeuron(1).getOutput()};
+                assertThat(cacheOutputs, is(expResultArrayTp1));
+            } else {
+                fail("cache=null");
+            }
+        } catch ( NoSuchMethodException | SecurityException ex ) {
+            fail("No se encontro el metodo:" + ex.getLocalizedMessage());
+        }
 
         //entrenamos
         TDTrainerPerceptron trainer = new TDTrainerPerceptron(
@@ -869,17 +951,85 @@ public class TDTrainerTest {
         MLData inputData = new BasicMLData(input);
         MLData outut = neuralNetwork.compute(inputData);
 
-        double[] expResultArrayt = {0.6747942572811074, 0.7050544341127909};
-        double[] resultArray = outut.getData();
-        assertThat(expResultArrayt, is(resultArray));
+        double[] expResultArrayT = {0.6747942572811074, 0.7050544341127909};
+        assertThat(outut.getData(), is(expResultArrayT));
 
         // testeamos la salida de t+1
         inputData = new BasicMLData(inputTp1);
         outut = neuralNetwork.compute(inputData);
 
-        double[] expResultArraytp1 = {0.6399326115933596, 0.6656699788589633};
-        resultArray = outut.getData();
-        assertThat(expResultArraytp1, is(resultArray));
+        double[] expResultArrayTp1 = {0.6399326115933596, 0.6656699788589633};
+        assertThat(outut.getData(), is(expResultArrayTp1));
+
+        // Verificamos que las fnet de las cache sean iguales a lo calculado por encog
+        Class[] argTypes = new Class[]{IStatePerceptron.class, NeuralNetworkCache.class};
+        Method method;
+
+        try {
+            method = TDTrainerPerceptron.class.getDeclaredMethod("createCache", argTypes);
+            NeuralNetworkCache cache = null;
+            try {
+                method.setAccessible(true);
+                Object[] args = {stateT, null};
+                TDTrainerPerceptron trainer2 = new TDTrainerPerceptron(
+                        perceptronInterface, lambda, 1d, false);
+                Field alphaField = TDTrainerPerceptron.class.getDeclaredField("alpha");
+                alphaField.setAccessible(true);
+                alphaField.set(trainer2, alpha);
+                Field problemField = TDTrainerPerceptron.class.getDeclaredField("problem");
+                problemField.setAccessible(true);
+                problemField.set(trainer2, problem);
+                Field concurrencyInLayerField = TDTrainerPerceptron.class.getDeclaredField("concurrencyInLayer");
+                concurrencyInLayerField.setAccessible(true);
+                concurrencyInLayerField.set(trainer2, concurrency);
+
+                cache = (NeuralNetworkCache) method.invoke(trainer2, args);
+            } catch ( NoSuchFieldException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex ) {
+                fail(ex.getLocalizedMessage());
+            }
+            if ( cache != null ) {
+                Layer lastLayer = cache.getLayer(cache.getOutputLayerIndex());
+                double[] cacheOutputs = {lastLayer.getNeuron(0).getOutput(), lastLayer.getNeuron(1).getOutput()};
+                assertThat(cacheOutputs, is(expResultArrayT));
+            } else {
+                fail("cache=null");
+            }
+        } catch ( NoSuchMethodException | SecurityException ex ) {
+            fail("No se encontro el metodo:" + ex.getLocalizedMessage());
+        }
+
+        try {
+            method = TDTrainerPerceptron.class.getDeclaredMethod("createCache", argTypes);
+            NeuralNetworkCache cache = null;
+            try {
+                method.setAccessible(true);
+                Object[] args = {stateTp1, null};
+                TDTrainerPerceptron trainer2 = new TDTrainerPerceptron(
+                        perceptronInterface, lambda, 1d, false);
+                Field alphaField = TDTrainerPerceptron.class.getDeclaredField("alpha");
+                alphaField.setAccessible(true);
+                alphaField.set(trainer2, alpha);
+                Field problemField = TDTrainerPerceptron.class.getDeclaredField("problem");
+                problemField.setAccessible(true);
+                problemField.set(trainer2, problem);
+                Field concurrencyInLayerField = TDTrainerPerceptron.class.getDeclaredField("concurrencyInLayer");
+                concurrencyInLayerField.setAccessible(true);
+                concurrencyInLayerField.set(trainer2, concurrency);
+
+                cache = (NeuralNetworkCache) method.invoke(trainer2, args);
+            } catch ( NoSuchFieldException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex ) {
+                fail(ex.getLocalizedMessage());
+            }
+            if ( cache != null ) {
+                Layer lastLayer = cache.getLayer(cache.getOutputLayerIndex());
+                double[] cacheOutputs = {lastLayer.getNeuron(0).getOutput(), lastLayer.getNeuron(1).getOutput()};
+                assertThat(cacheOutputs, is(expResultArrayTp1));
+            } else {
+                fail("cache=null");
+            }
+        } catch ( NoSuchMethodException | SecurityException ex ) {
+            fail("No se encontro el metodo:" + ex.getLocalizedMessage());
+        }
 
         //entrenamos
         TDTrainerPerceptron trainer = new TDTrainerPerceptron(
@@ -1925,7 +2075,7 @@ public class TDTrainerTest {
         double trazat2 = deltaIJ[2] * fnetK[2]; //
         sumatoria = (Math.pow(lambda, 3 - 1) * trazat0) + (Math.pow(lambda, 3 - 2) * trazat1) + (Math.pow(lambda, 3 - 3) * trazat2); //
         expectedNewWKJ = error * sumatoria + wKJ[2]; //
-        assertThat("expectedNewWKJ tercera actualizacion", expectedNewWKJ, is(wKJ[3]));
+        assertThat("expectedNewWKJ tercera actualizacion", wKJ[3], is(expectedNewWKJ));
 
         //W(J,I)
         trazat0 = deltaII[0] * fnetJ[0]; //
@@ -1933,6 +2083,7 @@ public class TDTrainerTest {
         trazat2 = deltaII[2] * fnetJ[2]; //
         sumatoria = (Math.pow(lambda, 3 - 1) * trazat0) + (Math.pow(lambda, 3 - 2) * trazat1) + (Math.pow(lambda, 3 - 3) * trazat2); //
         expectedNewWJI = error * sumatoria + wJI[2]; //
-        assertThat("expectedNewWJI tercera actualizacion", expectedNewWJI, is(wJI[3]));
+        assertThat("expectedNewWJI tercera actualizacion", wJI[3], is(expectedNewWJI));
     }
+
 }

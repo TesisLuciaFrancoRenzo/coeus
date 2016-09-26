@@ -28,6 +28,7 @@ import java.util.function.Function;
  */
 public interface INeuralNetworkInterface {
 
+    //TODO add bias entry point configuration, like encog
     /**
      * Bias asociada a la neurona {@code neuronIndex} en la capa {@code layerIndex}. Las capas de entrada no deberían
      * tener bias.
