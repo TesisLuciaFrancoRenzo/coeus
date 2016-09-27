@@ -207,10 +207,10 @@ public class IPerceptronInterfaceTest {
      *
      */
     public class IPerceptronInterfaceImpl implements INeuralNetworkInterface {
+        boolean[] bias = {false, true, false, true};
 
         double biasB;
         int layerQuantity = 3, neuronQuantityInLayer = 3;
-        boolean[] bias = {false, true, false, true};
         double weight;
 
         @Override
