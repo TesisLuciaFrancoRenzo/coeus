@@ -99,7 +99,7 @@ public class TDTrainerNTupleSystem extends Trainer {
                 normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDerror
-        final double finalError;
+        final double partialError;
         final double tdError;
         if ( !nextTurnState.isTerminalState() ) {
             //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
@@ -110,30 +110,35 @@ public class TDTrainerNTupleSystem extends Trainer {
                     problem.getFinalReward(nextTurnState, 0));
             tdError = gamma * finalReward - output;
         }
-        finalError = alpha[0] * tdError * derivatedOutput;
+        partialError = alpha[0] * tdError;//* (derivatedOutput);
 
-        final boolean needToReset = isARandomMove && replaceEligibilityTraces;
-//        IntStream
-//                .range(0, nTupleSystem.getLut().length)
-//                .sequential() //TODO paralelizar esto, opcionalmente
-//                .forEach(weight ->
-//        {
-        for ( int weight = 0; weight < normalizedStateOutput.getIndexes().length; weight++ ) {
-            final int activeIndex = normalizedStateOutput.getIndexes()[weight];
-            if ( (!isARandomMove || nextTurnState.isTerminalState()) && finalError != 0 ) {
-                nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
-            }
-            if ( lambda != 0 ) {
-                if ( needToReset ) {
-                    eligibilityTrace.reset(activeIndex);
+        if ( this.lambda > 0 && isARandomMove && replaceEligibilityTraces ) {
+            eligibilityTrace.reset();
+        } else {
+            for ( int weightIndex = 0;
+                    weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++ ) {
+                final int activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
+                final double currentEligibilityTrace;
+
+                if ( this.lambda > 0 ) {
+                    if ( isARandomMove && !replaceEligibilityTraces ) {
+                        currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, 0);
+                    } else {
+                        currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, derivatedOutput);
+                    }
                 } else {
-                    eligibilityTrace.updateTrace(activeIndex, derivatedOutput);
+                    currentEligibilityTrace = derivatedOutput;
+                }
+
+                final double finalError = partialError * currentEligibilityTrace;
+
+                if ( (!isARandomMove || nextTurnState.isTerminalState()) && finalError != 0d ) {
+                    nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
                 }
             }
-        }
-//                        });
-        if ( lambda != 0 ) {
-            this.eligibilityTrace.processNotUsedTraces(finalError);
+            if ( lambda > 0 ) {
+                this.eligibilityTrace.processNotUsedTraces(partialError);
+            }
         }
     }
 

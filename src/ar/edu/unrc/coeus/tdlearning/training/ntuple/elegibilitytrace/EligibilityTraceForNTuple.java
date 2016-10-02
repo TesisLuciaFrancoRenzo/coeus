@@ -64,25 +64,35 @@ public class EligibilityTraceForNTuple {
     }
 
     /**
+     *
+     * @param traceIndex
+     * @return
+     */
+    public ValueUsagePair getTrace(final int traceIndex) {
+        return eligibilityTrace[traceIndex];
+    }
+
+    /**
      * Ajusta los valores de la traza de elegibilidad en los pesos no actualizados.
      *
-     * @param tDError errores calculados en los pesos.
+     * @param partialError errores calculados en los pesos.
      */
-    public void processNotUsedTraces(final double tDError) {
+    public void processNotUsedTraces(final double partialError) {
         if ( this.lambda > 0 ) {
             final Iterator<Integer> it = usedTraces.iterator();
             while ( it.hasNext() ) {
                 final Integer traceIndex = it.next();
                 final ValueUsagePair trace = eligibilityTrace[traceIndex];
-                trace.use();
+                trace.use(); // se quita un uso en este momento para no actualizar las trazas nuevas con cantidad de usos = maxEligibilityTraceLenght
                 if ( trace.getUsagesLeft() <= 0 ) {
                     it.remove();
                     trace.reset();
                 } else if ( trace.getUsagesLeft() != maxEligibilityTraceLenght ) {
                     trace.setValue(trace.getValue() * lambda * gamma);//reutilizamos las viejas trazas, ajustandola al tiempo actual
-                    if ( tDError != 0 ) {
+                    if ( partialError != 0 ) {
                         nTupleSystem.addCorrectionToWeight(traceIndex,
-                                tDError * trace.getValue()); //falta la multiplicacion por la salida de la neurona de entrada, pero al ser 1 se ignora
+                                partialError * trace.getValue()); //falta la multiplicacion por la salida de la neurona de entrada, pero al ser 1 se ignora
+                        //falta la suma de la derivada de la salida, pero es 0.
                     }
                 }
             }
@@ -115,16 +125,17 @@ public class EligibilityTraceForNTuple {
      * Actualiza el contenido de la traza de elegibilidad en el índice {@code weightIndex}
      *
      * @param weightIndex     índice del peso a actualizar en la traza.
-     * @param derivatedOutput valor de actualización.
+     * @param derivatedOutput valor de actual de la derivada de la neurona de salida.
+     * @return 
      */
-    public synchronized void updateTrace(
+    public synchronized double updateTrace(
             final int weightIndex,
             final double derivatedOutput
     ) {
         final ValueUsagePair trace = eligibilityTrace[weightIndex];
-        trace.setValue(derivatedOutput);
+        trace.setValue((trace.getValue() * lambda * gamma) + derivatedOutput);
         trace.setUsagesLeft(maxEligibilityTraceLenght + 1);
         usedTraces.add(weightIndex);
+        return trace.getValue();
     }
-
 }
