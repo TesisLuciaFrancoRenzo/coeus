@@ -50,11 +50,6 @@ class ActionPrediction
         this.numericRepresentation = numericRepresentation;
     }
 
-    /**
-     * @param other
-     *
-     * @return
-     */
     @Override
     public
     int compareTo(final ActionPrediction other) {
