@@ -252,7 +252,7 @@ class NTupleSystem {
      * @return the nTuplesWeightQuantityIndex
      */
     public
-    int[] getnTuplesWeightQuantityIndex() {
+    int[] getNTuplesWeightQuantityIndex() {
         return nTuplesWeightQuantityIndex;
     }
 
@@ -321,9 +321,9 @@ class NTupleSystem {
     void save(final File lutFile)
             throws IOException {
         //definimos el stream de salida
-        final FileOutputStream fout = new FileOutputStream(lutFile);
+        final FileOutputStream fOut = new FileOutputStream(lutFile);
         //comprimimos
-        final GZIPOutputStream gz = new GZIPOutputStream(fout);
+        final GZIPOutputStream gz = new GZIPOutputStream(fOut);
         //escribimos el archivo el objeto
         try (ObjectOutputStream oos = new ObjectOutputStream(gz)) {
             oos.writeObject(lut);

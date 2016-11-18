@@ -70,7 +70,7 @@ class MaximalListConsumerTest {
     public
     void testAccept() {
         System.out.println("accept");
-        //lista vacia
+        //lista vacía
         ActionPrediction actionPrediction = new ActionPrediction(new IAction() {
         }, 2d);
         MaximalActionPredictionConsumer instance = new MaximalActionPredictionConsumer();
@@ -82,7 +82,7 @@ class MaximalListConsumerTest {
         }, 2d);
         instance.accept(actionPrediction);
         assertThat(instance.getList().size(), is(2));
-        //lista con un valor numerico mas grande que el que esta en la lista.
+        //lista con un valor numérico mas grande que el que esta en la lista.
 
         actionPrediction = new ActionPrediction(new IAction() {
         }, 2d);
@@ -98,7 +98,7 @@ class MaximalListConsumerTest {
     public
     void testCombine() {
         System.out.println("combine");
-        //lista vacia
+        //lista vacía
         MaximalActionPredictionConsumer other    = new MaximalActionPredictionConsumer();
         MaximalActionPredictionConsumer instance = new MaximalActionPredictionConsumer();
         instance.combine(other);

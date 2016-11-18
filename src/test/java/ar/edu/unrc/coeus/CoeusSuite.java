@@ -18,6 +18,7 @@
  */
 package ar.edu.unrc.coeus;
 
+import ar.edu.unrc.coeus.tdlearning.TDLearningSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -29,7 +30,7 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ar.edu.unrc.coeus.tdlearning.TdlearningSuite.class, ar.edu.unrc.coeus.interfaces.InterfacesSuite.class})
+@Suite.SuiteClasses({TDLearningSuite.class, ar.edu.unrc.coeus.interfaces.InterfacesSuite.class})
 public
 class CoeusSuite {
 

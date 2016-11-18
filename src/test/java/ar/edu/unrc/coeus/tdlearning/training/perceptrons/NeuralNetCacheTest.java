@@ -122,14 +122,14 @@ class NeuralNetCacheTest {
      */
     @Test
     public
-    void testIsNextToLasyLayer() {
-        System.out.println("isNextToLasyLayer");
+    void testIsNextToLastLayer() {
+        System.out.println("isNextToLastLayer");
         int                layerIndex = 0;
         NeuralNetworkCache instance   = new NeuralNetworkCache(2);
         instance.setLayer(layerIndex, new Layer(1));
         instance.setLayer(1, new Layer(1));
         boolean expResult = true;
-        System.out.println("isNextToLasyLayer" + instance.getOutputLayerIndex());
+        System.out.println("isNextToLastLayer" + instance.getOutputLayerIndex());
         boolean result = instance.isNextToLastLayer(0);
         assertThat(result, is(expResult));
     }

@@ -71,7 +71,7 @@ class TDLambdaLearning {
      *
      * @param learningStyle            tipo de aprendizaje utilizado.
      * @param perceptronInterface      red neuronal que se desea entrenar, la cual implementa la interfaz {@code INeuralNetworkInterface}, permitiendo
-     *                                 así el acceso a su representacion interna.
+     *                                 así el acceso a su representación interna.
      * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
      * @param alpha                    tasa de aprendizaje para cada capa. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la
      *                                 capa anterior.
@@ -249,7 +249,7 @@ class TDLambdaLearning {
         if (lambda > 1 || lambda < 0) {
             throw new IllegalArgumentException("lambda=" +
                                                lambda +
-                                               " is out of range from a valid [0..1]"); //FIXME asegurar qeu todas las excepciones esten en ingles
+                                               " is out of range from a valid [0..1]"); //FIXME asegurar qeu todas las excepciones estén en ingles
         } else if (lambda > 0.99) {
             return Integer.MAX_VALUE;
         } else if (lambda == 0) {
@@ -335,7 +335,7 @@ class TDLambdaLearning {
         } else {
             stream = allPossibleActionsFromTurnInitialState.stream();
         }
-        List<ActionPrediction> bestActiones = stream.map(possibleAction -> {
+        List<ActionPrediction> bestActions = stream.map(possibleAction -> {
             switch (learningStyle) {
                 case afterState: {
                     return evaluateAfterState(problem, turnInitialState, possibleAction, actor);
@@ -345,7 +345,7 @@ class TDLambdaLearning {
                 }
             }
         }).collect(MaximalActionPredictionConsumer::new, MaximalActionPredictionConsumer::accept, MaximalActionPredictionConsumer::combine).getList();
-        IAction bestAction = bestActiones.get(randomBetween(0, bestActiones.size() - 1)).getAction();
+        IAction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1)).getAction();
         if (bestPossibleActionTimes != null) {
             time = System.currentTimeMillis() - time;
             bestPossibleActionTimes.add(time);
@@ -427,11 +427,11 @@ class TDLambdaLearning {
                     bestPossibleActionTimes
             );
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
-            // siguiente 'nextState', y obtenemos el estado de transicion
-            // (deterministico) del proximo estado (turno).
+            // siguiente 'nextState', y obtenemos el estado de transición
+            // (determinístico) del próximo estado (turno).
             final IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
             // V (s') ← V (s') + α(rnext + V (s'next) − V (s'))
-            // (matematica sin trazas de elegibilidad)
+            // (matemática sin trazas de elegibilidad)
             if (trainingTimes != null) {
                 time = System.currentTimeMillis();
             }
@@ -443,8 +443,8 @@ class TDLambdaLearning {
         } else {
             // Si nextTurnState es un estado final, no podemos calcular el
             // bestActionForNextTurn.
-            // Teoricamente la evaluacion obtenida por el perceptronInterface
-            // en el ultimo afterState, deberia ser el resultado final real del
+            // Teóricamente la evaluación obtenida por el perceptronInterface
+            // en el ultimo afterState, debería ser el resultado final real del
             // juego, por lo tanto entrenamos el ultimo afterState para que
             // prediga el final del problema
             if (trainingTimes != null) {
@@ -642,7 +642,7 @@ class TDLambdaLearning {
                 break;
             }
             case annealing: {
-                // Ajustamos las alphas segun el metodo de annealing
+                // Ajustamos las alphas según el método de annealing
                 // µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
                 if (this.currentAlpha.length > 100) {
@@ -656,7 +656,7 @@ class TDLambdaLearning {
         }
 
         double currentExplorationRate = 0;
-        //inicializamos el factor de exploracion
+        //inicializamos el factor de exploración
         switch (explorationRate) {
             case fixed: {
                 // factor constante
@@ -699,7 +699,7 @@ class TDLambdaLearning {
         }
 
         IState  turnInitialState = problem.initialize(problem.getActorToTrain());
-        boolean randomChoise     = false;
+        boolean randomChoice     = false;
 
         while (!turnInitialState.isTerminalState()) {
 
@@ -707,11 +707,11 @@ class TDLambdaLearning {
             final IAction bestAction;
 
             if (currentExplorationRate > 0) {
-                randomChoise = Math.random() <= currentExplorationRate;
+                randomChoice = Math.random() <= currentExplorationRate;
             }
 
             final List<IAction> possibleActions = problem.listAllPossibleActions(turnInitialState);
-            if (!randomChoise) {
+            if (!randomChoice) {
                 // evaluamos cada acción aplicada al estado inicial y elegimos la mejor
                 // de éstas basada en las predicciones de recompensas final del problema
                 bestAction = computeBestPossibleAction(problem,
@@ -727,15 +727,15 @@ class TDLambdaLearning {
             }
 
             // aplicamos la acción 'bestAction' al estado actual 'currentState',
-            // y obtenemos su estado de transición determínistico.
+            // y obtenemos su estado de transición determinístico.
             final IState afterState = problem.computeAfterState(turnInitialState, bestAction);
 
             // hacemos que el problema aplique la acción 'bestAction' de la red neuronal,
             // y retorne el estado del turno siguiente, luego de aplicar acciones
-            // no determinósticas pertinentes para terminar el turno
+            // no determinísticas pertinentes para terminar el turno
             final IState nextTurnState = problem.computeNextTurnStateFromAfterState(afterState);
 
-            // hacemos efectivo los cambios realizados por la IA en la logica del problema
+            // hacemos efectivo los cambios realizados por la IA en la lógica del problema
             problem.setCurrentState(nextTurnState);
 
             // entrenamos el problema para que recuerde las predicciones de t+1
@@ -747,8 +747,7 @@ class TDLambdaLearning {
                     learnEvaluationAfterState(problem,
                             trainer,
                             afterState,
-                            nextTurnState,
-                            randomChoise,
+                            nextTurnState, randomChoice,
                             currentAlpha,
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,
@@ -762,8 +761,8 @@ class TDLambdaLearning {
                 }
             }
 
-            // recordamos el nuevo estado del problema luago de aplicar todas
-            // las acciones necesarias para avanzar en la solucion del problema
+            // recordamos el nuevo estado del problema luego de aplicar todas
+            // las acciones necesarias para avanzar en la solución del problema
             turnInitialState = nextTurnState;
         }
     }

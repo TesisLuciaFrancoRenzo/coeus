@@ -92,10 +92,10 @@ class EligibilityTraceForNTuple {
                     it.remove();
                     trace.reset();
                 } else if (trace.getUsagesLeft() != maxEligibilityTraceLength) {
-                    trace.setValue(trace.getValue() * lambda * gamma);//reutilizamos las viejas trazas, ajustandola al tiempo actual
+                    trace.setValue(trace.getValue() * lambda * gamma);//reutilizamos las viejas trazas, ajustándola al tiempo actual
                     if (partialError != 0) {
                         nTupleSystem.addCorrectionToWeight(traceIndex, partialError * trace.getValue());
-                        //falta la multiplicacion por la salida de la neurona de entrada, pero al ser 1 se ignora
+                        //falta la multiplicación por la salida de la neurona de entrada, pero al ser 1 se ignora
                         //falta la suma de la derivada de la salida, pero es 0.
                     }
                 }

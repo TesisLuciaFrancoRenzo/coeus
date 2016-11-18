@@ -85,12 +85,12 @@ class IProblemTest {
     void testComputeAfterState() {
         System.out.println("computeAfterState");
         Action       action    = new Action(0, 0);
-        Boardone2one newBoard  = new Boardone2one();
-        Boardone2one newBoard1 = newBoard.getCopy();
+        BoardOne2one newBoard  = new BoardOne2one();
+        BoardOne2one newBoard1 = newBoard.getCopy();
         newBoard1.board[action.getX()][action.getX()] = true;
         IProblemToTrain instance = new IProblemImpl();
         IState          result   = instance.computeAfterState(newBoard, action);
-        assertThat(newBoard1.board[0][0], is(((Boardone2one) result).board[0][0]));
+        assertThat(newBoard1.board[0][0], is(((BoardOne2one) result).board[0][0]));
     }
 
     /**
@@ -165,7 +165,7 @@ class IProblemTest {
     class BestOf3one2one
             implements IProblemToTrain {
 
-        private Boardone2one currentBoard;
+        private BoardOne2one currentBoard;
         private BasicNetwork encogPerceptron;
 
         /**
@@ -184,7 +184,7 @@ class IProblemTest {
                 IState turnInitialState,
                 IAction action
         ) {
-            Boardone2one afterState = ((Boardone2one) turnInitialState).getCopy();
+            BoardOne2one afterState = ((BoardOne2one) turnInitialState).getCopy();
             afterState.getBoard()[((Action) action).getX()][((Action) action).getY()] = true;
             return afterState;
         }
@@ -295,7 +295,7 @@ class IProblemTest {
         ArrayList<IAction> listAllPossibleActions(IState turnInitialState) {
             ArrayList<IAction> actions = new ArrayList<>();
             assert !turnInitialState.isTerminalState();
-            boolean[][] board = ((Boardone2one) turnInitialState).getBoard();
+            boolean[][] board = ((BoardOne2one) turnInitialState).getBoard();
             if (!board[0][0]) {
                 actions.add(new Action(0, 0));
             }
@@ -333,13 +333,13 @@ class IProblemTest {
 
         private
         void resetGame() {
-            currentBoard = new Boardone2one();
+            currentBoard = new BoardOne2one();
         }
 
         @Override
         public
         void setCurrentState(IState nextTurnState) {
-            currentBoard = (Boardone2one) nextTurnState;
+            currentBoard = (BoardOne2one) nextTurnState;
         }
     }
 
@@ -347,7 +347,7 @@ class IProblemTest {
      *
      */
     public
-    class Boardone2one
+    class BoardOne2one
             implements IStatePerceptron {
 
         /**
@@ -365,8 +365,8 @@ class IProblemTest {
 
         @Override
         public
-        Boardone2one getCopy() {
-            Boardone2one newBoard = new Boardone2one();
+        BoardOne2one getCopy() {
+            BoardOne2one newBoard = new BoardOne2one();
             newBoard.board[0][0] = this.board[0][0];
             newBoard.board[1][0] = this.board[1][0];
             newBoard.board[0][1] = this.board[0][1];
@@ -442,9 +442,9 @@ class IProblemTest {
                 IState turnInitialState,
                 IAction action
         ) {
-            Boardone2one boardcast = (Boardone2one) turnInitialState;
-            boardcast.board[((Action) action).getX()][((Action) action).getY()] = true;
-            return boardcast;
+            BoardOne2one boardCast = (BoardOne2one) turnInitialState;
+            boardCast.board[((Action) action).getX()][((Action) action).getY()] = true;
+            return boardCast;
 
         }
 

@@ -35,7 +35,7 @@ interface SamplePointValue {
     boolean equals(final Object other);
 
     /**
-     * @return hashcode unico para identificar un {@code SamplePointValue}
+     * @return hashcode único para identificar un {@code SamplePointValue}
      */
     @Override
     int hashCode();

@@ -131,36 +131,12 @@ class TDLambdaLearningTest {
     }
 
     /**
-     * Test of RandomBetween method, of class TDLambdaLearning.
-     */
-    @Test
-    public
-    void testRandomBetween() {
-        System.out.println("randomBetween");
-        boolean expResult = true;
-        boolean result1   = false;
-        boolean result2   = false;
-        for (int i = 0; i < 500; i++) {
-            int value = TDLambdaLearning.randomBetween(5, 6);
-            if (value == 6) {
-                result2 = true;
-            }
-            if (value == 5) {
-                result1 = true;
-            }
-        }
-        System.out.println("results 1=" + result1 + " 2=" + result2);
-        boolean finalResult = result1 && result2;
-        assertThat(finalResult, is(expResult));
-    }
-
-    /**
      * Test of calculateLinearInterpolation method, of class TDLambdaLearning.
      */
     @Test
     public
-    void testcalculateLinearInterpolation_Ascending() {
-        System.out.println("testcalculateLinearInterpolation");
+    void testCalculateLinearInterpolation_Ascending() {
+        System.out.println("testCalculateLinearInterpolation");
         int    t                   = -50;
         double initialValue        = 0d;
         double finalValue          = 10d;
@@ -219,8 +195,8 @@ class TDLambdaLearningTest {
      */
     @Test
     public
-    void testcalculateLinearInterpolation_Descending() {
-        System.out.println("testcalculateLinearInterpolation");
+    void testCalculateLinearInterpolation_Descending() {
+        System.out.println("testCalculateLinearInterpolation");
         int    t                   = -50;
         double initialValue        = 10d;
         double finalValue          = 0d;
@@ -272,6 +248,30 @@ class TDLambdaLearningTest {
         result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
+    }
+
+    /**
+     * Test of RandomBetween method, of class TDLambdaLearning.
+     */
+    @Test
+    public
+    void testRandomBetween() {
+        System.out.println("randomBetween");
+        boolean expResult = true;
+        boolean result1   = false;
+        boolean result2   = false;
+        for (int i = 0; i < 500; i++) {
+            int value = TDLambdaLearning.randomBetween(5, 6);
+            if (value == 6) {
+                result2 = true;
+            }
+            if (value == 5) {
+                result1 = true;
+            }
+        }
+        System.out.println("results 1=" + result1 + " 2=" + result2);
+        boolean finalResult = result1 && result2;
+        assertThat(finalResult, is(expResult));
     }
 
 }

@@ -31,7 +31,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ar.edu.unrc.coeus.tdlearning.learning.LearningSuite.class, ar.edu.unrc.coeus.tdlearning.interfaces.InterfacesSuite.class, ar.edu.unrc.coeus.tdlearning.training.TrainingSuite.class})
 public
-class TdlearningSuite {
+class TDLearningSuite {
 
     /**
      * @throws Exception

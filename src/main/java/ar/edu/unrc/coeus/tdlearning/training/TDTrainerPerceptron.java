@@ -288,7 +288,7 @@ class TDTrainerPerceptron
                          currentLayerStream = currentLayerStream.sequential();
                      }
 
-                     // Recorremos cada neurona que deberia ir en la capa,
+                     // Recorremos cada neurona que debería ir en la capa,
                      // la inicializamos, y la cargamos en dicha capa
                      currentLayerStream.forEach(currentNeuronIndex -> {
                          final Neuron neuron;
@@ -311,7 +311,7 @@ class TDTrainerPerceptron
 
                          } else {
                              // Iniciamos variables efectivamente constantes
-                             // para la programacion funcional
+                             // para la programación funcional
                              final int previousLayerIndex = currentLayerIndex - 1;
                              //configuramos la neurona creando una o reciclando una vieja
                              if (oldCache == null) {
@@ -339,7 +339,7 @@ class TDTrainerPerceptron
                                  neuron.setWeight(previousLayerNeuronIndex,
                                          neuralNetwork.getWeight(currentLayerIndex, currentNeuronIndex, previousLayerNeuronIndex)
                                  );
-                                 // devolvemmos la multiplicacion para luego sumar
+                                 // devolvemos la multiplicación para luego sumar
                                  return previousCurrentLayer.getNeuron(previousLayerNeuronIndex).getOutput() *
                                         neuron.getWeight(previousLayerNeuronIndex);
                              }).sum();
@@ -368,7 +368,7 @@ class TDTrainerPerceptron
     private
     void createEligibilityCache() {
         final int outputLayerNeuronQuantity = neuralNetwork.getNeuronQuantityInLayer(neuralNetwork.getLayerQuantity() - 1);
-        // inicializamos la traza de eligibilidad si no esta inicializada
+        // inicializamos la traza de elegibilidad si no esta inicializada
         this.eligibilityTraces = new ArrayList<>(neuralNetwork.getLayerQuantity());
         for (int layerIndex = 0; layerIndex < neuralNetwork.getLayerQuantity(); layerIndex++) {
             final int                      neuronQuantityInLayer = neuralNetwork.getNeuronQuantityInLayer(layerIndex);
@@ -444,7 +444,7 @@ class TDTrainerPerceptron
                 final double sum = nextLayerStream.mapToDouble(neuronIndexP -> {
                     @SuppressWarnings("null") final Neuron neuronP = nextLayer.getNeuron(neuronIndexP);
                     final Double                           deltaP  = neuronP.getDelta(outputNeuronIndex);
-                    assert deltaP != null; // llamar la actualizacion de pesos de tal forma que no haga recursividad
+                    assert deltaP != null; // llamar la actualización de pesos de tal forma que no haga recursividad
                     return deltaP * neuronP.getWeight(neuronIndex);
                 }).sum();
                 delta = neuronO.getDerivedOutput() * sum;
@@ -529,7 +529,7 @@ class TDTrainerPerceptron
                     tDError.add(null);
                 }
             }
-            //iniciamos vector de las salidas del proximo turno
+            //iniciamos vector de las salidas del próximo turno
             if (nextTurnOutputs == null) {
                 this.nextTurnOutputs = new ArrayList<>(neuronQuantityAtOutput);
                 for (int i = 0; i < neuronQuantityAtOutput; i++) {
@@ -552,8 +552,8 @@ class TDTrainerPerceptron
 
         for (int layerIndex = turnCurrentStateCache.getOutputLayerIndex(); layerIndex >= 1; layerIndex--) {
             //capa de mas hacia adelante
-            final int layerIndexJ = layerIndex; //varialbes efectivamente finales para los calculos funcionales
-            //capa de mas atras, pero contigua a J
+            final int layerIndexJ = layerIndex; //variables efectivamente finales para los cálculos funcionales
+            //capa de mas atrás, pero contigua a J
             final int layerIndexK = layerIndex - 1;
 
             final int maxIndexK;
@@ -583,7 +583,7 @@ class TDTrainerPerceptron
                 layerKStream.forEach(neuronIndexK -> {
                     if (!isARandomMove || nextTurnState.isTerminalState()) {
                         // Calculamos el nuevo valor para el peso o bias,
-                        //sumando la correccion adecuada a su valor anterior
+                        //sumando la corrección adecuada a su valor anterior
                         final double newDifferential = computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isARandomMove);
                         if (newDifferential != 0d) {
                             final double oldWeight = currentNeuron.getWeight(neuronIndexK);

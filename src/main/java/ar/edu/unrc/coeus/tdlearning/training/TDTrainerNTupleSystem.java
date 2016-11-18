@@ -97,14 +97,14 @@ class TDTrainerNTupleSystem
         final double                   nextTurnOutput           = nTupleSystem.getComputation((IStateNTuple) nextTurnState);
         final double                   nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
-        //calculamos el TDerror
+        //calculamos el TDError
         final double partialError;
         final double tdError;
         if (!nextTurnState.isTerminalState()) {
-            //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
+            //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
             tdError = nextTurnStateBoardReward + gamma * nextTurnOutput - output;
         } else {
-            //falta la multiplicacion por la neurona de entrada, pero al ser 1 se ignora
+            //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
             final double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(nextTurnState, 0));
             tdError = gamma * finalReward - output;
         }
