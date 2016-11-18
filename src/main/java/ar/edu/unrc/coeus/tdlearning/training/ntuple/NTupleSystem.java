@@ -174,13 +174,13 @@ class NTupleSystem {
         final int[] indexes = new int[nTuplesLength.length];
         final double sum = stream.mapToDouble(nTupleIndex -> {
             indexes[nTupleIndex] = nTuplesWeightQuantityIndex[nTupleIndex] +
-                                   calculateLocalIndex(nTupleIndex, getNTuplesLength(), state, getMapSamplePointValuesIndex());
+                                   calculateLocalIndex(nTupleIndex, nTuplesLength, state, mapSamplePointValuesIndex);
             return lut[indexes[nTupleIndex]];
         }).sum();
         final ComplexNTupleComputation output = new ComplexNTupleComputation();
         output.setIndexes(indexes);
-        output.setOutput(getActivationFunction().apply(sum));
-        output.setDerivedOutput(getDerivedActivationFunction().apply(output.getOutput()));
+        output.setOutput(activationFunction.apply(sum));
+        output.setDerivedOutput(derivedActivationFunction.apply(output.getOutput()));
         return output;
     }
 
@@ -199,13 +199,11 @@ class NTupleSystem {
         } else {
             stream = stream.sequential();
         }
-        final double sum = stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] +
-                                                                 calculateLocalIndex(nTupleIndex,
-                                                                         getNTuplesLength(),
-                                                                         state,
-                                                                         getMapSamplePointValuesIndex()
-                                                                 )]).sum();
-        return getActivationFunction().apply(sum);
+        final double sum = stream.mapToDouble(nTupleIndex -> {
+            return lut[nTuplesWeightQuantityIndex[nTupleIndex] +
+                       calculateLocalIndex(nTupleIndex, getNTuplesLength(), state, mapSamplePointValuesIndex)];
+        }).sum();
+        return activationFunction.apply(sum);
     }
 
     /**

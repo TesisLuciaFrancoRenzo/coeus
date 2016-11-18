@@ -78,7 +78,7 @@ class Neuron {
      */
     public
     Double getBias() {
-        return weights.get(getWeights().size() - 1);
+        return weights.get(weights.size() - 1);
     }
 
     /**
@@ -88,7 +88,7 @@ class Neuron {
      */
     public
     void setBias(final Double newBias) {
-        weights.set(getWeights().size() - 1, newBias);
+        weights.set(weights.size() - 1, newBias);
     }
 
     /**

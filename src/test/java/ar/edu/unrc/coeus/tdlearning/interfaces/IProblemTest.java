@@ -154,7 +154,7 @@ class IProblemTest {
         @Override
         public
         String toString() {
-            return "(" + x + "," + y + ")";
+            return "(" + x + ',' + y + ')';
         }
     }
 
@@ -282,12 +282,12 @@ class IProblemTest {
          */
         public
         void initializeEncogPerceptron() {
-            setEncogPerceptron(new BasicNetwork());
-            getEncogPerceptron().addLayer(new BasicLayer(null, true, 4));
-            getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), true, 2));
-            getEncogPerceptron().addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
-            getEncogPerceptron().getStructure().finalizeStructure();
-            getEncogPerceptron().reset();
+            this.encogPerceptron = new BasicNetwork();
+            encogPerceptron.addLayer(new BasicLayer(null, true, 4));
+            encogPerceptron.addLayer(new BasicLayer(new ActivationSigmoid(), true, 2));
+            encogPerceptron.addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
+            encogPerceptron.getStructure().finalizeStructure();
+            encogPerceptron.reset();
         }
 
         @Override
@@ -376,10 +376,10 @@ class IProblemTest {
 
         int getScore() {
             int count = 0;
-            count += (getBoard()[0][0]) ? 10 : 0;
-            count += (getBoard()[0][1]) ? 1 : 0;
-            count += (getBoard()[1][0]) ? 2 : 0;
-            count += (getBoard()[1][1]) ? 3 : 0;
+            count += (board[0][0]) ? 10 : 0;
+            count += (board[0][1]) ? 1 : 0;
+            count += (board[1][0]) ? 2 : 0;
+            count += (board[1][1]) ? 3 : 0;
             return count;
         }
 
@@ -393,10 +393,10 @@ class IProblemTest {
         public
         boolean isTerminalState() {
             int count = 0;
-            count += (getBoard()[0][0]) ? 1 : 0;
-            count += (getBoard()[0][1]) ? 1 : 0;
-            count += (getBoard()[1][0]) ? 1 : 0;
-            count += (getBoard()[1][1]) ? 1 : 0;
+            count += (board[0][0]) ? 1 : 0;
+            count += (board[0][1]) ? 1 : 0;
+            count += (board[1][0]) ? 1 : 0;
+            count += (board[1][1]) ? 1 : 0;
             assert count != 4;
             return count == 3;
         }
@@ -407,22 +407,22 @@ class IProblemTest {
         @Override
         public
         String toString() {
-            return "Board{" + "board=\n" + getBoard()[0][0] + "," + getBoard()[0][1] + "\n" + getBoard()[1][0] + "," + getBoard()[1][1] + '}';
+            return "Board{" + "board=\n" + board[0][0] + ',' + board[0][1] + '\n' + board[1][0] + ',' + board[1][1] + '}';
         }
 
         @Override
         public
         Double translateToPerceptronInput(int neuronIndex) {
-            if (getBoard()[0][0] && neuronIndex == 0) {
+            if (board[0][0] && neuronIndex == 0) {
                 return 1d;
             }
-            if (getBoard()[0][1] && neuronIndex == 1) {
+            if (board[0][1] && neuronIndex == 1) {
                 return 1d;
             }
-            if (getBoard()[1][0] && neuronIndex == 2) {
+            if (board[1][0] && neuronIndex == 2) {
                 return 1d;
             }
-            if (getBoard()[1][1] && neuronIndex == 3) {
+            if (board[1][1] && neuronIndex == 3) {
                 return 1d;
             }
             return 0d;
@@ -455,7 +455,7 @@ class IProblemTest {
         }
 
         /**
-         * @param output <p>
+         * @param output
          *
          * @return
          */
@@ -492,7 +492,7 @@ class IProblemTest {
         }
 
         /**
-         * @param outputNeuron <p>
+         * @param outputNeuron
          *
          * @return
          */

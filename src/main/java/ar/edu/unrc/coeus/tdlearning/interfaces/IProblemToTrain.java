@@ -30,6 +30,7 @@ interface IProblemToTrain
 
     /**
      * Este método debe:
+     *
      * <p>
      * <ol>
      * <li>Crear un estado que llamaremos 'nextState', que comienza siendo igual a {@code afterState}, el cual ya
