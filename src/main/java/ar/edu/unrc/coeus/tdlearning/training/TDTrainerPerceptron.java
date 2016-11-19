@@ -178,7 +178,7 @@ class TDTrainerPerceptron
             final boolean isRandomMove
     ) {
         final double derivedOutput = delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
-        if (this.lambda > 0) {
+        if (lambda > 0) {
             final List<Double> neuronKEligibilityTrace = eligibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
             if (isRandomMove && replaceEligibilityTraces) {
                 neuronKEligibilityTrace.set(outputNeuronIndex, 0d);
@@ -369,7 +369,7 @@ class TDTrainerPerceptron
     void createEligibilityCache() {
         final int outputLayerNeuronQuantity = neuralNetwork.getNeuronQuantityInLayer(neuralNetwork.getLayerQuantity() - 1);
         // inicializamos la traza de elegibilidad si no esta inicializada
-        this.eligibilityTraces = new ArrayList<>(neuralNetwork.getLayerQuantity());
+        eligibilityTraces = new ArrayList<>(neuralNetwork.getLayerQuantity());
         for (int layerIndex = 0; layerIndex < neuralNetwork.getLayerQuantity(); layerIndex++) {
             final int                      neuronQuantityInLayer = neuralNetwork.getNeuronQuantityInLayer(layerIndex);
             final List<List<List<Double>>> layer                 = new ArrayList<>(neuronQuantityInLayer);
@@ -391,7 +391,7 @@ class TDTrainerPerceptron
                 }
                 layer.add(neuron);
             }
-            this.eligibilityTraces.add(layer);
+            eligibilityTraces.add(layer);
         }
     }
 
@@ -516,7 +516,7 @@ class TDTrainerPerceptron
 
         //creamos o reciclamos caches
         if (firstTurn) {
-            this.turnCurrentStateCache = createCache((IStatePerceptron) state, null);
+            turnCurrentStateCache = createCache((IStatePerceptron) state, null);
             if (lambda > 0) {
                 resetEligibilityCache();
             }
@@ -524,27 +524,27 @@ class TDTrainerPerceptron
             //iniciamos vector con errores
             final int neuronQuantityAtOutput = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
             if (tDError == null) {
-                this.tDError = new ArrayList<>(neuronQuantityAtOutput);
+                tDError = new ArrayList<>(neuronQuantityAtOutput);
                 for (int i = 0; i < neuronQuantityAtOutput; i++) {
                     tDError.add(null);
                 }
             }
             //iniciamos vector de las salidas del próximo turno
             if (nextTurnOutputs == null) {
-                this.nextTurnOutputs = new ArrayList<>(neuronQuantityAtOutput);
+                nextTurnOutputs = new ArrayList<>(neuronQuantityAtOutput);
                 for (int i = 0; i < neuronQuantityAtOutput; i++) {
                     nextTurnOutputs.add(null);
                 }
             }
             firstTurn = false;
         } else {
-            this.turnCurrentStateCache = createCache((IStatePerceptron) state, turnCurrentStateCache);
+            turnCurrentStateCache = createCache((IStatePerceptron) state, turnCurrentStateCache);
         }
 
         // Computamos las salidas del perceptron con el estado del siguiente turno.
-        this.nextTurnStateCache = createCache((IStatePerceptron) nextTurnState, nextTurnStateCache);
-        for (int i = 0; i < this.nextTurnOutputs.size(); i++) {
-            this.nextTurnOutputs.set(i, nextTurnStateCache.getLayer(nextTurnStateCache.getOutputLayerIndex()).getNeuron(i).getOutput());
+        nextTurnStateCache = createCache((IStatePerceptron) nextTurnState, nextTurnStateCache);
+        for (int i = 0; i < nextTurnOutputs.size(); i++) {
+            nextTurnOutputs.set(i, nextTurnStateCache.getLayer(nextTurnStateCache.getOutputLayerIndex()).getNeuron(i).getOutput());
         }
 
         // Calculamos el TD error.
@@ -597,7 +597,7 @@ class TDTrainerPerceptron
                                 neuralNetwork.setWeight(layerIndexJ, neuronIndexJ, neuronIndexK, oldWeight + newDifferential);
                             }
                         }
-                    } else if (this.lambda > 0) {
+                    } else if (lambda > 0) {
                         updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isARandomMove);
                     }
                 });

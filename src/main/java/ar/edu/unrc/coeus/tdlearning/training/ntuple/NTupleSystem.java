@@ -61,7 +61,7 @@ class NTupleSystem {
             final Function<Double, Double> derivedActivationFunction,
             final boolean concurrency
     ) {
-        this.mapSamplePointValuesIndex = new HashMap<>();
+        mapSamplePointValuesIndex = new HashMap<>();
         for (int spvIndex = 0; spvIndex < allSamplePointPossibleValues.size(); spvIndex++) {
             mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(spvIndex), spvIndex);
         }
@@ -199,10 +199,12 @@ class NTupleSystem {
         } else {
             stream = stream.sequential();
         }
-        final double sum = stream.mapToDouble(nTupleIndex -> {
-            return lut[nTuplesWeightQuantityIndex[nTupleIndex] +
-                       calculateLocalIndex(nTupleIndex, getNTuplesLength(), state, mapSamplePointValuesIndex)];
-        }).sum();
+        final double sum = stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] +
+                                                                 calculateLocalIndex(nTupleIndex,
+                                                                         getNTuplesLength(),
+                                                                         state,
+                                                                         mapSamplePointValuesIndex
+                                                                 )]).sum();
         return activationFunction.apply(sum);
     }
 
@@ -294,7 +296,7 @@ class NTupleSystem {
 
         //intentamos cargarlo en la variable correspondiente
         if (obj instanceof double[]) {
-            this.lut = (double[]) obj;
+            lut = (double[]) obj;
         } else {
             throw new IllegalArgumentException("Unsupported file format");
         }

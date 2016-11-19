@@ -82,7 +82,7 @@ class EligibilityTraceForNTuple {
      */
     public
     void processNotUsedTraces(final double partialError) {
-        if (this.lambda > 0) {
+        if (lambda > 0) {
             final Iterator<Integer> it = usedTraces.iterator();
             while (it.hasNext()) {
                 final Integer        traceIndex = it.next();

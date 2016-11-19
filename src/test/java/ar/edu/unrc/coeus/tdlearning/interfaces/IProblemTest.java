@@ -267,7 +267,7 @@ class IProblemTest {
                 IState finalState,
                 int outputNeuron
         ) {
-            return this.currentBoard.getScore();
+            return currentBoard.getScore();
         }
 
         @Override
@@ -282,7 +282,7 @@ class IProblemTest {
          */
         public
         void initializeEncogPerceptron() {
-            this.encogPerceptron = new BasicNetwork();
+            encogPerceptron = new BasicNetwork();
             encogPerceptron.addLayer(new BasicLayer(null, true, 4));
             encogPerceptron.addLayer(new BasicLayer(new ActivationSigmoid(), true, 2));
             encogPerceptron.addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
@@ -367,10 +367,10 @@ class IProblemTest {
         public
         BoardOne2one getCopy() {
             BoardOne2one newBoard = new BoardOne2one();
-            newBoard.board[0][0] = this.board[0][0];
-            newBoard.board[1][0] = this.board[1][0];
-            newBoard.board[0][1] = this.board[0][1];
-            newBoard.board[1][1] = this.board[1][1];
+            newBoard.board[0][0] = board[0][0];
+            newBoard.board[1][0] = board[1][0];
+            newBoard.board[0][1] = board[0][1];
+            newBoard.board[1][1] = board[1][1];
             return newBoard;
         }
 

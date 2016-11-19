@@ -121,27 +121,27 @@ class TDLambdaLearning {
                                                    " must be equal to perceptronInterface.getLayerQuantity()=" +
                                                    perceptronInterface.getLayerQuantity());
             }
-            this.initialAlpha = alpha;
+            initialAlpha = alpha;
         }
 
         if (perceptronInterface.getLayerQuantity() != concurrencyInLayer.length || perceptronInterface.getLayerQuantity() != initialAlpha.length) {
             throw new IllegalArgumentException("alpha.length, concurrencyInLayer.length and perceptronInterface.getLayerQuantity() must be the same");
         }
 
-        this.currentAlpha = new double[perceptronInterface.getLayerQuantity()];
+        currentAlpha = new double[perceptronInterface.getLayerQuantity()];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
         this.gamma = gamma;
-        this.neuralNetworkType = ENeuralNetworkType.perceptron;
+        neuralNetworkType = ENeuralNetworkType.perceptron;
         this.perceptronInterface = perceptronInterface;
-        this.nTupleSystem = null;
+        nTupleSystem = null;
         this.concurrencyInLayer = concurrencyInLayer;
         this.replaceEligibilityTraces = replaceEligibilityTraces;
-        this.canCollectStatistics = collectStatistics;
+        canCollectStatistics = collectStatistics;
 
         if (collectStatistics) {
-            this.statisticsBestPossibleActionTimes = new LinkedList<>();
-            this.statisticsTrainingTimes = new LinkedList<>();
+            statisticsBestPossibleActionTimes = new LinkedList<>();
+            statisticsTrainingTimes = new LinkedList<>();
         }
     }
 
@@ -198,20 +198,20 @@ class TDLambdaLearning {
             throw new IllegalArgumentException("alpha.length, concurrencyInLayer.length and perceptronInterface.getLayerQuantity() must be the same");
         }
 
-        this.currentAlpha = new double[2];
+        currentAlpha = new double[2];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
         this.gamma = gamma;
-        this.neuralNetworkType = ENeuralNetworkType.nTuple;
-        this.perceptronInterface = null;
+        neuralNetworkType = ENeuralNetworkType.nTuple;
+        perceptronInterface = null;
         this.nTupleSystem = nTupleSystem;
         this.concurrencyInLayer = concurrencyInLayer;
         this.replaceEligibilityTraces = replaceEligibilityTraces;
-        this.canCollectStatistics = collectStatistics;
+        canCollectStatistics = collectStatistics;
 
         if (collectStatistics) {
-            this.statisticsBestPossibleActionTimes = new LinkedList<>();
-            this.statisticsTrainingTimes = new LinkedList<>();
+            statisticsBestPossibleActionTimes = new LinkedList<>();
+            statisticsTrainingTimes = new LinkedList<>();
         }
     }
 
@@ -557,7 +557,7 @@ class TDLambdaLearning {
         if (alphaAnnealingT < 0) {
             throw new IllegalArgumentException("alphaAnnealingT must be greater or equal to 0");
         }
-        this.learningRateAdaptation = ELearningRateAdaptation.annealing;
+        learningRateAdaptation = ELearningRateAdaptation.annealing;
         this.alphaAnnealingT = alphaAnnealingT;
     }
 
@@ -572,8 +572,8 @@ class TDLambdaLearning {
         if (value < 0 || value > 1) {
             throw new IllegalArgumentException("value debe estar en el intervalo [0,1]");
         }
-        this.explorationRate = EExplorationRateAlgorithms.fixed;
-        this.explorationRateInitialValue = value;
+        explorationRate = EExplorationRateAlgorithms.fixed;
+        explorationRateInitialValue = value;
     }
 
     /**
@@ -581,8 +581,8 @@ class TDLambdaLearning {
      */
     public
     void setFixedLearningRate() {
-        this.learningRateAdaptation = ELearningRateAdaptation.fixed;
-        this.alphaAnnealingT = 0;
+        learningRateAdaptation = ELearningRateAdaptation.fixed;
+        alphaAnnealingT = 0;
     }
 
     /**
@@ -607,11 +607,11 @@ class TDLambdaLearning {
         if (finalValue < 0 || finalValue > 1) {
             throw new IllegalArgumentException("finalValue debe estar en el intervalo [0,1]");
         }
-        this.explorationRate = EExplorationRateAlgorithms.linear;
-        this.explorationRateInitialValue = initialValue;
-        this.explorationRateStartInterpolation = startDecrementing;
-        this.explorationRateFinalValue = finalValue;
-        this.explorationRateFinishInterpolation = finishDecrementing;
+        explorationRate = EExplorationRateAlgorithms.linear;
+        explorationRateInitialValue = initialValue;
+        explorationRateStartInterpolation = startDecrementing;
+        explorationRateFinalValue = finalValue;
+        explorationRateFinishInterpolation = finishDecrementing;
     }
 
     /**
@@ -636,7 +636,7 @@ class TDLambdaLearning {
             throw new IllegalArgumentException("currentTurn must be grater or equal to 0");
         }
         //inicializamos las constantes de aprendizaje
-        switch (this.learningRateAdaptation) {
+        switch (learningRateAdaptation) {
             case fixed: {
                 // ignorar las actualizaciones y dejar las alphas sin modificar
                 break;
@@ -645,7 +645,7 @@ class TDLambdaLearning {
                 // Ajustamos las alphas según el método de annealing
                 // µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
-                if (this.currentAlpha.length > 100) {
+                if (currentAlpha.length > 100) {
                     rangeStream = rangeStream.parallel();
                 } else {
                     rangeStream = rangeStream.sequential();

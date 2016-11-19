@@ -110,14 +110,14 @@ class TDTrainerNTupleSystem
         }
         partialError = alpha[0] * tdError;//* (derivedOutput);
 
-        if (this.lambda > 0 && isARandomMove && replaceEligibilityTraces) {
+        if (lambda > 0 && isARandomMove && replaceEligibilityTraces) {
             eligibilityTrace.reset();
         } else {
             for (int weightIndex = 0; weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++) {
                 final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
                 final double currentEligibilityTrace;
 
-                if (this.lambda > 0) {
+                if (lambda > 0) {
                     if (isARandomMove && !replaceEligibilityTraces) {
                         currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, 0);
                     } else {
@@ -134,7 +134,7 @@ class TDTrainerNTupleSystem
                 }
             }
             if (lambda > 0) {
-                this.eligibilityTrace.processNotUsedTraces(partialError);
+                eligibilityTrace.processNotUsedTraces(partialError);
             }
         }
     }
