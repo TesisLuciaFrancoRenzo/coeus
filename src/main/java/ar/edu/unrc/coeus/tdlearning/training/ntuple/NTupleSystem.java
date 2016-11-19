@@ -199,13 +199,12 @@ class NTupleSystem {
         } else {
             stream = stream.sequential();
         }
-        final double sum = stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] +
-                                                                 calculateLocalIndex(nTupleIndex,
-                                                                         getNTuplesLength(),
-                                                                         state,
-                                                                         mapSamplePointValuesIndex
-                                                                 )]).sum();
-        return activationFunction.apply(sum);
+        return activationFunction.apply(stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] +
+                                                                              calculateLocalIndex(nTupleIndex,
+                                                                                      nTuplesLength,
+                                                                                      state,
+                                                                                      mapSamplePointValuesIndex
+                                                                              )]).sum());
     }
 
     /**
