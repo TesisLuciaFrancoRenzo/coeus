@@ -5,6 +5,7 @@ task wrapper(type: Wrapper) {
     gradleVersion = '3.2'
 }
 
+//https://docs.gradle.org/current/userguide/standard_plugins.html
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'java'
