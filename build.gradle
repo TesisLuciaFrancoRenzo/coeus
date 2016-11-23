@@ -37,7 +37,7 @@ allprojects {
 //create a single Jar with all dependencies
 task fatFinalJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': rootProject.name ,
+        attributes 'Implementation-Title': rootProject.name,
                 'Implementation-Version': version
     }
     baseName = project.name
