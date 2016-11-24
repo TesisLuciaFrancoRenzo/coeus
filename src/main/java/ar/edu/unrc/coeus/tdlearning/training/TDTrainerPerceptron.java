@@ -428,12 +428,14 @@ class TDTrainerPerceptron
                 neuronO.setDelta(outputNeuronIndex, delta);
             } else if (turnCurrentStateCache.isNextToLastLayer(layerIndex)) {
                 //i!=o ^ o pertenece(I-1) => f'(net(o,m))*delta(i,i,m)*w(i,o,m)
+                assert nextLayer != null;
                 delta = neuronO.getDerivedOutput() *
                         delta(outputNeuronIndex, turnCurrentStateCache.getOutputLayerIndex(), outputNeuronIndex) *
                         nextLayer.getNeuron(outputNeuronIndex).getWeight(neuronIndex);
                 neuronO.setDelta(outputNeuronIndex, delta);
             } else {
                 //i!=o ^ o !pertenece(I-1) => f'(net(o,m))*SumatoriaP(delta(i,p,m)*w(p,o,m))
+                assert nextLayer != null;
                 IntStream nextLayerStream = IntStream.range(0, nextLayer.getNeurons().size());
                 if (concurrencyInLayer[layerIndex + 1]) {
                     nextLayerStream = nextLayerStream.parallel();

@@ -28,10 +28,9 @@ import ar.edu.unrc.coeus.tdlearning.utils.MaximalActionPredictionConsumer;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import static java.lang.Math.random;
 
 /**
  * Este método de aprendizaje de TD lambda learning necesita Trazas de elegibilidad como método de asignación de crédito
@@ -43,6 +42,7 @@ import static java.lang.Math.random;
 public
 class TDLambdaLearning {
 
+    private static final Random random = new Random();
     private final boolean[]               concurrencyInLayer;
     private final ENeuralNetworkType      neuralNetworkType;
     private final INeuralNetworkInterface perceptronInterface;
@@ -476,7 +476,7 @@ class TDLambdaLearning {
         } else if (a == b) {
             return a;
         } else {
-            return a + (int) ((b - a + 1d) * random());
+            return random.nextInt((b - a) + 1) + a; // a + (int) ((b - a + 1d) * random());
         }
     }
 
@@ -746,8 +746,7 @@ class TDLambdaLearning {
                 case afterState: {
                     learnEvaluationAfterState(problem,
                             trainer,
-                            afterState,
-                            nextTurnState, randomChoice,
+                            afterState, nextTurnState, randomChoice,
                             currentAlpha,
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,

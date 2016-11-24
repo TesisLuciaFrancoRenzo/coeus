@@ -76,6 +76,7 @@ class TDTrainerNTupleSystem
     public
     void reset() {
         if (lambda != 0) {
+            assert eligibilityTrace != null;
             eligibilityTrace.reset();
         }
     }
@@ -111,6 +112,7 @@ class TDTrainerNTupleSystem
         partialError = alpha[0] * tdError;//* (derivedOutput);
 
         if (lambda > 0 && isARandomMove && replaceEligibilityTraces) {
+            assert eligibilityTrace != null;
             eligibilityTrace.reset();
         } else {
             for (int weightIndex = 0; weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++) {
@@ -119,8 +121,10 @@ class TDTrainerNTupleSystem
 
                 if (lambda > 0) {
                     if (isARandomMove && !replaceEligibilityTraces) {
+                        assert eligibilityTrace != null;
                         currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, 0);
                     } else {
+                        assert eligibilityTrace != null;
                         currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, derivedOutput);
                     }
                 } else {
@@ -134,6 +138,7 @@ class TDTrainerNTupleSystem
                 }
             }
             if (lambda > 0) {
+                assert eligibilityTrace != null;
                 eligibilityTrace.processNotUsedTraces(partialError);
             }
         }
