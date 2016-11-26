@@ -745,8 +745,7 @@ class TDLambdaLearning {
             switch (learningStyle) {
                 case afterState: {
                     learnEvaluationAfterState(problem,
-                            trainer,
-                            afterState, nextTurnState, randomChoice,
+                            trainer, afterState, nextTurnState, randomChoice,
                             currentAlpha,
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,
