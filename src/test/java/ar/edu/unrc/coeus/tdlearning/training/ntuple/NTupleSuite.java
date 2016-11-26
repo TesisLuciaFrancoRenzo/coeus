@@ -16,10 +16,8 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc.coeus.tdlearning.training;
+package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 
-import ar.edu.unrc.coeus.tdlearning.training.ntuple.NTupleSuite;
-import ar.edu.unrc.coeus.tdlearning.training.perceptrons.PerceptronsSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -31,9 +29,9 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({PerceptronsSuite.class, NTupleSuite.class, TDTrainerTest.class})
+@Suite.SuiteClasses({NTupleSystemTest.class})
 public
-class TrainingSuite {
+class NTupleSuite {
 
     /**
      * @throws Exception

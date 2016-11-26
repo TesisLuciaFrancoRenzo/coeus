@@ -134,6 +134,24 @@ class NTupleSystem {
         return index;
     }
 
+    public static
+    void fuseLut(List<NTupleSystem> nTupleSystems) {
+        if (nTupleSystems.isEmpty()) {
+            throw new IllegalArgumentException("la lista no puede ser vacía");
+        }
+        double[] currentLut = nTupleSystems.get(0).getLut();
+        IntStream.range(0, currentLut.length).parallel().forEach(index -> {
+            //Todo parametrize this to add parallel computation if needed
+            for (int j = 1; j < nTupleSystems.size(); j++) {
+                currentLut[index] += nTupleSystems.get(j).lut[index];
+            }
+            currentLut[index] = currentLut[index] / nTupleSystems.size();
+        });
+        for (int i = 1; i < nTupleSystems.size(); i++) {
+            nTupleSystems.get(i).setWeights(currentLut.clone());
+        }
+    }
+
     /**
      * Añade {@code correction} al peso con el índice {@code currentWeightIndex} dentro de la red neuronal.
      *
