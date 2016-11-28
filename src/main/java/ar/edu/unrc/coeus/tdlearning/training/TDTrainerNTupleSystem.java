@@ -107,7 +107,7 @@ class TDTrainerNTupleSystem
         } else {
             //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
             final double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(nextTurnState, 0));
-            tdError = gamma * finalReward - output;
+            tdError = gamma * finalReward - output; //TODO va gamma aca? segun teoria NO.
         }
         partialError = alpha[0] * tdError;//* (derivedOutput);
 

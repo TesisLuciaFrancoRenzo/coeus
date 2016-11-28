@@ -375,8 +375,7 @@ class TDLambdaLearning {
         final IState   afterState = problem.computeAfterState(turnInitialState, action);
         final Object[] output     = problem.evaluateBoardWithPerceptron(afterState);
         for (int i = 0; i < output.length; i++) {
-            output[i] = problem.deNormalizeValueFromPerceptronOutput(output[i]) + afterState.
-                                                                                                    getStateReward(i);
+            output[i] = problem.deNormalizeValueFromPerceptronOutput(output[i]) + afterState.getStateReward(i);
         }
         return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, actor));
     }
@@ -416,8 +415,7 @@ class TDLambdaLearning {
         if (!nextTurnState.isTerminalState()) {
             // Evaluamos cada acción posible aplicada al estado nextState y
             // elegimos la mejor acción basada las predicciones del problema
-            final List<IAction> possibleActionsNextTurn = problem.
-                                                                         listAllPossibleActions(nextTurnState);
+            final List<IAction> possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
             final IAction bestActionForNextTurn = computeBestPossibleAction(problem,
                     ELearningStyle.afterState,
                     nextTurnState,
@@ -744,8 +742,7 @@ class TDLambdaLearning {
             // azar se actualizan trazas pero no se actualizan pesos
             switch (learningStyle) {
                 case afterState: {
-                    learnEvaluationAfterState(problem,
-                            trainer, afterState, nextTurnState, randomChoice,
+                    learnEvaluationAfterState(problem, trainer, afterState, nextTurnState, randomChoice,
                             currentAlpha,
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,
