@@ -92,16 +92,16 @@ class TDTrainerNTupleSystem
             final boolean isARandomMove
     ) {
         //computamos
-        final ComplexNTupleComputation normalizedStateOutput    = nTupleSystem.getComplexComputation((IStateNTuple) state);
-        final double                   output                   = normalizedStateOutput.getOutput();
-        final double                   derivedOutput            = normalizedStateOutput.getDerivedOutput();
-        final double                   nextTurnOutput           = nTupleSystem.getComputation((IStateNTuple) nextTurnState);
-        final double                   nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
+        final ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state);
+        final double                   output                = normalizedStateOutput.getOutput();
+        final double                   derivedOutput         = normalizedStateOutput.getDerivedOutput();
 
         //calculamos el TDError
         final double partialError;
         final double tdError;
         if (!nextTurnState.isTerminalState()) {
+            final double nextTurnOutput           = nTupleSystem.getComputation((IStateNTuple) nextTurnState); //TODO mover a dentro de if, en Perceptrones
+            final double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
             //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
             tdError = nextTurnStateBoardReward + gamma * nextTurnOutput - output;
         } else {
