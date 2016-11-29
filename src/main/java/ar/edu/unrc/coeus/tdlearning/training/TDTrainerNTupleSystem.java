@@ -92,22 +92,22 @@ class TDTrainerNTupleSystem
             final boolean isARandomMove
     ) {
         //computamos
-        final ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state);
-        final double                   output                = normalizedStateOutput.getOutput();
-        final double                   derivedOutput         = normalizedStateOutput.getDerivedOutput();
+        final ComplexNTupleComputation normalizedStateOutput    = nTupleSystem.getComplexComputation((IStateNTuple) state);
+        final double                   output                   = normalizedStateOutput.getOutput();
+        final double                   derivedOutput            = normalizedStateOutput.getDerivedOutput();
+        final double                   nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDError
         final double partialError;
         final double tdError;
         if (!nextTurnState.isTerminalState()) {
-            final double nextTurnOutput           = nTupleSystem.getComputation((IStateNTuple) nextTurnState); //TODO mover a dentro de if, en Perceptrones
-            final double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
+            final double nextTurnOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState); //TODO mover a dentro de if, en Perceptrones
             //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
             tdError = nextTurnStateBoardReward + gamma * nextTurnOutput - output;
         } else {
             //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
-            final double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(nextTurnState, 0));
-            tdError = gamma * finalReward - output; //TODO va gamma aca? segun teoria NO.
+            //            final double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(nextTurnState, 0));
+            tdError = nextTurnStateBoardReward - output; //TODO va gamma aca? segun teoria NO.
         }
         partialError = alpha[0] * tdError;//* (derivedOutput);
 
