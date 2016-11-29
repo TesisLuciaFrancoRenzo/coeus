@@ -134,6 +134,11 @@ class NTupleSystem {
         return index;
     }
 
+    /**
+     * Función experimental para mezclar redes neuronales
+     *
+     * @param nTupleSystems lista de redes neuronales a fusionar
+     */
     public static
     void fuseLut(List<NTupleSystem> nTupleSystems) {
         if (nTupleSystems.isEmpty()) {
