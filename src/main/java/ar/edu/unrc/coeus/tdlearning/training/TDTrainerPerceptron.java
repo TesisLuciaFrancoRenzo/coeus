@@ -145,13 +145,11 @@ class TDTrainerPerceptron
 
         lastLayerStream.forEach(outputNeuronIndex -> {
             final double output                   = outputLayerCurrentState.getNeuron(outputNeuronIndex).getOutput();
-            final double nextTurnOutput           = nextTurnOutputs.get(outputNeuronIndex);
             final double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(outputNeuronIndex));
             if (!nextTurnState.isTerminalState()) {
-                tDError.set(outputNeuronIndex, nextTurnStateBoardReward + gamma * nextTurnOutput - output);
+                tDError.set(outputNeuronIndex, nextTurnStateBoardReward + gamma * nextTurnOutputs.get(outputNeuronIndex) - output);
             } else {
-                final double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(nextTurnState, outputNeuronIndex));
-                tDError.set(outputNeuronIndex, gamma * finalReward - output);
+                tDError.set(outputNeuronIndex, nextTurnStateBoardReward - output);
             }
         });
     }

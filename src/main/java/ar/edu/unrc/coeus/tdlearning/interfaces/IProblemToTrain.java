@@ -53,19 +53,6 @@ interface IProblemToTrain
     IActor getActorToTrain();
 
     /**
-     * Retorna la recompensa final total obtenida al llegar al final del problema, por cada neurona de salida.
-     *
-     * @param finalState   estado final del problema.
-     * @param outputNeuron neurona de salida.
-     *
-     * @return
-     */
-    double getFinalReward(
-            final IState finalState,
-            final int outputNeuron
-    );
-
-    /**
      * Se debe inicializar el problema y avanzar hasta el punto en el que el {@code actor} le toque actuar por primera
      * vez
      *

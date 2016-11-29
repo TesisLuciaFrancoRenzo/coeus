@@ -351,15 +351,6 @@ class TDTrainerTest {
 
             @Override
             public
-            double getFinalReward(
-                    IState finalState,
-                    int outputNeuron
-            ) {
-                return 0;
-            }
-
-            @Override
-            public
             IState initialize(IActor actor) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
@@ -663,15 +654,6 @@ class TDTrainerTest {
             public
             IActor getActorToTrain() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            double getFinalReward(
-                    IState finalState,
-                    int outputNeuron
-            ) {
-                return 0;
             }
 
             @Override
@@ -1025,15 +1007,6 @@ class TDTrainerTest {
             public
             IActor getActorToTrain() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            double getFinalReward(
-                    IState finalState,
-                    int outputNeuron
-            ) {
-                return 0;
             }
 
             @Override
@@ -1394,15 +1367,6 @@ class TDTrainerTest {
             public
             IActor getActorToTrain() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            double getFinalReward(
-                    IState finalState,
-                    int outputNeuron
-            ) {
-                return 0;
             }
 
             @Override
@@ -1982,15 +1946,6 @@ class TDTrainerTest {
             public
             IActor getActorToTrain() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            double getFinalReward(
-                    IState finalState,
-                    int outputNeuron
-            ) {
-                return 0;
             }
 
             @Override

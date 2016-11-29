@@ -101,13 +101,11 @@ class TDTrainerNTupleSystem
         final double partialError;
         final double tdError;
         if (!nextTurnState.isTerminalState()) {
-            final double nextTurnOutput = nTupleSystem.getComputation((IStateNTuple) nextTurnState); //TODO mover a dentro de if, en Perceptrones
             //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
-            tdError = nextTurnStateBoardReward + gamma * nextTurnOutput - output;
+            tdError = nextTurnStateBoardReward + gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) - output;
         } else {
             //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
-            //            final double finalReward = problem.normalizeValueToPerceptronOutput(problem.getFinalReward(nextTurnState, 0));
-            tdError = nextTurnStateBoardReward - output; //TODO va gamma aca? segun teoria NO.
+            tdError = nextTurnStateBoardReward - output;
         }
         partialError = alpha[0] * tdError;//* (derivedOutput);
 

@@ -263,15 +263,6 @@ class IProblemTest {
 
         @Override
         public
-        double getFinalReward(
-                IState finalState,
-                int outputNeuron
-        ) {
-            return currentBoard.getScore();
-        }
-
-        @Override
-        public
         IState initialize(IActor actor) {
             //initializeEncogPerceptron();
             return currentBoard.getCopy();
@@ -499,15 +490,6 @@ class IProblemTest {
         public
         double getFinalReward(int outputNeuron) {
             return 0.0;
-        }
-
-        @Override
-        public
-        double getFinalReward(
-                IState finalState,
-                int outputNeuron
-        ) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         /**
