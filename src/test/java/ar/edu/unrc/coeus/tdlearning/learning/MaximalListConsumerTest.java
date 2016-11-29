@@ -71,21 +71,18 @@ class MaximalListConsumerTest {
     void testAccept() {
         System.out.println("accept");
         //lista vacía
-        ActionPrediction actionPrediction = new ActionPrediction(new IAction() {
-        }, 2d);
-        MaximalActionPredictionConsumer instance = new MaximalActionPredictionConsumer();
+        ActionPrediction                actionPrediction = new ActionPrediction(new IAction() {}, 2d);
+        MaximalActionPredictionConsumer instance         = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         assertThat(instance.getList().size(), is(1));
 
         //lista con un elemento
-        actionPrediction = new ActionPrediction(new IAction() {
-        }, 2d);
+        actionPrediction = new ActionPrediction(new IAction() {}, 2d);
         instance.accept(actionPrediction);
         assertThat(instance.getList().size(), is(2));
         //lista con un valor numérico mas grande que el que esta en la lista.
 
-        actionPrediction = new ActionPrediction(new IAction() {
-        }, 2d);
+        actionPrediction = new ActionPrediction(new IAction() {}, 2d);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         assertThat(instance.getList().size(), is(1));
@@ -105,24 +102,21 @@ class MaximalListConsumerTest {
         assertThat(instance.getList().size(), is(0));
         //lista con un elemento
         other = new MaximalActionPredictionConsumer();
-        ActionPrediction actionPrediction = new ActionPrediction(new IAction() {
-        }, 2d);
+        ActionPrediction actionPrediction = new ActionPrediction(new IAction() {}, 2d);
         other.accept(actionPrediction);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
         assertThat(instance.getList().size(), is(2));
         //con un elemento mas grande
-        actionPrediction = new ActionPrediction(new IAction() {
-        }, 3d);
+        actionPrediction = new ActionPrediction(new IAction() {}, 3d);
         other.accept(actionPrediction);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
         assertThat(instance.getList().size(), is(2));
         //con un elemento mas chico
-        actionPrediction = new ActionPrediction(new IAction() {
-        }, 1d);
+        actionPrediction = new ActionPrediction(new IAction() {}, 1d);
         other.accept(actionPrediction);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);

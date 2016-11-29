@@ -76,16 +76,13 @@ class ActionPredictionTest {
     public
     void testCompareTo() {
         System.out.println("compareTo iguales");
-        ActionPrediction other = new ActionPrediction(new IAction() {
-        }, 10d);
-        ActionPrediction instance = new ActionPrediction(new IAction() {
-        }, 10d);
-        int expResult = 0;
-        int result    = instance.compareTo(other);
+        ActionPrediction other     = new ActionPrediction(new IAction() {}, 10d);
+        ActionPrediction instance  = new ActionPrediction(new IAction() {}, 10d);
+        int              expResult = 0;
+        int              result    = instance.compareTo(other);
         assertThat(result, is(expResult));
         System.out.println("compareTo distintos");
-        instance = new ActionPrediction(new IAction() {
-        }, 1d);
+        instance = new ActionPrediction(new IAction() {}, 1d);
         expResult = -1;
         result = instance.compareTo(other);
         assertThat(result, is(expResult));
