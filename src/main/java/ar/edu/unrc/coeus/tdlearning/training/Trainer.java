@@ -40,11 +40,6 @@ class Trainer {
     protected double lambda;
 
     /**
-     * true si se permite reiniciar las trazas de elegibilidad en caso de movimientos al azar durante el entrenamiento.
-     */
-    protected boolean replaceEligibilityTraces;
-
-    /**
      * Reinicia el entrenador.
      */
     public abstract
@@ -60,7 +55,6 @@ class Trainer {
      * @param nextTurnState      estado del problema en el turno siguiente a {@code currentTurn}
      * @param alpha              tasa de aprendizaje.
      * @param concurrencyInLayer true en las capas que se puede calcular usando concurrencia.
-     * @param isARandomMove      true si la acción realizada en el turno {@code currentTurn} fue al azar en lugar de calculada por la red neuronal.
      */
     public abstract
     void train(
@@ -68,7 +62,6 @@ class Trainer {
             final IState state,
             final IState nextTurnState,
             final double[] alpha,
-            final boolean[] concurrencyInLayer,
-            final boolean isARandomMove
+            final boolean[] concurrencyInLayer
     );
 }

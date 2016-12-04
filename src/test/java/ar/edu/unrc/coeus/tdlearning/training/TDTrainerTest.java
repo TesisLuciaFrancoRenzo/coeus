@@ -397,8 +397,8 @@ class TDTrainerTest {
         assertThat(expResultArrayTP1, is(resultArray));
 
         //entrenamos
-        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
-        trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
+        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
+        trainer.train(problem, stateT, stateTp1, alpha, concurrency);
 
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 0);
         double calculatedFinalBias   = neuralNetwork.getWeight(1, 1, 0);
@@ -709,7 +709,7 @@ class TDTrainerTest {
             try {
                 method.setAccessible(true);
                 Object[]            args       = {stateT, null};
-                TDTrainerPerceptron trainer2   = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
+                TDTrainerPerceptron trainer2   = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
                 Field               alphaField = TDTrainerPerceptron.class.getDeclaredField("alpha");
                 alphaField.setAccessible(true);
                 alphaField.set(trainer2, alpha);
@@ -741,7 +741,7 @@ class TDTrainerTest {
             try {
                 method.setAccessible(true);
                 Object[]            args       = {stateTp1, null};
-                TDTrainerPerceptron trainer2   = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
+                TDTrainerPerceptron trainer2   = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
                 Field               alphaField = TDTrainerPerceptron.class.getDeclaredField("alpha");
                 alphaField.setAccessible(true);
                 alphaField.set(trainer2, alpha);
@@ -768,8 +768,8 @@ class TDTrainerTest {
         }
 
         //entrenamos
-        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
-        trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
+        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
+        trainer.train(problem, stateT, stateTp1, alpha, concurrency);
 
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 1);
         double calculatedFinalBias   = neuralNetwork.getWeight(0, 2, 1);
@@ -1062,7 +1062,7 @@ class TDTrainerTest {
             try {
                 method.setAccessible(true);
                 Object[]            args       = {stateT, null};
-                TDTrainerPerceptron trainer2   = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
+                TDTrainerPerceptron trainer2   = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
                 Field               alphaField = TDTrainerPerceptron.class.getDeclaredField("alpha");
                 alphaField.setAccessible(true);
                 alphaField.set(trainer2, alpha);
@@ -1094,7 +1094,7 @@ class TDTrainerTest {
             try {
                 method.setAccessible(true);
                 Object[]            args       = {stateTp1, null};
-                TDTrainerPerceptron trainer2   = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
+                TDTrainerPerceptron trainer2   = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
                 Field               alphaField = TDTrainerPerceptron.class.getDeclaredField("alpha");
                 alphaField.setAccessible(true);
                 alphaField.set(trainer2, alpha);
@@ -1121,8 +1121,8 @@ class TDTrainerTest {
         }
 
         //entrenamos
-        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
-        trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
+        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
+        trainer.train(problem, stateT, stateTp1, alpha, concurrency);
 
         double calculatedFinalWeight = neuralNetwork.getWeight(0, 0, 1);
 
@@ -1435,8 +1435,8 @@ class TDTrainerTest {
         assertThat(expResultArrayTP1, is(resultArray));
 
         //---------- entrenamos---------------------------------------
-        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
-        trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
+        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
+        trainer.train(problem, stateT, stateTp1, alpha, concurrency);
 
         wJI[1] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[1] = neuralNetwork.getWeight(0, 0, 0);
@@ -1552,7 +1552,7 @@ class TDTrainerTest {
         assertThat(expResultArrayTP1_2, is(resultArray));
 
         //---------- entrenamos---------------------------------------
-        trainer.train(problem, stateT_2, stateTp1_2, alpha, concurrency, false);
+        trainer.train(problem, stateT_2, stateTp1_2, alpha, concurrency);
 
         wJI[2] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[2] = neuralNetwork.getWeight(0, 0, 0);
@@ -1674,7 +1674,7 @@ class TDTrainerTest {
         double fNetIFinal = (double) evalOutput[0];
 
         //---------- entrenamos---------------------------------------
-        trainer.train(problem, stateT_3, stateTp1_3, alpha, concurrency, false);
+        trainer.train(problem, stateT_3, stateTp1_3, alpha, concurrency);
 
         wJI[3] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[3] = neuralNetwork.getWeight(0, 0, 0);
@@ -2014,8 +2014,8 @@ class TDTrainerTest {
         assertThat(expResultArrayTP1, is(resultArray));
 
         //---------- entrenamos---------------------------------------
-        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d, false);
-        trainer.train(problem, stateT, stateTp1, alpha, concurrency, false);
+        TDTrainerPerceptron trainer = new TDTrainerPerceptron(perceptronInterface, lambda, 1d);
+        trainer.train(problem, stateT, stateTp1, alpha, concurrency);
 
         wJI[1] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[1] = neuralNetwork.getWeight(0, 0, 0);
@@ -2120,7 +2120,7 @@ class TDTrainerTest {
         assertThat(expResultArrayTP1_2, is(resultArray));
 
         //---------- entrenamos---------------------------------------
-        trainer.train(problem, stateT_2, stateTp1_2, alpha, concurrency, false);
+        trainer.train(problem, stateT_2, stateTp1_2, alpha, concurrency);
 
         wJI[2] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[2] = neuralNetwork.getWeight(0, 0, 0);
@@ -2225,7 +2225,7 @@ class TDTrainerTest {
         double fNetIFinal = (double) evalOutput[0];
 
         //---------- entrenamos---------------------------------------
-        trainer.train(problem, stateT_3, stateTp1_3, alpha, concurrency, false);
+        trainer.train(problem, stateT_3, stateTp1_3, alpha, concurrency);
 
         wJI[3] = neuralNetwork.getWeight(1, 0, 0);
         wKJ[3] = neuralNetwork.getWeight(0, 0, 0);

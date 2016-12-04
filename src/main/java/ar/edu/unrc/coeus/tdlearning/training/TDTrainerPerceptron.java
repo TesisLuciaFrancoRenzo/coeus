@@ -75,18 +75,15 @@ class TDTrainerPerceptron
     private       NeuralNetworkCache             turnCurrentStateCache;
 
     /**
-     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
-     * @param gamma                    tasa de descuento, entre [0,1].
-     * @param replaceEligibilityTraces true si se permite reiniciar las trazas de elegibilidad en caso de movimientos al azar durante el
-     *                                 entrenamiento.
-     * @param neuralNetwork            red neuronal a entrenar.
+     * @param lambda        escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
+     * @param gamma         tasa de descuento, entre [0,1].
+     * @param neuralNetwork red neuronal a entrenar.
      */
     public
     TDTrainerPerceptron(
             final INeuralNetworkInterface neuralNetwork,
             final double lambda,
-            final double gamma,
-            final boolean replaceEligibilityTraces
+            final double gamma
     ) {
         this.neuralNetwork = neuralNetwork;
         firstTurn = true;
@@ -95,7 +92,6 @@ class TDTrainerPerceptron
         turnCurrentStateCache = null;
         this.lambda = lambda;
         this.gamma = gamma;
-        this.replaceEligibilityTraces = replaceEligibilityTraces;
         if (lambda > 0) {
             createEligibilityCache();
         }
@@ -162,7 +158,6 @@ class TDTrainerPerceptron
      * @param neuronIndexJ      índice de la neurona mas cercana a la capa de salida.
      * @param layerIndexK       índice de la capa de neuronas mas alejada de la capa de salida.
      * @param neuronIndexK      índice de la neurona mas alejada de la capa de salida.
-     * @param isRandomMove      true si la última acción fue elegido al azar en lugar de utilizar la red neuronal.
      *
      * @return un valor correspondiente a la formula "e" de la teoría.
      */
@@ -172,25 +167,15 @@ class TDTrainerPerceptron
             final int layerIndexJ,
             final int neuronIndexJ,
             final int layerIndexK,
-            final int neuronIndexK,
-            final boolean isRandomMove
+            final int neuronIndexK
     ) {
         final double derivedOutput = delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
         if (lambda > 0) {
             final List<Double> neuronKEligibilityTrace = eligibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
-            if (isRandomMove && replaceEligibilityTraces) {
-                neuronKEligibilityTrace.set(outputNeuronIndex, 0d);
-                return 0d;
-            } else if (isRandomMove && !replaceEligibilityTraces) {
-                final double newEligibilityTrace = neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma; //reutilizamos las viejas trazas
-                neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
-                return newEligibilityTrace;
-            } else {
-                final double newEligibilityTrace = (neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma) +
-                                                   derivedOutput; //reutilizamos las viejas trazas
-                neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
-                return newEligibilityTrace;
-            }
+            final double newEligibilityTrace = (neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma) +
+                                               derivedOutput; //reutilizamos las viejas trazas
+            neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
+            return newEligibilityTrace;
         } else {
             return derivedOutput;
         }
@@ -203,7 +188,6 @@ class TDTrainerPerceptron
      * @param neuronIndexJ índice de la neurona mas cercana a la capa de salida.
      * @param layerIndexK  índice de la capa de neuronas mas alejada de la capa de salida.
      * @param neuronIndexK índice de la neurona mas alejada de la capa de salida.
-     * @param isRandomMove true si la última acción fue elegido al azar en lugar de utilizar la red neuronal.
      *
      * @return error del peso.
      */
@@ -212,15 +196,13 @@ class TDTrainerPerceptron
             final int layerIndexJ,
             final int neuronIndexJ,
             final int layerIndexK,
-            final int neuronIndexK,
-            final boolean isRandomMove
+            final int neuronIndexK
     ) {
         final int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
         if (layerIndexJ == turnCurrentStateCache.getOutputLayerIndex()) {
             return alpha[layerIndexK] *
-                   tDError.get(neuronIndexJ) *
-                   computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
+                   tDError.get(neuronIndexJ) * computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
         } else {
             IntStream lastLayerStream = IntStream.range(0, outputLayerSize);
 
@@ -235,9 +217,7 @@ class TDTrainerPerceptron
                                                                     computeEligibilityTrace(outputNeuronIndex,
                                                                             layerIndexJ,
                                                                             neuronIndexJ,
-                                                                            layerIndexK,
-                                                                            neuronIndexK,
-                                                                            isRandomMove
+                                                                            layerIndexK, neuronIndexK
                                                                     )).sum();
         }
     }
@@ -454,22 +434,6 @@ class TDTrainerPerceptron
         return delta;
     }
 
-    /**
-     * <ul>
-     * <li>Primer componente: índice de la capa de la neurona.
-     * <li>Segunda componente: índice de la neurona.
-     * <li>Tercera componente: índice de la segunda neurona involucrada en el calculo del peso.
-     * <li>Cuarta componente: índice de la neurona de salida con respecto de la cual se esta actualizando el peso.
-     * <li>Quinta componente: turno (m) de la traza de elegibilidad.
-     * </ul>
-     *
-     * @return the eligibilityTraces
-     */
-    public
-    List<List<List<List<Double>>>> getEligibilityTraces() {
-        return eligibilityTraces;
-    }
-
     @Override
     public
     void reset() {
@@ -479,7 +443,7 @@ class TDTrainerPerceptron
     /**
      * Reinicia los datos temporales de la traza de elegibilidad.
      */
-    public
+    private
     void resetEligibilityCache() {
         final int outputLayerNeuronQuantity = neuralNetwork.getNeuronQuantityInLayer(neuralNetwork.getLayerQuantity() - 1);
         for (int layerIndex = 0; layerIndex < neuralNetwork.getLayerQuantity(); layerIndex++) {
@@ -507,8 +471,7 @@ class TDTrainerPerceptron
             final IState state,
             final IState nextTurnState,
             final double[] alpha,
-            final boolean[] concurrencyInLayer,
-            final boolean isARandomMove
+            final boolean[] concurrencyInLayer
     ) {
         this.alpha = alpha;
         this.problem = problem;
@@ -581,24 +544,20 @@ class TDTrainerPerceptron
                     layerKStream = layerKStream.sequential();
                 }
                 layerKStream.forEach(neuronIndexK -> {
-                    if (!isARandomMove || nextTurnState.isTerminalState()) {
-                        // Calculamos el nuevo valor para el peso o bias,
-                        //sumando la corrección adecuada a su valor anterior
-                        final double newDifferential = computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isARandomMove);
-                        if (newDifferential != 0d) {
-                            final double oldWeight = currentNeuron.getWeight(neuronIndexK);
-                            if (neuronIndexK == neuronQuantityInK) {
-                                // Si se es una bias, actualizamos la bias en
-                                // la red neuronal original
-                                neuralNetwork.setBias(layerIndexJ, neuronIndexJ, oldWeight + newDifferential);
-                            } else {
-                                // Si se es un peso, actualizamos el peso en
-                                // la red neuronal original
-                                neuralNetwork.setWeight(layerIndexJ, neuronIndexJ, neuronIndexK, oldWeight + newDifferential);
-                            }
+                    // Calculamos el nuevo valor para el peso o bias,
+                    //sumando la corrección adecuada a su valor anterior
+                    final double newDifferential = computeWeightError(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+                    if (newDifferential != 0d) {
+                        final double oldWeight = currentNeuron.getWeight(neuronIndexK);
+                        if (neuronIndexK == neuronQuantityInK) {
+                            // Si se es una bias, actualizamos la bias en
+                            // la red neuronal original
+                            neuralNetwork.setBias(layerIndexJ, neuronIndexJ, oldWeight + newDifferential);
+                        } else {
+                            // Si se es un peso, actualizamos el peso en
+                            // la red neuronal original
+                            neuralNetwork.setWeight(layerIndexJ, neuronIndexJ, neuronIndexK, oldWeight + newDifferential);
                         }
-                    } else if (lambda > 0) {
-                        updateEligibilityTraceOnly(layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isARandomMove);
                     }
                 });
             });
@@ -614,21 +573,19 @@ class TDTrainerPerceptron
      * @param neuronIndexJ índice de la neurona mas cercana a la capa de salida.
      * @param layerIndexK  índice de la capa de neuronas mas alejada de la capa de salida.
      * @param neuronIndexK índice de la neurona mas alejada de la capa de salida.
-     * @param isRandomMove true si la última acción fue elegido al azar en lugar de utilizar la red neuronal.
      */
     private
     void updateEligibilityTraceOnly(
             final int layerIndexJ,
             final int neuronIndexJ,
             final int layerIndexK,
-            final int neuronIndexK,
-            final boolean isRandomMove
+            final int neuronIndexK
     ) {
         final int outputLayerSize = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex()).getNeurons().size();
 
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
         if (layerIndexJ == turnCurrentStateCache.getOutputLayerIndex()) {
-            computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
+            computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
         } else {
             IntStream outputLayerStream = IntStream.range(0, outputLayerSize);
             if (concurrencyInLayer[turnCurrentStateCache.getOutputLayerIndex()]) {
@@ -639,7 +596,7 @@ class TDTrainerPerceptron
 
             outputLayerStream.forEach(outputNeuronIndex -> {
                 // System.out.println("outputNeuronIndex:" + outputNeuronIndex + " layerIndexJ:" + layerIndexJ + " neuronIndexJ:" + neuronIndexJ + " layerIndexK:" + layerIndexK + " neuronIndexK:" + neuronIndexK + " E:" + e(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK));
-                computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK, isRandomMove);
+                computeEligibilityTrace(outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
             });
         }
     }

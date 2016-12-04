@@ -47,24 +47,20 @@ class TDTrainerNTupleSystem
      * Inicializa el algoritmo que entrena sistemas NTuplas.
      *
      * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
-     * @param maxEligibilityTraceLength
+     * @param maxEligibilityTraceLength longitud máxima que puede tener la traza de elegibilidad
      * @param gamma                     tasa de descuento, entre [0,1].
-     * @param replaceEligibilityTraces  true si se permite reiniciar las trazas de elegibilidad en caso de movimientos al azar durante el
-     *                                  entrenamiento.
-     * @param nTupleSystem
+     * @param nTupleSystem              sistema de NTupla utilizado
      */
     public
     TDTrainerNTupleSystem(
             final NTupleSystem nTupleSystem,
             final int maxEligibilityTraceLength,
             final double lambda,
-            final double gamma,
-            final boolean replaceEligibilityTraces
+            final double gamma
     ) {
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;
-        this.replaceEligibilityTraces = replaceEligibilityTraces;
         if (lambda != 0) {
             eligibilityTrace = new EligibilityTraceForNTuple(nTupleSystem, gamma, lambda, maxEligibilityTraceLength);
         } else {
@@ -88,8 +84,7 @@ class TDTrainerNTupleSystem
             final IState state,
             final IState nextTurnState,
             final double[] alpha,
-            final boolean[] concurrencyInLayer,
-            final boolean isARandomMove
+            final boolean[] concurrencyInLayer
     ) {
         //computamos
         final ComplexNTupleComputation normalizedStateOutput    = nTupleSystem.getComplexComputation((IStateNTuple) state);
@@ -109,36 +104,26 @@ class TDTrainerNTupleSystem
         }
         partialError = alpha[0] * tdError;//* (derivedOutput);
 
-        if (lambda > 0 && isARandomMove && replaceEligibilityTraces) {
-            assert eligibilityTrace != null;
-            eligibilityTrace.reset();
-        } else {
-            for (int weightIndex = 0; weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++) {
-                final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
-                final double currentEligibilityTrace;
+        for (int weightIndex = 0; weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++) {
+            final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
+            final double currentEligibilityTrace;
 
-                if (lambda > 0) {
-                    if (isARandomMove && !replaceEligibilityTraces) {
-                        assert eligibilityTrace != null;
-                        currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, 0);
-                    } else {
-                        assert eligibilityTrace != null;
-                        currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, derivedOutput);
-                    }
-                } else {
-                    currentEligibilityTrace = derivedOutput;
-                }
-
-                final double finalError = partialError * currentEligibilityTrace;
-
-                if ((!isARandomMove || nextTurnState.isTerminalState()) && finalError != 0d) {
-                    nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
-                }
-            }
             if (lambda > 0) {
                 assert eligibilityTrace != null;
-                eligibilityTrace.processNotUsedTraces(partialError);
+                currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, derivedOutput);
+            } else {
+                currentEligibilityTrace = derivedOutput;
             }
+
+            final double finalError = partialError * currentEligibilityTrace;
+
+            if (nextTurnState.isTerminalState() && finalError != 0d) {
+                nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
+            }
+        }
+        if (lambda > 0) {
+            assert eligibilityTrace != null;
+            eligibilityTrace.processNotUsedTraces(partialError);
         }
     }
 

@@ -61,7 +61,6 @@ class TDLambdaLearning {
     private ELearningRateAdaptation    learningRateAdaptation;
     private ELearningStyle             learningStyle;
     private NTupleSystem               nTupleSystem;
-    private boolean                    replaceEligibilityTraces;
     private LinkedList<Long>           statisticsBestPossibleActionTimes;
     private LinkedList<Long>           statisticsTrainingTimes;
     private Trainer                    trainer;
@@ -69,17 +68,15 @@ class TDLambdaLearning {
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
      *
-     * @param learningStyle            tipo de aprendizaje utilizado.
-     * @param perceptronInterface      red neuronal que se desea entrenar, la cual implementa la interfaz {@code INeuralNetworkInterface}, permitiendo
-     *                                 así el acceso a su representación interna.
-     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
-     * @param alpha                    tasa de aprendizaje para cada capa. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la
-     *                                 capa anterior.
-     * @param gamma                    tasa de descuento, entre [0,1].
-     * @param concurrencyInLayer       true en las capas que se deben computar concurrentemente.
-     * @param replaceEligibilityTraces true si se permite reiniciar las trazas de elegibilidad en caso de movimientos al azar durante el
-     *                                 entrenamiento.
-     * @param collectStatistics        true guarda estadísticas relevante a los tiempos de cálculo.
+     * @param learningStyle          tipo de aprendizaje utilizado.
+     * @param perceptronInterface    red neuronal que se desea entrenar, la cual implementa la interfaz {@code INeuralNetworkInterface}, permitiendo
+     *                               así el acceso a su representación interna.
+     * @param lambda                 escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
+     * @param alpha                  tasa de aprendizaje para cada capa. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la capa
+     *                               anterior.
+     * @param gamma                  tasa de descuento, entre [0,1].
+     * @param concurrencyInLayer     true en las capas que se deben computar concurrentemente.
+     * @param collectStatistics      true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public
     TDLambdaLearning(
@@ -89,7 +86,6 @@ class TDLambdaLearning {
             final double lambda,
             final double gamma,
             final boolean[] concurrencyInLayer,
-            final boolean replaceEligibilityTraces,
             final boolean collectStatistics
     ) {
         if (perceptronInterface == null) {
@@ -136,7 +132,6 @@ class TDLambdaLearning {
         this.perceptronInterface = perceptronInterface;
         nTupleSystem = null;
         this.concurrencyInLayer = concurrencyInLayer;
-        this.replaceEligibilityTraces = replaceEligibilityTraces;
         canCollectStatistics = collectStatistics;
 
         if (collectStatistics) {
@@ -148,14 +143,13 @@ class TDLambdaLearning {
     /**
      * Algoritmo de entrenamiento de redes neuronales NTupla, mediante TD Learning.
      *
-     * @param nTupleSystem             red NTupla a entrenar.
-     * @param learningStyle            tipo de aprendizaje utilizado.
-     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
-     * @param alpha                    tasa de aprendizaje. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la capa anterior.
-     * @param gamma                    tasa de descuento entre [0,1].
-     * @param concurrencyInLayer       true en las capas que se deben computar concurrentemente.
-     * @param replaceEligibilityTraces permite reiniciar las trazas de elegibilidad en caso de movimientos al azar durante el entrenamiento.
-     * @param collectStatistics        true guarda estadísticas relevante a los tiempos de cálculo.
+     * @param nTupleSystem       red NTupla a entrenar.
+     * @param learningStyle      tipo de aprendizaje utilizado.
+     * @param lambda             escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
+     * @param alpha              tasa de aprendizaje. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la capa anterior.
+     * @param gamma              tasa de descuento entre [0,1].
+     * @param concurrencyInLayer true en las capas que se deben computar concurrentemente.
+     * @param collectStatistics  true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public
     TDLambdaLearning(
@@ -165,7 +159,6 @@ class TDLambdaLearning {
             final double lambda,
             final double gamma,
             final boolean[] concurrencyInLayer,
-            final boolean replaceEligibilityTraces,
             final boolean collectStatistics
     ) {
         if (nTupleSystem == null) {
@@ -206,7 +199,6 @@ class TDLambdaLearning {
         perceptronInterface = null;
         this.nTupleSystem = nTupleSystem;
         this.concurrencyInLayer = concurrencyInLayer;
-        this.replaceEligibilityTraces = replaceEligibilityTraces;
         canCollectStatistics = collectStatistics;
 
         if (collectStatistics) {
@@ -217,24 +209,24 @@ class TDLambdaLearning {
 
     /**
      * Calcula un valor de "enfriamiento" o "recocido" (nombrado diferente dependiendo la bibliografía) sobre el valor
-     * inicial {@code initialValue} en el tiempo {@code t}.
+     * inicial {@code initialAlphaValue} en el tiempo {@code t}.
      *
-     * @param initialValue valor inicial.
-     * @param t            valor de {@code T} actual.
-     * @param T            valor que indica el momento en el que {@code initialValue} disminuye hasta {@code initialValue}/2.
+     * @param initialAlphaValue valor inicial.
+     * @param t                 valor de {@code T} actual.
+     * @param T                 valor que indica el momento en el que {@code initialAlphaValue} disminuye hasta {@code initialAlphaValue}/2.
      *
      * @return alpha en el tiempo {@code t}.
      */
     public static
     double calculateAnnealing(
-            final double initialValue,
+            final double initialAlphaValue,
             final int t,
             final int T
     ) {
-        if (initialValue > 1 || initialValue < 0) {
-            throw new IllegalArgumentException("initialValue=" + initialValue + " is out of range from a valid [0..1]");
+        if (initialAlphaValue > 1 || initialAlphaValue < 0) {
+            throw new IllegalArgumentException("initialAlphaValue=" + initialAlphaValue + " is out of range from a valid [0..1]");
         }
-        return initialValue / (1d + (t / ((double) T)));
+        return initialAlphaValue / (1d + (t / ((double) T)));
     }
 
     /**
@@ -387,7 +379,6 @@ class TDLambdaLearning {
      * @param trainer                           método de entrenamiento elegido, según el tipo de red neuronal.
      * @param afterState                        estado de transición luego de aplicar la mejor {@code action} al estado {@code turnInitialState}.
      * @param nextTurnState                     estado del problema en el próximo turno, luego de aplicar las acciones/efectos no determinísticos.
-     * @param isARandomMove                     true si el movimiento actual fue elegido al azar.
      * @param currentAlpha                      alpha actual.
      * @param concurrencyInLayer                capas que deben ser computadas concurrentemente.
      * @param computeParallelBestPossibleAction true si se deben evaluar las mejores acciones concurrentemente.
@@ -404,7 +395,6 @@ class TDLambdaLearning {
             final Trainer trainer,
             final IState afterState,
             final IState nextTurnState,
-            final boolean isARandomMove,
             final double[] currentAlpha,
             final boolean[] concurrencyInLayer,
             final boolean computeParallelBestPossibleAction,
@@ -435,7 +425,7 @@ class TDLambdaLearning {
             if (trainingTimes != null) {
                 time = System.currentTimeMillis();
             }
-            trainer.train(problem, afterState, afterStateNextTurn, currentAlpha, concurrencyInLayer, isARandomMove);
+            trainer.train(problem, afterState, afterStateNextTurn, currentAlpha, concurrencyInLayer);
             if (trainingTimes != null) {
                 time = System.currentTimeMillis() - time;
                 trainingTimes.add(time);
@@ -450,7 +440,7 @@ class TDLambdaLearning {
             if (trainingTimes != null) {
                 time = System.currentTimeMillis();
             }
-            trainer.train(problem, afterState, nextTurnState, currentAlpha, concurrencyInLayer, isARandomMove);
+            trainer.train(problem, afterState, nextTurnState, currentAlpha, concurrencyInLayer);
             if (trainingTimes != null) {
                 time = System.currentTimeMillis() - time;
                 trainingTimes.add(time);
@@ -681,15 +671,13 @@ class TDLambdaLearning {
         if (trainer == null) {
             switch (neuralNetworkType) {
                 case perceptron: {
-                    trainer = new TDTrainerPerceptron(perceptronInterface, lambda, gamma, replaceEligibilityTraces);
+                    trainer = new TDTrainerPerceptron(perceptronInterface, lambda, gamma);
                     break;
                 }
                 case nTuple: {
                     trainer = new TDTrainerNTupleSystem(nTupleSystem,
                             calculateBestEligibilityTraceLength(lambda),
-                            lambda,
-                            gamma,
-                            replaceEligibilityTraces
+                            lambda, gamma
                     );
                     break;
                 }
@@ -750,7 +738,7 @@ class TDLambdaLearning {
             // azar se actualizan trazas pero no se actualizan pesos
             switch (learningStyle) {
                 case afterState: {
-                    learnEvaluationAfterState(problem, trainer, afterState, nextTurnState, randomChoice,
+                    learnEvaluationAfterState(problem, trainer, afterState, nextTurnState,
                             currentAlpha,
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,
