@@ -117,7 +117,7 @@ class TDTrainerNTupleSystem
 
             final double finalError = partialError * currentEligibilityTrace;
 
-            if (nextTurnState.isTerminalState() && finalError != 0d) {
+            if (finalError != 0d) {
                 nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
             }
         }

@@ -169,7 +169,7 @@ class TDTrainerPerceptron
             final int layerIndexK,
             final int neuronIndexK
     ) {
-        final double derivedOutput = delta(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
+        final double derivedOutput = derivative(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
         if (lambda > 0) {
             final List<Double> neuronKEligibilityTrace = eligibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
             final double newEligibilityTrace = (neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma) +
@@ -374,17 +374,17 @@ class TDTrainerPerceptron
     }
 
     /**
-     * Calcula delta en las coordenadas de la red neuronal establecidas.
+     * Calcula derivative en las coordenadas de la red neuronal establecidas.
      *
      * @param outputNeuronIndex índice de una neurona de salida
      * @param layerIndex        índice de una capa de neuronas
      * @param neuronIndex       índice de una neurona
      *
-     * @return delta.
+     * @return derivative.
      */
     @SuppressWarnings("null")
     private
-    Double delta(
+    Double derivative(
             final int outputNeuronIndex,
             final int layerIndex,
             final int neuronIndex
@@ -405,14 +405,13 @@ class TDTrainerPerceptron
                 delta = currentLayer.getNeuron(outputNeuronIndex).getDerivedOutput();
                 neuronO.setDelta(outputNeuronIndex, delta);
             } else if (turnCurrentStateCache.isNextToLastLayer(layerIndex)) {
-                //i!=o ^ o pertenece(I-1) => f'(net(o,m))*delta(i,i,m)*w(i,o,m)
+                //i!=o ^ o pertenece(I-1) => f'(net(o,m))*derivative(i,i,m)*w(i,o,m)
                 assert nextLayer != null;
-                delta = neuronO.getDerivedOutput() *
-                        delta(outputNeuronIndex, turnCurrentStateCache.getOutputLayerIndex(), outputNeuronIndex) *
+                delta = neuronO.getDerivedOutput() * derivative(outputNeuronIndex, turnCurrentStateCache.getOutputLayerIndex(), outputNeuronIndex) *
                         nextLayer.getNeuron(outputNeuronIndex).getWeight(neuronIndex);
                 neuronO.setDelta(outputNeuronIndex, delta);
             } else {
-                //i!=o ^ o !pertenece(I-1) => f'(net(o,m))*SumatoriaP(delta(i,p,m)*w(p,o,m))
+                //i!=o ^ o !pertenece(I-1) => f'(net(o,m))*SumatoriaP(derivative(i,p,m)*w(p,o,m))
                 assert nextLayer != null;
                 IntStream nextLayerStream = IntStream.range(0, nextLayer.getNeurons().size());
                 if (concurrencyInLayer[layerIndex + 1]) {
@@ -534,7 +533,7 @@ class TDTrainerPerceptron
             } else {
                 layerJStream = layerJStream.sequential();
             }
-
+            //TODO hacer TEST para mostrar equivalencia entre NTuple y Perceptron trainers
             layerJStream.forEach(neuronIndexJ -> {
                 final Neuron currentNeuron = currentLayer.getNeuron(neuronIndexJ);
                 IntStream    layerKStream  = IntStream.rangeClosed(0, maxIndexK);
