@@ -316,7 +316,7 @@ class TDLambdaLearning {
      * @return la mejor {@code IAction} de todas las posibles para el {@code actor} en el {@code turnInitialState} actual.
      */
     public static
-    IAction computeBestPossibleAction(
+    ActionPrediction computeBestPossibleAction(
             final IProblemRunner problem,
             final ELearningStyle learningStyle,
             final IState turnInitialState,
@@ -345,7 +345,7 @@ class TDLambdaLearning {
                 }
             }
         }).collect(MaximalActionPredictionConsumer::new, MaximalActionPredictionConsumer::accept, MaximalActionPredictionConsumer::combine).getList();
-        IAction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1)).getAction();
+        ActionPrediction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1));
         if (bestPossibleActionTimes != null) {
             time = System.currentTimeMillis() - time;
             bestPossibleActionTimes.add(time);
@@ -377,7 +377,7 @@ class TDLambdaLearning {
         for (int i = 0; i < output.length; i++) {
             output[i] = problem.deNormalizeValueFromPerceptronOutput(output[i]) + afterState.getStateReward(i);
         }
-        return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, actor));
+        return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, actor), afterState);
     }
 
     /**
@@ -416,7 +416,8 @@ class TDLambdaLearning {
             // Evaluamos cada acción posible aplicada al estado nextState y
             // elegimos la mejor acción basada las predicciones del problema
             final List<IAction> possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
-            final IAction bestActionForNextTurn = computeBestPossibleAction(problem,
+            final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(
+                    problem,
                     ELearningStyle.afterState,
                     nextTurnState,
                     possibleActionsNextTurn,
@@ -427,7 +428,8 @@ class TDLambdaLearning {
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
             // (determinístico) del próximo estado (turno).
-            final IState afterStateNextTurn = problem.computeAfterState(nextTurnState, bestActionForNextTurn);
+            final IState afterStateNextTurn = bestActionForNextTurn.getAfterState();
+
             // V (s') ← V (s') + α(rnext + V (s'next) − V (s'))
             // (matemática sin trazas de elegibilidad)
             if (trainingTimes != null) {
@@ -709,10 +711,13 @@ class TDLambdaLearning {
             }
 
             final List<IAction> possibleActions = problem.listAllPossibleActions(turnInitialState);
+
+            final IState afterState;
             if (!randomChoice) {
                 // evaluamos cada acción aplicada al estado inicial y elegimos la mejor
                 // de éstas basada en las predicciones de recompensas final del problema
-                bestAction = computeBestPossibleAction(problem,
+                ActionPrediction bestActionPrediction = computeBestPossibleAction(
+                        problem,
                         learningStyle,
                         turnInitialState,
                         possibleActions,
@@ -720,13 +725,16 @@ class TDLambdaLearning {
                         computeParallelBestPossibleAction,
                         statisticsBestPossibleActionTimes
                 );
+                // aplicamos la acción 'bestAction' al estado actual 'currentState',
+                // y obtenemos su estado de transición determinístico.
+                afterState = bestActionPrediction.getAfterState();
             } else {
+                // elegimos una acción al azar
                 bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1));
+                // aplicamos la acción 'bestAction' al estado actual 'currentState',
+                // y obtenemos su estado de transición determinístico.
+                afterState = problem.computeAfterState(turnInitialState, bestAction);
             }
-
-            // aplicamos la acción 'bestAction' al estado actual 'currentState',
-            // y obtenemos su estado de transición determinístico.
-            final IState afterState = problem.computeAfterState(turnInitialState, bestAction);
 
             // hacemos que el problema aplique la acción 'bestAction' de la red neuronal,
             // y retorne el estado del turno siguiente, luego de aplicar acciones

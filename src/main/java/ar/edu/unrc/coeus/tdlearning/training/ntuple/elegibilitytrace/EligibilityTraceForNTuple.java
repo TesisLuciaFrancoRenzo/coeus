@@ -139,7 +139,7 @@ class EligibilityTraceForNTuple {
             final double derivedOutput
     ) {
         final ValueUsagePair trace = eligibilityTrace[weightIndex];
-        trace.setValue((trace.getValue() * lambda * gamma) + derivedOutput);
+        trace.setValue((trace.getValue() * lambda * gamma) + derivedOutput); //TODO probar bien trace.setValue(derivedOutput);
         trace.setUsagesLeft(maxEligibilityTraceLength + 1);
         usedTraces.add(weightIndex);
         return trace.getValue();

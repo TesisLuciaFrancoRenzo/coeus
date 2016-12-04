@@ -19,6 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.learning;
 
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IState;
 
 /**
  * Tupla que contiene una acción y la predicción que calcula la red neuronal sobre la recompensa final del problema, si
@@ -31,6 +32,7 @@ class ActionPrediction
         implements Comparable<ActionPrediction> {
 
     private final IAction action;
+    private final IState  afterState;
     private final Double  numericRepresentation;
 
     /**
@@ -40,14 +42,17 @@ class ActionPrediction
      *
      * @param action                acción relacionada a {@code prediction}
      * @param numericRepresentation para comparar diferentes {@code ActionPrediction} cuando hay varias neuronas de salida
+     * @param afterState
      */
     public
     ActionPrediction(
             final IAction action,
-            final Double numericRepresentation
+            final Double numericRepresentation,
+            final IState afterState
     ) {
         this.action = action;
         this.numericRepresentation = numericRepresentation;
+        this.afterState = afterState;
     }
 
     @Override
@@ -62,6 +67,14 @@ class ActionPrediction
     public
     IAction getAction() {
         return action;
+    }
+
+    /**
+     * @return estado intermedio calculado al tomar la acción, para no tener que ser recalculado en caso de ser elegida esta ActionPrediction
+     */
+    public
+    IState getAfterState() {
+        return afterState;
     }
 
     /**
