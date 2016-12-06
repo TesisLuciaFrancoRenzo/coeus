@@ -202,7 +202,8 @@ class TDTrainerPerceptron
         //caso especial para la ultima capa de pesos. No debemos hacer la sumatoria para toda salida.
         if (layerIndexJ == turnCurrentStateCache.getOutputLayerIndex()) {
             return alpha[layerIndexK] *
-                   tDError.get(neuronIndexJ) * computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
+                   tDError.get(neuronIndexJ) *
+                   computeEligibilityTrace(neuronIndexJ, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK);
         } else {
             IntStream lastLayerStream = IntStream.range(0, outputLayerSize);
 
@@ -216,8 +217,7 @@ class TDTrainerPerceptron
                                                                     tDError.get(outputNeuronIndex) *
                                                                     computeEligibilityTrace(outputNeuronIndex,
                                                                             layerIndexJ,
-                                                                            neuronIndexJ,
-                                                                            layerIndexK, neuronIndexK
+                                                                            neuronIndexJ, layerIndexK, neuronIndexK
                                                                     )).sum();
         }
     }
