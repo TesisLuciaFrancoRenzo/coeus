@@ -49,34 +49,35 @@ class TDLambdaLearning {
     private       int                     alphaAnnealingT;
     private       boolean                 canCollectStatistics;
     private boolean computeParallelBestPossibleAction = false;
-    private double[]                   currentAlpha;
+    private double[] currentAlpha;
+    private int eligibilityTraceLength;
     private EExplorationRateAlgorithms explorationRate;
-    private double                     explorationRateFinalValue;
-    private int                        explorationRateFinishInterpolation;
-    private double                     explorationRateInitialValue;
-    private int                        explorationRateStartInterpolation;
-    private double                     gamma;
-    private double[]                   initialAlpha;
-    private double                     lambda;
-    private ELearningRateAdaptation    learningRateAdaptation;
-    private ELearningStyle             learningStyle;
-    private NTupleSystem               nTupleSystem;
-    private LinkedList<Long>           statisticsBestPossibleActionTimes;
-    private LinkedList<Long>           statisticsTrainingTimes;
-    private Trainer                    trainer;
+    private double explorationRateFinalValue;
+    private int explorationRateFinishInterpolation;
+    private double explorationRateInitialValue;
+    private int explorationRateStartInterpolation;
+    private double gamma;
+    private double[] initialAlpha;
+    private double lambda;
+    private ELearningRateAdaptation learningRateAdaptation;
+    private ELearningStyle learningStyle;
+    private NTupleSystem nTupleSystem;
+    private LinkedList<Long> statisticsBestPossibleActionTimes;
+    private LinkedList<Long> statisticsTrainingTimes;
+    private Trainer trainer;
 
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
      *
-     * @param learningStyle          tipo de aprendizaje utilizado.
-     * @param perceptronInterface    red neuronal que se desea entrenar, la cual implementa la interfaz {@code INeuralNetworkInterface}, permitiendo
-     *                               así el acceso a su representación interna.
-     * @param lambda                 escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
-     * @param alpha                  tasa de aprendizaje para cada capa. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la capa
-     *                               anterior.
-     * @param gamma                  tasa de descuento, entre [0,1].
-     * @param concurrencyInLayer     true en las capas que se deben computar concurrentemente.
-     * @param collectStatistics      true guarda estadísticas relevante a los tiempos de cálculo.
+     * @param learningStyle       tipo de aprendizaje utilizado.
+     * @param perceptronInterface red neuronal que se desea entrenar, la cual implementa la interfaz {@code INeuralNetworkInterface}, permitiendo así
+     *                            el acceso a su representación interna.
+     * @param lambda              escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
+     * @param alpha               tasa de aprendizaje para cada capa. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la capa
+     *                            anterior.
+     * @param gamma               tasa de descuento, entre [0,1].
+     * @param concurrencyInLayer  true en las capas que se deben computar concurrentemente.
+     * @param collectStatistics   true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public
     TDLambdaLearning(
@@ -143,13 +144,14 @@ class TDLambdaLearning {
     /**
      * Algoritmo de entrenamiento de redes neuronales NTupla, mediante TD Learning.
      *
-     * @param nTupleSystem       red NTupla a entrenar.
-     * @param learningStyle      tipo de aprendizaje utilizado.
-     * @param lambda             escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
-     * @param alpha              tasa de aprendizaje. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la capa anterior.
-     * @param gamma              tasa de descuento entre [0,1].
-     * @param concurrencyInLayer true en las capas que se deben computar concurrentemente.
-     * @param collectStatistics  true guarda estadísticas relevante a los tiempos de cálculo.
+     * @param nTupleSystem           red NTupla a entrenar.
+     * @param learningStyle          tipo de aprendizaje utilizado.
+     * @param lambda                 escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
+     * @param eligibilityTraceLength longitud de la traza de elegibilidad. Si el valor es negativo, Se computará una longitud dinámicamente.
+     * @param alpha                  tasa de aprendizaje. Si es null, se inicializa cada alpha con la formula 1/num_neuronas de la capa anterior.
+     * @param gamma                  tasa de descuento entre [0,1].
+     * @param concurrencyInLayer     true en las capas que se deben computar concurrentemente.
+     * @param collectStatistics      true guarda estadísticas relevante a los tiempos de cálculo.
      */
     public
     TDLambdaLearning(
@@ -157,6 +159,7 @@ class TDLambdaLearning {
             final ELearningStyle learningStyle,
             final Double alpha,
             final double lambda,
+            final int eligibilityTraceLength,
             final double gamma,
             final boolean[] concurrencyInLayer,
             final boolean collectStatistics
@@ -194,6 +197,11 @@ class TDLambdaLearning {
         currentAlpha = new double[2];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
+        if (eligibilityTraceLength < 0) {
+            this.eligibilityTraceLength = calculateBestEligibilityTraceLength(lambda);
+        } else {
+            this.eligibilityTraceLength = eligibilityTraceLength;
+        }
         this.gamma = gamma;
         neuralNetworkType = ENeuralNetworkType.nTuple;
         perceptronInterface = null;
@@ -420,11 +428,11 @@ class TDLambdaLearning {
             // (determinístico) del próximo estado (turno).
             final IState afterStateNextTurn = bestActionForNextTurn.getAfterState();
 
-            // V (s') ← V (s') + α(rnext + V (s'next) − V (s'))
-            // (matemática sin trazas de elegibilidad)
             if (trainingTimes != null) {
                 time = System.currentTimeMillis();
             }
+            // V (s') ← V (s') + α(rnext + V (s'next) − V (s'))
+            // (matemática sin trazas de elegibilidad)
             trainer.train(problem, afterState, afterStateNextTurn, currentAlpha, concurrencyInLayer);
             if (trainingTimes != null) {
                 time = System.currentTimeMillis() - time;
@@ -440,6 +448,8 @@ class TDLambdaLearning {
             if (trainingTimes != null) {
                 time = System.currentTimeMillis();
             }
+            // V (s') ← V (s') + α(rFinal − V (s'))
+            // (matemática sin trazas de elegibilidad)
             trainer.train(problem, afterState, nextTurnState, currentAlpha, concurrencyInLayer);
             if (trainingTimes != null) {
                 time = System.currentTimeMillis() - time;
@@ -655,7 +665,8 @@ class TDLambdaLearning {
             }
             case linear: {
                 //factor ajustado linealmente entre dos puntos
-                currentExplorationRate = calculateLinearInterpolation(currentTurn,
+                currentExplorationRate = calculateLinearInterpolation(
+                        currentTurn,
                         explorationRateInitialValue,
                         explorationRateFinalValue,
                         explorationRateStartInterpolation,
@@ -675,10 +686,7 @@ class TDLambdaLearning {
                     break;
                 }
                 case nTuple: {
-                    trainer = new TDTrainerNTupleSystem(nTupleSystem,
-                            calculateBestEligibilityTraceLength(lambda),
-                            lambda, gamma
-                    );
+                    trainer = new TDTrainerNTupleSystem(nTupleSystem, eligibilityTraceLength, lambda, gamma);
                     break;
                 }
             }
