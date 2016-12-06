@@ -128,18 +128,18 @@ class EligibilityTraceForNTuple {
     /**
      * Actualiza el contenido de la traza de elegibilidad en el índice {@code weightIndex}
      *
-     * @param weightIndex   índice del peso a actualizar en la traza.
-     * @param derivedOutput valor de actual de la derivada de la neurona de salida.
+     * @param weightIndex    índice del peso a actualizar en la traza.
+     * @param gradientOutput valor de actual de la derivada de la neurona de salida multiplicado por la salida de la misma neurona.
      *
      * @return
      */
     public synchronized
     double updateTrace(
             final int weightIndex,
-            final double derivedOutput
+            final double gradientOutput
     ) {
         final ValueUsagePair trace = eligibilityTrace[weightIndex];
-        trace.setValue((trace.getValue() * lambda * gamma) + derivedOutput); //TODO probar bien trace.setValue(derivedOutput);
+        trace.setValue((trace.getValue() * lambda * gamma) + gradientOutput);
         trace.setUsagesLeft(maxEligibilityTraceLength + 1);
         usedTraces.add(weightIndex);
         return trace.getValue();

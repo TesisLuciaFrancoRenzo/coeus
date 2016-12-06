@@ -169,16 +169,77 @@ class TDTrainerPerceptron
             final int layerIndexK,
             final int neuronIndexK
     ) {
-        final double derivedOutput = derivative(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
+        final double output = computeGradient(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
         if (lambda > 0) {
             final List<Double> neuronKEligibilityTrace = eligibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
             final double newEligibilityTrace = (neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma) +
-                                               derivedOutput; //reutilizamos las viejas trazas
+                                               output; //reutilizamos las viejas trazas
             neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
             return newEligibilityTrace;
         } else {
-            return derivedOutput;
+            return output;
         }
+    }
+
+    /**
+     * Calcula gradiente en las coordenadas de la red neuronal establecidas.
+     *
+     * @param outputNeuronIndex índice de una neurona de salida
+     * @param layerIndex        índice de una capa de neuronas
+     * @param neuronIndex       índice de una neurona
+     *
+     * @return computeGradient.
+     */
+    @SuppressWarnings("null")
+    private
+    Double computeGradient(
+            final int outputNeuronIndex,
+            final int layerIndex,
+            final int neuronIndex
+    ) {
+        final Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
+        final Layer nextLayer;
+        if (turnCurrentStateCache.isOutputLayer(layerIndex)) {
+            nextLayer = null;
+        } else {
+            nextLayer = turnCurrentStateCache.getLayer(layerIndex + 1);
+        }
+        final Neuron neuronO  = currentLayer.getNeuron(neuronIndex);
+        Double       gradient = neuronO.getGradient(outputNeuronIndex);
+        if (gradient == null) {
+            if (turnCurrentStateCache.isOutputLayer(layerIndex)) {
+                //i==o ^ o pertenece(I) => f'(net(i,m))
+                //                assert outputNeuronIndex == neuronIndex;
+                gradient = currentLayer.getNeuron(outputNeuronIndex).getDerivedOutput();
+                neuronO.setGradient(outputNeuronIndex, gradient);
+            } else if (turnCurrentStateCache.isNextToLastLayer(layerIndex)) {
+                //i!=o ^ o pertenece(I-1) => f'(net(o,m))*computeGradient(i,i,m)*w(i,o,m)
+                assert nextLayer != null;
+                gradient = neuronO.getDerivedOutput() *
+                           computeGradient(outputNeuronIndex, turnCurrentStateCache.getOutputLayerIndex(), outputNeuronIndex) *
+                           nextLayer.getNeuron(outputNeuronIndex).getWeight(neuronIndex);
+                neuronO.setGradient(outputNeuronIndex, gradient);
+            } else {
+                //i!=o ^ o !pertenece(I-1) => f'(net(o,m))*SumatoriaP(computeGradient(i,p,m)*w(p,o,m))
+                assert nextLayer != null;
+                IntStream nextLayerStream = IntStream.range(0, nextLayer.getNeurons().size());
+                if (concurrencyInLayer[layerIndex + 1]) {
+                    nextLayerStream = nextLayerStream.parallel();
+                } else {
+                    nextLayerStream = nextLayerStream.sequential();
+                }
+
+                final double sum = nextLayerStream.mapToDouble(neuronIndexP -> {
+                    @SuppressWarnings("null") final Neuron neuronP = nextLayer.getNeuron(neuronIndexP);
+                    final Double                           deltaP  = neuronP.getGradient(outputNeuronIndex);
+                    assert deltaP != null; // llamar la actualización de pesos de tal forma que no haga recursividad
+                    return deltaP * neuronP.getWeight(neuronIndex);
+                }).sum();
+                gradient = neuronO.getDerivedOutput() * sum;
+                neuronO.setGradient(outputNeuronIndex, gradient);
+            }
+        }
+        return gradient;
     }
 
     /**
@@ -216,8 +277,7 @@ class TDTrainerPerceptron
             return lastLayerStream.mapToDouble(outputNeuronIndex -> alpha[layerIndexJ] *
                                                                     tDError.get(outputNeuronIndex) *
                                                                     computeEligibilityTrace(outputNeuronIndex,
-                                                                            layerIndexJ,
-                                                                            neuronIndexJ, layerIndexK, neuronIndexK
+                                                                            layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK
                                                                     )).sum();
         }
     }
@@ -296,7 +356,7 @@ class TDTrainerPerceptron
                                  neuron = new Neuron(neuralNetwork.getNeuronQuantityInLayer(previousLayerIndex), outputLayerNeuronQuantity);
                              } else {
                                  neuron = oldCacheCurrentLayer.getNeuron(currentNeuronIndex);
-                                 neuron.clearDeltas();
+                                 neuron.clearGradients();
                              }
                              if (neuralNetwork.hasBias(currentLayerIndex)) {
                                  neuron.setBias(neuralNetwork.getBias(currentLayerIndex, currentNeuronIndex));
@@ -371,66 +431,6 @@ class TDTrainerPerceptron
             }
             eligibilityTraces.add(layer);
         }
-    }
-
-    /**
-     * Calcula derivative en las coordenadas de la red neuronal establecidas.
-     *
-     * @param outputNeuronIndex índice de una neurona de salida
-     * @param layerIndex        índice de una capa de neuronas
-     * @param neuronIndex       índice de una neurona
-     *
-     * @return derivative.
-     */
-    @SuppressWarnings("null")
-    private
-    Double derivative(
-            final int outputNeuronIndex,
-            final int layerIndex,
-            final int neuronIndex
-    ) {
-        final Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
-        final Layer nextLayer;
-        if (turnCurrentStateCache.isOutputLayer(layerIndex)) {
-            nextLayer = null;
-        } else {
-            nextLayer = turnCurrentStateCache.getLayer(layerIndex + 1);
-        }
-        final Neuron neuronO = currentLayer.getNeuron(neuronIndex);
-        Double       delta   = neuronO.getDelta(outputNeuronIndex);
-        if (delta == null) {
-            if (turnCurrentStateCache.isOutputLayer(layerIndex)) {
-                //i==o ^ o pertenece(I) => f'(net(i,m))
-                //                assert outputNeuronIndex == neuronIndex;
-                delta = currentLayer.getNeuron(outputNeuronIndex).getDerivedOutput();
-                neuronO.setDelta(outputNeuronIndex, delta);
-            } else if (turnCurrentStateCache.isNextToLastLayer(layerIndex)) {
-                //i!=o ^ o pertenece(I-1) => f'(net(o,m))*derivative(i,i,m)*w(i,o,m)
-                assert nextLayer != null;
-                delta = neuronO.getDerivedOutput() * derivative(outputNeuronIndex, turnCurrentStateCache.getOutputLayerIndex(), outputNeuronIndex) *
-                        nextLayer.getNeuron(outputNeuronIndex).getWeight(neuronIndex);
-                neuronO.setDelta(outputNeuronIndex, delta);
-            } else {
-                //i!=o ^ o !pertenece(I-1) => f'(net(o,m))*SumatoriaP(derivative(i,p,m)*w(p,o,m))
-                assert nextLayer != null;
-                IntStream nextLayerStream = IntStream.range(0, nextLayer.getNeurons().size());
-                if (concurrencyInLayer[layerIndex + 1]) {
-                    nextLayerStream = nextLayerStream.parallel();
-                } else {
-                    nextLayerStream = nextLayerStream.sequential();
-                }
-
-                final double sum = nextLayerStream.mapToDouble(neuronIndexP -> {
-                    @SuppressWarnings("null") final Neuron neuronP = nextLayer.getNeuron(neuronIndexP);
-                    final Double                           deltaP  = neuronP.getDelta(outputNeuronIndex);
-                    assert deltaP != null; // llamar la actualización de pesos de tal forma que no haga recursividad
-                    return deltaP * neuronP.getWeight(neuronIndex);
-                }).sum();
-                delta = neuronO.getDerivedOutput() * sum;
-                neuronO.setDelta(outputNeuronIndex, delta);
-            }
-        }
-        return delta;
     }
 
     @Override

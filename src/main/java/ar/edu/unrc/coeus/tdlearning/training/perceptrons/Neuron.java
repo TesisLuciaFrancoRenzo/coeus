@@ -29,7 +29,7 @@ import java.util.List;
 public
 class Neuron {
 
-    private final List<Double> deltas;
+    private final List<Double> gradient;
     private final List<Double> weights;
     private       Double       derivedOutput;
     private       Double       output;
@@ -54,22 +54,22 @@ class Neuron {
             weights = null;
         }
         if (outputLayerNeuronQuantity > 0) {
-            deltas = new ArrayList<>(outputLayerNeuronQuantity);
+            gradient = new ArrayList<>(outputLayerNeuronQuantity);
             for (int i = 0; i < outputLayerNeuronQuantity; i++) {
-                deltas.add(null);
+                gradient.add(null);
             }
         } else {
-            deltas = null;
+            gradient = null;
         }
     }
 
     /**
-     * Borra los delta de la neurona.
+     * Borra los gradientes de la neurona.
      */
     public
-    void clearDeltas() {
-        for (int i = 0; i < deltas.size(); i++) {
-            deltas.set(i, null);
+    void clearGradients() {
+        for (int i = 0; i < gradient.size(); i++) {
+            gradient.set(i, null);
         }
     }
 
@@ -92,26 +92,6 @@ class Neuron {
     }
 
     /**
-     * Obtiene el delta correspondiente a la neurona de salida {@code outputNeuronIndex}.
-     *
-     * @param outputNeuronIndex neurona de salida.
-     *
-     * @return delta.
-     */
-    public
-    Double getDelta(final int outputNeuronIndex) {
-        return deltas.get(outputNeuronIndex);
-    }
-
-    /**
-     * @return todos los deltas.
-     */
-    public
-    List<Double> getDeltas() {
-        return deltas;
-    }
-
-    /**
      * @return derivada de la salida.
      */
     public
@@ -125,6 +105,26 @@ class Neuron {
     public
     void setDerivedOutput(final Double derivedOutput) {
         this.derivedOutput = derivedOutput;
+    }
+
+    /**
+     * Obtiene el gradiente correspondiente a la neurona de salida {@code outputNeuronIndex}.
+     *
+     * @param outputNeuronIndex neurona de salida.
+     *
+     * @return gradiente.
+     */
+    public
+    Double getGradient(final int outputNeuronIndex) {
+        return gradient.get(outputNeuronIndex);
+    }
+
+    /**
+     * @return todos los gradient.
+     */
+    public
+    List<Double> getGradient() {
+        return gradient;
     }
 
     /**
@@ -162,17 +162,17 @@ class Neuron {
     }
 
     /**
-     * Establece un nuevo delta asociada a la neurona con índice {@code outputNeuronIndex} de la capa de salida.
+     * Establece un nueva gradiente asociada a la neurona con índice {@code outputNeuronIndex} de la capa de salida.
      *
      * @param outputNeuronIndex índice de la neurona de salida.
-     * @param delta             nuevo delta.
+     * @param gradient          nuevo gradiente.
      */
     public
-    void setDelta(
+    void setGradient(
             final int outputNeuronIndex,
-            final Double delta
+            final Double gradient
     ) {
-        deltas.set(outputNeuronIndex, delta);
+        this.gradient.set(outputNeuronIndex, gradient);
     }
 
     /**

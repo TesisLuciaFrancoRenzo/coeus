@@ -73,15 +73,15 @@ class NeuronTest {
     }
 
     /**
-     * Test of clearDeltas method, of class Neuron.
+     * Test of clearGradients method, of class Neuron.
      */
     @Test
     public
     void testClearDeltas() {
-        System.out.println("clearDeltas");
+        System.out.println("clearGradients");
         Neuron instance = new Neuron(1, 1);
-        instance.clearDeltas();
-        Double result = instance.getDelta(0);
+        instance.clearGradients();
+        Double result = instance.getGradient(0);
         assertThat(result, nullValue());
     }
 
@@ -100,32 +100,32 @@ class NeuronTest {
     }
 
     /**
-     * Test of getDelta method, of class Neuron.
+     * Test of getGradient method, of class Neuron.
      */
     @Test
     public
     void testGetDelta() {
-        System.out.println("getDelta");
+        System.out.println("getGradient");
         int    outputNeuronIndex = 0;
         Neuron instance          = new Neuron(1, 1);
-        instance.setDelta(0, 1d);
+        instance.setGradient(0, 1d);
         Double expResult = 1d;
-        Double result    = instance.getDelta(0);
+        Double result    = instance.getGradient(0);
         assertThat(result, is(expResult));
     }
 
     /**
-     * Test of getDeltas method, of class Neuron.
+     * Test of getGradient method, of class Neuron.
      */
     @Test
     public
     void testGetDeltas() {
-        System.out.println("getDeltas");
+        System.out.println("getGradient");
         Neuron       instance  = new Neuron(2, 2);
         List<Double> expResult = new ArrayList<>(2);
         expResult.add(null);
         expResult.add(null);
-        List<Double> result = instance.getDeltas();
+        List<Double> result = instance.getGradient();
         assertThat(result.size(), is(expResult.size()));
     }
 
@@ -204,17 +204,17 @@ class NeuronTest {
     }
 
     /**
-     * Test of setDelta method, of class Neuron.
+     * Test of setGradient method, of class Neuron.
      */
     @Test
     public
     void testSetDelta() {
-        System.out.println("setDelta");
+        System.out.println("setGradient");
         int    outputNeuronIndex = 0;
-        Double delta             = 0.33;
+        Double gradient          = 0.33;
         Neuron instance          = new Neuron(1, 1);
-        instance.setDelta(outputNeuronIndex, delta);
-        assertThat(instance.getDeltas().get(outputNeuronIndex), is(delta));
+        instance.setGradient(outputNeuronIndex, gradient);
+        assertThat(instance.getGradient().get(outputNeuronIndex), is(gradient));
     }
 
     /**

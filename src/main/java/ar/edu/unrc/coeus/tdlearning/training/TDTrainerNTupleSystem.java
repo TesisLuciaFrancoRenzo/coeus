@@ -89,7 +89,7 @@ class TDTrainerNTupleSystem
         //computamos
         final ComplexNTupleComputation normalizedStateOutput    = nTupleSystem.getComplexComputation((IStateNTuple) state);
         final double                   output                   = normalizedStateOutput.getOutput();
-        final double                   derivedOutput            = normalizedStateOutput.getDerivedOutput();
+        final double                   gradientOutput           = normalizedStateOutput.getDerivedOutput();
         final double                   nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDError
@@ -102,17 +102,18 @@ class TDTrainerNTupleSystem
             //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
             tdError = nextTurnStateBoardReward - output;
         }
-        partialError = alpha[0] * tdError;//* (derivedOutput);
+        partialError = alpha[0] * tdError;
 
         for (int weightIndex = 0; weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++) {
             final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
             final double currentEligibilityTrace;
 
+            // usamos solo el gradiente y no la salida de la entrada, ya que siempre es 1 en NTuplas.
             if (lambda > 0) {
                 assert eligibilityTrace != null;
-                currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, derivedOutput);
+                currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, gradientOutput);
             } else {
-                currentEligibilityTrace = derivedOutput;
+                currentEligibilityTrace = gradientOutput;
             }
 
             final double finalError = partialError * currentEligibilityTrace;
