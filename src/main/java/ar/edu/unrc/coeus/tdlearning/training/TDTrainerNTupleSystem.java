@@ -42,27 +42,31 @@ class TDTrainerNTupleSystem
      * red neuronal a entrenar.
      */
     private final NTupleSystem              nTupleSystem;
+    private final boolean                   replaceEligibilityTraces;
 
     /**
      * Inicializa el algoritmo que entrena sistemas NTuplas.
      *
-     * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
-     * @param maxEligibilityTraceLength longitud máxima que puede tener la traza de elegibilidad
-     * @param gamma                     tasa de descuento, entre [0,1].
      * @param nTupleSystem              sistema de NTupla utilizado
+     * @param maxEligibilityTraceLength longitud máxima que puede tener la traza de elegibilidad
+     * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
+     * @param replaceEligibilityTraces  true si se utiliza el método de reemplazo de trazas de elegibilidad
+     * @param gamma                     tasa de descuento, entre [0,1].
      */
     public
     TDTrainerNTupleSystem(
             final NTupleSystem nTupleSystem,
             final int maxEligibilityTraceLength,
             final double lambda,
+            final boolean replaceEligibilityTraces,
             final double gamma
     ) {
         this.nTupleSystem = nTupleSystem;
+        this.replaceEligibilityTraces = replaceEligibilityTraces;
         this.lambda = lambda;
         this.gamma = gamma;
         if (lambda != 0) {
-            eligibilityTrace = new EligibilityTraceForNTuple(nTupleSystem, gamma, lambda, maxEligibilityTraceLength);
+            eligibilityTrace = new EligibilityTraceForNTuple(nTupleSystem, gamma, lambda, maxEligibilityTraceLength, replaceEligibilityTraces);
         } else {
             eligibilityTrace = null;
         }

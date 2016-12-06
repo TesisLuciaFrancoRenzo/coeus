@@ -37,6 +37,7 @@ class EligibilityTraceForNTuple {
     private final double           lambda;
     private final int              maxEligibilityTraceLength;
     private final NTupleSystem     nTupleSystem;
+    private final boolean          replaceEligibilityTraces;
     private final Set<Integer>     usedTraces;
 
     /**
@@ -46,16 +47,19 @@ class EligibilityTraceForNTuple {
      * @param gamma                     tasa de descuento entre [0,1].
      * @param lambda                    escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
      * @param maxEligibilityTraceLength longitud máxima de la traza de elegibilidad.
+     * @param replaceEligibilityTraces  true si se utiliza el método de reemplazo de trazas de elegibilidad
      */
     public
     EligibilityTraceForNTuple(
             final NTupleSystem nTupleSystem,
             final double gamma,
             final double lambda,
-            final int maxEligibilityTraceLength
+            final int maxEligibilityTraceLength,
+            final boolean replaceEligibilityTraces
     ) {
         this.nTupleSystem = nTupleSystem;
         eligibilityTrace = new ValueUsagePair[nTupleSystem.getLut().length];
+        this.replaceEligibilityTraces = replaceEligibilityTraces;
         for (int i = 0; i < eligibilityTrace.length; i++) {
             eligibilityTrace[i] = new ValueUsagePair();
         }
@@ -139,7 +143,7 @@ class EligibilityTraceForNTuple {
             final double gradientOutput
     ) {
         final ValueUsagePair trace = eligibilityTrace[weightIndex];
-        trace.setValue((trace.getValue() * lambda * gamma) + gradientOutput);
+        trace.setValue((replaceEligibilityTraces) ? gradientOutput : (trace.getValue() * lambda * gamma) + gradientOutput);
         trace.setUsagesLeft(maxEligibilityTraceLength + 1);
         usedTraces.add(weightIndex);
         return trace.getValue();

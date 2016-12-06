@@ -43,6 +43,7 @@ class TDTrainerPerceptron
      * Red neuronal a entrenar.
      */
     private final INeuralNetworkInterface        neuralNetwork;
+    private final boolean                        replaceEligibilityTraces;
     private       double[]                       alpha;
     private       boolean[]                      concurrencyInLayer;
     /**
@@ -75,17 +76,20 @@ class TDTrainerPerceptron
     private       NeuralNetworkCache             turnCurrentStateCache;
 
     /**
-     * @param lambda        escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
-     * @param gamma         tasa de descuento, entre [0,1].
-     * @param neuralNetwork red neuronal a entrenar.
+     * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
+     * @param replaceEligibilityTraces true si se utiliza el método de reemplazo de trazas de elegibilidad
+     * @param gamma                    tasa de descuento, entre [0,1].
+     * @param neuralNetwork            red neuronal a entrenar.
      */
     public
     TDTrainerPerceptron(
             final INeuralNetworkInterface neuralNetwork,
             final double lambda,
+            final boolean replaceEligibilityTraces,
             final double gamma
     ) {
         this.neuralNetwork = neuralNetwork;
+        this.replaceEligibilityTraces = replaceEligibilityTraces;
         firstTurn = true;
         eligibilityTraces = null;
         nextTurnStateCache = null;
@@ -172,8 +176,9 @@ class TDTrainerPerceptron
         final double output = computeGradient(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
         if (lambda > 0) {
             final List<Double> neuronKEligibilityTrace = eligibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
-            final double newEligibilityTrace = (neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma) +
-                                               output; //reutilizamos las viejas trazas
+            final double newEligibilityTrace = (replaceEligibilityTraces)
+                                               ? output
+                                               : (neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma) + output;
             neuronKEligibilityTrace.set(outputNeuronIndex, newEligibilityTrace);
             return newEligibilityTrace;
         } else {
@@ -277,7 +282,10 @@ class TDTrainerPerceptron
             return lastLayerStream.mapToDouble(outputNeuronIndex -> alpha[layerIndexJ] *
                                                                     tDError.get(outputNeuronIndex) *
                                                                     computeEligibilityTrace(outputNeuronIndex,
-                                                                            layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK
+                                                                            layerIndexJ,
+                                                                            neuronIndexJ,
+                                                                            layerIndexK,
+                                                                            neuronIndexK
                                                                     )).sum();
         }
     }
