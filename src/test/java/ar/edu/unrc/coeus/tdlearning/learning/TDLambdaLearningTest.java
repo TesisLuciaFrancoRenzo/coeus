@@ -77,7 +77,7 @@ class TDLambdaLearningTest {
         System.out.println("calculateBestEligibilityTraceLength");
         Double  lambda    = 0.7;
         Integer expResult = 21;
-        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         System.out.println("result " + result);
         assertThat(result, is(expResult));
     }
@@ -91,42 +91,42 @@ class TDLambdaLearningTest {
         System.out.println("calculateBestEligibilityTraceLength");
         Double  lambda    = 0.99;
         Integer expResult = Integer.MAX_VALUE;
-        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         assertThat(result, is(expResult));
 
         lambda = 0.975;
         expResult = 274;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         assertThat(result, is(expResult));
 
         lambda = 0.95;
         expResult = 136;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         assertThat(result, is(expResult));
 
         lambda = 0.9;
         expResult = 67;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         assertThat(result, is(expResult));
 
         lambda = 0.8;
         expResult = 32;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         assertThat(result, is(expResult));
 
         lambda = 0.6;
         expResult = 15;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         assertThat(result, is(expResult));
 
         lambda = 1d;
         expResult = Integer.MAX_VALUE;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         assertThat(result, is(expResult));
 
         lambda = 0d;
         expResult = 0;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
         assertThat(result, is(expResult));
     }
 

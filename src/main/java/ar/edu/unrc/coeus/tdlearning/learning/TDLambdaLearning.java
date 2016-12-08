@@ -204,7 +204,7 @@ class TDLambdaLearning {
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
         if (eligibilityTraceLength < 0) {
-            this.eligibilityTraceLength = calculateBestEligibilityTraceLength(lambda);
+            this.eligibilityTraceLength = calculateBestEligibilityTraceLength(lambda, gamma);
         } else {
             this.eligibilityTraceLength = eligibilityTraceLength;
         }
@@ -248,24 +248,27 @@ class TDLambdaLearning {
      * Heurística que ayuda a establecer la longitud de la traza de elegibilidad según los valores de {@code lambda}.
      *
      * @param lambda escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
+     * @param gamma  tasa de descuento, entre [0,1].
      *
      * @return valor óptimo para longitud de la traza de elegibilidad.
      */
     public static
-    Integer calculateBestEligibilityTraceLength(final double lambda) {
-        if (lambda > 1 || lambda < 0) {
-            throw new IllegalArgumentException("lambda=" +
-                                               lambda +
-                                               " is out of range from a valid [0..1]"); //FIXME asegurar qeu todas las excepciones estén en ingles
-        } else if (lambda > 0.99) {
+    Integer calculateBestEligibilityTraceLength(
+            final double lambda,
+            final double gamma
+    ) {
+        final double lambdaGamma = lambda * gamma;
+        if (lambda > 1 || lambda < 0 || gamma > 1 || gamma < 0) {
+            throw new IllegalArgumentException("lambda and gamma must be values from 0 to 1");
+        } else if (lambdaGamma > 0.99) {
             return Integer.MAX_VALUE;
-        } else if (lambda == 0) {
+        } else if (lambdaGamma == 0) {
             return 0;
         }
-        int length = 0;
+        int          length    = 0;
+        final double threshold = 0.001 * lambdaGamma;
         while (true) {
-            double pow       = Math.pow(lambda, length);
-            double threshold = 0.001 * lambda;
+            double pow = Math.pow(lambdaGamma, length);
             if (pow < threshold) {
                 return length;
             }
