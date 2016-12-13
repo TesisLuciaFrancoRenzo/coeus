@@ -295,20 +295,20 @@ class NTupleSystem {
     /**
      * Carga una red neuronal desde un archivo.
      *
-     * @param weightsInputStream stream con los pesos de la red neuronal.
+     * @param inputStream stream con los pesos de la red neuronal.
      *
      * @throws IOException            no se puede leer el archivo.
      * @throws ClassNotFoundException no se encuentran las clases adecuadas para cargar la red.
      */
     public
-    void load(final InputStream weightsInputStream)
+    void load(final InputStream inputStream)
             throws IOException, ClassNotFoundException {
-        if (weightsInputStream == null) {
+        if (inputStream == null) {
             throw new IllegalArgumentException("weightsFile can't be null");
         }
 
         // descomprimimos
-        final GZIPInputStream gz = new GZIPInputStream(weightsInputStream);
+        final GZIPInputStream gz = new GZIPInputStream(inputStream);
 
         // leemos le objeto utilizando ObjectInputStream
         final ObjectInputStream obj_in = new ObjectInputStream(gz);
@@ -333,19 +333,31 @@ class NTupleSystem {
     }
 
     /**
-     * Salva en un archivo {@code lutFile} los pesos de la red neuronal.
+     * Salva en un archivo {@code outputFile} los pesos de la red neuronal.
      *
-     * @param lutFile archivo destino.
+     * @param outputFile archivo destino.
      *
      * @throws IOException no se puede guardar en ese archivo.
      */
     public
-    void save(final File lutFile)
+    void save(final File outputFile)
             throws IOException {
         //definimos el stream de salida
-        final FileOutputStream fOut = new FileOutputStream(lutFile);
+        save(new FileOutputStream(outputFile));
+    }
+
+    /**
+     * Salva en un stream {@code outputStream} los pesos de la red neuronal.
+     *
+     * @param outputStream stream destino.
+     *
+     * @throws IOException no se puede guardar en ese archivo.
+     */
+    public
+    void save(final OutputStream outputStream)
+            throws IOException {
         //comprimimos
-        final GZIPOutputStream gz = new GZIPOutputStream(fOut);
+        final GZIPOutputStream gz = new GZIPOutputStream(outputStream);
         //escribimos el archivo el objeto
         try (ObjectOutputStream oos = new ObjectOutputStream(gz)) {
             oos.writeObject(lut);
