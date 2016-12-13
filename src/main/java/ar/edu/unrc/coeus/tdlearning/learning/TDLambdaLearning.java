@@ -33,7 +33,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * Este método de aprendizaje de TD lambda statistics necesita Trazas de elegibilidad como método de asignación de crédito
+ * Este método de aprendizaje de TD lambda learning necesita Trazas de elegibilidad como método de asignación de crédito
  * temporal, el cual puede ser ajustado a preferencia. Utiliza redes neuronales para recordar los patrones aprendidos
  * durante la solución del problema.
  *

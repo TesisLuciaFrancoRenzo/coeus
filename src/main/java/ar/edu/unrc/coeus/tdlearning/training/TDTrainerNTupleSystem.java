@@ -42,7 +42,6 @@ class TDTrainerNTupleSystem
      * red neuronal a entrenar.
      */
     private final NTupleSystem              nTupleSystem;
-    private final boolean                   replaceEligibilityTraces;
 
     /**
      * Inicializa el algoritmo que entrena sistemas NTuplas.
@@ -62,7 +61,6 @@ class TDTrainerNTupleSystem
             final double gamma
     ) {
         this.nTupleSystem = nTupleSystem;
-        this.replaceEligibilityTraces = replaceEligibilityTraces;
         this.lambda = lambda;
         this.gamma = gamma;
         if (lambda != 0) {
