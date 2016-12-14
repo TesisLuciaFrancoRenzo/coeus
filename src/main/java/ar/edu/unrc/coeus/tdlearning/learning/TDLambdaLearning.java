@@ -50,22 +50,22 @@ class TDLambdaLearning {
     private       int                     alphaAnnealingT;
     private       boolean                 canCollectStatistics;
     private boolean computeParallelBestPossibleAction = false;
-    private double[]                   currentAlpha;
-    private int                        eligibilityTraceLength;
+    private double[] currentAlpha;
+    private int eligibilityTraceLength;
     private EExplorationRateAlgorithms explorationRate;
-    private double                     explorationRateFinalValue;
-    private int                     explorationRateFinishInterpolation;
-    private double                  explorationRateInitialValue;
-    private int                     explorationRateStartInterpolation;
-    private double                  gamma;
-    private double[]                initialAlpha;
-    private double                  lambda;
+    private double explorationRateFinalValue;
+    private int explorationRateFinishInterpolation;
+    private double explorationRateInitialValue;
+    private int explorationRateStartInterpolation;
+    private double gamma;
+    private double[] initialAlpha;
+    private double lambda;
     private ELearningRateAdaptation learningRateAdaptation;
-    private ELearningStyle          learningStyle;
-    private NTupleSystem            nTupleSystem;
-    private LinkedList< Long >      statisticsBestPossibleActionTimes;
-    private LinkedList< Long >      statisticsTrainingTimes;
-    private Trainer                 trainer;
+    private ELearningStyle learningStyle;
+    private NTupleSystem nTupleSystem;
+    private LinkedList< Long > statisticsBestPossibleActionTimes;
+    private LinkedList< Long > statisticsTrainingTimes;
+    private Trainer trainer;
 
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
