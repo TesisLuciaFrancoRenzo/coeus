@@ -96,10 +96,10 @@ class LayerTest {
         System.out.println("getNeurons");
         Layer instance = new Layer(2);
         instance.setNeuron(0, new Neuron(1, 1));
-        List<Neuron> expResult = new ArrayList<>(1);
+        List< Neuron > expResult = new ArrayList<>(1);
         expResult.add(new Neuron(1, 1));
         expResult.add(new Neuron(1, 1));
-        List<Neuron> result = instance.getNeurons();
+        List< Neuron > result = instance.getNeurons();
         assertThat(result.size(), is(expResult.size()));
     }
 

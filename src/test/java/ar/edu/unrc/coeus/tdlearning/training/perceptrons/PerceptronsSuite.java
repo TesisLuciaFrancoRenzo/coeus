@@ -28,8 +28,8 @@ import org.junit.runners.Suite;
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({NeuronTest.class, LayerTest.class, NeuralNetCacheTest.class})
+@RunWith( Suite.class )
+@Suite.SuiteClasses( { NeuronTest.class, LayerTest.class, NeuralNetCacheTest.class } )
 public
 class PerceptronsSuite {
 

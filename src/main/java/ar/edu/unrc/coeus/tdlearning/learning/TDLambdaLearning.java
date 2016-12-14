@@ -54,18 +54,18 @@ class TDLambdaLearning {
     private int                        eligibilityTraceLength;
     private EExplorationRateAlgorithms explorationRate;
     private double                     explorationRateFinalValue;
-    private int                        explorationRateFinishInterpolation;
-    private double                     explorationRateInitialValue;
-    private int                        explorationRateStartInterpolation;
-    private double                     gamma;
-    private double[]                   initialAlpha;
-    private double                     lambda;
-    private ELearningRateAdaptation    learningRateAdaptation;
-    private ELearningStyle             learningStyle;
-    private NTupleSystem               nTupleSystem;
-    private LinkedList<Long>           statisticsBestPossibleActionTimes;
-    private LinkedList<Long>           statisticsTrainingTimes;
-    private Trainer                    trainer;
+    private int                     explorationRateFinishInterpolation;
+    private double                  explorationRateInitialValue;
+    private int                     explorationRateStartInterpolation;
+    private double                  gamma;
+    private double[]                initialAlpha;
+    private double                  lambda;
+    private ELearningRateAdaptation learningRateAdaptation;
+    private ELearningStyle          learningStyle;
+    private NTupleSystem            nTupleSystem;
+    private LinkedList< Long >      statisticsBestPossibleActionTimes;
+    private LinkedList< Long >      statisticsTrainingTimes;
+    private Trainer                 trainer;
 
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
@@ -92,39 +92,37 @@ class TDLambdaLearning {
             final boolean[] concurrencyInLayer,
             final boolean collectStatistics
     ) {
-        if (perceptronInterface == null) {
+        if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
-        if (concurrencyInLayer == null) {
+        if ( concurrencyInLayer == null ) {
             throw new IllegalArgumentException("concurrencyInLayer can't be null");
         }
-        if (learningStyle == null) {
+        if ( learningStyle == null ) {
             throw new IllegalArgumentException("learningStyle can't be null");
-        } else if (learningStyle == ELearningStyle.state) {
+        } else if ( learningStyle == ELearningStyle.state ) {
             throw new IllegalArgumentException("learningStyle = state is not implemented, yet");
         }
 
         this.learningStyle = learningStyle;
 
-        if (alpha == null) {
+        if ( alpha == null ) {
             initialAlpha = new double[perceptronInterface.getLayerQuantity()];
-            for (int i = 0; i < perceptronInterface.getLayerQuantity(); i++) {
-                if (perceptronInterface.getNeuronQuantityInLayer(i) <= 0) {
+            for ( int i = 0; i < perceptronInterface.getLayerQuantity(); i++ ) {
+                if ( perceptronInterface.getNeuronQuantityInLayer(i) <= 0 ) {
                     throw new IllegalArgumentException("the layer " + i + " must have 1 or more neurons");
                 }
                 initialAlpha[i] = 1d / perceptronInterface.getNeuronQuantityInLayer(i);
             }
         } else {
-            if (alpha.length != perceptronInterface.getLayerQuantity()) {
-                throw new IllegalArgumentException("alpha.length=" +
-                                                   alpha.length +
-                                                   " must be equal to perceptronInterface.getLayerQuantity()=" +
+            if ( alpha.length != perceptronInterface.getLayerQuantity() ) {
+                throw new IllegalArgumentException("alpha.length=" + alpha.length + " must be equal to perceptronInterface.getLayerQuantity()=" +
                                                    perceptronInterface.getLayerQuantity());
             }
             initialAlpha = alpha;
         }
 
-        if (perceptronInterface.getLayerQuantity() != concurrencyInLayer.length || perceptronInterface.getLayerQuantity() != initialAlpha.length) {
+        if ( perceptronInterface.getLayerQuantity() != concurrencyInLayer.length || perceptronInterface.getLayerQuantity() != initialAlpha.length ) {
             throw new IllegalArgumentException("alpha.length, concurrencyInLayer.length and perceptronInterface.getLayerQuantity() must be the same");
         }
 
@@ -139,7 +137,7 @@ class TDLambdaLearning {
         this.concurrencyInLayer = concurrencyInLayer;
         canCollectStatistics = collectStatistics;
 
-        if (collectStatistics) {
+        if ( collectStatistics ) {
             statisticsBestPossibleActionTimes = new LinkedList<>();
             statisticsTrainingTimes = new LinkedList<>();
         }
@@ -170,23 +168,23 @@ class TDLambdaLearning {
             final boolean[] concurrencyInLayer,
             final boolean collectStatistics
     ) {
-        if (nTupleSystem == null) {
+        if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
 
-        if (concurrencyInLayer == null) {
+        if ( concurrencyInLayer == null ) {
             throw new IllegalArgumentException("concurrencyInLayer can't be null");
         }
 
-        if (learningStyle == null) {
+        if ( learningStyle == null ) {
             throw new IllegalArgumentException("learningStyle can't be null");
-        } else if (learningStyle == ELearningStyle.state) {
+        } else if ( learningStyle == ELearningStyle.state ) {
             throw new IllegalArgumentException("learningStyle = state is not implemented, yet");
         }
 
         this.learningStyle = learningStyle;
 
-        if (alpha == null) {
+        if ( alpha == null ) {
             initialAlpha = new double[2];
             initialAlpha[0] = 1d / nTupleSystem.getNTuplesLength().length;
             initialAlpha[1] = 1d; //No se usa
@@ -196,14 +194,14 @@ class TDLambdaLearning {
             initialAlpha[1] = alpha; //No se usa
         }
 
-        if (2 != concurrencyInLayer.length || 2 != initialAlpha.length) {
+        if ( 2 != concurrencyInLayer.length || 2 != initialAlpha.length ) {
             throw new IllegalArgumentException("alpha.length, concurrencyInLayer.length and perceptronInterface.getLayerQuantity() must be the same");
         }
 
         currentAlpha = new double[2];
         System.arraycopy(initialAlpha, 0, currentAlpha, 0, initialAlpha.length);
         this.lambda = lambda;
-        if (eligibilityTraceLength < 0) {
+        if ( eligibilityTraceLength < 0 ) {
             this.eligibilityTraceLength = calculateBestEligibilityTraceLength(lambda, gamma);
         } else {
             this.eligibilityTraceLength = eligibilityTraceLength;
@@ -216,7 +214,7 @@ class TDLambdaLearning {
         this.concurrencyInLayer = concurrencyInLayer;
         canCollectStatistics = collectStatistics;
 
-        if (collectStatistics) {
+        if ( collectStatistics ) {
             statisticsBestPossibleActionTimes = new LinkedList<>();
             statisticsTrainingTimes = new LinkedList<>();
         }
@@ -238,10 +236,10 @@ class TDLambdaLearning {
             final int t,
             final int T
     ) {
-        if (initialAlphaValue > 1 || initialAlphaValue < 0) {
+        if ( initialAlphaValue > 1 || initialAlphaValue < 0 ) {
             throw new IllegalArgumentException("initialAlphaValue=" + initialAlphaValue + " is out of range from a valid [0..1]");
         }
-        return initialAlphaValue / (1d + (t / ((double) T)));
+        return initialAlphaValue / ( 1d + ( t / ( (double) T ) ) );
     }
 
     /**
@@ -258,22 +256,22 @@ class TDLambdaLearning {
             final double gamma
     ) {
         final double lambdaGamma = lambda * gamma;
-        if (lambda > 1 || lambda < 0 || gamma > 1 || gamma < 0) {
+        if ( lambda > 1 || lambda < 0 || gamma > 1 || gamma < 0 ) {
             throw new IllegalArgumentException("lambda and gamma must be values from 0 to 1");
-        } else if (lambdaGamma > 0.99) {
+        } else if ( lambdaGamma > 0.99 ) {
             return Integer.MAX_VALUE;
-        } else if (lambdaGamma == 0) {
+        } else if ( lambdaGamma == 0 ) {
             return 0;
         }
         int          length    = 0;
         final double threshold = 0.001 * lambdaGamma;
-        while (true) {
+        while ( true ) {
             double pow = Math.pow(lambdaGamma, length);
-            if (pow < threshold) {
+            if ( pow < threshold ) {
                 return length;
             }
             length++;
-            if (length >= 500) {
+            if ( length >= 500 ) {
                 return Integer.MAX_VALUE;
             }
         }
@@ -301,12 +299,13 @@ class TDLambdaLearning {
             final double finishInterpolation
     ) {
         final double currentValue;
-        if (t < startInterpolation) {
+        if ( t < startInterpolation ) {
             currentValue = initialValue;
-        } else if (t > finishInterpolation) {
+        } else if ( t > finishInterpolation ) {
             currentValue = finalValue;
         } else {
-            currentValue = ((t - startInterpolation) / (finishInterpolation - startInterpolation)) * (finalValue - initialValue) + initialValue;
+            currentValue =
+                    ( ( t - startInterpolation ) / ( finishInterpolation - startInterpolation ) ) * ( finalValue - initialValue ) + initialValue;
         }
         return currentValue;
     }
@@ -330,23 +329,23 @@ class TDLambdaLearning {
             final IProblemRunner problem,
             final ELearningStyle learningStyle,
             final IState turnInitialState,
-            final List<IAction> allPossibleActionsFromTurnInitialState,
+            final List< IAction > allPossibleActionsFromTurnInitialState,
             final IActor actor,
             final boolean computeParallelBestPossibleAction,
-            final LinkedList<Long> bestPossibleActionTimes
+            final LinkedList< Long > bestPossibleActionTimes
     ) {
-        final Stream<IAction> stream;
-        long                  time = 0;
-        if (bestPossibleActionTimes != null) {
+        final Stream< IAction > stream;
+        long                    time = 0;
+        if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis();
         }
-        if (computeParallelBestPossibleAction) {
+        if ( computeParallelBestPossibleAction ) {
             stream = allPossibleActionsFromTurnInitialState.parallelStream();
         } else {
             stream = allPossibleActionsFromTurnInitialState.stream();
         }
-        List<ActionPrediction> bestActions = stream.map(possibleAction -> {
-            switch (learningStyle) {
+        List< ActionPrediction > bestActions = stream.map(possibleAction -> {
+            switch ( learningStyle ) {
                 case afterState: {
                     return evaluateAfterState(problem, turnInitialState, possibleAction, actor);
                 }
@@ -356,7 +355,7 @@ class TDLambdaLearning {
             }
         }).collect(MaximalActionPredictionConsumer::new, MaximalActionPredictionConsumer::accept, MaximalActionPredictionConsumer::combine).getList();
         ActionPrediction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1));
-        if (bestPossibleActionTimes != null) {
+        if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis() - time;
             bestPossibleActionTimes.add(time);
         }
@@ -384,7 +383,7 @@ class TDLambdaLearning {
     ) {
         final IState   afterState = problem.computeAfterState(turnInitialState, action);
         final Object[] output     = problem.evaluateBoardWithPerceptron(afterState);
-        for (int i = 0; i < output.length; i++) {
+        for ( int i = 0; i < output.length; i++ ) {
             output[i] = problem.deNormalizeValueFromPerceptronOutput(output[i]) + afterState.getStateReward(i);
         }
         return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, actor), afterState);
@@ -416,14 +415,14 @@ class TDLambdaLearning {
             final double[] currentAlpha,
             final boolean[] concurrencyInLayer,
             final boolean computeParallelBestPossibleAction,
-            final LinkedList<Long> bestPossibleActionTimes,
-            final LinkedList<Long> trainingTimes
+            final LinkedList< Long > bestPossibleActionTimes,
+            final LinkedList< Long > trainingTimes
     ) {
         long time = 0;
-        if (!nextTurnState.isTerminalState()) {
+        if ( !nextTurnState.isTerminalState() ) {
             // Evaluamos cada acción posible aplicada al estado nextState y
             // elegimos la mejor acción basada las predicciones del problema
-            final List<IAction> possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
+            final List< IAction > possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(
                     problem,
                     ELearningStyle.afterState,
@@ -438,13 +437,13 @@ class TDLambdaLearning {
             // (determinístico) del próximo estado (turno).
             final IState afterStateNextTurn = bestActionForNextTurn.getAfterState();
 
-            if (trainingTimes != null) {
+            if ( trainingTimes != null ) {
                 time = System.currentTimeMillis();
             }
             // V (s') ← V (s') + α(rnext + V (s'next) − V (s'))
             // (matemática sin trazas de elegibilidad)
             trainer.train(problem, afterState, afterStateNextTurn, currentAlpha, concurrencyInLayer);
-            if (trainingTimes != null) {
+            if ( trainingTimes != null ) {
                 time = System.currentTimeMillis() - time;
                 trainingTimes.add(time);
             }
@@ -455,13 +454,13 @@ class TDLambdaLearning {
             // en el ultimo afterState, debería ser el resultado final real del
             // juego, por lo tanto entrenamos el ultimo afterState para que
             // prediga el final del problema
-            if (trainingTimes != null) {
+            if ( trainingTimes != null ) {
                 time = System.currentTimeMillis();
             }
             // V (s') ← V (s') + α(rFinal − V (s'))
             // (matemática sin trazas de elegibilidad)
             trainer.train(problem, afterState, nextTurnState, currentAlpha, concurrencyInLayer);
-            if (trainingTimes != null) {
+            if ( trainingTimes != null ) {
                 time = System.currentTimeMillis() - time;
                 trainingTimes.add(time);
             }
@@ -481,12 +480,12 @@ class TDLambdaLearning {
             final int a,
             final int b
     ) {
-        if (a > b) {
+        if ( a > b ) {
             throw new IllegalArgumentException("error: b must be greater or equal than a");
-        } else if (a == b) {
+        } else if ( a == b ) {
             return a;
         } else {
-            return random.nextInt((b - a) + 1) + a; // a + (int) ((b - a + 1d) * random());
+            return random.nextInt(( b - a ) + 1) + a; // a + (int) ((b - a + 1d) * random());
         }
     }
 
@@ -519,7 +518,7 @@ class TDLambdaLearning {
      * @return tiempos de demora al calcular la mejor posible acción, útil para estadísticas.
      */
     public
-    LinkedList<Long> getStatisticsBestPossibleActionTimes() {
+    LinkedList< Long > getStatisticsBestPossibleActionTimes() {
         return statisticsBestPossibleActionTimes;
     }
 
@@ -527,7 +526,7 @@ class TDLambdaLearning {
      * @return tiempos de demora al entrenar la red neuronal, útil para estadísticas.
      */
     public
-    LinkedList<Long> getStatisticsTrainingTimes() {
+    LinkedList< Long > getStatisticsTrainingTimes() {
         return statisticsTrainingTimes;
     }
 
@@ -563,8 +562,8 @@ class TDLambdaLearning {
      *                        {@code calculateAnnealing}.
      */
     public
-    void setAnnealingLearningRate(final int alphaAnnealingT) {
-        if (alphaAnnealingT < 0) {
+    void setAnnealingLearningRate( final int alphaAnnealingT ) {
+        if ( alphaAnnealingT < 0 ) {
             throw new IllegalArgumentException("alphaAnnealingT must be greater or equal to 0");
         }
         learningRateAdaptation = ELearningRateAdaptation.annealing;
@@ -578,8 +577,8 @@ class TDLambdaLearning {
      * @param value tasa de exploración.
      */
     public
-    void setFixedExplorationRate(final double value) {
-        if (value < 0 || value > 1) {
+    void setFixedExplorationRate( final double value ) {
+        if ( value < 0 || value > 1 ) {
             throw new IllegalArgumentException("value debe estar en el intervalo [0,1]");
         }
         explorationRate = EExplorationRateAlgorithms.fixed;
@@ -611,10 +610,10 @@ class TDLambdaLearning {
             final double finalValue,
             final int finishDecrementing
     ) {
-        if (initialValue < 0 || initialValue > 1) {
+        if ( initialValue < 0 || initialValue > 1 ) {
             throw new IllegalArgumentException("initialValue debe estar en el intervalo [0,1]");
         }
-        if (finalValue < 0 || finalValue > 1) {
+        if ( finalValue < 0 || finalValue > 1 ) {
             throw new IllegalArgumentException("finalValue debe estar en el intervalo [0,1]");
         }
         explorationRate = EExplorationRateAlgorithms.linear;
@@ -636,17 +635,17 @@ class TDLambdaLearning {
             final IProblemToTrain problem,
             final int currentTurn
     ) {
-        if (learningRateAdaptation == null) {
+        if ( learningRateAdaptation == null ) {
             throw new IllegalArgumentException("learningRateAdaptation can't be null");
         }
-        if (explorationRate == null) {
+        if ( explorationRate == null ) {
             throw new IllegalArgumentException("explorationRate can't be null");
         }
-        if (currentTurn < 0) {
+        if ( currentTurn < 0 ) {
             throw new IllegalArgumentException("currentTurn must be grater or equal to 0");
         }
         //inicializamos las constantes de aprendizaje
-        switch (learningRateAdaptation) {
+        switch ( learningRateAdaptation ) {
             case fixed: {
                 // ignorar las actualizaciones y dejar las alphas sin modificar
                 break;
@@ -655,7 +654,7 @@ class TDLambdaLearning {
                 // Ajustamos las alphas según el método de annealing
                 // µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
-                if (currentAlpha.length > 100) {
+                if ( currentAlpha.length > 100 ) {
                     rangeStream = rangeStream.parallel();
                 } else {
                     rangeStream = rangeStream.sequential();
@@ -667,7 +666,7 @@ class TDLambdaLearning {
 
         double currentExplorationRate = 0;
         //inicializamos el factor de exploración
-        switch (explorationRate) {
+        switch ( explorationRate ) {
             case fixed: {
                 // factor constante
                 currentExplorationRate = explorationRateInitialValue;
@@ -689,8 +688,8 @@ class TDLambdaLearning {
 
         // Inicializamos el problema y las variables del entrenador, o reutilizamos
         // el ultimo Trainer para reciclar sus variables
-        if (trainer == null) {
-            switch (neuralNetworkType) {
+        if ( trainer == null ) {
+            switch ( neuralNetworkType ) {
                 case perceptron: {
                     trainer = new TDTrainerPerceptron(perceptronInterface, lambda, replaceEligibilityTraces, gamma);
                     break;
@@ -707,19 +706,19 @@ class TDLambdaLearning {
         IState  turnInitialState = problem.initialize(problem.getActorToTrain());
         boolean randomChoice     = false;
 
-        while (!turnInitialState.isTerminalState()) {
+        while ( !turnInitialState.isTerminalState() ) {
 
             // calculamos todas las acciones posibles para el estado inicial
             final IAction bestAction;
 
-            if (currentExplorationRate > 0) {
+            if ( currentExplorationRate > 0 ) {
                 randomChoice = Math.random() <= currentExplorationRate;
             }
 
-            final List<IAction> possibleActions = problem.listAllPossibleActions(turnInitialState);
+            final List< IAction > possibleActions = problem.listAllPossibleActions(turnInitialState);
 
             final IState afterState;
-            if (!randomChoice) {
+            if ( !randomChoice ) {
                 // evaluamos cada acción aplicada al estado inicial y elegimos la mejor
                 // de éstas basada en las predicciones de recompensas final del problema
                 ActionPrediction bestActionPrediction = computeBestPossibleAction(
@@ -754,7 +753,7 @@ class TDLambdaLearning {
             // (que en este caso es nextState o el afterState dependiendo de las
             // implementaciones de esta clase abstracta). Si es un movimiento al
             // azar se actualizan trazas pero no se actualizan pesos
-            switch (learningStyle) {
+            switch ( learningStyle ) {
                 case afterState: {
                     learnEvaluationAfterState(problem, trainer, afterState, nextTurnState,
                             currentAlpha,

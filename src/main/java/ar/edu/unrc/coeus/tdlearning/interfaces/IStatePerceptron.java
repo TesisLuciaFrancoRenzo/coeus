@@ -37,6 +37,6 @@ interface IStatePerceptron
      *
      * @return valor de entrada normalizado a la neurona con el índice {@code neuronIndex}
      */
-    Double translateToPerceptronInput(final int neuronIndex);
+    Double translateToPerceptronInput( final int neuronIndex );
 
 }

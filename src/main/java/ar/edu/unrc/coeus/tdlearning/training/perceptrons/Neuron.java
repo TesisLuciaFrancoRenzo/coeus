@@ -29,10 +29,10 @@ import java.util.List;
 public
 class Neuron {
 
-    private final List<Double> gradient;
-    private final List<Double> weights;
-    private       Double       derivedOutput;
-    private       Double       output;
+    private final List< Double > gradient;
+    private final List< Double > weights;
+    private       Double         derivedOutput;
+    private       Double         output;
 
     /**
      * Neurona para una red neuronal genérica.
@@ -45,17 +45,17 @@ class Neuron {
             final int weightsQuantity,
             final int outputLayerNeuronQuantity
     ) {
-        if (weightsQuantity > 0) {
+        if ( weightsQuantity > 0 ) {
             weights = new ArrayList<>(weightsQuantity + 1);
-            for (int i = 0; i < weightsQuantity + 1; i++) {
+            for ( int i = 0; i < weightsQuantity + 1; i++ ) {
                 weights.add(null);
             }
         } else {
             weights = null;
         }
-        if (outputLayerNeuronQuantity > 0) {
+        if ( outputLayerNeuronQuantity > 0 ) {
             gradient = new ArrayList<>(outputLayerNeuronQuantity);
-            for (int i = 0; i < outputLayerNeuronQuantity; i++) {
+            for ( int i = 0; i < outputLayerNeuronQuantity; i++ ) {
                 gradient.add(null);
             }
         } else {
@@ -68,7 +68,7 @@ class Neuron {
      */
     public
     void clearGradients() {
-        for (int i = 0; i < gradient.size(); i++) {
+        for ( int i = 0; i < gradient.size(); i++ ) {
             gradient.set(i, null);
         }
     }
@@ -87,7 +87,7 @@ class Neuron {
      * @param newBias valor del nuevo bias.
      */
     public
-    void setBias(final Double newBias) {
+    void setBias( final Double newBias ) {
         weights.set(weights.size() - 1, newBias);
     }
 
@@ -103,7 +103,7 @@ class Neuron {
      * @param derivedOutput nueva derivada de la salida a establecer.
      */
     public
-    void setDerivedOutput(final Double derivedOutput) {
+    void setDerivedOutput( final Double derivedOutput ) {
         this.derivedOutput = derivedOutput;
     }
 
@@ -115,7 +115,7 @@ class Neuron {
      * @return gradiente.
      */
     public
-    Double getGradient(final int outputNeuronIndex) {
+    Double getGradient( final int outputNeuronIndex ) {
         return gradient.get(outputNeuronIndex);
     }
 
@@ -123,7 +123,7 @@ class Neuron {
      * @return todos los gradient.
      */
     public
-    List<Double> getGradient() {
+    List< Double > getGradient() {
         return gradient;
     }
 
@@ -139,7 +139,7 @@ class Neuron {
      * @param output nueva salida de la neurona a establecer.
      */
     public
-    void setOutput(final Double output) {
+    void setOutput( final Double output ) {
         this.output = output;
     }
 
@@ -149,7 +149,7 @@ class Neuron {
      * @return peso de la conexión desde ésta neurona hasta la número {@code previousLayerNeuronIndex} en la capa anterior.
      */
     public
-    Double getWeight(final int previousLayerNeuronIndex) {
+    Double getWeight( final int previousLayerNeuronIndex ) {
         return weights.get(previousLayerNeuronIndex);
     }
 
@@ -157,7 +157,7 @@ class Neuron {
      * @return todos los pesos de ésta neurona con las de la capa anterior.
      */
     public
-    List<Double> getWeights() {
+    List< Double > getWeights() {
         return weights;
     }
 

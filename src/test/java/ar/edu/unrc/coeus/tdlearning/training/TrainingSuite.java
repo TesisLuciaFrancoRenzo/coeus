@@ -30,8 +30,8 @@ import org.junit.runners.Suite;
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({PerceptronsSuite.class, NTupleSuite.class, TDTrainerTest.class})
+@RunWith( Suite.class )
+@Suite.SuiteClasses( { PerceptronsSuite.class, NTupleSuite.class, TDTrainerTest.class } )
 public
 class TrainingSuite {
 

@@ -28,8 +28,12 @@ import org.junit.runners.Suite;
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({ar.edu.unrc.coeus.tdlearning.learning.TDLambdaLearningTest.class, ar.edu.unrc.coeus.tdlearning.learning.ActionPredictionTest.class, ar.edu.unrc.coeus.tdlearning.learning.MaximalListConsumerTest.class})
+@RunWith( Suite.class )
+@Suite.SuiteClasses( {
+                             ar.edu.unrc.coeus.tdlearning.learning.TDLambdaLearningTest.class,
+                             ar.edu.unrc.coeus.tdlearning.learning.ActionPredictionTest.class,
+                             ar.edu.unrc.coeus.tdlearning.learning.MaximalListConsumerTest.class
+                     } )
 public
 class LearningSuite {
 

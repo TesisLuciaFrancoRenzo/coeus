@@ -82,29 +82,29 @@ class NTupleSystemTest {
     void testFuseLut() {
         System.out.println("fuseLut");
 
-        Function<Double, Double> activationFunction        = FunctionUtils.LINEAR;
-        Function<Double, Double> derivedActivationFunction = FunctionUtils.LINEAR_DERIVED;
-        int                      maxTile                   = 2;
+        Function< Double, Double > activationFunction        = FunctionUtils.LINEAR;
+        Function< Double, Double > derivedActivationFunction = FunctionUtils.LINEAR_DERIVED;
+        int                        maxTile                   = 2;
 
         int[] nTuplesLength = new int[2];
-        for (int i = 0; i < 2; i++) {
+        for ( int i = 0; i < 2; i++ ) {
             nTuplesLength[i] = 2;
         }
 
-        List<SamplePointValue> allSamplePointPossibleValues = new ArrayList<>();
-        for (int i = 0; i <= maxTile; i++) {
+        List< SamplePointValue > allSamplePointPossibleValues = new ArrayList<>();
+        for ( int i = 0; i <= maxTile; i++ ) {
             allSamplePointPossibleValues.add(new CustomTile(i));
         }
 
-        List<NTupleSystem> nTupleSystems = new ArrayList<>(2);
+        List< NTupleSystem > nTupleSystems = new ArrayList<>(2);
         nTupleSystems.add(new NTupleSystem(allSamplePointPossibleValues, nTuplesLength, activationFunction, derivedActivationFunction, false));
         nTupleSystems.add(new NTupleSystem(allSamplePointPossibleValues, nTuplesLength, activationFunction, derivedActivationFunction, false));
 
-        nTupleSystems.get(0).setWeights(new double[]{5, 9, 20, 40, -30, 10.1, 10, 5, 9, 20, 40, -30, 10.1, 10, 5, 9, 20, 40});
-        nTupleSystems.get(1).setWeights(new double[]{15, 11, 0, -20, 50, 9.9, 10, 15, 11, 0, -20, 50, 9.9, 10, 15, 11, 0, -20});
+        nTupleSystems.get(0).setWeights(new double[] { 5, 9, 20, 40, -30, 10.1, 10, 5, 9, 20, 40, -30, 10.1, 10, 5, 9, 20, 40 });
+        nTupleSystems.get(1).setWeights(new double[] { 15, 11, 0, -20, 50, 9.9, 10, 15, 11, 0, -20, 50, 9.9, 10, 15, 11, 0, -20 });
 
         NTupleSystem.fuseLut(nTupleSystems);
-        double[] expResult = new double[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+        double[] expResult = new double[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
         assertThat("NTupleSystem 0 ", nTupleSystems.get(0).getLut(), is(expResult));
         assertThat("NTupleSystem 1 ", nTupleSystems.get(1).getLut(), is(expResult));
     }
@@ -128,9 +128,9 @@ class NTupleSystemTest {
          * @param num numero del tablero en base 2.
          */
         public
-        CustomTile(int num) {
+        CustomTile( int num ) {
             code = num;
-            if (code == 0) {
+            if ( code == 0 ) {
                 gameValue = 0;
             } else {
                 gameValue = (int) pow(2, code);
@@ -139,11 +139,11 @@ class NTupleSystemTest {
 
         @Override
         public
-        boolean equals(Object obj) {
-            if (obj == null) {
+        boolean equals( Object obj ) {
+            if ( obj == null ) {
                 return false;
             }
-            if (getClass() != obj.getClass()) {
+            if ( getClass() != obj.getClass() ) {
                 return false;
             }
             final CustomTile other = (CustomTile) obj;

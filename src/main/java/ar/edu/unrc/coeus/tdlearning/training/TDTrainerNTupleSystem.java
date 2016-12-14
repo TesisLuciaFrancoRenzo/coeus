@@ -63,7 +63,7 @@ class TDTrainerNTupleSystem
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;
-        if (lambda != 0) {
+        if ( lambda != 0 ) {
             eligibilityTrace = new EligibilityTraceForNTuple(nTupleSystem, gamma, lambda, maxEligibilityTraceLength, replaceEligibilityTraces);
         } else {
             eligibilityTrace = null;
@@ -73,7 +73,7 @@ class TDTrainerNTupleSystem
     @Override
     public
     void reset() {
-        if (lambda != 0) {
+        if ( lambda != 0 ) {
             assert eligibilityTrace != null;
             eligibilityTrace.reset();
         }
@@ -97,7 +97,7 @@ class TDTrainerNTupleSystem
         //calculamos el TDError
         final double partialError;
         final double tdError;
-        if (!nextTurnState.isTerminalState()) {
+        if ( !nextTurnState.isTerminalState() ) {
             //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
             tdError = nextTurnStateBoardReward + gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) - output;
         } else {
@@ -106,12 +106,12 @@ class TDTrainerNTupleSystem
         }
         partialError = alpha[0] * tdError;
 
-        for (int weightIndex = 0; weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++) {
+        for ( int weightIndex = 0; weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++ ) {
             final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
             final double currentEligibilityTrace;
 
             // usamos solo el gradiente y no la salida de la entrada, ya que siempre es 1 en NTuplas.
-            if (lambda > 0) {
+            if ( lambda > 0 ) {
                 assert eligibilityTrace != null;
                 currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, gradientOutput);
             } else {
@@ -120,11 +120,11 @@ class TDTrainerNTupleSystem
 
             final double finalError = partialError * currentEligibilityTrace;
 
-            if (finalError != 0d) {
+            if ( finalError != 0d ) {
                 nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
             }
         }
-        if (lambda > 0) {
+        if ( lambda > 0 ) {
             assert eligibilityTrace != null;
             eligibilityTrace.processNotUsedTraces(partialError);
         }

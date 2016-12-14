@@ -47,7 +47,7 @@ class Normalization {
             final double normalizedHigh,
             final double normalizedLow
     ) {
-        return ((actualLow - actualHigh) * value - normalizedHigh * actualLow + actualHigh * normalizedLow) / (normalizedLow - normalizedHigh);
+        return ( ( actualLow - actualHigh ) * value - normalizedHigh * actualLow + actualHigh * normalizedLow ) / ( normalizedLow - normalizedHigh );
     }
 
     /**
@@ -69,12 +69,12 @@ class Normalization {
             final double normalizedHigh,
             final double normalizedLow
     ) {
-        if (value > actualHigh) {
+        if ( value > actualHigh ) {
             return normalizedHigh;
-        } else if (value < actualLow) {
+        } else if ( value < actualLow ) {
             return normalizedLow;
         } else {
-            return ((value - actualLow) / (actualHigh - actualLow)) * (normalizedHigh - normalizedLow) + normalizedLow;
+            return ( ( value - actualLow ) / ( actualHigh - actualLow ) ) * ( normalizedHigh - normalizedLow ) + normalizedLow;
         }
     }
 

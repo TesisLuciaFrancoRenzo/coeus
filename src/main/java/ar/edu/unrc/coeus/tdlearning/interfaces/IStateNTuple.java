@@ -37,6 +37,6 @@ interface IStateNTuple
      *
      * @return cálculo de la NTupla con el índice {@code nTupleIndex}
      */
-    SamplePointValue[] getNTuple(final int nTupleIndex);
+    SamplePointValue[] getNTuple( final int nTupleIndex );
 
 }

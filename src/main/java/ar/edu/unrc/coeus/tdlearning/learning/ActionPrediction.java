@@ -29,7 +29,7 @@ import ar.edu.unrc.coeus.tdlearning.interfaces.IState;
  */
 public
 class ActionPrediction
-        implements Comparable<ActionPrediction> {
+        implements Comparable< ActionPrediction > {
 
     private final IAction action;
     private final IState  afterState;
@@ -57,7 +57,7 @@ class ActionPrediction
 
     @Override
     public
-    int compareTo(final ActionPrediction other) {
+    int compareTo( final ActionPrediction other ) {
         return numericRepresentation.compareTo(other.getNumericRepresentation());
     }
 

@@ -38,7 +38,7 @@ class EligibilityTraceForNTuple {
     private final int              maxEligibilityTraceLength;
     private final NTupleSystem     nTupleSystem;
     private final boolean          replaceEligibilityTraces;
-    private final Set<Integer>     usedTraces;
+    private final Set< Integer >   usedTraces;
 
     /**
      * Traza de elegibilidad especializada para redes neuronales de tipo NTuplas.
@@ -60,7 +60,7 @@ class EligibilityTraceForNTuple {
         this.nTupleSystem = nTupleSystem;
         eligibilityTrace = new ValueUsagePair[nTupleSystem.getLut().length];
         this.replaceEligibilityTraces = replaceEligibilityTraces;
-        for (int i = 0; i < eligibilityTrace.length; i++) {
+        for ( int i = 0; i < eligibilityTrace.length; i++ ) {
             eligibilityTrace[i] = new ValueUsagePair();
         }
         usedTraces = new HashSet<>(nTupleSystem.getNTuplesLength().length);
@@ -75,7 +75,7 @@ class EligibilityTraceForNTuple {
      * @return
      */
     public
-    ValueUsagePair getTrace(final int traceIndex) {
+    ValueUsagePair getTrace( final int traceIndex ) {
         return eligibilityTrace[traceIndex];
     }
 
@@ -85,19 +85,19 @@ class EligibilityTraceForNTuple {
      * @param partialError errores calculados en los pesos.
      */
     public
-    void processNotUsedTraces(final double partialError) {
-        if (lambda > 0) {
-            final Iterator<Integer> it = usedTraces.iterator();
-            while (it.hasNext()) {
+    void processNotUsedTraces( final double partialError ) {
+        if ( lambda > 0 ) {
+            final Iterator< Integer > it = usedTraces.iterator();
+            while ( it.hasNext() ) {
                 final Integer        traceIndex = it.next();
                 final ValueUsagePair trace      = eligibilityTrace[traceIndex];
                 trace.use(); // se quita un uso en este momento para no actualizar las trazas nuevas con cantidad de usos = maxEligibilityTraceLength
-                if (trace.getUsagesLeft() <= 0) {
+                if ( trace.getUsagesLeft() <= 0 ) {
                     it.remove();
                     trace.reset();
-                } else if (trace.getUsagesLeft() != maxEligibilityTraceLength) {
+                } else if ( trace.getUsagesLeft() != maxEligibilityTraceLength ) {
                     trace.setValue(trace.getValue() * lambda * gamma);//reutilizamos las viejas trazas, ajustándola al tiempo actual
-                    if (partialError != 0) {
+                    if ( partialError != 0 ) {
                         nTupleSystem.addCorrectionToWeight(traceIndex, partialError * trace.getValue());
                         //falta la multiplicación por la salida de la neurona de entrada, pero al ser 1 se ignora
                         //falta la suma de la derivada de la salida, pero es 0.
@@ -112,7 +112,7 @@ class EligibilityTraceForNTuple {
      */
     public
     void reset() {
-        for (Integer traceIndex : usedTraces) {
+        for ( Integer traceIndex : usedTraces ) {
             eligibilityTrace[traceIndex].reset();
         }
         usedTraces.clear();
@@ -124,7 +124,7 @@ class EligibilityTraceForNTuple {
      * @param weightIndex índice del peso de la traza a reiniciar.
      */
     public
-    void reset(final int weightIndex) {
+    void reset( final int weightIndex ) {
         eligibilityTrace[weightIndex].reset();
         usedTraces.remove(weightIndex);
     }
@@ -143,7 +143,7 @@ class EligibilityTraceForNTuple {
             final double gradientOutput
     ) {
         final ValueUsagePair trace = eligibilityTrace[weightIndex];
-        trace.setValue((replaceEligibilityTraces) ? gradientOutput : (trace.getValue() * lambda * gamma) + gradientOutput);
+        trace.setValue(( replaceEligibilityTraces ) ? gradientOutput : ( trace.getValue() * lambda * gamma ) + gradientOutput);
         trace.setUsagesLeft(maxEligibilityTraceLength + 1);
         usedTraces.add(weightIndex);
         return trace.getValue();

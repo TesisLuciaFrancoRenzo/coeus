@@ -69,7 +69,7 @@ interface IProblemRunner {
      *
      * @return {@code value} desnormalizado.
      */
-    double deNormalizeValueFromPerceptronOutput(final Object value);
+    double deNormalizeValueFromPerceptronOutput( final Object value );
 
     /**
      * Evaluación realizada por la red neuronal sobre {@code state}.
@@ -78,7 +78,7 @@ interface IProblemRunner {
      *
      * @return predicción realizada por la red neuronal, normalizada (si es que la función de activación fue normalizada).
      */
-    Object[] evaluateBoardWithPerceptron(final IState state);
+    Object[] evaluateBoardWithPerceptron( final IState state );
 
     /**
      * Lista todas las posibles acciones validas aplicables al estado {@code turnInitialState}.
@@ -87,7 +87,7 @@ interface IProblemRunner {
      *
      * @return una lista de todas las acciones validas que se pueden aplicar al estado {@code turnInitialState}.
      */
-    ArrayList<IAction> listAllPossibleActions(
+    ArrayList< IAction > listAllPossibleActions(
             final IState turnInitialState
     );
 

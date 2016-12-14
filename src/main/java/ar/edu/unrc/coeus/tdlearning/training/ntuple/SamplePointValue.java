@@ -32,7 +32,7 @@ interface SamplePointValue {
      * @return true si son el mismo objeto, semánticamente.
      */
     @Override
-    boolean equals(final Object other);
+    boolean equals( final Object other );
 
     /**
      * @return hashcode único para identificar un {@code SamplePointValue}

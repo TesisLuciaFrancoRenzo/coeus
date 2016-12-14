@@ -33,31 +33,31 @@ class FunctionUtils {
     /**
      * Función lineal
      */
-    public static final Function<Double, Double> LINEAR         = (value) -> value;
+    public static final Function< Double, Double > LINEAR         = ( value ) -> value;
     /**
      * Derivada de la función lineal.
      */
-    public static final Function<Double, Double> LINEAR_DERIVED = (value) -> 1d;
+    public static final Function< Double, Double > LINEAR_DERIVED = ( value ) -> 1d;
 
     /**
      * Función Sigmoideo
      */
-    public static final Function<Double, Double> SIGMOID = (value) -> 1d / (1d + exp(-value));
+    public static final Function< Double, Double > SIGMOID = ( value ) -> 1d / ( 1d + exp(-value) );
 
     /**
      * Derivada de la función Sigmoideo. {@code fValue} debe ser SIGMOID(value) por cuestiones de optimización.
      */
-    public static final Function<Double, Double> SIGMOID_DERIVED = (fValue) -> fValue * (1d - fValue);
+    public static final Function< Double, Double > SIGMOID_DERIVED = ( fValue ) -> fValue * ( 1d - fValue );
 
     /**
      * Función tangente hiperbólica.
      */
-    public static final Function<Double, Double> TANH = Math::tanh;
+    public static final Function< Double, Double > TANH = Math::tanh;
 
     /**
      * Derivada de la función tangente hiperbólica. {@code fValue} debe ser TANH(value) por cuestiones de optimización.
      */
-    public static final Function<Double, Double> TANH_DERIVED = (fValue) -> 1d - fValue * fValue;
+    public static final Function< Double, Double > TANH_DERIVED = ( fValue ) -> 1d - fValue * fValue;
 
     private
     FunctionUtils() {

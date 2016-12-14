@@ -39,7 +39,7 @@ interface IState {
      *
      * @return recompensa parcial luego de aplicar la acción determinística que da este estado a la neurona {@code outputNeuron}.
      */
-    double getStateReward(final int outputNeuron);
+    double getStateReward( final int outputNeuron );
 
     /**
      * @return true si el estado es final para el problema.

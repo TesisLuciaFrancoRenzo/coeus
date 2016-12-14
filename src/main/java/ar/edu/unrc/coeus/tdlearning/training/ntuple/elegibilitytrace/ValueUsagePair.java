@@ -51,7 +51,7 @@ class ValueUsagePair {
      * @param usagesLeft nueva cantidad de usos dentro de la traza.
      */
     public
-    void setUsagesLeft(final int usagesLeft) {
+    void setUsagesLeft( final int usagesLeft ) {
         this.usagesLeft = usagesLeft;
     }
 
@@ -67,7 +67,7 @@ class ValueUsagePair {
      * @param value nuevo valor del elemento de la traza.
      */
     public
-    void setValue(final double value) {
+    void setValue( final double value ) {
         this.value = value;
     }
 

@@ -42,7 +42,7 @@ class ComplexNTupleComputation {
      * @param derivedOutput nueva derivada de la salida de la red neuronal.
      */
     public
-    void setDerivedOutput(final double derivedOutput) {
+    void setDerivedOutput( final double derivedOutput ) {
         this.derivedOutput = derivedOutput;
     }
 
@@ -58,7 +58,7 @@ class ComplexNTupleComputation {
      * @param indexes los índices involucrados en el cálculo de la salida de la red neuronal.
      */
     public
-    void setIndexes(final int[] indexes) {
+    void setIndexes( final int[] indexes ) {
         this.indexes = indexes;
     }
 
@@ -74,7 +74,7 @@ class ComplexNTupleComputation {
      * @param output nueva salida de la red neuronal.
      */
     public
-    void setOutput(final double output) {
+    void setOutput( final double output ) {
         this.output = output;
     }
 }

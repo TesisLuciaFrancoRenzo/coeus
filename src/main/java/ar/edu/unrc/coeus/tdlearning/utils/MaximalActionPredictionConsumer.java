@@ -31,9 +31,9 @@ import java.util.function.Consumer;
  */
 public
 class MaximalActionPredictionConsumer
-        implements Consumer<ActionPrediction> {
+        implements Consumer< ActionPrediction > {
 
-    private List<ActionPrediction> list;
+    private List< ActionPrediction > list;
 
     /**
      * Utilizado para acumular predicciones de recompensas y calcular la mas prometedora.
@@ -48,14 +48,14 @@ class MaximalActionPredictionConsumer
      */
     @Override
     public
-    void accept(final ActionPrediction actionPrediction) {
-        if (list.isEmpty()) {
+    void accept( final ActionPrediction actionPrediction ) {
+        if ( list.isEmpty() ) {
             list.add(actionPrediction);
         } else {
             int comparision = list.get(0).compareTo(actionPrediction);
-            if (comparision == 0) {
+            if ( comparision == 0 ) {
                 list.add(actionPrediction);
-            } else if (comparision < 0) {
+            } else if ( comparision < 0 ) {
                 list.clear();
                 list.add(actionPrediction);
             }
@@ -66,15 +66,15 @@ class MaximalActionPredictionConsumer
      * @param other para combinar
      */
     public
-    void combine(final MaximalActionPredictionConsumer other) {
-        if (list.isEmpty()) {
+    void combine( final MaximalActionPredictionConsumer other ) {
+        if ( list.isEmpty() ) {
             list = other.list;
-        } else if (!other.list.isEmpty()) {
+        } else if ( !other.list.isEmpty() ) {
             int comparision = list.get(0).compareTo(other.list.get(0));
 
-            if (comparision == 0) {
+            if ( comparision == 0 ) {
                 list.addAll(other.list);
-            } else if (comparision < 0) {
+            } else if ( comparision < 0 ) {
                 list = other.list;
             }
         }
@@ -85,7 +85,7 @@ class MaximalActionPredictionConsumer
      * numericRepresentation}.
      */
     public
-    List<ActionPrediction> getList() {
+    List< ActionPrediction > getList() {
         return list;
     }
 

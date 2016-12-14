@@ -28,8 +28,8 @@ import org.junit.runners.Suite;
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({ar.edu.unrc.coeus.CoeusSuite.class})
+@RunWith( Suite.class )
+@Suite.SuiteClasses( { ar.edu.unrc.coeus.CoeusSuite.class } )
 public
 class UnrcSuite {
 

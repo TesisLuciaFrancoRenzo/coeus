@@ -121,11 +121,11 @@ class NeuronTest {
     public
     void testGetDeltas() {
         System.out.println("getGradient");
-        Neuron       instance  = new Neuron(2, 2);
-        List<Double> expResult = new ArrayList<>(2);
+        Neuron         instance  = new Neuron(2, 2);
+        List< Double > expResult = new ArrayList<>(2);
         expResult.add(null);
         expResult.add(null);
-        List<Double> result = instance.getGradient();
+        List< Double > result = instance.getGradient();
         assertThat(result.size(), is(expResult.size()));
     }
 
@@ -182,10 +182,10 @@ class NeuronTest {
         Neuron instance = new Neuron(1, 1);
         instance.setWeight(0, 0.3);
         instance.setWeight(1, 0.4);
-        List<Double> expResult = new ArrayList<>(1);
+        List< Double > expResult = new ArrayList<>(1);
         expResult.add(0.3);
         expResult.add(0.4);
-        List<Double> result = instance.getWeights();
+        List< Double > result = instance.getWeights();
         assertThat(result.get(0), is(expResult.get(0)));
         assertThat(result.get(1), is(expResult.get(1)));
     }

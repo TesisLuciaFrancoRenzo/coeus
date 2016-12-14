@@ -143,13 +143,7 @@ class TDLambdaLearningTest {
         double startInterpolation  = 0d;
         double finishInterpolation = 10d;
         double expResult           = initialValue;
-        double result              = TDLambdaLearning.calculateLinearInterpolation(
-                t,
-                initialValue,
-                finalValue,
-                startInterpolation,
-                finishInterpolation
-        );
+        double result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
 
@@ -203,13 +197,7 @@ class TDLambdaLearningTest {
         double startInterpolation  = 0d;
         double finishInterpolation = 10d;
         double expResult           = initialValue;
-        double result              = TDLambdaLearning.calculateLinearInterpolation(
-                t,
-                initialValue,
-                finalValue,
-                startInterpolation,
-                finishInterpolation
-        );
+        double result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
 
@@ -260,12 +248,12 @@ class TDLambdaLearningTest {
         boolean expResult = true;
         boolean result1   = false;
         boolean result2   = false;
-        for (int i = 0; i < 500; i++) {
+        for ( int i = 0; i < 500; i++ ) {
             int value = TDLambdaLearning.randomBetween(5, 6);
-            if (value == 6) {
+            if ( value == 6 ) {
                 result2 = true;
             }
-            if (value == 5) {
+            if ( value == 5 ) {
                 result1 = true;
             }
         }

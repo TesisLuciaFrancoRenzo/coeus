@@ -30,7 +30,7 @@ import java.util.List;
 public
 class NeuralNetworkCache {
 
-    private final List<Layer> layers;
+    private final List< Layer > layers;
 
     /**
      * Nueva estructura de datos para almacenar cálculos temporales y optimizaciones sobre redes neuronales genéricas.
@@ -38,9 +38,9 @@ class NeuralNetworkCache {
      * @param layerQuantity cantidad de capas que posee la red neuronal
      */
     public
-    NeuralNetworkCache(final int layerQuantity) {
+    NeuralNetworkCache( final int layerQuantity ) {
         layers = new ArrayList<>(layerQuantity);
-        for (int i = 0; i < layerQuantity; i++) {
+        for ( int i = 0; i < layerQuantity; i++ ) {
             layers.add(null);
         }
     }
@@ -53,7 +53,7 @@ class NeuralNetworkCache {
      * @return la capa número {@code layerIndex}.
      */
     public
-    Layer getLayer(final int layerIndex) {
+    Layer getLayer( final int layerIndex ) {
         return layers.get(layerIndex);
     }
 
@@ -71,7 +71,7 @@ class NeuralNetworkCache {
      * @return true si es la penúltima capa.
      */
     public
-    boolean isNextToLastLayer(final int layerIndex) {
+    boolean isNextToLastLayer( final int layerIndex ) {
         return layerIndex == getOutputLayerIndex() - 1;
     }
 
@@ -82,7 +82,7 @@ class NeuralNetworkCache {
      * @return true si es la última capa (capa de salida).
      */
     public
-    boolean isOutputLayer(final int layerIndex) {
+    boolean isOutputLayer( final int layerIndex ) {
         return layerIndex == layers.size() - 1;
     }
 

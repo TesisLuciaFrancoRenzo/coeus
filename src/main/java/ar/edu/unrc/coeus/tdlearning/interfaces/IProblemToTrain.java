@@ -42,7 +42,7 @@ interface IProblemToTrain
      *
      * @return el estado 'nextState', que representa el siguiente turno o siguiente estado inicial, tras aplicar acciones no determinísticas.
      */
-    IState computeNextTurnStateFromAfterState(final IState afterState);
+    IState computeNextTurnStateFromAfterState( final IState afterState );
 
     /**
      * En caso de que un problema se resuelva entre varios actores, esta función debe retornar al actor del turno
@@ -60,7 +60,7 @@ interface IProblemToTrain
      *
      * @return estado inicial del problema en el momento que le toque actual al {@code actor}.
      */
-    IState initialize(final IActor actor);
+    IState initialize( final IActor actor );
 
     /**
      * Normaliza {@code value} entre los valores permitidos para la salida de la red neuronal, asumiendo que todas las
@@ -70,7 +70,7 @@ interface IProblemToTrain
      *
      * @return {@code value} normalizado.
      */
-    double normalizeValueToPerceptronOutput(final Object value);
+    double normalizeValueToPerceptronOutput( final Object value );
 
     /**
      * Modifica el estado del problema para que el nuevo estado sea {@code nextTurnState}. En otras palabras, simboliza
@@ -79,6 +79,6 @@ interface IProblemToTrain
      *
      * @param nextTurnState nuevo estado inicial
      */
-    void setCurrentState(final IState nextTurnState);
+    void setCurrentState( final IState nextTurnState );
 
 }

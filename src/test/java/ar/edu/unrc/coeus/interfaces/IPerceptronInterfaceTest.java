@@ -78,10 +78,10 @@ class IPerceptronInterfaceTest {
     public
     void testGetActivationFunction() {
         System.out.println("getActivationFunction");
-        int                      layerIndex = 1;
-        Function<Double, Double> sigmoid    = FunctionUtils.SIGMOID;
-        INeuralNetworkInterface  instance   = new IPerceptronInterfaceImpl();
-        Function<Double, Double> result     = instance.getActivationFunction(layerIndex);
+        int                        layerIndex = 1;
+        Function< Double, Double > sigmoid    = FunctionUtils.SIGMOID;
+        INeuralNetworkInterface    instance   = new IPerceptronInterfaceImpl();
+        Function< Double, Double > result     = instance.getActivationFunction(layerIndex);
         assertThat(result, is(sigmoid));
     }
 
@@ -108,10 +108,10 @@ class IPerceptronInterfaceTest {
     public
     void testGetDerivedActivationFunction() {
         System.out.println("getDerivedActivationFunction");
-        int                      layerIndex = 1;
-        INeuralNetworkInterface  instance   = new IPerceptronInterfaceImpl();
-        Function<Double, Double> expResult  = FunctionUtils.SIGMOID_DERIVED;
-        Function<Double, Double> result     = instance.getDerivedActivationFunction(layerIndex);
+        int                        layerIndex = 1;
+        INeuralNetworkInterface    instance   = new IPerceptronInterfaceImpl();
+        Function< Double, Double > expResult  = FunctionUtils.SIGMOID_DERIVED;
+        Function< Double, Double > result     = instance.getDerivedActivationFunction(layerIndex);
         assertThat(result, is(expResult));
     }
 
@@ -217,7 +217,7 @@ class IPerceptronInterfaceTest {
     public
     class IPerceptronInterfaceImpl
             implements INeuralNetworkInterface {
-        final boolean[] bias                  = {false, true, false, true};
+        final boolean[] bias                  = { false, true, false, true };
         final int       layerQuantity         = 3;
         final int       neuronQuantityInLayer = 3;
         double biasB;
@@ -225,7 +225,7 @@ class IPerceptronInterfaceTest {
 
         @Override
         public
-        Function<Double, Double> getActivationFunction(int layerIndex) {
+        Function< Double, Double > getActivationFunction( int layerIndex ) {
             return FunctionUtils.SIGMOID;
         }
 
@@ -240,7 +240,7 @@ class IPerceptronInterfaceTest {
 
         @Override
         public
-        Function<Double, Double> getDerivedActivationFunction(
+        Function< Double, Double > getDerivedActivationFunction(
                 int layerIndex
         ) {
             return FunctionUtils.SIGMOID_DERIVED;
@@ -254,7 +254,7 @@ class IPerceptronInterfaceTest {
 
         @Override
         public
-        int getNeuronQuantityInLayer(int layerIndex) {
+        int getNeuronQuantityInLayer( int layerIndex ) {
             return neuronQuantityInLayer;
         }
 
@@ -270,7 +270,7 @@ class IPerceptronInterfaceTest {
 
         @Override
         public
-        boolean hasBias(int layerIndex) {
+        boolean hasBias( int layerIndex ) {
             return bias[layerIndex];
         }
 

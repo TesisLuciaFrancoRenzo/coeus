@@ -38,7 +38,7 @@ interface INeuralNetworkInterface {
      *
      * @return función de activación, cuyo parámetro es "net"
      */
-    Function<Double, Double> getActivationFunction(final int layerIndex);
+    Function< Double, Double > getActivationFunction( final int layerIndex );
 
     /**
      * Bias asociada a la neurona {@code neuronIndex} en la capa {@code layerIndex}. Las capas de entrada no deberían
@@ -69,7 +69,7 @@ interface INeuralNetworkInterface {
      *
      * @return derivada de la función de activación, cuyo parámetro es "f(net)" y no "net".
      */
-    Function<Double, Double> getDerivedActivationFunction(final int layerIndex);
+    Function< Double, Double > getDerivedActivationFunction( final int layerIndex );
 
     /**
      * Cantidad de capas de la red neuronal.
@@ -83,7 +83,7 @@ interface INeuralNetworkInterface {
      *
      * @return cantidad de neuronas en la capa {@code layerIndex}.
      */
-    int getNeuronQuantityInLayer(final int layerIndex);
+    int getNeuronQuantityInLayer( final int layerIndex );
 
     /**
      * Peso de la conexión entre dos neuronas. Las dos neuronas deben estar en capas contiguas y la primera coordenada
@@ -108,7 +108,7 @@ interface INeuralNetworkInterface {
      *
      * @return true si la red neuronal posee bias en todas las neuronas de la capa {@code layerIndex}
      */
-    boolean hasBias(final int layerIndex);
+    boolean hasBias( final int layerIndex );
 
     /**
      * Cambia el valor de la bias de la neurona {@code neuronIndex} en la capa {@code layerIndex} con el valor de

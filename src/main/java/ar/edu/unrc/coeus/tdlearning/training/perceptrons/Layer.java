@@ -29,7 +29,7 @@ import java.util.List;
 public
 class Layer {
 
-    private final List<Neuron> neurons;
+    private final List< Neuron > neurons;
 
     /**
      * Capa de una red neuronal genérica.
@@ -37,9 +37,9 @@ class Layer {
      * @param neuronQuantityInLayer cantidad de neuronas en la capa.
      */
     public
-    Layer(final int neuronQuantityInLayer) {
+    Layer( final int neuronQuantityInLayer ) {
         neurons = new ArrayList<>(neuronQuantityInLayer);
-        for (int i = 0; i < neuronQuantityInLayer; i++) {
+        for ( int i = 0; i < neuronQuantityInLayer; i++ ) {
             neurons.add(null);
         }
     }
@@ -52,7 +52,7 @@ class Layer {
      * @return neurona
      */
     public
-    Neuron getNeuron(final int neuronIndex) {
+    Neuron getNeuron( final int neuronIndex ) {
         return neurons.get(neuronIndex);
     }
 
@@ -60,7 +60,7 @@ class Layer {
      * @return todas las neuronas de la capa.
      */
     public
-    List<Neuron> getNeurons() {
+    List< Neuron > getNeurons() {
         return neurons;
     }
 

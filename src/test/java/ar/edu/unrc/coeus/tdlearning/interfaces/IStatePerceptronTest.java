@@ -35,7 +35,7 @@ class IStatePerceptronTest {
      *
      */
     public static final NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize, null, 15, 6, 1, 0);
-    private final       boolean[][]     board      = {{false, false}, {false, false}, {false, false}, {false, false}};
+    private final       boolean[][]     board      = { { false, false }, { false, false }, { false, false }, { false, false } };
 
     /**
      *
@@ -105,7 +105,7 @@ class IStatePerceptronTest {
 
         @Override
         public
-        double getStateReward(int outputNeuron) {
+        double getStateReward( int outputNeuron ) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -113,27 +113,27 @@ class IStatePerceptronTest {
         public
         boolean isTerminalState() {
             int count = 0;
-            count += (board[0][0]) ? 1 : 0;
-            count += (board[0][1]) ? 1 : 0;
-            count += (board[1][0]) ? 1 : 0;
-            count += (board[1][1]) ? 1 : 0;
+            count += ( board[0][0] ) ? 1 : 0;
+            count += ( board[0][1] ) ? 1 : 0;
+            count += ( board[1][0] ) ? 1 : 0;
+            count += ( board[1][1] ) ? 1 : 0;
             assert count != 4;
             return count == 3;
         }
 
         @Override
         public
-        Double translateToPerceptronInput(int neuronIndex) {
-            if (board[0][0] && neuronIndex == 0) {
+        Double translateToPerceptronInput( int neuronIndex ) {
+            if ( board[0][0] && neuronIndex == 0 ) {
                 return 1d;
             }
-            if (board[0][1] && neuronIndex == 1) {
+            if ( board[0][1] && neuronIndex == 1 ) {
                 return 1d;
             }
-            if (board[1][0] && neuronIndex == 2) {
+            if ( board[1][0] && neuronIndex == 2 ) {
                 return 1d;
             }
-            if (board[1][1] && neuronIndex == 3) {
+            if ( board[1][1] && neuronIndex == 3 ) {
                 return 1d;
             }
             return 0d;

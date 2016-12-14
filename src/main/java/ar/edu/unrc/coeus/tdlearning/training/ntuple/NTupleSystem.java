@@ -35,10 +35,10 @@ import java.util.zip.GZIPOutputStream;
 public
 class NTupleSystem {
 
-    private final Function<Double, Double> activationFunction;
+    private final Function< Double, Double > activationFunction;
     private final boolean concurrency;
-    private final Function<Double, Double> derivedActivationFunction;
-    private final Map<SamplePointValue, Integer> mapSamplePointValuesIndex;
+    private final Function< Double, Double > derivedActivationFunction;
+    private final Map< SamplePointValue, Integer > mapSamplePointValuesIndex;
     private final int[] nTuplesLength;
     private final int[] nTuplesWeightQuantity;
     private final int[] nTuplesWeightQuantityIndex;
@@ -55,24 +55,24 @@ class NTupleSystem {
      */
     public
     NTupleSystem(
-            final List<SamplePointValue> allSamplePointPossibleValues,
+            final List< SamplePointValue > allSamplePointPossibleValues,
             final int[] nTuplesLength,
-            final Function<Double, Double> activationFunction,
-            final Function<Double, Double> derivedActivationFunction,
+            final Function< Double, Double > activationFunction,
+            final Function< Double, Double > derivedActivationFunction,
             final boolean concurrency
     ) {
         mapSamplePointValuesIndex = new HashMap<>();
-        for (int spvIndex = 0; spvIndex < allSamplePointPossibleValues.size(); spvIndex++) {
+        for ( int spvIndex = 0; spvIndex < allSamplePointPossibleValues.size(); spvIndex++ ) {
             mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(spvIndex), spvIndex);
         }
         int lutSize = 0;
         nTuplesWeightQuantity = new int[nTuplesLength.length];
         nTuplesWeightQuantityIndex = new int[nTuplesLength.length];
         nTuplesWeightQuantityIndex[0] = 0;
-        for (int nTupleIndex = 0; nTupleIndex < nTuplesLength.length; nTupleIndex++) {
+        for ( int nTupleIndex = 0; nTupleIndex < nTuplesLength.length; nTupleIndex++ ) {
             nTuplesWeightQuantity[nTupleIndex] = (int) Math.pow(mapSamplePointValuesIndex.size(), nTuplesLength[nTupleIndex]);
             lutSize += nTuplesWeightQuantity[nTupleIndex];
-            if (nTupleIndex > 0) {
+            if ( nTupleIndex > 0 ) {
                 nTuplesWeightQuantityIndex[nTupleIndex] = nTuplesWeightQuantityIndex[nTupleIndex - 1] + nTuplesWeightQuantity[nTupleIndex - 1];
             }
         }
@@ -99,11 +99,11 @@ class NTupleSystem {
             final int nTupleIndex,
             final int[] nTuplesLength,
             final IStateNTuple state,
-            final Map<SamplePointValue, Integer> mapSamplePointValuesIndex
+            final Map< SamplePointValue, Integer > mapSamplePointValuesIndex
     ) {
         final SamplePointValue[] nTuple = state.getNTuple(nTupleIndex);
         int                      index  = 0;
-        for (int nIndex = 0; nIndex < nTuplesLength[nTupleIndex]; nIndex++) {
+        for ( int nIndex = 0; nIndex < nTuplesLength[nTupleIndex]; nIndex++ ) {
             index += mapSamplePointValuesIndex.get(nTuple[nIndex]) * (int) Math.pow(mapSamplePointValuesIndex.size(), nIndex);
         }
         return index;
@@ -125,10 +125,10 @@ class NTupleSystem {
             final int nTupleIndex,
             final int[] nTuplesLength,
             final SamplePointValue[] nTuple,
-            final Map<SamplePointValue, Integer> mapSamplePointValuesIndex
+            final Map< SamplePointValue, Integer > mapSamplePointValuesIndex
     ) {
         int index = 0;
-        for (int nIndex = 0; nIndex < nTuplesLength[nTupleIndex]; nIndex++) {
+        for ( int nIndex = 0; nIndex < nTuplesLength[nTupleIndex]; nIndex++ ) {
             index += mapSamplePointValuesIndex.get(nTuple[nIndex]) * (int) Math.pow(mapSamplePointValuesIndex.size(), nIndex);
         }
         return index;
@@ -140,19 +140,19 @@ class NTupleSystem {
      * @param nTupleSystems lista de redes neuronales a fusionar
      */
     public static
-    void fuseLut(List<NTupleSystem> nTupleSystems) {
-        if (nTupleSystems.isEmpty()) {
+    void fuseLut( List< NTupleSystem > nTupleSystems ) {
+        if ( nTupleSystems.isEmpty() ) {
             throw new IllegalArgumentException("la lista no puede ser vacía");
         }
         double[] currentLut = nTupleSystems.get(0).getLut();
         IntStream.range(0, currentLut.length).parallel().forEach(index -> {
             //Todo parametrize this to add parallel computation if needed
-            for (int j = 1; j < nTupleSystems.size(); j++) {
+            for ( int j = 1; j < nTupleSystems.size(); j++ ) {
                 currentLut[index] += nTupleSystems.get(j).lut[index];
             }
             currentLut[index] = currentLut[index] / nTupleSystems.size();
         });
-        for (int i = 1; i < nTupleSystems.size(); i++) {
+        for ( int i = 1; i < nTupleSystems.size(); i++ ) {
             nTupleSystems.get(i).setWeights(currentLut.clone());
         }
     }
@@ -175,7 +175,7 @@ class NTupleSystem {
      * @return función de activación.
      */
     public
-    Function<Double, Double> getActivationFunction() {
+    Function< Double, Double > getActivationFunction() {
         return activationFunction;
     }
 
@@ -187,17 +187,17 @@ class NTupleSystem {
      * @return predicción de a red neuronal y los cálculos temporales utilizados en el proceso.
      */
     public
-    ComplexNTupleComputation getComplexComputation(final IStateNTuple state) {
+    ComplexNTupleComputation getComplexComputation( final IStateNTuple state ) {
         IntStream stream = IntStream.range(0, nTuplesLength.length);
-        if (concurrency) {
+        if ( concurrency ) {
             stream = stream.parallel();
         } else {
             stream = stream.sequential();
         }
         final int[] indexes = new int[nTuplesLength.length];
         final double sum = stream.mapToDouble(nTupleIndex -> {
-            indexes[nTupleIndex] = nTuplesWeightQuantityIndex[nTupleIndex] +
-                                   calculateLocalIndex(nTupleIndex, nTuplesLength, state, mapSamplePointValuesIndex);
+            indexes[nTupleIndex] =
+                    nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(nTupleIndex, nTuplesLength, state, mapSamplePointValuesIndex);
             return lut[indexes[nTupleIndex]];
         }).sum();
         final ComplexNTupleComputation output = new ComplexNTupleComputation();
@@ -215,26 +215,26 @@ class NTupleSystem {
      * @return predicción de a red neuronal.
      */
     public
-    Double getComputation(final IStateNTuple state) {
+    Double getComputation( final IStateNTuple state ) {
         IntStream stream = IntStream.range(0, nTuplesLength.length);
-        if (concurrency) {
+        if ( concurrency ) {
             stream = stream.parallel();
         } else {
             stream = stream.sequential();
         }
-        return activationFunction.apply(stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] +
-                                                                              calculateLocalIndex(nTupleIndex,
-                                                                                      nTuplesLength,
-                                                                                      state,
-                                                                                      mapSamplePointValuesIndex
-                                                                              )]).sum());
+        return activationFunction.apply(stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(
+                nTupleIndex,
+                nTuplesLength,
+                state,
+                mapSamplePointValuesIndex
+        )]).sum());
     }
 
     /**
      * @return derivada de la función de activación.
      */
     public
-    Function<Double, Double> getDerivedActivationFunction() {
+    Function< Double, Double > getDerivedActivationFunction() {
         return derivedActivationFunction;
     }
 
@@ -250,7 +250,7 @@ class NTupleSystem {
      * @return mapa de los posibles valores dentro de una muestra de NTupla, asociado a su índice.
      */
     public
-    Map<SamplePointValue, Integer> getMapSamplePointValuesIndex() {
+    Map< SamplePointValue, Integer > getMapSamplePointValuesIndex() {
         return mapSamplePointValuesIndex;
     }
 
@@ -287,7 +287,7 @@ class NTupleSystem {
      * @throws ClassNotFoundException no se encuentran las clases adecuadas para cargar la red.
      */
     public
-    void load(final File weightsFile)
+    void load( final File weightsFile )
             throws IOException, ClassNotFoundException {
         load(new FileInputStream(weightsFile));
     }
@@ -301,9 +301,9 @@ class NTupleSystem {
      * @throws ClassNotFoundException no se encuentran las clases adecuadas para cargar la red.
      */
     public
-    void load(final InputStream inputStream)
+    void load( final InputStream inputStream )
             throws IOException, ClassNotFoundException {
-        if (inputStream == null) {
+        if ( inputStream == null ) {
             throw new IllegalArgumentException("weightsFile can't be null");
         }
 
@@ -317,7 +317,7 @@ class NTupleSystem {
         final Object obj = obj_in.readObject();
 
         //intentamos cargarlo en la variable correspondiente
-        if (obj instanceof double[]) {
+        if ( obj instanceof double[] ) {
             lut = (double[]) obj;
         } else {
             throw new IllegalArgumentException("Unsupported file format");
@@ -329,7 +329,7 @@ class NTupleSystem {
      */
     public
     void randomize() {
-        IntStream.range(0, lut.length).parallel().forEach(weightIndex -> lut[weightIndex] = (Math.random() * 2d - 1d));
+        IntStream.range(0, lut.length).parallel().forEach(weightIndex -> lut[weightIndex] = ( Math.random() * 2d - 1d ));
     }
 
     /**
@@ -340,7 +340,7 @@ class NTupleSystem {
      * @throws IOException no se puede guardar en ese archivo.
      */
     public
-    void save(final File outputFile)
+    void save( final File outputFile )
             throws IOException {
         //definimos el stream de salida
         save(new FileOutputStream(outputFile));
@@ -354,12 +354,12 @@ class NTupleSystem {
      * @throws IOException no se puede guardar en ese archivo.
      */
     public
-    void save(final OutputStream outputStream)
+    void save( final OutputStream outputStream )
             throws IOException {
         //comprimimos
         final GZIPOutputStream gz = new GZIPOutputStream(outputStream);
         //escribimos el archivo el objeto
-        try (ObjectOutputStream oos = new ObjectOutputStream(gz)) {
+        try ( ObjectOutputStream oos = new ObjectOutputStream(gz) ) {
             oos.writeObject(lut);
         }
     }
@@ -384,7 +384,7 @@ class NTupleSystem {
      * @param value nuevos valores para los pesos de la red neuronal.
      */
     public
-    void setWeights(final double[] value) {
+    void setWeights( final double[] value ) {
         lut = value;
     }
 
