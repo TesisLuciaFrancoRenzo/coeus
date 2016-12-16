@@ -50,22 +50,22 @@ class TDLambdaLearning {
     private       int                     alphaAnnealingT;
     private       boolean                 canCollectStatistics;
     private boolean computeParallelBestPossibleAction = false;
-    private double[] currentAlpha;
-    private int eligibilityTraceLength;
+    private double[]                   currentAlpha;
+    private int                        eligibilityTraceLength;
     private EExplorationRateAlgorithms explorationRate;
-    private double explorationRateFinalValue;
-    private int explorationRateFinishInterpolation;
-    private double explorationRateInitialValue;
-    private int explorationRateStartInterpolation;
-    private double gamma;
-    private double[] initialAlpha;
-    private double lambda;
-    private ELearningRateAdaptation learningRateAdaptation;
-    private ELearningStyle learningStyle;
-    private NTupleSystem nTupleSystem;
-    private LinkedList< Long > statisticsBestPossibleActionTimes;
-    private LinkedList< Long > statisticsTrainingTimes;
-    private Trainer trainer;
+    private double                     explorationRateFinalValue;
+    private int                        explorationRateFinishInterpolation;
+    private double                     explorationRateInitialValue;
+    private int                        explorationRateStartInterpolation;
+    private double                     gamma;
+    private double[]                   initialAlpha;
+    private double                     lambda;
+    private ELearningRateAdaptation    learningRateAdaptation;
+    private ELearningStyle             learningStyle;
+    private NTupleSystem               nTupleSystem;
+    private LinkedList< Long >         statisticsBestPossibleActionTimes;
+    private LinkedList< Long >         statisticsTrainingTimes;
+    private Trainer                    trainer;
 
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
@@ -631,7 +631,7 @@ class TDLambdaLearning {
      * @param currentTurn cantidad de veces que se ejecutó {@code solveAndTrainOnce}
      */
     public
-    void solveAndTrainOnce(
+    Double solveAndTrainOnce(
             final IProblemToTrain problem,
             final int currentTurn
     ) {
@@ -705,8 +705,15 @@ class TDLambdaLearning {
 
         IState  turnInitialState = problem.initialize(problem.getActorToTrain());
         boolean randomChoice     = false;
+        long    start            = 0;
+        long    elapsedTime;
+        long    turnCounter      = 0;
+        long    totalTime        = 0;
 
         while ( !turnInitialState.isTerminalState() ) {
+            if ( canCollectStatistics ) {
+                start = System.currentTimeMillis();
+            }
 
             // calculamos todas las acciones posibles para el estado inicial
             final IAction bestAction;
@@ -755,7 +762,11 @@ class TDLambdaLearning {
             // azar se actualizan trazas pero no se actualizan pesos
             switch ( learningStyle ) {
                 case afterState: {
-                    learnEvaluationAfterState(problem, trainer, afterState, nextTurnState,
+                    learnEvaluationAfterState(
+                            problem,
+                            trainer,
+                            afterState,
+                            nextTurnState,
                             currentAlpha,
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,
@@ -772,6 +783,18 @@ class TDLambdaLearning {
             // recordamos el nuevo estado del problema luego de aplicar todas
             // las acciones necesarias para avanzar en la solución del problema
             turnInitialState = nextTurnState;
+
+            if ( canCollectStatistics ) {
+                elapsedTime = System.currentTimeMillis() - start;
+                turnCounter++;
+                totalTime += elapsedTime;
+            }
+        }
+
+        if ( canCollectStatistics ) {
+            return Double.valueOf(totalTime / ( turnCounter * 1d ));
+        } else {
+            return null;
         }
     }
 
