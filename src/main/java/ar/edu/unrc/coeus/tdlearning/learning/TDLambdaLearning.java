@@ -25,8 +25,8 @@ import ar.edu.unrc.coeus.tdlearning.training.TDTrainerPerceptron;
 import ar.edu.unrc.coeus.tdlearning.training.Trainer;
 import ar.edu.unrc.coeus.tdlearning.training.ntuple.NTupleSystem;
 import ar.edu.unrc.coeus.tdlearning.utils.MaximalActionPredictionConsumer;
+import ar.edu.unrc.coeus.tdlearning.utils.StatisticCalculator;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -54,18 +54,18 @@ class TDLambdaLearning {
     private int                        eligibilityTraceLength;
     private EExplorationRateAlgorithms explorationRate;
     private double                     explorationRateFinalValue;
-    private int                        explorationRateFinishInterpolation;
-    private double                     explorationRateInitialValue;
-    private int                        explorationRateStartInterpolation;
-    private double                     gamma;
-    private double[]                   initialAlpha;
-    private double                     lambda;
-    private ELearningRateAdaptation    learningRateAdaptation;
-    private ELearningStyle             learningStyle;
-    private NTupleSystem               nTupleSystem;
-    private LinkedList< Long >         statisticsBestPossibleActionTimes;
-    private LinkedList< Long >         statisticsTrainingTimes;
-    private Trainer                    trainer;
+    private int                     explorationRateFinishInterpolation;
+    private double                  explorationRateInitialValue;
+    private int                     explorationRateStartInterpolation;
+    private double                  gamma;
+    private double[]                initialAlpha;
+    private double                  lambda;
+    private ELearningRateAdaptation learningRateAdaptation;
+    private ELearningStyle          learningStyle;
+    private NTupleSystem            nTupleSystem;
+    private StatisticCalculator     statisticsBestPossibleActionTimes;
+    private StatisticCalculator     statisticsTrainingTimes;
+    private Trainer                 trainer;
 
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
@@ -138,10 +138,11 @@ class TDLambdaLearning {
         canCollectStatistics = collectStatistics;
 
         if ( collectStatistics ) {
-            statisticsBestPossibleActionTimes = new LinkedList<>();
-            statisticsTrainingTimes = new LinkedList<>();
+            statisticsBestPossibleActionTimes = new StatisticCalculator();
+            statisticsTrainingTimes = new StatisticCalculator();
         }
     }
+
 
     /**
      * Algoritmo de entrenamiento de redes neuronales NTupla, mediante TD Learning.
@@ -215,8 +216,8 @@ class TDLambdaLearning {
         canCollectStatistics = collectStatistics;
 
         if ( collectStatistics ) {
-            statisticsBestPossibleActionTimes = new LinkedList<>();
-            statisticsTrainingTimes = new LinkedList<>();
+            statisticsBestPossibleActionTimes = new StatisticCalculator();
+            statisticsTrainingTimes = new StatisticCalculator();
         }
     }
 
@@ -332,7 +333,7 @@ class TDLambdaLearning {
             final List< IAction > allPossibleActionsFromTurnInitialState,
             final IActor actor,
             final boolean computeParallelBestPossibleAction,
-            final LinkedList< Long > bestPossibleActionTimes
+            final StatisticCalculator bestPossibleActionTimes
     ) {
         final Stream< IAction > stream;
         long                    time = 0;
@@ -357,7 +358,7 @@ class TDLambdaLearning {
         ActionPrediction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1));
         if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis() - time;
-            bestPossibleActionTimes.add(time);
+            bestPossibleActionTimes.addSample(time);
         }
         return bestAction;
     }
@@ -415,23 +416,20 @@ class TDLambdaLearning {
             final double[] currentAlpha,
             final boolean[] concurrencyInLayer,
             final boolean computeParallelBestPossibleAction,
-            final LinkedList< Long > bestPossibleActionTimes,
-            final LinkedList< Long > trainingTimes
+            final StatisticCalculator bestPossibleActionTimes,
+            final StatisticCalculator trainingTimes
     ) {
         long time = 0;
         if ( !nextTurnState.isTerminalState() ) {
             // Evaluamos cada acción posible aplicada al estado nextState y
             // elegimos la mejor acción basada las predicciones del problema
             final List< IAction > possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
-            final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(
-                    problem,
+            final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem,
                     ELearningStyle.afterState,
                     nextTurnState,
                     possibleActionsNextTurn,
                     problem.getActorToTrain(),
-                    computeParallelBestPossibleAction,
-                    bestPossibleActionTimes
-            );
+                    computeParallelBestPossibleAction, bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
             // (determinístico) del próximo estado (turno).
@@ -445,7 +443,7 @@ class TDLambdaLearning {
             trainer.train(problem, afterState, afterStateNextTurn, currentAlpha, concurrencyInLayer);
             if ( trainingTimes != null ) {
                 time = System.currentTimeMillis() - time;
-                trainingTimes.add(time);
+                trainingTimes.addSample(time);
             }
         } else {
             // Si nextTurnState es un estado final, no podemos calcular el
@@ -462,7 +460,7 @@ class TDLambdaLearning {
             trainer.train(problem, afterState, nextTurnState, currentAlpha, concurrencyInLayer);
             if ( trainingTimes != null ) {
                 time = System.currentTimeMillis() - time;
-                trainingTimes.add(time);
+                trainingTimes.addSample(time);
             }
         }
     }
@@ -507,6 +505,14 @@ class TDLambdaLearning {
     }
 
     /**
+     * @return tiempos de demora al calcular la mejor posible acción, útil para estadísticas.
+     */
+    public
+    double getBestPossibleActionTimesAverage() {
+        return statisticsBestPossibleActionTimes.getAverage();
+    }
+
+    /**
      * @return el alpha en el turno actual, de cada capa.
      */
     public
@@ -515,19 +521,11 @@ class TDLambdaLearning {
     }
 
     /**
-     * @return tiempos de demora al calcular la mejor posible acción, útil para estadísticas.
-     */
-    public
-    LinkedList< Long > getStatisticsBestPossibleActionTimes() {
-        return statisticsBestPossibleActionTimes;
-    }
-
-    /**
      * @return tiempos de demora al entrenar la red neuronal, útil para estadísticas.
      */
     public
-    LinkedList< Long > getStatisticsTrainingTimes() {
-        return statisticsTrainingTimes;
+    double getTrainingTimesAverage() {
+        return statisticsTrainingTimes.getAverage();
     }
 
     /**
@@ -674,13 +672,10 @@ class TDLambdaLearning {
             }
             case linear: {
                 //factor ajustado linealmente entre dos puntos
-                currentExplorationRate = calculateLinearInterpolation(
-                        currentTurn,
+                currentExplorationRate = calculateLinearInterpolation(currentTurn,
                         explorationRateInitialValue,
                         explorationRateFinalValue,
-                        explorationRateStartInterpolation,
-                        explorationRateFinishInterpolation
-                );
+                        explorationRateStartInterpolation, explorationRateFinishInterpolation);
                 break;
             }
         }
@@ -703,16 +698,14 @@ class TDLambdaLearning {
             trainer.reset();
         }
 
-        IState  turnInitialState = problem.initialize(problem.getActorToTrain());
-        boolean randomChoice     = false;
-        long    start            = 0;
-        long    elapsedTime;
-        long    turnCounter      = 0;
-        long    totalTime        = 0;
+        IState              turnInitialState = problem.initialize(problem.getActorToTrain());
+        boolean             randomChoice     = false;
+        long                startTime        = 0;
+        StatisticCalculator timePerGame      = new StatisticCalculator();
 
         while ( !turnInitialState.isTerminalState() ) {
             if ( canCollectStatistics ) {
-                start = System.currentTimeMillis();
+                startTime = System.currentTimeMillis();
             }
 
             // calculamos todas las acciones posibles para el estado inicial
@@ -728,15 +721,12 @@ class TDLambdaLearning {
             if ( !randomChoice ) {
                 // evaluamos cada acción aplicada al estado inicial y elegimos la mejor
                 // de éstas basada en las predicciones de recompensas final del problema
-                ActionPrediction bestActionPrediction = computeBestPossibleAction(
-                        problem,
+                ActionPrediction bestActionPrediction = computeBestPossibleAction(problem,
                         learningStyle,
                         turnInitialState,
                         possibleActions,
                         problem.getActorToTrain(),
-                        computeParallelBestPossibleAction,
-                        statisticsBestPossibleActionTimes
-                );
+                        computeParallelBestPossibleAction, statisticsBestPossibleActionTimes);
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
                 afterState = bestActionPrediction.getAfterState();
@@ -762,17 +752,14 @@ class TDLambdaLearning {
             // azar se actualizan trazas pero no se actualizan pesos
             switch ( learningStyle ) {
                 case afterState: {
-                    learnEvaluationAfterState(
-                            problem,
+                    learnEvaluationAfterState(problem,
                             trainer,
                             afterState,
                             nextTurnState,
                             currentAlpha,
                             concurrencyInLayer,
                             computeParallelBestPossibleAction,
-                            statisticsBestPossibleActionTimes,
-                            statisticsTrainingTimes
-                    );
+                            statisticsBestPossibleActionTimes, statisticsTrainingTimes);
                     break;
                 }
                 default: {
@@ -785,14 +772,12 @@ class TDLambdaLearning {
             turnInitialState = nextTurnState;
 
             if ( canCollectStatistics ) {
-                elapsedTime = System.currentTimeMillis() - start;
-                turnCounter++;
-                totalTime += elapsedTime;
+                timePerGame.addSample(System.currentTimeMillis() - startTime);
             }
         }
 
         if ( canCollectStatistics ) {
-            return Double.valueOf(totalTime / ( turnCounter * 1d ));
+            return timePerGame.getAverage();
         } else {
             return null;
         }

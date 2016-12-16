@@ -280,9 +280,7 @@ class TDTrainerPerceptron
                     outputNeuronIndex,
                     layerIndexJ,
                     neuronIndexJ,
-                    layerIndexK,
-                    neuronIndexK
-            )).sum();
+                    layerIndexK, neuronIndexK)).sum();
         }
     }
 
@@ -310,97 +308,96 @@ class TDTrainerPerceptron
             currentCache = oldCache;
         }
         IntStream.range(0, neuralNetwork.getLayerQuantity())
-                 .sequential() //no se puede en paralelo porque se necesitan las neuronas de la capa anterior para f(net) y otros
-                 .forEach(l -> {
-                     //inicializamos la variable para que sea efectivamente final, y poder usar paralelismo funcional
-                     final int currentLayerIndex = l;
-                     //creamos una capa o reciclamos una vieja
-                     final Layer layer;
-                     if ( oldCache == null ) {
-                         layer = new Layer(neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex));
-                     } else {
-                         layer = oldCache.getLayer(currentLayerIndex);
-                     }
+                .sequential() //no se puede en paralelo porque se necesitan las neuronas de la capa anterior para f(net) y otros
+                .forEach(l -> {
+                    //inicializamos la variable para que sea efectivamente final, y poder usar paralelismo funcional
+                    final int currentLayerIndex = l;
+                    //creamos una capa o reciclamos una vieja
+                    final Layer layer;
+                    if ( oldCache == null ) {
+                        layer = new Layer(neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex));
+                    } else {
+                        layer = oldCache.getLayer(currentLayerIndex);
+                    }
 
-                     IntStream currentLayerStream = IntStream.range(0, neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex));
+                    IntStream currentLayerStream = IntStream.range(0, neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex));
 
-                     if ( concurrencyInLayer[currentLayerIndex] ) {
-                         currentLayerStream = currentLayerStream.parallel();
-                     } else {
-                         currentLayerStream = currentLayerStream.sequential();
-                     }
+                    if ( concurrencyInLayer[currentLayerIndex] ) {
+                        currentLayerStream = currentLayerStream.parallel();
+                    } else {
+                        currentLayerStream = currentLayerStream.sequential();
+                    }
 
-                     // Recorremos cada neurona que debería ir en la capa,
-                     // la inicializamos, y la cargamos en dicha capa
-                     currentLayerStream.forEach(currentNeuronIndex -> {
-                         final Neuron neuron;
-                         final Layer  oldCacheCurrentLayer;
-                         if ( oldCache != null ) {
-                             oldCacheCurrentLayer = oldCache.getLayer(currentLayerIndex);
-                         } else {
-                             oldCacheCurrentLayer = null;
-                         }
-                         if ( currentLayerIndex == 0 ) {
-                             //configuramos la neurona de entrada
-                             // creando una o reciclando una vieja
-                             if ( oldCache == null ) {
-                                 neuron = new Neuron(0, 0);
-                             } else {
-                                 neuron = oldCacheCurrentLayer.getNeuron(currentNeuronIndex);
-                             }
-                             neuron.setOutput(state.translateToPerceptronInput(currentNeuronIndex));
-                             neuron.setDerivedOutput(null);
+                    // Recorremos cada neurona que debería ir en la capa,
+                    // la inicializamos, y la cargamos en dicha capa
+                    currentLayerStream.forEach(currentNeuronIndex -> {
+                        final Neuron neuron;
+                        final Layer  oldCacheCurrentLayer;
+                        if ( oldCache != null ) {
+                            oldCacheCurrentLayer = oldCache.getLayer(currentLayerIndex);
+                        } else {
+                            oldCacheCurrentLayer = null;
+                        }
+                        if ( currentLayerIndex == 0 ) {
+                            //configuramos la neurona de entrada
+                            // creando una o reciclando una vieja
+                            if ( oldCache == null ) {
+                                neuron = new Neuron(0, 0);
+                            } else {
+                                neuron = oldCacheCurrentLayer.getNeuron(currentNeuronIndex);
+                            }
+                            neuron.setOutput(state.translateToPerceptronInput(currentNeuronIndex));
+                            neuron.setDerivedOutput(null);
 
-                         } else {
-                             // Iniciamos variables efectivamente constantes
-                             // para la programación funcional
-                             final int previousLayerIndex = currentLayerIndex - 1;
-                             //configuramos la neurona creando una o reciclando una vieja
-                             if ( oldCache == null ) {
-                                 neuron = new Neuron(neuralNetwork.getNeuronQuantityInLayer(previousLayerIndex), outputLayerNeuronQuantity);
-                             } else {
-                                 neuron = oldCacheCurrentLayer.getNeuron(currentNeuronIndex);
-                                 neuron.clearGradients();
-                             }
-                             if ( neuralNetwork.hasBias(currentLayerIndex) ) {
-                                 neuron.setBias(neuralNetwork.getBias(currentLayerIndex, currentNeuronIndex));
-                             }
-                             //net = SumatoriaH(w(i,h,m)*a(h,m))
-                             final Layer previousCurrentLayer = currentCache.getLayer(previousLayerIndex);
+                        } else {
+                            // Iniciamos variables efectivamente constantes
+                            // para la programación funcional
+                            final int previousLayerIndex = currentLayerIndex - 1;
+                            //configuramos la neurona creando una o reciclando una vieja
+                            if ( oldCache == null ) {
+                                neuron = new Neuron(neuralNetwork.getNeuronQuantityInLayer(previousLayerIndex), outputLayerNeuronQuantity);
+                            } else {
+                                neuron = oldCacheCurrentLayer.getNeuron(currentNeuronIndex);
+                                neuron.clearGradients();
+                            }
+                            if ( neuralNetwork.hasBias(currentLayerIndex) ) {
+                                neuron.setBias(neuralNetwork.getBias(currentLayerIndex, currentNeuronIndex));
+                            }
+                            //net = SumatoriaH(w(i,h,m)*a(h,m))
+                            final Layer previousCurrentLayer = currentCache.getLayer(previousLayerIndex);
 
-                             IntStream previousLayerStream = IntStream.range(0, neuralNetwork.getNeuronQuantityInLayer(previousLayerIndex));
+                            IntStream previousLayerStream = IntStream.range(0, neuralNetwork.getNeuronQuantityInLayer(previousLayerIndex));
 
-                             if ( concurrencyInLayer[previousLayerIndex] ) {
-                                 previousLayerStream = previousLayerStream.parallel();
-                             } else {
-                                 previousLayerStream = previousLayerStream.sequential();
-                             }
+                            if ( concurrencyInLayer[previousLayerIndex] ) {
+                                previousLayerStream = previousLayerStream.parallel();
+                            } else {
+                                previousLayerStream = previousLayerStream.sequential();
+                            }
 
-                             Double net = previousLayerStream.mapToDouble(previousLayerNeuronIndex -> {
-                                 //cargamos el peso que conecta las 2 neuronas
-                                 neuron.setWeight(previousLayerNeuronIndex,
-                                                  neuralNetwork.getWeight(currentLayerIndex, currentNeuronIndex, previousLayerNeuronIndex)
-                                 );
-                                 // devolvemos la multiplicación para luego sumar
-                                 return previousCurrentLayer.getNeuron(previousLayerNeuronIndex).getOutput() *
-                                        neuron.getWeight(previousLayerNeuronIndex);
-                             }).sum();
-                             if ( neuralNetwork.hasBias(currentLayerIndex) ) {
-                                 net += neuron.getBias();
-                             }
-                             neuron.setOutput(neuralNetwork.getActivationFunction(currentLayerIndex).apply(net));
-                             neuron.setDerivedOutput(neuralNetwork.getDerivedActivationFunction(currentLayerIndex).apply(neuron.getOutput()));
-                         }
-                         //cargamos la nueva neurona, si es que creamos una nueva cache
-                         if ( oldCache == null ) {
-                             layer.setNeuron(currentNeuronIndex, neuron);
-                         }
-                     });
-                     //cargamos la nueva capa, si es que creamos una nueva cache
-                     if ( oldCache == null ) {
-                         currentCache.setLayer(currentLayerIndex, layer);
-                     }
-                 });
+                            Double net = previousLayerStream.mapToDouble(previousLayerNeuronIndex -> {
+                                //cargamos el peso que conecta las 2 neuronas
+                                neuron.setWeight(previousLayerNeuronIndex,
+                                        neuralNetwork.getWeight(currentLayerIndex, currentNeuronIndex, previousLayerNeuronIndex));
+                                // devolvemos la multiplicación para luego sumar
+                                return previousCurrentLayer.getNeuron(previousLayerNeuronIndex).getOutput() *
+                                       neuron.getWeight(previousLayerNeuronIndex);
+                            }).sum();
+                            if ( neuralNetwork.hasBias(currentLayerIndex) ) {
+                                net += neuron.getBias();
+                            }
+                            neuron.setOutput(neuralNetwork.getActivationFunction(currentLayerIndex).apply(net));
+                            neuron.setDerivedOutput(neuralNetwork.getDerivedActivationFunction(currentLayerIndex).apply(neuron.getOutput()));
+                        }
+                        //cargamos la nueva neurona, si es que creamos una nueva cache
+                        if ( oldCache == null ) {
+                            layer.setNeuron(currentNeuronIndex, neuron);
+                        }
+                    });
+                    //cargamos la nueva capa, si es que creamos una nueva cache
+                    if ( oldCache == null ) {
+                        currentCache.setLayer(currentLayerIndex, layer);
+                    }
+                });
         return currentCache;
     }
 

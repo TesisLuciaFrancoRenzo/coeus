@@ -16,9 +16,8 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc.coeus.tdlearning;
+package ar.edu.unrc.coeus.tdlearning.utils;
 
-import ar.edu.unrc.coeus.tdlearning.utils.UtilsSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,14 +29,9 @@ import org.junit.runners.Suite;
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( {
-                             ar.edu.unrc.coeus.tdlearning.learning.LearningSuite.class,
-                             ar.edu.unrc.coeus.tdlearning.interfaces.InterfacesSuite.class,
-                             ar.edu.unrc.coeus.tdlearning.training.TrainingSuite.class,
-                             UtilsSuite.class
-                     } )
+@Suite.SuiteClasses( { StatisticCalculatorTest.class } )
 public
-class TDLearningSuite {
+class UtilsSuite {
 
     /**
      * @throws Exception

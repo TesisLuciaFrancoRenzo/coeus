@@ -35,14 +35,14 @@ import java.util.zip.GZIPOutputStream;
 public
 class NTupleSystem {
 
-    private final Function< Double, Double > activationFunction;
-    private final boolean concurrency;
-    private final Function< Double, Double > derivedActivationFunction;
+    private final Function< Double, Double >       activationFunction;
+    private final boolean                          concurrency;
+    private final Function< Double, Double >       derivedActivationFunction;
     private final Map< SamplePointValue, Integer > mapSamplePointValuesIndex;
-    private final int[] nTuplesLength;
-    private final int[] nTuplesWeightQuantity;
-    private final int[] nTuplesWeightQuantityIndex;
-    private       double[] lut;
+    private final int[]                            nTuplesLength;
+    private final int[]                            nTuplesWeightQuantity;
+    private final int[]                            nTuplesWeightQuantityIndex;
+    private       double[]                         lut;
 
     /**
      * Red neuronal optimizada para usos de NTuplas.
@@ -225,9 +225,7 @@ class NTupleSystem {
         return activationFunction.apply(stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(
                 nTupleIndex,
                 nTuplesLength,
-                state,
-                mapSamplePointValuesIndex
-        )]).sum());
+                state, mapSamplePointValuesIndex)]).sum());
     }
 
     /**

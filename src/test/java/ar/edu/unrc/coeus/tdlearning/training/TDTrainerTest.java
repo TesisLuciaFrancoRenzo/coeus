@@ -127,7 +127,7 @@ class TDTrainerTest {
         neuralNetwork.addLayer(new BasicLayer(new ActivationSigmoid(), true, 1));
         neuralNetwork.addLayer(new BasicLayer(new ActivationSigmoid(), true, 1));
         neuralNetwork.
-                             addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
+                addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
         neuralNetwork.getStructure().finalizeStructure();
 
         //configuramos el contenido de los pesos y bias
@@ -289,7 +289,7 @@ class TDTrainerTest {
                     double correctedWeight
             ) {
                 neuralNetwork.
-                                     setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
+                        setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
             }
         };
 
@@ -328,10 +328,10 @@ class TDTrainerTest {
             public
             Object[] evaluateBoardWithPerceptron( IState state ) {
                 double[] inputs = new double[neuralNetwork.
-                                                                  getLayerNeuronCount(0)];
+                        getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
                     inputs[i] = ( (IStatePerceptron) state ).
-                                                                    translateToPerceptronInput(i);
+                            translateToPerceptronInput(i);
                 }
 
                 MLData   inputData = new BasicMLData(inputs);
@@ -418,7 +418,7 @@ class TDTrainerTest {
         neuralNetwork.addLayer(new BasicLayer(null, true, 2));
         neuralNetwork.addLayer(new BasicLayer(new ActivationSigmoid(), true, 2));
         neuralNetwork.
-                             addLayer(new BasicLayer(new ActivationSigmoid(), false, 2));
+                addLayer(new BasicLayer(new ActivationSigmoid(), false, 2));
         neuralNetwork.getStructure().finalizeStructure();
 
         //configuramos el contenido de los pesos
@@ -523,7 +523,7 @@ class TDTrainerTest {
             ) {
                 if ( hasBias(layerIndex) ) {
                     return neuralNetwork.getWeight(layerIndex - 1, neuralNetwork.
-                                                                                        getLayerNeuronCount(layerIndex - 1), neuronIndex);
+                            getLayerNeuronCount(layerIndex - 1), neuronIndex);
                 } else {
                     throw new IllegalStateException("No hay bias en la capa " + layerIndex);
                 }
@@ -582,7 +582,7 @@ class TDTrainerTest {
             ) {
                 if ( hasBias(layerIndex) ) {
                     neuralNetwork.setWeight(layerIndex - 1, neuralNetwork.
-                                                                                 getLayerNeuronCount(layerIndex - 1), neuronIndex, correctedBias);
+                            getLayerNeuronCount(layerIndex - 1), neuronIndex, correctedBias);
                 } else {
                     throw new IllegalStateException("No hay bias en la capa " + layerIndex);
                 }
@@ -597,7 +597,7 @@ class TDTrainerTest {
                     double correctedWeight
             ) {
                 neuralNetwork.
-                                     setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
+                        setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
             }
         };
 
@@ -636,7 +636,7 @@ class TDTrainerTest {
             public
             Object[] evaluateBoardWithPerceptron( IState state ) {
                 double[] inputs = new double[neuralNetwork.
-                                                                  getLayerNeuronCount(0)];
+                        getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
                     inputs[i] = ( (IStatePerceptron) state ).translateToPerceptronInput(i);
                 }
@@ -951,7 +951,7 @@ class TDTrainerTest {
                     double correctedWeight
             ) {
                 neuralNetwork.
-                                     setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
+                        setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
             }
         };
 
@@ -1242,7 +1242,7 @@ class TDTrainerTest {
                     int neuronIndex
             ) {
                 return neuralNetwork.getWeight(layerIndex - 1, neuralNetwork.
-                                                                                    getLayerNeuronCount(layerIndex - 1), neuronIndex);
+                        getLayerNeuronCount(layerIndex - 1), neuronIndex);
             }
 
             @Override
@@ -1297,7 +1297,7 @@ class TDTrainerTest {
                     double correctedBias
             ) {
                 neuralNetwork.setWeight(layerIndex - 1, neuralNetwork.
-                                                                             getLayerNeuronCount(layerIndex - 1), neuronIndex, correctedBias);
+                        getLayerNeuronCount(layerIndex - 1), neuronIndex, correctedBias);
             }
 
             @Override
@@ -1309,7 +1309,7 @@ class TDTrainerTest {
                     double correctedWeight
             ) {
                 neuralNetwork.
-                                     setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
+                        setWeight(layerIndex - 1, neuronIndexPreviousLayer, neuronIndex, correctedWeight);
             }
         };
 
@@ -1348,10 +1348,10 @@ class TDTrainerTest {
             public
             Object[] evaluateBoardWithPerceptron( IState state ) {
                 double[] inputs = new double[neuralNetwork.
-                                                                  getLayerNeuronCount(0)];
+                        getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
                     inputs[i] = ( (IStatePerceptron) state ).
-                                                                    translateToPerceptronInput(i);
+                            translateToPerceptronInput(i);
                 }
 
                 MLData   inputData = new BasicMLData(inputs);
@@ -1446,7 +1446,7 @@ class TDTrainerTest {
         //calculamos valores que deberían resultar
         deltaII[0] = FunctionUtils.SIGMOID_DERIVED.apply(fNetI[0]);
         deltaIJ[0] = deltaII[0] * FunctionUtils.SIGMOID_DERIVED.
-                                                                       apply(fNetJ[0]) * wJI[0];
+                apply(fNetJ[0]) * wJI[0];
 
         //W(k,J)
         double expectedNewWKJ = alpha[0] * ( fNetI[1] - fNetI[0] ) * deltaIJ[0] * fNetK[0] + wKJ[0];
@@ -1562,7 +1562,7 @@ class TDTrainerTest {
         //calculamos valores que deberían resultar
         deltaII[1] = FunctionUtils.SIGMOID_DERIVED.apply(fNetI[1]);
         deltaIJ[1] = deltaII[1] * FunctionUtils.SIGMOID_DERIVED.
-                                                                       apply(fNetJ[1]) * wJI[1];
+                apply(fNetJ[1]) * wJI[1];
 
         double error = alpha[0] * ( fNetI[2] - fNetI[1] ); //error = (double) 2.1083069642169328E-5
         //W(k,J)
@@ -1684,7 +1684,7 @@ class TDTrainerTest {
         //calculamos valores que deberían resultar
         deltaII[2] = FunctionUtils.SIGMOID_DERIVED.apply(fNetI[2]);
         deltaIJ[2] = deltaII[2] * FunctionUtils.SIGMOID_DERIVED.
-                                                                       apply(fNetJ[2]) * wJI[2];
+                apply(fNetJ[2]) * wJI[2];
 
         error = alpha[0] * ( fNetIFinal - fNetI[2] ); //
 
