@@ -50,23 +50,23 @@ class TDLambdaLearning {
     private       int                     alphaAnnealingT;
     private       boolean                 canCollectStatistics;
     private boolean computeParallelBestPossibleAction = false;
-    private double[]                   currentAlpha;
+    private double[] currentAlpha;
+    private double currentExplorationRate = 0d;
     private int                        eligibilityTraceLength;
     private EExplorationRateAlgorithms explorationRate;
     private double                     explorationRateFinalValue;
-    private int                     explorationRateFinishInterpolation;
-    private double                  explorationRateInitialValue;
-    private int                     explorationRateStartInterpolation;
-    private double                  gamma;
-    private double[]                initialAlpha;
-    private double                  lambda;
-    private ELearningRateAdaptation learningRateAdaptation;
-    private ELearningStyle          learningStyle;
-    private NTupleSystem            nTupleSystem;
-    private StatisticCalculator     statisticsBestPossibleActionTimes;
-    private StatisticCalculator     statisticsTrainingTimes;
-    private Trainer                 trainer;
-
+    private int                        explorationRateFinishInterpolation;
+    private double                     explorationRateInitialValue;
+    private int                        explorationRateStartInterpolation;
+    private double                     gamma;
+    private double[]                   initialAlpha;
+    private double                     lambda;
+    private ELearningRateAdaptation    learningRateAdaptation;
+    private ELearningStyle             learningStyle;
+    private NTupleSystem               nTupleSystem;
+    private StatisticCalculator        statisticsBestPossibleActionTimes;
+    private StatisticCalculator        statisticsTrainingTimes;
+    private Trainer                    trainer;
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
      *
@@ -428,8 +428,7 @@ class TDLambdaLearning {
                     ELearningStyle.afterState,
                     nextTurnState,
                     possibleActionsNextTurn,
-                    problem.getActorToTrain(),
-                    computeParallelBestPossibleAction, bestPossibleActionTimes);
+                    problem.getActorToTrain(), computeParallelBestPossibleAction, bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
             // (determinístico) del próximo estado (turno).
@@ -518,6 +517,11 @@ class TDLambdaLearning {
     public
     double[] getCurrentAlpha() {
         return currentAlpha;
+    }
+
+    public
+    double getCurrentExplorationRate() {
+        return currentExplorationRate;
     }
 
     /**
@@ -662,7 +666,6 @@ class TDLambdaLearning {
             }
         }
 
-        double currentExplorationRate = 0;
         //inicializamos el factor de exploración
         switch ( explorationRate ) {
             case fixed: {
@@ -674,9 +677,11 @@ class TDLambdaLearning {
                 //factor ajustado linealmente entre dos puntos
                 currentExplorationRate = calculateLinearInterpolation(currentTurn,
                         explorationRateInitialValue,
-                        explorationRateFinalValue,
-                        explorationRateStartInterpolation, explorationRateFinishInterpolation);
+                        explorationRateFinalValue, explorationRateStartInterpolation, explorationRateFinishInterpolation);
                 break;
+            }
+            default: {
+                throw new IllegalStateException("unknown explorationRate");
             }
         }
         assert currentExplorationRate >= 0 && currentExplorationRate <= 1;
@@ -725,8 +730,7 @@ class TDLambdaLearning {
                         learningStyle,
                         turnInitialState,
                         possibleActions,
-                        problem.getActorToTrain(),
-                        computeParallelBestPossibleAction, statisticsBestPossibleActionTimes);
+                        problem.getActorToTrain(), computeParallelBestPossibleAction, statisticsBestPossibleActionTimes);
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
                 afterState = bestActionPrediction.getAfterState();
@@ -758,8 +762,7 @@ class TDLambdaLearning {
                             nextTurnState,
                             currentAlpha,
                             concurrencyInLayer,
-                            computeParallelBestPossibleAction,
-                            statisticsBestPossibleActionTimes, statisticsTrainingTimes);
+                            computeParallelBestPossibleAction, statisticsBestPossibleActionTimes, statisticsTrainingTimes);
                     break;
                 }
                 default: {
