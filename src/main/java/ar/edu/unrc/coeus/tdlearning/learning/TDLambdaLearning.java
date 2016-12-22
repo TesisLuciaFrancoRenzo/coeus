@@ -55,18 +55,20 @@ class TDLambdaLearning {
     private int                        eligibilityTraceLength;
     private EExplorationRateAlgorithms explorationRate;
     private double                     explorationRateFinalValue;
-    private int                        explorationRateFinishInterpolation;
-    private double                     explorationRateInitialValue;
-    private int                        explorationRateStartInterpolation;
-    private double                     gamma;
-    private double[]                   initialAlpha;
-    private double                     lambda;
-    private ELearningRateAdaptation    learningRateAdaptation;
-    private ELearningStyle             learningStyle;
-    private NTupleSystem               nTupleSystem;
-    private StatisticCalculator        statisticsBestPossibleActionTimes;
-    private StatisticCalculator        statisticsTrainingTimes;
-    private Trainer                    trainer;
+    private int                     explorationRateFinishInterpolation;
+    private double                  explorationRateInitialValue;
+    private int                     explorationRateStartInterpolation;
+    private double                  gamma;
+    private double[]                initialAlpha;
+    private double                  lambda;
+    private ELearningRateAdaptation learningRateAdaptation;
+    private ELearningStyle          learningStyle;
+    private NTupleSystem            nTupleSystem;
+    private int                     randomChoiceCounter;
+    private StatisticCalculator     statisticsBestPossibleActionTimes;
+    private StatisticCalculator     statisticsTrainingTimes;
+    private Trainer                 trainer;
+
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
      *
@@ -141,6 +143,7 @@ class TDLambdaLearning {
             statisticsBestPossibleActionTimes = new StatisticCalculator();
             statisticsTrainingTimes = new StatisticCalculator();
         }
+        randomChoiceCounter = 0;
     }
 
 
@@ -219,6 +222,7 @@ class TDLambdaLearning {
             statisticsBestPossibleActionTimes = new StatisticCalculator();
             statisticsTrainingTimes = new StatisticCalculator();
         }
+        randomChoiceCounter = 0;
     }
 
     /**
@@ -427,8 +431,7 @@ class TDLambdaLearning {
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem,
                     ELearningStyle.afterState,
                     nextTurnState,
-                    possibleActionsNextTurn,
-                    problem.getActorToTrain(), computeParallelBestPossibleAction, bestPossibleActionTimes);
+                    possibleActionsNextTurn, problem.getActorToTrain(), computeParallelBestPossibleAction, bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
             // (determinístico) del próximo estado (turno).
@@ -522,6 +525,14 @@ class TDLambdaLearning {
     public
     double getCurrentExplorationRate() {
         return currentExplorationRate;
+    }
+
+    /**
+     * @return tiempos de demora al entrenar la red neuronal, útil para estadísticas.
+     */
+    public
+    int getRandomChoicesCounter() {
+        return randomChoiceCounter;
     }
 
     /**
@@ -677,7 +688,9 @@ class TDLambdaLearning {
                 //factor ajustado linealmente entre dos puntos
                 currentExplorationRate = calculateLinearInterpolation(currentTurn,
                         explorationRateInitialValue,
-                        explorationRateFinalValue, explorationRateStartInterpolation, explorationRateFinishInterpolation);
+                        explorationRateFinalValue,
+                        explorationRateStartInterpolation,
+                        explorationRateFinishInterpolation);
                 break;
             }
             default: {
@@ -685,6 +698,7 @@ class TDLambdaLearning {
             }
         }
         assert currentExplorationRate >= 0 && currentExplorationRate <= 1;
+        randomChoiceCounter = 0;
 
         // Inicializamos el problema y las variables del entrenador, o reutilizamos
         // el ultimo Trainer para reciclar sus variables
@@ -729,8 +743,7 @@ class TDLambdaLearning {
                 ActionPrediction bestActionPrediction = computeBestPossibleAction(problem,
                         learningStyle,
                         turnInitialState,
-                        possibleActions,
-                        problem.getActorToTrain(), computeParallelBestPossibleAction, statisticsBestPossibleActionTimes);
+                        possibleActions, problem.getActorToTrain(), computeParallelBestPossibleAction, statisticsBestPossibleActionTimes);
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
                 afterState = bestActionPrediction.getAfterState();
@@ -740,6 +753,7 @@ class TDLambdaLearning {
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
                 afterState = problem.computeAfterState(turnInitialState, bestAction);
+                randomChoiceCounter++;
             }
 
             // hacemos que el problema aplique la acción 'bestAction' de la red neuronal,
@@ -761,8 +775,7 @@ class TDLambdaLearning {
                             afterState,
                             nextTurnState,
                             currentAlpha,
-                            concurrencyInLayer,
-                            computeParallelBestPossibleAction, statisticsBestPossibleActionTimes, statisticsTrainingTimes);
+                            concurrencyInLayer, computeParallelBestPossibleAction, statisticsBestPossibleActionTimes, statisticsTrainingTimes);
                     break;
                 }
                 default: {
