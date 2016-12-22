@@ -359,10 +359,10 @@ class TDLambdaLearning {
                 }
             }
         }).collect(MaximalActionPredictionConsumer::new, MaximalActionPredictionConsumer::accept, MaximalActionPredictionConsumer::combine).getList();
-        ActionPrediction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1));
+        assert bestActions.size() > 0;
+        ActionPrediction bestAction = ( bestActions.size() > 1 ) ? bestActions.get(randomBetween(0, bestActions.size() - 1)) : bestActions.get(0);
         if ( bestPossibleActionTimes != null ) {
-            time = System.currentTimeMillis() - time;
-            bestPossibleActionTimes.addSample(time);
+            bestPossibleActionTimes.addSample(System.currentTimeMillis() - time);
         }
         return bestAction;
     }
@@ -430,7 +430,11 @@ class TDLambdaLearning {
             final List< IAction > possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem,
                     ELearningStyle.afterState,
-                    nextTurnState, possibleActionsNextTurn, problem.getActorToTrain(), computeParallelBestPossibleAction, bestPossibleActionTimes);
+                    nextTurnState,
+                    possibleActionsNextTurn,
+                    problem.getActorToTrain(),
+                    computeParallelBestPossibleAction,
+                    bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
             // (determinístico) del próximo estado (turno).
