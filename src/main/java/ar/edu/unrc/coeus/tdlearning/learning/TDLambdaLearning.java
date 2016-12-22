@@ -55,19 +55,19 @@ class TDLambdaLearning {
     private int                        eligibilityTraceLength;
     private EExplorationRateAlgorithms explorationRate;
     private double                     explorationRateFinalValue;
-    private int                     explorationRateFinishInterpolation;
-    private double                  explorationRateInitialValue;
-    private int                     explorationRateStartInterpolation;
-    private double                  gamma;
-    private double[]                initialAlpha;
-    private double                  lambda;
-    private ELearningRateAdaptation learningRateAdaptation;
-    private ELearningStyle          learningStyle;
-    private NTupleSystem            nTupleSystem;
-    private int                     randomChoiceCounter;
-    private StatisticCalculator     statisticsBestPossibleActionTimes;
-    private StatisticCalculator     statisticsTrainingTimes;
-    private Trainer                 trainer;
+    private int                        explorationRateFinishInterpolation;
+    private double                     explorationRateInitialValue;
+    private int                        explorationRateStartInterpolation;
+    private double                     gamma;
+    private double[]                   initialAlpha;
+    private double                     lambda;
+    private ELearningRateAdaptation    learningRateAdaptation;
+    private ELearningStyle             learningStyle;
+    private NTupleSystem               nTupleSystem;
+    private int                        randomChoiceCounter;
+    private StatisticCalculator        statisticsBestPossibleActionTimes;
+    private StatisticCalculator        statisticsTrainingTimes;
+    private Trainer                    trainer;
 
     /**
      * Algoritmo de entrenamiento de redes neuronales genéricas con soporte multicapa, mediante TD Learning.
@@ -430,8 +430,7 @@ class TDLambdaLearning {
             final List< IAction > possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem,
                     ELearningStyle.afterState,
-                    nextTurnState,
-                    possibleActionsNextTurn, problem.getActorToTrain(), computeParallelBestPossibleAction, bestPossibleActionTimes);
+                    nextTurnState, possibleActionsNextTurn, problem.getActorToTrain(), computeParallelBestPossibleAction, bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
             // (determinístico) del próximo estado (turno).
@@ -743,7 +742,10 @@ class TDLambdaLearning {
                 ActionPrediction bestActionPrediction = computeBestPossibleAction(problem,
                         learningStyle,
                         turnInitialState,
-                        possibleActions, problem.getActorToTrain(), computeParallelBestPossibleAction, statisticsBestPossibleActionTimes);
+                        possibleActions,
+                        problem.getActorToTrain(),
+                        computeParallelBestPossibleAction,
+                        statisticsBestPossibleActionTimes);
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
                 afterState = bestActionPrediction.getAfterState();
@@ -775,7 +777,10 @@ class TDLambdaLearning {
                             afterState,
                             nextTurnState,
                             currentAlpha,
-                            concurrencyInLayer, computeParallelBestPossibleAction, statisticsBestPossibleActionTimes, statisticsTrainingTimes);
+                            concurrencyInLayer,
+                            computeParallelBestPossibleAction,
+                            statisticsBestPossibleActionTimes,
+                            statisticsTrainingTimes);
                     break;
                 }
                 default: {
