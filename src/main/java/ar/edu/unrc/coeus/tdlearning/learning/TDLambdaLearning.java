@@ -24,8 +24,8 @@ import ar.edu.unrc.coeus.tdlearning.training.TDTrainerNTupleSystem;
 import ar.edu.unrc.coeus.tdlearning.training.TDTrainerPerceptron;
 import ar.edu.unrc.coeus.tdlearning.training.Trainer;
 import ar.edu.unrc.coeus.tdlearning.training.ntuple.NTupleSystem;
-import ar.edu.unrc.coeus.tdlearning.utils.MaximalActionPredictionConsumer;
-import ar.edu.unrc.coeus.tdlearning.utils.StatisticCalculator;
+import ar.edu.unrc.coeus.utils.MaximalActionPredictionConsumer;
+import ar.edu.unrc.coeus.utils.StatisticCalculator;
 
 import java.util.List;
 import java.util.Random;
@@ -430,7 +430,11 @@ class TDLambdaLearning {
             final List< IAction > possibleActionsNextTurn = problem.listAllPossibleActions(nextTurnState);
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem,
                     ELearningStyle.afterState,
-                    nextTurnState, possibleActionsNextTurn, problem.getActorToTrain(), computeParallelBestPossibleAction, bestPossibleActionTimes);
+                    nextTurnState,
+                    possibleActionsNextTurn,
+                    problem.getActorToTrain(),
+                    computeParallelBestPossibleAction,
+                    bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
             // (determinístico) del próximo estado (turno).

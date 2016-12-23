@@ -35,11 +35,11 @@ interface IProblemRunner {
      * afterState, se debe almacenar la recompensa parcial obtenida dentro del {@code IState} retornado para ser
      * utilizado en diferentes algoritmos.
      *
-     * @param turnInitialState estado inicial
+     * @param turnInitialState estado inicial (no se debe modificar, hay que retornar un nuevo objeto)
      * @param action           acción determinística para aplicar
      *
-     * @return estado intermedio determinístico resultante de aplicar la acción {@code action} al estado {@code turnInitialState}, con su recompensa
-     * parcial, para ser utilizado en el cálculo acumulativo de TDLearning
+     * @return nuevo estado intermedio determinístico resultante de aplicar la acción {@code action} al estado {@code turnInitialState}, con su
+     * recompensa parcial, para ser utilizado en el cálculo acumulativo de TDLearning
      */
     IState computeAfterState(
             final IState turnInitialState,

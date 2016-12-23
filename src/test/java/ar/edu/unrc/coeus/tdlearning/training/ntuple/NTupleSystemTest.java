@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 
-import ar.edu.unrc.coeus.tdlearning.utils.FunctionUtils;
+import ar.edu.unrc.coeus.utils.FunctionUtils;
 import org.junit.*;
 
 import java.util.ArrayList;

@@ -16,7 +16,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc.coeus.tdlearning.utils;
+package ar.edu.unrc.coeus.utils;
 
 import ar.edu.unrc.coeus.tdlearning.learning.ActionPrediction;
 
@@ -71,7 +71,6 @@ class MaximalActionPredictionConsumer
             list = other.list;
         } else if ( !other.list.isEmpty() ) {
             int comparision = list.get(0).compareTo(other.list.get(0));
-
             if ( comparision == 0 ) {
                 list.addAll(other.list);
             } else if ( comparision < 0 ) {

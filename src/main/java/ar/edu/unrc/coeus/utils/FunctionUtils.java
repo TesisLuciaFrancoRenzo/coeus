@@ -16,7 +16,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ar.edu.unrc.coeus.tdlearning.utils;
+package ar.edu.unrc.coeus.utils;
 
 import java.util.function.Function;
 

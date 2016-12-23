@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning;
 
-import ar.edu.unrc.coeus.tdlearning.utils.UtilsSuite;
+import ar.edu.unrc.coeus.utils.UtilsSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

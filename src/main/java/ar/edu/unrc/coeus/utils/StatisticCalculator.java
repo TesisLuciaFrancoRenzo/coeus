@@ -1,4 +1,4 @@
-package ar.edu.unrc.coeus.tdlearning.utils;
+package ar.edu.unrc.coeus.utils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayDeque;
