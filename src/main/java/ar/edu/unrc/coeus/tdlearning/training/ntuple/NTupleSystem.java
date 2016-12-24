@@ -104,6 +104,10 @@ class NTupleSystem {
         final SamplePointValue[] nTuple = state.getNTuple(nTupleIndex);
         int                      index  = 0;
         for ( int nIndex = 0; nIndex < nTuplesLength[nTupleIndex]; nIndex++ ) {
+            //            SamplePointValue spv = nTuple[nIndex];
+            //            if ( mapSamplePointValuesIndex.get(spv) == null ) {
+            //                System.out.println("caca");
+            //            }
             index += mapSamplePointValuesIndex.get(nTuple[nIndex]) * (int) Math.pow(mapSamplePointValuesIndex.size(), nIndex);
         }
         return index;
@@ -224,8 +228,7 @@ class NTupleSystem {
         }
         return activationFunction.apply(stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(
                 nTupleIndex,
-                nTuplesLength,
-                state, mapSamplePointValuesIndex)]).sum());
+                nTuplesLength, state, mapSamplePointValuesIndex)]).sum());
     }
 
     /**
