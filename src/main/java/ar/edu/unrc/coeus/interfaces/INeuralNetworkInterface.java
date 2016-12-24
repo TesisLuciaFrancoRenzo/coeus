@@ -29,8 +29,6 @@ import java.util.function.Function;
 public
 interface INeuralNetworkInterface {
 
-    //TODO add bias entry point configuration, like encog
-
     /**
      * función de activación de todas las neuronas de la red neuronal en la capa {@code layerIndex}.
      *
