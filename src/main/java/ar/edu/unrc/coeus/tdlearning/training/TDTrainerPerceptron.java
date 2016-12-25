@@ -257,8 +257,7 @@ class TDTrainerPerceptron
             return lastLayerStream.mapToDouble(outputNeuronIndex -> alpha[layerIndexJ] * tDError.get(outputNeuronIndex) * computeEligibilityTrace(
                     outputNeuronIndex,
                     layerIndexJ,
-                    neuronIndexJ,
-                    layerIndexK, neuronIndexK)).sum();
+                    neuronIndexJ, layerIndexK, neuronIndexK)).sum();
         }
     }
 

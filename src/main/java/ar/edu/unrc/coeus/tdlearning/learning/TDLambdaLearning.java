@@ -266,11 +266,11 @@ class TDLambdaLearning {
         if ( ( lambda > 1 ) || ( lambda < 0 ) || ( gamma > 1 ) || ( gamma < 0 ) ) {
             throw new IllegalArgumentException("lambda and gamma must be values from 0 to 1");
         }
-        if ( lambdaGamma > MAX_LAMBDA_GAMMA ) {
-            return Integer.MAX_VALUE;
-        }
         if ( lambdaGamma == 0 ) {
             return 0;
+        }
+        if ( lambdaGamma > MAX_LAMBDA_GAMMA ) {
+            return Integer.MAX_VALUE;
         }
         int          length    = 0;
         final double threshold = THRESHOLD_LAMBDA_GAMMA * lambdaGamma;
@@ -489,7 +489,7 @@ class TDLambdaLearning {
         } else if ( a == b ) {
             return a;
         } else {
-            return random.nextInt(( b - a ) + 1) + a; // a + (int) ((b - a + 1d) * random());
+            return random.nextInt(( b - a ) + 1) + a;
         }
     }
 
