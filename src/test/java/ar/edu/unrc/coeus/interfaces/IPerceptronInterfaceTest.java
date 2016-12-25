@@ -19,7 +19,7 @@
 package ar.edu.unrc.coeus.interfaces;
 
 import ar.edu.unrc.coeus.utils.FunctionUtils;
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.function.Function;
 
@@ -33,55 +33,16 @@ public
 class IPerceptronInterfaceTest {
 
     /**
-     *
-     */
-    public
-    IPerceptronInterfaceTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of getActivationFunction method, of class INeuralNetworkInterface.
      */
     @Test
     public
     void testGetActivationFunction() {
         System.out.println("getActivationFunction");
-        int                        layerIndex = 1;
-        Function< Double, Double > sigmoid    = FunctionUtils.SIGMOID;
-        INeuralNetworkInterface    instance   = new IPerceptronInterfaceImpl();
-        Function< Double, Double > result     = instance.getActivationFunction(layerIndex);
+        final int                        layerIndex = 1;
+        final Function< Double, Double > sigmoid    = FunctionUtils.SIGMOID;
+        final INeuralNetworkInterface    instance   = new IPerceptronInterfaceImpl();
+        final Function< Double, Double > result     = instance.getActivationFunction(layerIndex);
         assertThat(result, is(sigmoid));
     }
 
@@ -92,12 +53,12 @@ class IPerceptronInterfaceTest {
     public
     void testGetBias() {
         System.out.println("getBias");
-        int                     layerIndex  = 0;
-        int                     neuronIndex = 0;
-        INeuralNetworkInterface instance    = new IPerceptronInterfaceImpl();
-        double                  expResult   = 0.56;
+        final int                     layerIndex  = 0;
+        final int                     neuronIndex = 0;
+        final INeuralNetworkInterface instance    = new IPerceptronInterfaceImpl();
+        final double                  expResult   = 0.56;
         instance.setBias(layerIndex, neuronIndex, 0.56);
-        double result = instance.getBias(layerIndex, neuronIndex);
+        final double result = instance.getBias(layerIndex, neuronIndex);
         assertThat(result, is(expResult));
     }
 
@@ -108,10 +69,10 @@ class IPerceptronInterfaceTest {
     public
     void testGetDerivedActivationFunction() {
         System.out.println("getDerivedActivationFunction");
-        int                        layerIndex = 1;
-        INeuralNetworkInterface    instance   = new IPerceptronInterfaceImpl();
-        Function< Double, Double > expResult  = FunctionUtils.SIGMOID_DERIVED;
-        Function< Double, Double > result     = instance.getDerivedActivationFunction(layerIndex);
+        final int                        layerIndex = 1;
+        final INeuralNetworkInterface    instance   = new IPerceptronInterfaceImpl();
+        final Function< Double, Double > expResult  = FunctionUtils.SIGMOID_DERIVED;
+        final Function< Double, Double > result     = instance.getDerivedActivationFunction(layerIndex);
         assertThat(result, is(expResult));
     }
 
@@ -122,9 +83,9 @@ class IPerceptronInterfaceTest {
     public
     void testGetLayerQuantity() {
         System.out.println("getLayerQuantity");
-        INeuralNetworkInterface instance  = new IPerceptronInterfaceImpl();
-        int                     expResult = 3;
-        int                     result    = instance.getLayerQuantity();
+        final INeuralNetworkInterface instance  = new IPerceptronInterfaceImpl();
+        final int                     expResult = 3;
+        final int                     result    = instance.getLayerQuantity();
         assertThat(result, is(expResult));
 
     }
@@ -136,10 +97,10 @@ class IPerceptronInterfaceTest {
     public
     void testGetNeuronQuantityInLayer() {
         System.out.println("getNeuronQuantityInLayer");
-        int                     layerIndex = 0;
-        INeuralNetworkInterface instance   = new IPerceptronInterfaceImpl();
-        int                     expResult  = 3;
-        int                     result     = instance.getNeuronQuantityInLayer(layerIndex);
+        final int                     layerIndex = 0;
+        final INeuralNetworkInterface instance   = new IPerceptronInterfaceImpl();
+        final int                     expResult  = 3;
+        final int                     result     = instance.getNeuronQuantityInLayer(layerIndex);
         assertThat(result, is(expResult));
     }
 
@@ -150,13 +111,13 @@ class IPerceptronInterfaceTest {
     public
     void testGetWeight() {
         System.out.println("getWeight");
-        int                     layerIndex               = 0;
-        int                     neuronIndex              = 0;
-        int                     neuronIndexPreviousLayer = 0;
-        INeuralNetworkInterface instance                 = new IPerceptronInterfaceImpl();
-        double                  expResult                = 0.3556;
+        final int                     layerIndex               = 0;
+        final int                     neuronIndex              = 0;
+        final int                     neuronIndexPreviousLayer = 0;
+        final INeuralNetworkInterface instance                 = new IPerceptronInterfaceImpl();
+        final double                  expResult                = 0.3556;
         instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, expResult);
-        double result = instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer);
+        final double result = instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer);
         assertThat(result, is(expResult));
 
     }
@@ -168,10 +129,10 @@ class IPerceptronInterfaceTest {
     public
     void testHasBias() {
         System.out.println("hasBias");
-        int                     layerIndex = 0;
-        INeuralNetworkInterface instance   = new IPerceptronInterfaceImpl();
-        boolean                 expResult  = false;
-        boolean                 result     = instance.hasBias(layerIndex);
+        int                           layerIndex = 0;
+        final INeuralNetworkInterface instance   = new IPerceptronInterfaceImpl();
+        boolean                       expResult  = false;
+        boolean                       result     = instance.hasBias(layerIndex);
         assertThat(result, is(expResult));
 
         layerIndex = 1;
@@ -187,10 +148,10 @@ class IPerceptronInterfaceTest {
     public
     void testSetBias() {
         System.out.println("setBias");
-        int                     layerIndex    = 0;
-        int                     neuronIndex   = 0;
-        double                  correctedBias = 0.56;
-        INeuralNetworkInterface instance      = new IPerceptronInterfaceImpl();
+        final int                     layerIndex    = 0;
+        final int                     neuronIndex   = 0;
+        final double                  correctedBias = 0.56;
+        final INeuralNetworkInterface instance      = new IPerceptronInterfaceImpl();
         instance.setBias(layerIndex, neuronIndex, correctedBias);
         assertThat(correctedBias, is(instance.getBias(layerIndex, neuronIndex)));
     }
@@ -202,11 +163,11 @@ class IPerceptronInterfaceTest {
     public
     void testSetWeight() {
         System.out.println("setWeight");
-        int                     layerIndex               = 0;
-        int                     neuronIndex              = 0;
-        int                     neuronIndexPreviousLayer = 0;
-        double                  correctedWeight          = 0.3556;
-        INeuralNetworkInterface instance                 = new IPerceptronInterfaceImpl();
+        final int                     layerIndex               = 0;
+        final int                     neuronIndex              = 0;
+        final int                     neuronIndexPreviousLayer = 0;
+        final double                  correctedWeight          = 0.3556;
+        final INeuralNetworkInterface instance                 = new IPerceptronInterfaceImpl();
         instance.setWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer, correctedWeight);
         assertThat(correctedWeight, is(instance.getWeight(layerIndex, neuronIndex, neuronIndexPreviousLayer)));
     }
@@ -225,15 +186,15 @@ class IPerceptronInterfaceTest {
 
         @Override
         public
-        Function< Double, Double > getActivationFunction( int layerIndex ) {
+        Function< Double, Double > getActivationFunction( final int layerIndex ) {
             return FunctionUtils.SIGMOID;
         }
 
         @Override
         public
         double getBias(
-                int layerIndex,
-                int neuronIndex
+                final int layerIndex,
+                final int neuronIndex
         ) {
             return biasB;
         }
@@ -241,7 +202,7 @@ class IPerceptronInterfaceTest {
         @Override
         public
         Function< Double, Double > getDerivedActivationFunction(
-                int layerIndex
+                final int layerIndex
         ) {
             return FunctionUtils.SIGMOID_DERIVED;
         }
@@ -254,32 +215,32 @@ class IPerceptronInterfaceTest {
 
         @Override
         public
-        int getNeuronQuantityInLayer( int layerIndex ) {
+        int getNeuronQuantityInLayer( final int layerIndex ) {
             return neuronQuantityInLayer;
         }
 
         @Override
         public
         double getWeight(
-                int layerIndex,
-                int neuronIndex,
-                int neuronIndexPreviousLayer
+                final int layerIndex,
+                final int neuronIndex,
+                final int neuronIndexPreviousLayer
         ) {
             return weight;
         }
 
         @Override
         public
-        boolean hasBias( int layerIndex ) {
+        boolean hasBias( final int layerIndex ) {
             return bias[layerIndex];
         }
 
         @Override
         public
         void setBias(
-                int layerIndex,
-                int neuronIndex,
-                double correctedBias
+                final int layerIndex,
+                final int neuronIndex,
+                final double correctedBias
         ) {
             biasB = correctedBias;
         }
@@ -287,10 +248,10 @@ class IPerceptronInterfaceTest {
         @Override
         public
         void setWeight(
-                int layerIndex,
-                int neuronIndex,
-                int neuronIndexPreviousLayer,
-                double correctedWeight
+                final int layerIndex,
+                final int neuronIndex,
+                final int neuronIndexPreviousLayer,
+                final double correctedWeight
         ) {
             weight = correctedWeight;
         }

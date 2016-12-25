@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 /**
- * Created by franc on 16/12/2016.
+ * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public
 class StatisticCalculator {
@@ -18,26 +18,26 @@ class StatisticCalculator {
 
     public
     StatisticCalculator(
-            int capacity,
-            int outputDecimals
+            final int capacity,
+            final int outputDecimals
     ) {
 
         this.outputDecimals = outputDecimals;
-        this.average = 0;
-        this.itemCounter = 0;
+        average = 0;
+        itemCounter = 0;
         if ( capacity > 0 ) {
             this.capacity = capacity;
-            this.history = new ArrayDeque<>(capacity);
+            history = new ArrayDeque<>(capacity);
         } else {
             this.capacity = 0;
-            this.history = null;
+            history = null;
         }
         if ( outputDecimals > 0 ) {
-            StringBuilder pattern = new StringBuilder(outputDecimals);
+            final StringBuilder pattern = new StringBuilder(outputDecimals);
             for ( int i = 0; i < outputDecimals; i++ ) {
                 pattern.append('#');
             }
-            formatter = new DecimalFormat("#." + pattern.toString());
+            formatter = new DecimalFormat("#." + pattern);
         } else if ( outputDecimals == 0 ) {
             formatter = new DecimalFormat("#"); //TODO testear
         } else {
@@ -51,12 +51,12 @@ class StatisticCalculator {
     }
 
     public
-    StatisticCalculator( int outputDecimals ) {
+    StatisticCalculator( final int outputDecimals ) {
         this(0, outputDecimals);
     }
 
     public synchronized
-    void addSample( double sample ) {
+    void addSample( final double sample ) {
         if ( history != null ) {
             if ( history.size() >= capacity ) {
                 average -= history.remove();
@@ -74,7 +74,7 @@ class StatisticCalculator {
 
     public
     double getAverage() {
-        return average / ( itemCounter * 1d );
+        return average / ( itemCounter * 1.0d );
     }
 
     public
@@ -84,11 +84,7 @@ class StatisticCalculator {
 
     public
     Double getFullCapacityAverage() {
-        if ( itemCounter == capacity ) {
-            return getAverage();
-        } else {
-            return null;
-        }
+        return ( itemCounter == capacity ) ? getAverage() : null;
     }
 
     public
@@ -106,11 +102,7 @@ class StatisticCalculator {
         if ( itemCounter < 1 ) {
             return "?";
         } else {
-            if ( formatter != null ) {
-                return formatter.format(getAverage());
-            } else {
-                return Double.toString(getAverage());
-            }
+            return ( formatter != null ) ? formatter.format(getAverage()) : Double.toString(getAverage());
         }
     }
 
@@ -119,11 +111,7 @@ class StatisticCalculator {
         if ( itemCounter < capacity ) {
             return "?";
         } else {
-            if ( formatter != null ) {
-                return formatter.format(getAverage());
-            } else {
-                return Double.toString(getAverage());
-            }
+            return ( formatter != null ) ? formatter.format(getAverage()) : Double.toString(getAverage());
         }
     }
 

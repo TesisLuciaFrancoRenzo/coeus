@@ -52,7 +52,7 @@ class MaximalActionPredictionConsumer
         if ( list.isEmpty() ) {
             list.add(actionPrediction);
         } else {
-            int comparision = list.get(0).compareTo(actionPrediction);
+            final int comparision = list.get(0).compareTo(actionPrediction);
             if ( comparision == 0 ) {
                 list.add(actionPrediction);
             } else if ( comparision < 0 ) {
@@ -70,7 +70,7 @@ class MaximalActionPredictionConsumer
         if ( list.isEmpty() ) {
             list = other.list;
         } else if ( !other.list.isEmpty() ) {
-            int comparision = list.get(0).compareTo(other.list.get(0));
+            final int comparision = list.get(0).compareTo(other.list.get(0));
             if ( comparision == 0 ) {
                 list.addAll(other.list);
             } else if ( comparision < 0 ) {

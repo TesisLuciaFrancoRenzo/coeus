@@ -7,28 +7,28 @@ import java.util.NoSuchElementException;
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
+@SuppressWarnings( "AbstractClassNeverImplemented" )
 public abstract
 class ObjectPool< E > {
 
-    transient ObjectPool.Node< E > last;
-    transient int                  maxSize;
-    transient int                  size;
+    private transient Node< E > last;
+    private transient int       maxSize;
+    private transient int       size;
 
-    public
+    protected
     ObjectPool() {
-        this.size = 0;
-        this.maxSize = 0;
+        size = 0;
+        maxSize = 0;
     }
 
     /**
      * Puts the specified object in the pool, making it eligible to be returned by {@link #obtain()}.
      */
     public synchronized
-    void free( @NotNull E object ) {
+    void free( @NotNull final E object ) {
         if ( object == null ) { throw new IllegalArgumentException("object cannot be null."); }
-        ObjectPool.Node< E > newNode = new ObjectPool.Node(this.last, object);
-        this.last = newNode;
-        ++this.size;
+        last = new Node<>(last, object);
+        ++size;
         if ( size > maxSize ) {
             maxSize = size;
         }
@@ -44,7 +44,7 @@ class ObjectPool< E > {
         return size;
     }
 
-    abstract protected
+    protected abstract
     E newObject();
 
     public synchronized
@@ -52,7 +52,7 @@ class ObjectPool< E > {
         if ( size == 0 ) {
             return newObject();
         } else {
-            final Node< E > lastNode = this.last;
+            final Node< E > lastNode = last;
             if ( lastNode == null ) {
                 throw new NoSuchElementException();
             } else {
@@ -60,8 +60,8 @@ class ObjectPool< E > {
                 final Node< E > prevNode = lastNode.prev;
                 lastNode.item = null;
                 lastNode.prev = null;
-                this.last = prevNode;
-                --this.size;
+                last = prevNode;
+                --size;
                 return item;
             }
         }
@@ -69,12 +69,12 @@ class ObjectPool< E > {
 
     private static
     class Node< E > {
-        E                    item;
-        ObjectPool.Node< E > prev;
+        E         item;
+        Node< E > prev;
 
         Node(
-                ObjectPool.Node< E > prev,
-                E item
+                final Node< E > prev,
+                final E item
         ) {
             this.item = item;
             this.prev = prev;

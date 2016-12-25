@@ -47,7 +47,7 @@ class Neuron {
     ) {
         if ( weightsQuantity > 0 ) {
             weights = new ArrayList<>(weightsQuantity + 1);
-            for ( int i = 0; i < weightsQuantity + 1; i++ ) {
+            for ( int i = 0; i < ( weightsQuantity + 1 ); i++ ) {
                 weights.add(null);
             }
         } else {
@@ -68,7 +68,8 @@ class Neuron {
      */
     public
     void clearGradients() {
-        for ( int i = 0; i < gradient.size(); i++ ) {
+        final int gradientSize = gradient.size();
+        for ( int i = 0; i < gradientSize; i++ ) {
             gradient.set(i, null);
         }
     }

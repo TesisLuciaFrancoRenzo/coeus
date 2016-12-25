@@ -61,7 +61,7 @@ class NTupleSystem {
             final Function< Double, Double > derivedActivationFunction,
             final boolean concurrency
     ) {
-        mapSamplePointValuesIndex = new HashMap<>();
+        mapSamplePointValuesIndex = new HashMap<>(allSamplePointPossibleValues.size());
         for ( int spvIndex = 0; spvIndex < allSamplePointPossibleValues.size(); spvIndex++ ) {
             mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(spvIndex), spvIndex);
         }
@@ -69,7 +69,8 @@ class NTupleSystem {
         nTuplesWeightQuantity = new int[nTuplesLength.length];
         nTuplesWeightQuantityIndex = new int[nTuplesLength.length];
         nTuplesWeightQuantityIndex[0] = 0;
-        for ( int nTupleIndex = 0; nTupleIndex < nTuplesLength.length; nTupleIndex++ ) {
+        final int nTuplesLengthLength = nTuplesLength.length;
+        for ( int nTupleIndex = 0; nTupleIndex < nTuplesLengthLength; nTupleIndex++ ) {
             nTuplesWeightQuantity[nTupleIndex] = (int) Math.pow(mapSamplePointValuesIndex.size(), nTuplesLength[nTupleIndex]);
             lutSize += nTuplesWeightQuantity[nTupleIndex];
             if ( nTupleIndex > 0 ) {
@@ -140,20 +141,20 @@ class NTupleSystem {
      * @param nTupleSystems lista de redes neuronales a fusionar
      */
     public static
-    void fuseLut( List< NTupleSystem > nTupleSystems ) {
+    void fuseLut( final List< NTupleSystem > nTupleSystems ) {
         if ( nTupleSystems.isEmpty() ) {
             throw new IllegalArgumentException("la lista no puede ser vacía");
         }
-        double[] currentLut = nTupleSystems.get(0).getLut();
+        final double[] currentLut = nTupleSystems.get(0).lut;
         IntStream.range(0, currentLut.length).parallel().forEach(index -> {
             //Todo parametrize this to add parallel computation if needed
             for ( int j = 1; j < nTupleSystems.size(); j++ ) {
                 currentLut[index] += nTupleSystems.get(j).lut[index];
             }
-            currentLut[index] = currentLut[index] / nTupleSystems.size();
+            currentLut[index] /= nTupleSystems.size();
         });
         for ( int i = 1; i < nTupleSystems.size(); i++ ) {
-            nTupleSystems.get(i).setWeights(currentLut.clone());
+            nTupleSystems.get(i).lut = currentLut.clone();
         }
     }
 
@@ -189,11 +190,7 @@ class NTupleSystem {
     public
     ComplexNTupleComputation getComplexComputation( final IStateNTuple state ) {
         IntStream stream = IntStream.range(0, nTuplesLength.length);
-        if ( concurrency ) {
-            stream = stream.parallel();
-        } else {
-            stream = stream.sequential();
-        }
+        stream = concurrency ? stream.parallel() : stream.sequential();
         final int[] indexes = new int[nTuplesLength.length];
         final double sum = stream.mapToDouble(nTupleIndex -> {
             indexes[nTupleIndex] =
@@ -217,11 +214,7 @@ class NTupleSystem {
     public
     Double getComputation( final IStateNTuple state ) {
         IntStream stream = IntStream.range(0, nTuplesLength.length);
-        if ( concurrency ) {
-            stream = stream.parallel();
-        } else {
-            stream = stream.sequential();
-        }
+        stream = concurrency ? stream.parallel() : stream.sequential();
         return activationFunction.apply(stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(
                 nTupleIndex,
                 nTuplesLength, state, mapSamplePointValuesIndex)]).sum());
@@ -324,9 +317,10 @@ class NTupleSystem {
     /**
      * Inicializa los valores de los pesos de la red neuronal con numero al azar.
      */
+    @SuppressWarnings( "UnclearExpression" )
     public
     void randomize() {
-        IntStream.range(0, lut.length).parallel().forEach(weightIndex -> lut[weightIndex] = ( Math.random() * 2d - 1d ));
+        IntStream.range(0, lut.length).parallel().forEach(weightIndex -> lut[weightIndex] = ( Math.random() * 2.0d - 1.0d ));
     }
 
     /**

@@ -72,7 +72,7 @@ class NeuralNetworkCache {
      */
     public
     boolean isNextToLastLayer( final int layerIndex ) {
-        return layerIndex == getOutputLayerIndex() - 1;
+        return layerIndex == ( getOutputLayerIndex() - 1 );
     }
 
     /**
@@ -83,7 +83,7 @@ class NeuralNetworkCache {
      */
     public
     boolean isOutputLayer( final int layerIndex ) {
-        return layerIndex == layers.size() - 1;
+        return layerIndex == ( layers.size() - 1 );
     }
 
     /**

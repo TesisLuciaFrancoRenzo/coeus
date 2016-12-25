@@ -17,18 +17,20 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import ar.ArSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( { ar.ArSuite.class } )
+@SuiteClasses( ArSuite.class )
 public
 class RootSuite {
 

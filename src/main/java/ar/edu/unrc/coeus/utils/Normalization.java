@@ -21,7 +21,7 @@ package ar.edu.unrc.coeus.utils;
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-public
+public final
 class Normalization {
 
     private
@@ -47,7 +47,8 @@ class Normalization {
             final double normalizedHigh,
             final double normalizedLow
     ) {
-        return ( ( actualLow - actualHigh ) * value - normalizedHigh * actualLow + actualHigh * normalizedLow ) / ( normalizedLow - normalizedHigh );
+        return ( ( ( ( actualLow - actualHigh ) * value ) - ( normalizedHigh * actualLow ) ) + ( actualHigh * normalizedLow ) ) /
+               ( normalizedLow - normalizedHigh );
     }
 
     /**
@@ -74,7 +75,7 @@ class Normalization {
         } else if ( value < actualLow ) {
             return normalizedLow;
         } else {
-            return ( ( value - actualLow ) / ( actualHigh - actualLow ) ) * ( normalizedHigh - normalizedLow ) + normalizedLow;
+            return ( ( ( value - actualLow ) / ( actualHigh - actualLow ) ) * ( normalizedHigh - normalizedLow ) ) + normalizedLow;
         }
     }
 

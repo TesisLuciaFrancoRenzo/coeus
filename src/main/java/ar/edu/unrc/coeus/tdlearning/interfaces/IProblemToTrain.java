@@ -35,9 +35,6 @@ interface IProblemToTrain
      * determinísticas aplicada. <li>Modificar 'nextState' aplicándole las acciones no determinísticas hasta que llegue al próximo estado.
      * <li>retornar 'nextState' </ol>
      * <p>
-     * Si el diseño del programa lo permite, es posible no realizar el primer paso y reutilizar 'afterState' del
-     * parámetro para realizar las modificaciones adecuadas y retornar.
-     *
      * @param afterState estado de transición, luego de aplicar una acción determinística.
      *
      * @return el estado 'nextState', que representa el siguiente turno o siguiente estado inicial, tras aplicar acciones no determinísticas.

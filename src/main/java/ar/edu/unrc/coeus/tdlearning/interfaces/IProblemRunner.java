@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Debe ser extendido por las clases que pueden hacer uso de los algoritmos provistos en esta librería con el objetivo
@@ -85,9 +85,10 @@ interface IProblemRunner {
      *
      * @param turnInitialState estado del problema sobre el cual hacer cálculos.
      *
-     * @return una lista de todas las acciones validas que se pueden aplicar al estado {@code turnInitialState}.
+     * @return una lista de todas las acciones validas que se pueden aplicar al estado {@code turnInitialState}. Debe ser una estructura eficiente de
+     * recorrer.
      */
-    ArrayList< IAction > listAllPossibleActions(
+    List< IAction > listAllPossibleActions(
             final IState turnInitialState
     );
 

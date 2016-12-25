@@ -18,18 +18,20 @@
  */
 package ar.edu;
 
+import ar.edu.unrc.UnrcSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( { ar.edu.unrc.UnrcSuite.class } )
+@SuiteClasses( UnrcSuite.class )
 public
 class EduSuite {
 

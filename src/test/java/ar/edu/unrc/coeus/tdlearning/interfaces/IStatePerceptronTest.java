@@ -20,7 +20,7 @@ package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.arrayutil.NormalizedField;
-import org.junit.*;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,55 +38,16 @@ class IStatePerceptronTest {
     private final       boolean[][]     board      = { { false, false }, { false, false }, { false, false }, { false, false } };
 
     /**
-     *
-     */
-    public
-    IStatePerceptronTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of translateToPerceptronInput method, of class IStatePerceptron.
      */
     @Test
     public
     void testTranslateToPerceptronInput() {
         System.out.println("translateToPerceptronInput");
-        int              neuronIndex = 2;
-        IStatePerceptron instance    = new IStatePerceptronImpl();
-        Double           expResult   = 0d;
-        Double           result      = instance.translateToPerceptronInput(neuronIndex);
+        final int              neuronIndex = 2;
+        final IStatePerceptron instance    = new IStatePerceptronImpl();
+        final Double           expResult   = 0.0d;
+        final Double           result      = instance.translateToPerceptronInput(neuronIndex);
         assertThat(result, is(expResult));
     }
 
@@ -105,7 +66,7 @@ class IStatePerceptronTest {
 
         @Override
         public
-        double getStateReward( int outputNeuron ) {
+        double getStateReward( final int outputNeuron ) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -123,20 +84,20 @@ class IStatePerceptronTest {
 
         @Override
         public
-        Double translateToPerceptronInput( int neuronIndex ) {
-            if ( board[0][0] && neuronIndex == 0 ) {
-                return 1d;
+        Double translateToPerceptronInput( final int neuronIndex ) {
+            if ( board[0][0] && ( neuronIndex == 0 ) ) {
+                return 1.0d;
             }
-            if ( board[0][1] && neuronIndex == 1 ) {
-                return 1d;
+            if ( board[0][1] && ( neuronIndex == 1 ) ) {
+                return 1.0d;
             }
-            if ( board[1][0] && neuronIndex == 2 ) {
-                return 1d;
+            if ( board[1][0] && ( neuronIndex == 2 ) ) {
+                return 1.0d;
             }
-            if ( board[1][1] && neuronIndex == 3 ) {
-                return 1d;
+            if ( board[1][1] && ( neuronIndex == 3 ) ) {
+                return 1.0d;
             }
-            return 0d;
+            return 0.0d;
         }
 
     }

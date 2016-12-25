@@ -25,7 +25,7 @@ import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.arrayutil.NormalizedField;
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
@@ -39,57 +39,18 @@ public
 class IProblemTest {
 
     /**
-     *
-     */
-    public
-    IProblemTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of computeAfterState method, of class IProblemToTrain.
      */
     @Test
     public
     void testComputeAfterState() {
         System.out.println("computeAfterState");
-        Action       action    = new Action(0, 0);
-        BoardOne2one newBoard  = new BoardOne2one();
-        BoardOne2one newBoard1 = newBoard.getCopy();
+        final Action       action    = new Action(0, 0);
+        final BoardOne2one newBoard  = new BoardOne2one();
+        final BoardOne2one newBoard1 = newBoard.getCopy();
         newBoard1.board[action.getX()][action.getX()] = true;
-        IProblemToTrain instance = new IProblemImpl();
-        IState          result   = instance.computeAfterState(newBoard, action);
+        final IProblemToTrain instance = new IProblemImpl();
+        final IState          result   = instance.computeAfterState(newBoard, action);
         assertThat(newBoard1.board[0][0], is(( (BoardOne2one) result ).board[0][0]));
     }
 
@@ -109,8 +70,8 @@ class IProblemTest {
          */
         public
         Action(
-                int x,
-                int y
+                final int x,
+                final int y
         ) {
             this.x = x;
             this.y = y;
@@ -128,7 +89,7 @@ class IProblemTest {
          * @param x the x to set
          */
         public
-        void setX( int x ) {
+        void setX( final int x ) {
             this.x = x;
         }
 
@@ -144,7 +105,7 @@ class IProblemTest {
          * @param y the y to set
          */
         public
-        void setY( int y ) {
+        void setY( final int y ) {
             this.y = y;
         }
 
@@ -172,7 +133,7 @@ class IProblemTest {
          * @param encogPerceptron
          */
         public
-        BestOf3one2one( BasicNetwork encogPerceptron ) {
+        BestOf3one2one( final BasicNetwork encogPerceptron ) {
             this.encogPerceptron = encogPerceptron;
             //initializeEncogPerceptron();
             resetGame();
@@ -181,25 +142,25 @@ class IProblemTest {
         @Override
         public
         IState computeAfterState(
-                IState turnInitialState,
-                IAction action
+                final IState turnInitialState,
+                final IAction action
         ) {
-            BoardOne2one afterState = ( (BoardOne2one) turnInitialState ).getCopy();
+            final BoardOne2one afterState = ( (BoardOne2one) turnInitialState ).getCopy();
             afterState.getBoard()[( (Action) action ).getX()][( (Action) action ).getY()] = true;
             return afterState;
         }
 
         @Override
         public
-        IState computeNextTurnStateFromAfterState( IState afterState ) {
+        IState computeNextTurnStateFromAfterState( final IState afterState ) {
             return afterState.getCopy();
         }
 
         @Override
         public
         Double computeNumericRepresentationFor(
-                Object[] output,
-                IActor actor
+                final Object[] output,
+                final IActor actor
         ) {
             assert output.length == 1;
             return (Double) output[0];
@@ -207,32 +168,32 @@ class IProblemTest {
 
         @Override
         public
-        double deNormalizeValueFromPerceptronOutput( Object value ) {
+        double deNormalizeValueFromPerceptronOutput( final Object value ) {
             if ( currentBoard.getBoard()[0][0] && currentBoard.getBoard()[0][1] && currentBoard.getBoard()[1][0] && !currentBoard.getBoard()[1][1] ) {
-                return 13d;
+                return 13.0d;
             }
             if ( currentBoard.getBoard()[0][0] && !currentBoard.getBoard()[0][1] && currentBoard.getBoard()[1][0] && currentBoard.getBoard()[1][1] ) {
-                return 15d;
+                return 15.0d;
             }
             if ( !currentBoard.getBoard()[0][0] && currentBoard.getBoard()[0][1] && currentBoard.getBoard()[1][0] && currentBoard.getBoard()[1][1] ) {
-                return 6d;
+                return 6.0d;
             }
             if ( currentBoard.getBoard()[0][0] && currentBoard.getBoard()[0][1] && !currentBoard.getBoard()[1][0] && currentBoard.getBoard()[1][1] ) {
-                return 14d;
+                return 14.0d;
             }
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
         public
-        Object[] evaluateBoardWithPerceptron( IState state ) {
-            double[] inputs = new double[4];
+        Object[] evaluateBoardWithPerceptron( final IState state ) {
+            final double[] inputs = new double[4];
             for ( int i = 0; i < 4; i++ ) {
                 inputs[i] = ( (IStatePerceptron) state ).translateToPerceptronInput(i);
             }
-            MLData   inputData = new BasicMLData(inputs);
-            MLData   output    = ( encogPerceptron ).compute(inputData);
-            Double[] out       = new Double[output.getData().length];
+            final MLData   inputData = new BasicMLData(inputs);
+            final MLData   output    = ( encogPerceptron ).compute(inputData);
+            final Double[] out       = new Double[output.getData().length];
             for ( int i = 0; i < output.size(); i++ ) {
                 out[i] = output.getData()[i];
             }
@@ -257,13 +218,13 @@ class IProblemTest {
          * @param encogPerceptron the encogPerceptron to set
          */
         public
-        void setEncogPerceptron( BasicNetwork encogPerceptron ) {
+        void setEncogPerceptron( final BasicNetwork encogPerceptron ) {
             this.encogPerceptron = encogPerceptron;
         }
 
         @Override
         public
-        IState initialize( IActor actor ) {
+        IState initialize( final IActor actor ) {
             //initializeEncogPerceptron();
             return currentBoard.getCopy();
         }
@@ -283,10 +244,10 @@ class IProblemTest {
 
         @Override
         public
-        ArrayList< IAction > listAllPossibleActions( IState turnInitialState ) {
-            ArrayList< IAction > actions = new ArrayList<>();
+        ArrayList< IAction > listAllPossibleActions( final IState turnInitialState ) {
+            final ArrayList< IAction > actions = new ArrayList<>();
             assert !turnInitialState.isTerminalState();
-            boolean[][] board = ( (BoardOne2one) turnInitialState ).getBoard();
+            final boolean[][] board = ( (BoardOne2one) turnInitialState ).getBoard();
             if ( !board[0][0] ) {
                 actions.add(new Action(0, 0));
             }
@@ -305,8 +266,8 @@ class IProblemTest {
 
         @Override
         public
-        double normalizeValueToPerceptronOutput( Object value ) {
-            NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize, null, 15, 6, 1, 0);
+        double normalizeValueToPerceptronOutput( final Object value ) {
+            final NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize, null, 15, 6, 1, 0);
             if ( currentBoard.getBoard()[0][0] && currentBoard.getBoard()[0][1] && currentBoard.getBoard()[1][0] && !currentBoard.getBoard()[1][1] ) {
                 return normOutput.normalize(13);
             }
@@ -329,7 +290,7 @@ class IProblemTest {
 
         @Override
         public
-        void setCurrentState( IState nextTurnState ) {
+        void setCurrentState( final IState nextTurnState ) {
             currentBoard = (BoardOne2one) nextTurnState;
         }
     }
@@ -357,7 +318,7 @@ class IProblemTest {
         @Override
         public
         BoardOne2one getCopy() {
-            BoardOne2one newBoard = new BoardOne2one();
+            final BoardOne2one newBoard = new BoardOne2one();
             newBoard.board[0][0] = board[0][0];
             newBoard.board[1][0] = board[1][0];
             newBoard.board[0][1] = board[0][1];
@@ -376,7 +337,7 @@ class IProblemTest {
 
         @Override
         public
-        double getStateReward( int outputNeuron ) {
+        double getStateReward( final int outputNeuron ) {
             return getScore();
         }
 
@@ -403,20 +364,20 @@ class IProblemTest {
 
         @Override
         public
-        Double translateToPerceptronInput( int neuronIndex ) {
-            if ( board[0][0] && neuronIndex == 0 ) {
-                return 1d;
+        Double translateToPerceptronInput( final int neuronIndex ) {
+            if ( board[0][0] && ( neuronIndex == 0 ) ) {
+                return 1.0d;
             }
-            if ( board[0][1] && neuronIndex == 1 ) {
-                return 1d;
+            if ( board[0][1] && ( neuronIndex == 1 ) ) {
+                return 1.0d;
             }
-            if ( board[1][0] && neuronIndex == 2 ) {
-                return 1d;
+            if ( board[1][0] && ( neuronIndex == 2 ) ) {
+                return 1.0d;
             }
-            if ( board[1][1] && neuronIndex == 3 ) {
-                return 1d;
+            if ( board[1][1] && ( neuronIndex == 3 ) ) {
+                return 1.0d;
             }
-            return 0d;
+            return 0.0d;
         }
     }
 
@@ -430,10 +391,10 @@ class IProblemTest {
         @Override
         public
         IState computeAfterState(
-                IState turnInitialState,
-                IAction action
+                final IState turnInitialState,
+                final IAction action
         ) {
-            BoardOne2one boardCast = (BoardOne2one) turnInitialState;
+            final BoardOne2one boardCast = (BoardOne2one) turnInitialState;
             boardCast.board[( (Action) action ).getX()][( (Action) action ).getY()] = true;
             return boardCast;
 
@@ -441,7 +402,7 @@ class IProblemTest {
 
         @Override
         public
-        IState computeNextTurnStateFromAfterState( IState afterState ) {
+        IState computeNextTurnStateFromAfterState( final IState afterState ) {
             return null;
         }
 
@@ -451,28 +412,28 @@ class IProblemTest {
          * @return
          */
         public
-        Double computeNumericRepresentationFor( Object[] output ) {
+        Double computeNumericRepresentationFor( final Object[] output ) {
             return null;
         }
 
         @Override
         public
         Double computeNumericRepresentationFor(
-                Object[] output,
-                IActor actor
+                final Object[] output,
+                final IActor actor
         ) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public
-        double deNormalizeValueFromPerceptronOutput( Object value ) {
+        double deNormalizeValueFromPerceptronOutput( final Object value ) {
             return 0.0;
         }
 
         @Override
         public
-        Object[] evaluateBoardWithPerceptron( IState state ) {
+        Object[] evaluateBoardWithPerceptron( final IState state ) {
             return null;
         }
 
@@ -488,7 +449,7 @@ class IProblemTest {
          * @return
          */
         public
-        double getFinalReward( int outputNeuron ) {
+        double getFinalReward( final int outputNeuron ) {
             return 0.0;
         }
 
@@ -502,25 +463,25 @@ class IProblemTest {
 
         @Override
         public
-        IState initialize( IActor actor ) {
+        IState initialize( final IActor actor ) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public
-        ArrayList< IAction > listAllPossibleActions( IState turnInitialState ) {
+        ArrayList< IAction > listAllPossibleActions( final IState turnInitialState ) {
             return null;
         }
 
         @Override
         public
-        double normalizeValueToPerceptronOutput( Object value ) {
+        double normalizeValueToPerceptronOutput( final Object value ) {
             return 0.0;
         }
 
         @Override
         public
-        void setCurrentState( IState nextTurnState ) {
+        void setCurrentState( final IState nextTurnState ) {
         }
     }
 

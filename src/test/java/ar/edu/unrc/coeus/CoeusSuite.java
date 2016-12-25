@@ -18,56 +18,18 @@
  */
 package ar.edu.unrc.coeus;
 
+import ar.edu.unrc.coeus.interfaces.InterfacesSuite;
 import ar.edu.unrc.coeus.tdlearning.TDLearningSuite;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 @RunWith( Suite.class )
-@Suite.SuiteClasses( { TDLearningSuite.class, ar.edu.unrc.coeus.interfaces.InterfacesSuite.class } )
+@SuiteClasses( { TDLearningSuite.class, InterfacesSuite.class } )
 public
 class CoeusSuite {
-
-    /**
-     * @throws Exception
-     */
-    @BeforeClass
-    public static
-    void setUpClass()
-            throws Exception {
-    }
-
-    /**
-     * @throws Exception
-     */
-    @AfterClass
-    public static
-    void tearDownClass()
-            throws Exception {
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Before
-    public
-    void setUp()
-            throws Exception {
-    }
-
-    /**
-     * @throws Exception
-     */
-    @After
-    public
-    void tearDown()
-            throws Exception {
-    }
 
 }
