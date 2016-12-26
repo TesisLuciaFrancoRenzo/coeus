@@ -110,7 +110,7 @@ class TDTrainerPerceptron
      * @return salida de una neurona
      */
     private
-    Double calculateNeuronOutput(
+    double calculateNeuronOutput(
             final int layerIndex,
             final int neuronIndex
     ) {

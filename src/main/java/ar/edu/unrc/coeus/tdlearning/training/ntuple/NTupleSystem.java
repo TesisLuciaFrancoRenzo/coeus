@@ -216,8 +216,7 @@ class NTupleSystem {
         IntStream stream = IntStream.range(0, nTuplesLength.length);
         stream = concurrency ? stream.parallel() : stream.sequential();
         return activationFunction.apply(stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(
-                nTupleIndex,
-                nTuplesLength, state, mapSamplePointValuesIndex)]).sum());
+                nTupleIndex, nTuplesLength, state, mapSamplePointValuesIndex)]).sum());
     }
 
     /**
@@ -279,7 +278,9 @@ class NTupleSystem {
     public
     void load( final File weightsFile )
             throws IOException, ClassNotFoundException {
-        load(new FileInputStream(weightsFile));
+        try ( FileInputStream input = new FileInputStream(weightsFile) ) {
+            load(input);
+        }
     }
 
     /**
@@ -334,7 +335,9 @@ class NTupleSystem {
     void save( final File outputFile )
             throws IOException {
         //definimos el stream de salida
-        save(new FileOutputStream(outputFile));
+        try ( FileOutputStream output = new FileOutputStream(outputFile) ) {
+            save(output);
+        }
     }
 
     /**

@@ -72,7 +72,7 @@ class StatisticCalculator {
         }
     }
 
-    public
+    public synchronized
     double getAverage() {
         return average / ( itemCounter * 1.0d );
     }
@@ -82,12 +82,12 @@ class StatisticCalculator {
         return capacity;
     }
 
-    public
+    public synchronized
     Double getFullCapacityAverage() {
         return ( itemCounter == capacity ) ? getAverage() : null;
     }
 
-    public
+    public synchronized
     int getItemCounter() {
         return itemCounter;
     }
@@ -97,7 +97,7 @@ class StatisticCalculator {
         return outputDecimals;
     }
 
-    public
+    public synchronized
     String printableAverage() {
         if ( itemCounter < 1 ) {
             return "?";
@@ -106,7 +106,7 @@ class StatisticCalculator {
         }
     }
 
-    public
+    public synchronized
     String printableFullCapacityAverage() {
         if ( itemCounter < capacity ) {
             return "?";
@@ -115,7 +115,7 @@ class StatisticCalculator {
         }
     }
 
-    public
+    public synchronized
     void reset() {
         average = 0;
         itemCounter = 0;
