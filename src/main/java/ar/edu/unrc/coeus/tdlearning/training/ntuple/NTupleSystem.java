@@ -297,18 +297,14 @@ class NTupleSystem {
         if ( inputStream == null ) {
             throw new IllegalArgumentException("weightsFile can't be null");
         }
-
         // descomprimimos
         final GZIPInputStream gz = new GZIPInputStream(inputStream);
-
         // leemos le objeto utilizando ObjectInputStream
         Object obj;
         try ( ObjectInputStream obj_in = new ObjectInputStream(gz) ) {
-
             // creamos el objeto
             obj = obj_in.readObject();
         }
-
         //intentamos cargarlo en la variable correspondiente
         if ( obj != null && obj instanceof double[] ) {
             lut = (double[]) obj;
