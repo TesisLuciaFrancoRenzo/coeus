@@ -181,8 +181,8 @@ class IPerceptronInterfaceTest {
         final boolean[] bias                  = { false, true, false, true };
         final int       layerQuantity         = 3;
         final int       neuronQuantityInLayer = 3;
-        double biasB;
-        double weight;
+        double biasB  = 0.0;
+        double weight = 0.0;
 
         @Override
         public

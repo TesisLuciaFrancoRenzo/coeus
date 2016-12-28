@@ -23,7 +23,7 @@ class StatisticCalculator {
     ) {
 
         this.outputDecimals = outputDecimals;
-        average = 0;
+        average = 0.0d;
         itemCounter = 0;
         if ( capacity > 0 ) {
             this.capacity = capacity;
@@ -74,7 +74,7 @@ class StatisticCalculator {
 
     public synchronized
     double getAverage() {
-        return average / ( itemCounter * 1.0d );
+        return average / ( (double) itemCounter * 1.0d );
     }
 
     public
@@ -117,7 +117,7 @@ class StatisticCalculator {
 
     public synchronized
     void reset() {
-        average = 0;
+        average = 0.0d;
         itemCounter = 0;
         if ( history != null ) {
             history.clear();

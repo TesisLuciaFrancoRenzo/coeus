@@ -63,7 +63,7 @@ class TDTrainerNTupleSystem
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;
-        eligibilityTrace = ( lambda > 0 )
+        eligibilityTrace = ( lambda > 0.0d )
                            ? new EligibilityTraceForNTuple(nTupleSystem, gamma, lambda, maxEligibilityTraceLength, replaceEligibilityTraces)
                            : null;
     }
@@ -71,7 +71,7 @@ class TDTrainerNTupleSystem
     @Override
     public
     void reset() {
-        if ( lambda != 0 ) {
+        if ( lambda != 0.0d ) {
             assert eligibilityTrace != null;
             eligibilityTrace.reset();
         }
@@ -93,19 +93,18 @@ class TDTrainerNTupleSystem
         final double                   nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDError
-        final double partialError;
-        final double tdError;
-        tdError = ( ( nextTurnState.isTerminalState()
-                      ? nextTurnStateBoardReward
-                      : ( nextTurnStateBoardReward + ( gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) ) ) ) - output );
-        partialError = alpha[0] * tdError;
+        final double tdError = ( ( nextTurnState.isTerminalState()
+                                   ? nextTurnStateBoardReward
+                                   : ( nextTurnStateBoardReward + ( gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) ) ) ) -
+                                 output );
+        final double partialError             = alpha[0] * tdError;
         final int normalizedStateOutputLength = normalizedStateOutput.getIndexes().length;
         for ( int weightIndex = 0; weightIndex < normalizedStateOutputLength; weightIndex++ ) {
             final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
             final double currentEligibilityTrace;
 
             // usamos solo el gradiente y no la salida de la entrada, ya que siempre es 1 en NTuplas.
-            if ( lambda > 0 ) {
+            if ( lambda > 0.0d ) {
                 assert eligibilityTrace != null;
                 currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, gradientOutput);
             } else {
@@ -118,7 +117,7 @@ class TDTrainerNTupleSystem
                 nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
             }
         }
-        if ( lambda > 0 ) {
+        if ( lambda > 0.0d ) {
             assert eligibilityTrace != null;
             eligibilityTrace.processNotUsedTraces(partialError);
         }

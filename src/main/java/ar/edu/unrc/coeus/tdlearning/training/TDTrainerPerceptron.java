@@ -44,8 +44,8 @@ class TDTrainerPerceptron
      */
     private final INeuralNetworkInterface                neuralNetwork;
     private final boolean                                replaceEligibilityTraces;
-    private       double[]                               alpha;
-    private       boolean[]                              concurrencyInLayer;
+    private double[]  alpha              = null;
+    private boolean[] concurrencyInLayer = null;
     /**
      * <ul>
      * <li>Primer componente: índice de la capa de la neurona.
@@ -60,16 +60,16 @@ class TDTrainerPerceptron
      * Indica si es el primer turno.
      */
     private       boolean                                firstTurn;
-    private       List< Double >                         nextTurnOutputs;
+    private List< Double > nextTurnOutputs = null;
     private       NeuralNetworkCache                     nextTurnStateCache;
     /**
      * Problema a solucionar.
      */
-    private       IProblemToTrain                        problem;
+    private IProblemToTrain problem = null;
     /**
      * Vector de errores TD para la capa de salida, comparando el turno actual con el siguiente
      */
-    private       List< Double >                         tDError;
+    private List< Double >  tDError = null;
     /**
      * Cache utilizada para reciclar cálculos y soluciones previas.
      */
@@ -96,7 +96,7 @@ class TDTrainerPerceptron
         turnCurrentStateCache = null;
         this.lambda = lambda;
         this.gamma = gamma;
-        if ( lambda > 0 ) {
+        if ( lambda > 0.0d ) {
             createEligibilityCache();
         }
     }
@@ -163,7 +163,7 @@ class TDTrainerPerceptron
             final int neuronIndexK
     ) {
         final double output = computeGradient(outputNeuronIndex, layerIndexJ, neuronIndexJ) * calculateNeuronOutput(layerIndexK, neuronIndexK);
-        if ( lambda > 0 ) {
+        if ( lambda > 0.0d ) {
             final List< Double > neuronKEligibilityTrace = eligibilityTraces.get(layerIndexJ).get(neuronIndexJ).get(neuronIndexK);
             final double newEligibilityTrace =
                     ( replaceEligibilityTraces ) ? output : ( ( neuronKEligibilityTrace.get(outputNeuronIndex) * lambda * gamma ) + output );
@@ -189,11 +189,10 @@ class TDTrainerPerceptron
             final int layerIndex,
             final int neuronIndex
     ) {
-        final Layer currentLayer = turnCurrentStateCache.getLayer(layerIndex);
-        final Layer nextLayer;
-        nextLayer = turnCurrentStateCache.isOutputLayer(layerIndex) ? null : turnCurrentStateCache.getLayer(layerIndex + 1);
-        final Neuron neuronO  = currentLayer.getNeuron(neuronIndex);
-        Double       gradient = neuronO.getGradient(outputNeuronIndex);
+        final Layer  currentLayer = turnCurrentStateCache.getLayer(layerIndex);
+        final Layer  nextLayer    = turnCurrentStateCache.isOutputLayer(layerIndex) ? null : turnCurrentStateCache.getLayer(layerIndex + 1);
+        final Neuron neuronO      = currentLayer.getNeuron(neuronIndex);
+        Double       gradient     = neuronO.getGradient(outputNeuronIndex);
         if ( gradient == null ) {
             if ( turnCurrentStateCache.isOutputLayer(layerIndex) ) {
                 //i==o ^ o pertenece(I) => f'(net(i,m))
@@ -214,8 +213,8 @@ class TDTrainerPerceptron
                 nextLayerStream = concurrencyInLayer[layerIndex + 1] ? nextLayerStream.parallel() : nextLayerStream.sequential();
 
                 final double sum = nextLayerStream.mapToDouble(neuronIndexP -> {
-                    @SuppressWarnings( "null" ) final Neuron neuronP = nextLayer.getNeuron(neuronIndexP);
-                    final Double                             deltaP  = neuronP.getGradient(outputNeuronIndex);
+                    final Neuron neuronP = nextLayer.getNeuron(neuronIndexP);
+                    final Double deltaP  = neuronP.getGradient(outputNeuronIndex);
                     assert deltaP != null; // llamar la actualización de pesos de tal forma que no haga recursividad
                     return deltaP * neuronP.getWeight(neuronIndex);
                 }).sum();
@@ -256,8 +255,7 @@ class TDTrainerPerceptron
 
             return lastLayerStream.mapToDouble(outputNeuronIndex -> alpha[layerIndexJ] * tDError.get(outputNeuronIndex) * computeEligibilityTrace(
                     outputNeuronIndex,
-                    layerIndexJ,
-                    neuronIndexJ, layerIndexK, neuronIndexK)).sum();
+                    layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK)).sum();
         }
     }
 
@@ -277,18 +275,16 @@ class TDTrainerPerceptron
         final int outputLayerNeuronQuantity = neuralNetwork.getNeuronQuantityInLayer(neuralNetwork.getLayerQuantity() - 1);
 
         // inicializamos la Cache o reciclamos alguna vieja
-        final NeuralNetworkCache currentCache;
-        currentCache = ( oldCache == null ) ? new NeuralNetworkCache(neuralNetwork.getLayerQuantity()) : oldCache;
+        final NeuralNetworkCache currentCache = ( oldCache == null ) ? new NeuralNetworkCache(neuralNetwork.getLayerQuantity()) : oldCache;
         IntStream.range(0, neuralNetwork.getLayerQuantity())
                 .sequential() //no se puede en paralelo porque se necesitan las neuronas de la capa anterior para f(net) y otros
                 .forEach(l -> {
                     //inicializamos la variable para que sea efectivamente final, y poder usar paralelismo funcional
                     final int currentLayerIndex = l;
                     //creamos una capa o reciclamos una vieja
-                    final Layer layer;
-                    layer = ( oldCache == null )
-                            ? new Layer(neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex))
-                            : oldCache.getLayer(currentLayerIndex);
+                    final Layer layer = ( oldCache == null )
+                                        ? new Layer(neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex))
+                                        : oldCache.getLayer(currentLayerIndex);
 
                     IntStream currentLayerStream = IntStream.range(0, neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex));
 
@@ -297,9 +293,8 @@ class TDTrainerPerceptron
                     // Recorremos cada neurona que debería ir en la capa,
                     // la inicializamos, y la cargamos en dicha capa
                     currentLayerStream.forEach(currentNeuronIndex -> {
+                        final Layer  oldCacheCurrentLayer = ( oldCache != null ) ? oldCache.getLayer(currentLayerIndex) : null;
                         final Neuron neuron;
-                        final Layer  oldCacheCurrentLayer;
-                        oldCacheCurrentLayer = ( oldCache != null ) ? oldCache.getLayer(currentLayerIndex) : null;
                         if ( currentLayerIndex == 0 ) {
                             //configuramos la neurona de entrada
                             // creando una o reciclando una vieja
@@ -435,7 +430,7 @@ class TDTrainerPerceptron
         //creamos o reciclamos caches
         if ( firstTurn ) {
             turnCurrentStateCache = createCache((IStatePerceptron) state, null);
-            if ( lambda > 0 ) {
+            if ( lambda > 0.0d ) {
                 resetEligibilityCache();
             }
 
@@ -474,10 +469,9 @@ class TDTrainerPerceptron
             //capa de mas atrás, pero contigua a J
             final int layerIndexK = layerIndex - 1;
 
-            final int maxIndexK;
-            final int neuronQuantityInK = turnCurrentStateCache.getLayer(layerIndexK).getNeurons().size();
-            maxIndexK = neuralNetwork.hasBias(layerIndexJ) ? neuronQuantityInK : ( neuronQuantityInK - 1 );
-            final Layer currentLayer = turnCurrentStateCache.getLayer(layerIndexJ);
+            final int   neuronQuantityInK = turnCurrentStateCache.getLayer(layerIndexK).getNeurons().size();
+            final int   maxIndexK         = neuralNetwork.hasBias(layerIndexJ) ? neuronQuantityInK : ( neuronQuantityInK - 1 );
+            final Layer currentLayer      = turnCurrentStateCache.getLayer(layerIndexJ);
 
             IntStream layerJStream = IntStream.range(0, currentLayer.getNeurons().size());
             layerJStream = concurrencyInLayer[layerIndexJ] ? layerJStream.parallel() : layerJStream.sequential();

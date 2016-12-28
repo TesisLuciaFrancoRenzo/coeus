@@ -31,8 +31,8 @@ class Neuron {
 
     private final List< Double > gradient;
     private final List< Double > weights;
-    private       Double         derivedOutput;
-    private       Double         output;
+    private Double derivedOutput = null;
+    private Double output        = null;
 
     /**
      * Neurona para una red neuronal genérica.

@@ -35,7 +35,7 @@ class ValueUsagePair {
      */
     public
     ValueUsagePair() {
-        value = 0;
+        value = 0.0d;
         usagesLeft = 0;
     }
 
@@ -72,7 +72,7 @@ class ValueUsagePair {
     }
 
     void reset() {
-        value = 0;
+        value = 0.0d;
         usagesLeft = 0;
     }
 

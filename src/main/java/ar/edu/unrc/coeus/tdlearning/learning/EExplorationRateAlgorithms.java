@@ -31,10 +31,10 @@ enum EExplorationRateAlgorithms {
     /**
      * El valor de ritmo de exploración se mantiene constante durante el entrenamiento.
      */
-    fixed,
+    FIXED,
     /**
      * El valor de ritmo de exploración decrementa o incrementa durante el entrenamiento dependiendo de una función
      * lineal.
      */
-    linear
+    LINEAR
 }

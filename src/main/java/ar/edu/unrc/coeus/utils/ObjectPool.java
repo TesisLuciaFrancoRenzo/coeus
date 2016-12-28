@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 public abstract
 class ObjectPool< E > {
 
-    private transient Node< E > last;
+    private transient Node< E > last = null;
     private transient int       maxSize;
     private transient int       size;
 

@@ -65,11 +65,11 @@ class NTupleSystem {
         for ( int spvIndex = 0; spvIndex < allSamplePointPossibleValues.size(); spvIndex++ ) {
             mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(spvIndex), spvIndex);
         }
-        int lutSize = 0;
         nTuplesWeightQuantity = new int[nTuplesLength.length];
         nTuplesWeightQuantityIndex = new int[nTuplesLength.length];
         nTuplesWeightQuantityIndex[0] = 0;
         final int nTuplesLengthLength = nTuplesLength.length;
+        int       lutSize             = 0;
         for ( int nTupleIndex = 0; nTupleIndex < nTuplesLengthLength; nTupleIndex++ ) {
             nTuplesWeightQuantity[nTupleIndex] = (int) Math.pow(mapSamplePointValuesIndex.size(), nTuplesLength[nTupleIndex]);
             lutSize += nTuplesWeightQuantity[nTupleIndex];
@@ -302,13 +302,15 @@ class NTupleSystem {
         final GZIPInputStream gz = new GZIPInputStream(inputStream);
 
         // leemos le objeto utilizando ObjectInputStream
-        final ObjectInputStream obj_in = new ObjectInputStream(gz);
+        Object obj;
+        try ( ObjectInputStream obj_in = new ObjectInputStream(gz) ) {
 
-        // creamos el objeto
-        final Object obj = obj_in.readObject();
+            // creamos el objeto
+            obj = obj_in.readObject();
+        }
 
         //intentamos cargarlo en la variable correspondiente
-        if ( obj instanceof double[] ) {
+        if ( obj != null && obj instanceof double[] ) {
             lut = (double[]) obj;
         } else {
             throw new IllegalArgumentException("Unsupported file format");

@@ -141,7 +141,7 @@ class IProblemTest {
 
         @Override
         public
-        boolean canExploreThisTurn( long currentTurn ) {
+        boolean canExploreThisTurn( final long currentTurn ) {
             return true;
         }
 
@@ -396,7 +396,7 @@ class IProblemTest {
 
         @Override
         public
-        boolean canExploreThisTurn( long currentTurn ) {
+        boolean canExploreThisTurn( final long currentTurn ) {
             return true;
         }
 

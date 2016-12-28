@@ -36,10 +36,10 @@ class TDLambdaLearningTest {
     public
     void testCalculateBestEligibilityTraceLength() {
         System.out.println("calculateBestEligibilityTraceLength");
-        final Double  lambda    = 0.7;
-        final Integer expResult = 21;
-        final Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        final Double  lambda = 0.7;
+        final Integer result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         System.out.println("result " + result);
+        final Integer expResult = 21;
         assertThat(result, is(expResult));
     }
 
@@ -52,42 +52,42 @@ class TDLambdaLearningTest {
         System.out.println("calculateBestEligibilityTraceLength");
         Double  lambda    = 0.99;
         Integer expResult = Integer.MAX_VALUE;
-        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.975;
         expResult = 274;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.95;
         expResult = 136;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.9;
         expResult = 67;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.8;
         expResult = 32;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.6;
         expResult = 15;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 1.0d;
         expResult = Integer.MAX_VALUE;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.0d;
         expResult = 0;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
     }
 
@@ -103,9 +103,9 @@ class TDLambdaLearningTest {
         final double finalValue          = 10.0d;
         final double startInterpolation  = 0.0d;
         final double finishInterpolation = 10.0d;
-        double       expResult           = initialValue;
         double result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
+        double expResult = initialValue;
         assertThat(result, is(expResult));
 
         t = 0;
@@ -157,9 +157,9 @@ class TDLambdaLearningTest {
         final double finalValue          = 0.0d;
         final double startInterpolation  = 0.0d;
         final double finishInterpolation = 10.0d;
-        double       expResult           = initialValue;
         double result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
+        double expResult = initialValue;
         assertThat(result, is(expResult));
 
         t = 0;
@@ -206,7 +206,6 @@ class TDLambdaLearningTest {
     public
     void testRandomBetween() {
         System.out.println("randomBetween");
-        final boolean expResult = true;
         boolean       result1   = false;
         boolean       result2   = false;
         for ( int i = 0; i < 500; i++ ) {
@@ -220,6 +219,7 @@ class TDLambdaLearningTest {
         }
         System.out.println("results 1=" + result1 + " 2=" + result2);
         final boolean finalResult = result1 && result2;
+        final boolean expResult   = true;
         assertThat(finalResult, is(expResult));
     }
 
