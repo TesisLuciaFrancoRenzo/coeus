@@ -1,4 +1,6 @@
-package ar.edu.unrc.coeus.tdlearning.utils;
+package ar.edu.unrc.coeus.utils;
+
+import com.sun.istack.internal.NotNull;
 
 import java.util.NoSuchElementException;
 
@@ -9,44 +11,59 @@ public abstract
 class ObjectPool< E > {
 
     transient ObjectPool.Node< E > last;
+    transient int                  maxSize;
     transient int                  size;
 
     public
     ObjectPool() {
         this.size = 0;
+        this.maxSize = 0;
     }
 
     /**
      * Puts the specified object in the pool, making it eligible to be returned by {@link #obtain()}.
      */
     public synchronized
-    void free( E object ) {
+    void free( @NotNull E object ) {
         if ( object == null ) { throw new IllegalArgumentException("object cannot be null."); }
         ObjectPool.Node< E > newNode = new ObjectPool.Node(this.last, object);
         this.last = newNode;
         ++this.size;
+        if ( size > maxSize ) {
+            maxSize = size;
+        }
+    }
+
+    public
+    int getMaxSize() {
+        return maxSize;
+    }
+
+    public
+    int getSize() {
+        return size;
     }
 
     abstract protected
     E newObject();
 
-    public
+    public synchronized
     E obtain() {
-        return size == 0 ? newObject() : recycleLastNode();
-    }
-
-    private synchronized
-    E recycleLastNode() {
-        Node< E > lastNode = this.last;
-        if ( lastNode == null ) {
-            throw new NoSuchElementException();
+        if ( size == 0 ) {
+            return newObject();
         } else {
-            Node< E > prevNode = lastNode.prev;
-            lastNode.item = null;
-            lastNode.prev = null;
-            this.last = prevNode;
-            --this.size;
-            return lastNode.item;
+            final Node< E > lastNode = this.last;
+            if ( lastNode == null ) {
+                throw new NoSuchElementException();
+            } else {
+                final E         item     = lastNode.item;
+                final Node< E > prevNode = lastNode.prev;
+                lastNode.item = null;
+                lastNode.prev = null;
+                this.last = prevNode;
+                --this.size;
+                return item;
+            }
         }
     }
 

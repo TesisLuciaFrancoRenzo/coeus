@@ -22,7 +22,7 @@ import ar.edu.unrc.coeus.interfaces.INeuralNetworkInterface;
 import ar.edu.unrc.coeus.tdlearning.interfaces.*;
 import ar.edu.unrc.coeus.tdlearning.training.perceptrons.Layer;
 import ar.edu.unrc.coeus.tdlearning.training.perceptrons.NeuralNetworkCache;
-import ar.edu.unrc.coeus.tdlearning.utils.FunctionUtils;
+import ar.edu.unrc.coeus.utils.FunctionUtils;
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.basic.BasicMLData;

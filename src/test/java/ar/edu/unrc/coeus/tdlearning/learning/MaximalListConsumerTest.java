@@ -19,7 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.learning;
 
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
-import ar.edu.unrc.coeus.tdlearning.utils.MaximalActionPredictionConsumer;
+import ar.edu.unrc.coeus.utils.MaximalActionPredictionConsumer;
 import org.junit.*;
 
 import static org.hamcrest.CoreMatchers.is;
