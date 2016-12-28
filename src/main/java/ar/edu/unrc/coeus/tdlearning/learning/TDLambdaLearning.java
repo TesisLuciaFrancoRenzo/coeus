@@ -46,17 +46,17 @@ class TDLambdaLearning {
     public static final  double MAX_LAMBDA_GAMMA             = 0.99;
     public static final  double THRESHOLD_LAMBDA_GAMMA       = 0.001;
     private static final Random random                       = new Random();
-    private final boolean                    canCollectStatistics;
-    private final boolean[]                  concurrencyInLayer;
-    private final double[]                   currentAlpha;
-    private final double                     gamma;
-    private final double[]                   initialAlpha;
-    private final double                     lambda;
-    private final ELearningStyle             learningStyle;
-    private final NTupleSystem               nTupleSystem;
-    private final ENeuralNetworkType         neuralNetworkType;
-    private final INeuralNetworkInterface    perceptronInterface;
-    private final boolean                    replaceEligibilityTraces;
+    private final boolean                 canCollectStatistics;
+    private final boolean[]               concurrencyInLayer;
+    private final double[]                currentAlpha;
+    private final double                  gamma;
+    private final double[]                initialAlpha;
+    private final double                  lambda;
+    private final ELearningStyle          learningStyle;
+    private final NTupleSystem            nTupleSystem;
+    private final ENeuralNetworkType      neuralNetworkType;
+    private final INeuralNetworkInterface perceptronInterface;
+    private final boolean                 replaceEligibilityTraces;
     private int                        alphaAnnealingT                    = 0;
     private boolean                    computeParallelBestPossibleAction  = false;
     private double                     currentExplorationRate             = 0.0;
@@ -67,7 +67,7 @@ class TDLambdaLearning {
     private double                     explorationRateInitialValue        = 0.0;
     private int                        explorationRateStartInterpolation  = 0;
     private ELearningRateAdaptation    learningRateAdaptation             = null;
-    private       int                        randomChoiceCounter;
+    private int randomChoiceCounter;
     private StatisticCalculator statisticsBestPossibleActionTimes = null;
     private StatisticCalculator statisticsTrainingTimes           = null;
     private Trainer             trainer                           = null;
@@ -710,7 +710,7 @@ class TDLambdaLearning {
         }
 
         IState                    turnInitialState = problem.initialize(problem.getActorToTrain());
-        boolean                   randomChoice     = false;
+        boolean                   randomChoice;
         long                      startTime        = 0L;
         final StatisticCalculator timePerGame      = new StatisticCalculator();
         long                      currentTurn      = 1L;
@@ -721,9 +721,10 @@ class TDLambdaLearning {
             }
 
             // calculamos todas las acciones posibles para el estado inicial
-
             if ( ( currentExplorationRate > 0.0d ) && problem.canExploreThisTurn(currentTurn) ) {
                 randomChoice = Math.random() <= currentExplorationRate;
+            } else {
+                randomChoice = false;
             }
 
             final List< IAction > possibleActions = problem.listAllPossibleActions(turnInitialState);
