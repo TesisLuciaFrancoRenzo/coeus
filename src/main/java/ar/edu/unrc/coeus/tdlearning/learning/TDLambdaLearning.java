@@ -710,7 +710,6 @@ class TDLambdaLearning {
         }
 
         IState                    turnInitialState = problem.initialize(problem.getActorToTrain());
-        boolean                   randomChoice;
         long                      startTime        = 0L;
         final StatisticCalculator timePerGame      = new StatisticCalculator();
         long                      currentTurn      = 1L;
@@ -720,17 +719,9 @@ class TDLambdaLearning {
                 startTime = System.currentTimeMillis();
             }
 
-            // calculamos todas las acciones posibles para el estado inicial
-            if ( ( currentExplorationRate > 0.0d ) && problem.canExploreThisTurn(currentTurn) ) {
-                randomChoice = Math.random() <= currentExplorationRate;
-            } else {
-                randomChoice = false;
-            }
-
             final List< IAction > possibleActions = problem.listAllPossibleActions(turnInitialState);
-
-            final IState afterState;
-            if ( randomChoice ) {
+            final IState          afterState;
+            if ( ( currentExplorationRate > 0.0d ) && problem.canExploreThisTurn(currentTurn) && ( Math.random() <= currentExplorationRate ) ) {
                 // elegimos una acción al azar
                 final IAction bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1));
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
