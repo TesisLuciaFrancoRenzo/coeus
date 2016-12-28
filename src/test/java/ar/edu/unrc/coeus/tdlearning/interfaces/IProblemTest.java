@@ -141,6 +141,12 @@ class IProblemTest {
 
         @Override
         public
+        boolean canExploreThisTurn( long currentTurn ) {
+            return true;
+        }
+
+        @Override
+        public
         IState computeAfterState(
                 final IState turnInitialState,
                 final IAction action
@@ -387,6 +393,12 @@ class IProblemTest {
     public
     class IProblemImpl
             implements IProblemToTrain {
+
+        @Override
+        public
+        boolean canExploreThisTurn( long currentTurn ) {
+            return true;
+        }
 
         @Override
         public

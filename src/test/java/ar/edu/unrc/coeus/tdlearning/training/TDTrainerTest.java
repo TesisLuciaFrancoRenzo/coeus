@@ -264,6 +264,13 @@ class TDTrainerTest {
         };
 
         final IProblemToTrain problem = new IProblemToTrain() {
+
+            @Override
+            public
+            boolean canExploreThisTurn( long currentTurn ) {
+                return true;
+            }
+
             @Override
             public
             IState computeAfterState(
@@ -572,6 +579,13 @@ class TDTrainerTest {
         };
 
         final IProblemToTrain problem = new IProblemToTrain() {
+
+            @Override
+            public
+            boolean canExploreThisTurn( long currentTurn ) {
+                return true;
+            }
+
             @Override
             public
             IState computeAfterState(
@@ -926,6 +940,13 @@ class TDTrainerTest {
         };
 
         final IProblemToTrain problem = new IProblemToTrain() {
+
+            @Override
+            public
+            boolean canExploreThisTurn( long currentTurn ) {
+                return true;
+            }
+
             @Override
             public
             IState computeAfterState(
@@ -1284,6 +1305,13 @@ class TDTrainerTest {
         };
 
         final IProblemToTrain problem = new IProblemToTrain() {
+
+            @Override
+            public
+            boolean canExploreThisTurn( long currentTurn ) {
+                return true;
+            }
+
             @Override
             public
             IState computeAfterState(
@@ -1865,6 +1893,13 @@ class TDTrainerTest {
         };
 
         final IProblemToTrain problem = new IProblemToTrain() {
+
+            @Override
+            public
+            boolean canExploreThisTurn( long currentTurn ) {
+                return true;
+            }
+
             @Override
             public
             IState computeAfterState(

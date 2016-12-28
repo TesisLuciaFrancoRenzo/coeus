@@ -29,12 +29,23 @@ interface IProblemToTrain
         extends IProblemRunner {
 
     /**
+     * True si en este turno se puede realizar acciones al azar a modo de exploración. Esto permite por ejemplo, activar la exploración luego de
+     * cierto turno especifico, evitando utilizar exploración en secciones del problema ya aprendidos.
+     *
+     * @param currentTurn turno actual de ejecución del problema sobre el cual se esta entrenando.
+     *
+     * @return true si se habilita utilizar la función de exploración en el turno {@code currentTurn}.
+     */
+    boolean canExploreThisTurn( long currentTurn );
+
+    /**
      * Este método debe:
      * <p>
      * <ol> <li>Crear un estado que llamaremos 'nextState', que comienza siendo igual a {@code afterState}, el cual ya contiene la acciones
      * determinísticas aplicada. <li>Modificar 'nextState' aplicándole las acciones no determinísticas hasta que llegue al próximo estado.
      * <li>retornar 'nextState' </ol>
      * <p>
+     *
      * @param afterState estado de transición, luego de aplicar una acción determinística.
      *
      * @return el estado 'nextState', que representa el siguiente turno o siguiente estado inicial, tras aplicar acciones no determinísticas.

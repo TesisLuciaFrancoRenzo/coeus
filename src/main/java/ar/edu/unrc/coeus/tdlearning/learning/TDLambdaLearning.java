@@ -644,13 +644,13 @@ class TDLambdaLearning {
      * Entrena la red neuronal con lo que aprende de la experiencia de resolver una sola vez {@code problem} de comienzo
      * a fin, durante 1 o mas turnos hasta alcanzar su objetivo o fracasar.
      *
-     * @param problem     problema a resolver
-     * @param currentTurn cantidad de veces que se ejecutó {@code solveAndTrainOnce}
+     * @param problem                          problema a resolver
+     * @param solveAndTrainOnceExecutionNumber cantidad de veces que se ejecutó {@code solveAndTrainOnce}
      */
     public
     Double solveAndTrainOnce(
             final IProblemToTrain problem,
-            final int currentTurn
+            final int solveAndTrainOnceExecutionNumber
     ) {
         if ( learningRateAdaptation == null ) {
             throw new IllegalArgumentException("learningRateAdaptation can't be null");
@@ -658,8 +658,8 @@ class TDLambdaLearning {
         if ( explorationRate == null ) {
             throw new IllegalArgumentException("explorationRate can't be null");
         }
-        if ( currentTurn < 0 ) {
-            throw new IllegalArgumentException("currentTurn must be grater or equal to 0");
+        if ( solveAndTrainOnceExecutionNumber < 0 ) {
+            throw new IllegalArgumentException("solveAndTrainOnceExecutionNumber must be grater or equal to 0");
         }
         //inicializamos las constantes de aprendizaje
         switch ( learningRateAdaptation ) {
@@ -671,7 +671,8 @@ class TDLambdaLearning {
                 // µ(t) = µ(0)/(1 + t/T)
                 IntStream rangeStream = IntStream.range(0, currentAlpha.length);
                 rangeStream = ( currentAlpha.length > 100 ) ? rangeStream.parallel() : rangeStream.sequential();
-                rangeStream.forEach(index -> currentAlpha[index] = calculateAnnealing(initialAlpha[index], currentTurn, alphaAnnealingT));
+                rangeStream.forEach(index -> currentAlpha[index] =
+                        calculateAnnealing(initialAlpha[index], solveAndTrainOnceExecutionNumber, alphaAnnealingT));
                 break;
         }
 
@@ -683,7 +684,7 @@ class TDLambdaLearning {
                 break;
             case linear:
                 //factor ajustado linealmente entre dos puntos
-                currentExplorationRate = calculateLinearInterpolation(currentTurn,
+                currentExplorationRate = calculateLinearInterpolation(solveAndTrainOnceExecutionNumber,
                         explorationRateInitialValue,
                         explorationRateFinalValue,
                         explorationRateStartInterpolation,
@@ -714,6 +715,7 @@ class TDLambdaLearning {
         boolean                   randomChoice     = false;
         long                      startTime        = 0;
         final StatisticCalculator timePerGame      = new StatisticCalculator();
+        long                      currentTurn      = 1;
 
         while ( !turnInitialState.isTerminalState() ) {
             if ( canCollectStatistics ) {
@@ -723,7 +725,7 @@ class TDLambdaLearning {
             // calculamos todas las acciones posibles para el estado inicial
             final IAction bestAction;
 
-            if ( currentExplorationRate > 0 ) {
+            if ( ( currentExplorationRate > 0 ) && problem.canExploreThisTurn(currentTurn) ) {
                 randomChoice = Math.random() <= currentExplorationRate;
             }
 
@@ -783,6 +785,7 @@ class TDLambdaLearning {
             // recordamos el nuevo estado del problema luego de aplicar todas
             // las acciones necesarias para avanzar en la solución del problema
             turnInitialState = nextTurnState;
+            currentTurn++;
 
             if ( canCollectStatistics ) {
                 timePerGame.addSample(System.currentTimeMillis() - startTime);
