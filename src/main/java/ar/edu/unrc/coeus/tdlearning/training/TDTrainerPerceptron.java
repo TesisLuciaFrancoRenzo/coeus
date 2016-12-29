@@ -126,7 +126,7 @@ class TDTrainerPerceptron
      * @param nextTurnState estado del siguiente turno.
      */
     private
-    void calculateTDError( final IStatePerceptron nextTurnState ) {
+    void calculateTDError( final IState nextTurnState ) {
         final Layer outputLayerCurrentState = turnCurrentStateCache.getLayer(turnCurrentStateCache.getOutputLayerIndex());
         IntStream   lastLayerStream         = IntStream.range(0, outputLayerCurrentState.getNeurons().size());
 
@@ -461,7 +461,7 @@ class TDTrainerPerceptron
         }
 
         // Calculamos el TD error.
-        calculateTDError((IStatePerceptron) nextTurnState);
+        calculateTDError(nextTurnState);
 
         for ( int layerIndex = turnCurrentStateCache.getOutputLayerIndex(); layerIndex >= 1; layerIndex-- ) {
             //capa de mas hacia adelante

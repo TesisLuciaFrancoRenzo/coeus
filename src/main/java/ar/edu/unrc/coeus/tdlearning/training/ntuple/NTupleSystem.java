@@ -310,7 +310,7 @@ class NTupleSystem {
             obj = obj_in.readObject();
         }
         //intentamos cargarlo en la variable correspondiente
-        if ( obj != null && obj instanceof double[] ) {
+        if ( ( obj != null ) && ( obj instanceof double[] ) ) {
             lut = (double[]) obj;
         } else {
             throw new IllegalArgumentException("Unsupported file format");

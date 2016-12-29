@@ -27,6 +27,7 @@ import ar.edu.unrc.coeus.tdlearning.training.ntuple.NTupleSystem;
 import ar.edu.unrc.coeus.utils.MaximalActionPredictionConsumer;
 import ar.edu.unrc.coeus.utils.StatisticCalculator;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -340,7 +341,7 @@ class TDLambdaLearning {
             final IProblemRunner problem,
             final ELearningStyle learningStyle,
             final IState turnInitialState,
-            final List< IAction > allPossibleActionsFromTurnInitialState,
+            final Collection< IAction > allPossibleActionsFromTurnInitialState,
             final IActor actor,
             final boolean computeParallelBestPossibleAction,
             final Random random,
