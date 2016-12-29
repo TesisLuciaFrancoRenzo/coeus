@@ -24,6 +24,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.zip.GZIPInputStream;
@@ -216,7 +217,10 @@ class NTupleSystem {
         IntStream stream = IntStream.range(0, nTuplesLength.length);
         stream = concurrency ? stream.parallel() : stream.sequential();
         return activationFunction.apply(stream.mapToDouble(nTupleIndex -> lut[nTuplesWeightQuantityIndex[nTupleIndex] + calculateLocalIndex(
-                nTupleIndex, nTuplesLength, state, mapSamplePointValuesIndex)]).sum());
+                nTupleIndex,
+                nTuplesLength,
+                state,
+                mapSamplePointValuesIndex)]).sum());
     }
 
     /**
@@ -319,7 +323,8 @@ class NTupleSystem {
     @SuppressWarnings( "UnclearExpression" )
     public
     void randomize() {
-        IntStream.range(0, lut.length).parallel().forEach(weightIndex -> lut[weightIndex] = ( Math.random() * 2.0d - 1.0d ));
+        final Random random = new Random();
+        IntStream.range(0, lut.length).parallel().forEach(weightIndex -> lut[weightIndex] = ( random.nextDouble() * 2.0d - 1.0d ));
     }
 
     /**

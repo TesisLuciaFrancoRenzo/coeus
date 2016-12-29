@@ -20,6 +20,8 @@ package ar.edu.unrc.coeus.tdlearning.learning;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -209,7 +211,7 @@ class TDLambdaLearningTest {
         boolean       result1   = false;
         boolean       result2   = false;
         for ( int i = 0; i < 500; i++ ) {
-            final int value = TDLambdaLearning.randomBetween(5, 6);
+            final int value = TDLambdaLearning.randomBetween(5, 6, new Random());
             if ( value == 6 ) {
                 result2 = true;
             }

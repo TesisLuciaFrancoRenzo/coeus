@@ -42,10 +42,9 @@ import java.util.stream.Stream;
 public
 class TDLambdaLearning {
 
-    public static final  int    MAX_ELIGIBILITY_TRACE_LENGTH = 500;
-    public static final  double MAX_LAMBDA_GAMMA             = 0.99;
-    public static final  double THRESHOLD_LAMBDA_GAMMA       = 0.001;
-    private static final Random random                       = new Random();
+    public static final int    MAX_ELIGIBILITY_TRACE_LENGTH = 500;
+    public static final double MAX_LAMBDA_GAMMA             = 0.99;
+    public static final double THRESHOLD_LAMBDA_GAMMA       = 0.001;
     private final boolean                 canCollectStatistics;
     private final boolean[]               concurrencyInLayer;
     private final double[]                currentAlpha;
@@ -56,7 +55,8 @@ class TDLambdaLearning {
     private final NTupleSystem            nTupleSystem;
     private final ENeuralNetworkType      neuralNetworkType;
     private final INeuralNetworkInterface perceptronInterface;
-    private final boolean                 replaceEligibilityTraces;
+    private final Random random = new Random();
+    private final boolean replaceEligibilityTraces;
     private int                        alphaAnnealingT                    = 0;
     private boolean                    computeParallelBestPossibleAction  = false;
     private double                     currentExplorationRate             = 0.0;
@@ -341,6 +341,7 @@ class TDLambdaLearning {
             final List< IAction > allPossibleActionsFromTurnInitialState,
             final IActor actor,
             final boolean computeParallelBestPossibleAction,
+            final Random random,
             final StatisticCalculator bestPossibleActionTimes
     ) {
         long time = 0L;
@@ -358,7 +359,7 @@ class TDLambdaLearning {
                     throw new UnsupportedOperationException("Not supported yet.");
             }
         }).collect(MaximalActionPredictionConsumer::new, MaximalActionPredictionConsumer::accept, MaximalActionPredictionConsumer::combine).getList();
-        final ActionPrediction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1));
+        final ActionPrediction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1, random));
         if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis() - time;
             bestPossibleActionTimes.addSample((double) time);
@@ -420,6 +421,7 @@ class TDLambdaLearning {
             final double[] currentAlpha,
             final boolean[] concurrencyInLayer,
             final boolean computeParallelBestPossibleAction,
+            final Random random,
             final StatisticCalculator bestPossibleActionTimes,
             final StatisticCalculator trainingTimes
     ) {
@@ -449,7 +451,7 @@ class TDLambdaLearning {
                     nextTurnState,
                     possibleActionsNextTurn,
                     problem.getActorToTrain(),
-                    computeParallelBestPossibleAction,
+                    computeParallelBestPossibleAction, random,
                     bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
@@ -480,7 +482,8 @@ class TDLambdaLearning {
     public static
     int randomBetween(
             final int a,
-            final int b
+            final int b,
+            final Random random
     ) {
         if ( a > b ) {
             throw new IllegalArgumentException("error: b must be greater or equal than a");
@@ -721,9 +724,9 @@ class TDLambdaLearning {
 
             final List< IAction > possibleActions = problem.listAllPossibleActions(turnInitialState);
             final IState          afterState;
-            if ( ( currentExplorationRate > 0.0d ) && problem.canExploreThisTurn(currentTurn) && ( Math.random() <= currentExplorationRate ) ) {
+            if ( ( currentExplorationRate > 0.0d ) && problem.canExploreThisTurn(currentTurn) && ( random.nextDouble() <= currentExplorationRate ) ) {
                 // elegimos una acción al azar
-                final IAction bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1));
+                final IAction bestAction = possibleActions.get(randomBetween(0, possibleActions.size() - 1, random));
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
                 afterState = problem.computeAfterState(turnInitialState, bestAction);
@@ -736,7 +739,7 @@ class TDLambdaLearning {
                         turnInitialState,
                         possibleActions,
                         problem.getActorToTrain(),
-                        computeParallelBestPossibleAction,
+                        computeParallelBestPossibleAction, random,
                         statisticsBestPossibleActionTimes);
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
@@ -763,7 +766,7 @@ class TDLambdaLearning {
                             nextTurnState,
                             currentAlpha,
                             concurrencyInLayer,
-                            computeParallelBestPossibleAction,
+                            computeParallelBestPossibleAction, random,
                             statisticsBestPossibleActionTimes,
                             statisticsTrainingTimes);
                     break;
