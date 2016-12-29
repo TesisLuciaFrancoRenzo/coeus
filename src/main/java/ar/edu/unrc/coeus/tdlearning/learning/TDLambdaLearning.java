@@ -55,8 +55,8 @@ class TDLambdaLearning {
     private final NTupleSystem            nTupleSystem;
     private final ENeuralNetworkType      neuralNetworkType;
     private final INeuralNetworkInterface perceptronInterface;
-    private final Random random = new Random();
-    private final boolean replaceEligibilityTraces;
+    private final Random                  random;
+    private final boolean                 replaceEligibilityTraces;
     private int                        alphaAnnealingT                    = 0;
     private boolean                    computeParallelBestPossibleAction  = false;
     private double                     currentExplorationRate             = 0.0;
@@ -95,6 +95,7 @@ class TDLambdaLearning {
             final boolean replaceEligibilityTraces,
             final double gamma,
             final boolean[] concurrencyInLayer,
+            final Random random,
             final boolean collectStatistics
     ) {
         if ( perceptronInterface == null ) {
@@ -109,7 +110,7 @@ class TDLambdaLearning {
         if ( learningStyle == ELearningStyle.STATE ) {
             throw new IllegalArgumentException("learningStyle = STATE is not implemented, yet");
         }
-
+        this.random = random;
         this.learningStyle = learningStyle;
 
         if ( alpha == null ) {
@@ -175,6 +176,7 @@ class TDLambdaLearning {
             final boolean replaceEligibilityTraces,
             final double gamma,
             final boolean[] concurrencyInLayer,
+            final Random random,
             final boolean collectStatistics
     ) {
         if ( nTupleSystem == null ) {
@@ -191,7 +193,7 @@ class TDLambdaLearning {
         if ( learningStyle == ELearningStyle.STATE ) {
             throw new IllegalArgumentException("learningStyle = STATE is not implemented, yet");
         }
-
+        this.random = random;
         this.learningStyle = learningStyle;
 
         if ( alpha == null ) {
