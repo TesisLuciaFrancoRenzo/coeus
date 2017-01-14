@@ -21,6 +21,7 @@ class StatisticCalculator {
             final int capacity,
             final int outputDecimals
     ) {
+        super();
 
         this.outputDecimals = outputDecimals;
         average = 0.0d;
@@ -74,7 +75,7 @@ class StatisticCalculator {
 
     public synchronized
     double getAverage() {
-        return average / ( (double) itemCounter * 1.0d );
+        return average / ( itemCounter * 1.0d );
     }
 
     public

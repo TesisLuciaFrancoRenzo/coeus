@@ -60,12 +60,15 @@ class TDTrainerNTupleSystem
             final boolean replaceEligibilityTraces,
             final double gamma
     ) {
+        super();
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;
-        eligibilityTrace = ( lambda > 0.0d )
-                           ? new EligibilityTraceForNTuple(nTupleSystem, gamma, lambda, maxEligibilityTraceLength, replaceEligibilityTraces)
-                           : null;
+        eligibilityTrace = ( lambda > 0.0d ) ? new EligibilityTraceForNTuple(nTupleSystem,
+                gamma,
+                lambda,
+                maxEligibilityTraceLength,
+                replaceEligibilityTraces) : null;
     }
 
     @Override

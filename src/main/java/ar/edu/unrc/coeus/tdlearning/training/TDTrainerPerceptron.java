@@ -88,6 +88,7 @@ class TDTrainerPerceptron
             final boolean replaceEligibilityTraces,
             final double gamma
     ) {
+        super();
         this.neuralNetwork = neuralNetwork;
         this.replaceEligibilityTraces = replaceEligibilityTraces;
         firstTurn = true;
@@ -278,9 +279,9 @@ class TDTrainerPerceptron
         final NeuralNetworkCache currentCache = ( oldCache == null ) ? new NeuralNetworkCache(neuralNetwork.getLayerQuantity()) : oldCache;
         IntStream.range(0, neuralNetwork.getLayerQuantity())
                 .sequential() //no se puede en paralelo porque se necesitan las neuronas de la capa anterior para f(net) y otros
-                .forEach(l -> {
+                .forEach(index -> {
                     //inicializamos la variable para que sea efectivamente final, y poder usar paralelismo funcional
-                    final int currentLayerIndex = l;
+                    final int currentLayerIndex = index;
                     //creamos una capa o reciclamos una vieja
                     final Layer layer = ( oldCache == null )
                                         ? new Layer(neuralNetwork.getNeuronQuantityInLayer(currentLayerIndex))

@@ -99,6 +99,7 @@ class TDLambdaLearning {
             final Random random,
             final boolean collectStatistics
     ) {
+        super();
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
@@ -120,7 +121,7 @@ class TDLambdaLearning {
                 if ( perceptronInterface.getNeuronQuantityInLayer(i) <= 0 ) {
                     throw new IllegalArgumentException("the layer " + i + " must have 1 or more neurons");
                 }
-                initialAlpha[i] = 1.0d / (double) perceptronInterface.getNeuronQuantityInLayer(i);
+                initialAlpha[i] = 1.0d / perceptronInterface.getNeuronQuantityInLayer(i);
             }
         } else {
             if ( alpha.length != perceptronInterface.getLayerQuantity() ) {
@@ -180,6 +181,7 @@ class TDLambdaLearning {
             final Random random,
             final boolean collectStatistics
     ) {
+        super();
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
@@ -199,7 +201,7 @@ class TDLambdaLearning {
 
         if ( alpha == null ) {
             initialAlpha = new double[2];
-            initialAlpha[0] = 1.0d / (double) nTupleSystem.getNTuplesLength().length;
+            initialAlpha[0] = 1.0d / nTupleSystem.getNTuplesLength().length;
             initialAlpha[1] = 1.0d; //No se usa
         } else {
             initialAlpha = new double[2];
@@ -249,7 +251,7 @@ class TDLambdaLearning {
         if ( ( initialAlphaValue > 1.0d ) || ( initialAlphaValue < 0.0d ) ) {
             throw new IllegalArgumentException("initialAlphaValue=" + initialAlphaValue + " is out of range from a valid [0..1]");
         }
-        return initialAlphaValue / ( 1.0d + ( (double) t / ( (double) T ) ) );
+        return initialAlphaValue / ( 1.0d + ( t / ( (double) T ) ) );
     }
 
     /**
@@ -365,7 +367,7 @@ class TDLambdaLearning {
         final ActionPrediction bestAction = bestActions.get(randomBetween(0, bestActions.size() - 1, random));
         if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis() - time;
-            bestPossibleActionTimes.addSample((double) time);
+            bestPossibleActionTimes.addSample(time);
         }
         return bestAction;
     }
@@ -477,23 +479,23 @@ class TDLambdaLearning {
     /**
      * Genera un numero al azar entre los limites {@code a} y {@code a}, incluyendo a estos.
      *
-     * @param a limite inferior (inclusive)
-     * @param b limite superior (inclusive)
+     * @param minValue limite inferior (inclusive)
+     * @param maxValue limite superior (inclusive)
      *
      * @return número aleatorio entre a y b
      */
     public static
     int randomBetween(
-            final int a,
-            final int b,
+            final int minValue,
+            final int maxValue,
             final Random random
     ) {
-        if ( a > b ) {
+        if ( minValue > maxValue ) {
             throw new IllegalArgumentException("error: b must be greater or equal than a");
-        } else if ( a == b ) {
-            return a;
+        } else if ( minValue == maxValue ) {
+            return minValue;
         } else {
-            return random.nextInt(( b - a ) + 1) + a;
+            return random.nextInt(( maxValue - minValue ) + 1) + minValue;
         }
     }
 
@@ -708,7 +710,9 @@ class TDLambdaLearning {
                     trainer = new TDTrainerPerceptron(perceptronInterface, lambda, replaceEligibilityTraces, gamma);
                     break;
                 case N_TUPLE:
-                    trainer = new TDTrainerNTupleSystem(nTupleSystem, eligibilityTraceLength, lambda, replaceEligibilityTraces, gamma);
+                    trainer = new TDTrainerNTupleSystem(nTupleSystem, eligibilityTraceLength, lambda, replaceEligibilityTraces,
+
+                            gamma);
                     break;
             }
         } else {
@@ -737,13 +741,9 @@ class TDLambdaLearning {
             } else {
                 // evaluamos cada acción aplicada al estado inicial y elegimos la mejor
                 // de éstas basada en las predicciones de recompensas final del problema
-                final ActionPrediction bestActionPrediction = computeBestPossibleAction(problem,
-                        learningStyle,
+                final ActionPrediction bestActionPrediction = computeBestPossibleAction(problem, learningStyle,
                         turnInitialState,
-                        possibleActions,
-                        problem.getActorToTrain(),
-                        computeParallelBestPossibleAction, random,
-                        statisticsBestPossibleActionTimes);
+                        possibleActions, problem.getActorToTrain(), computeParallelBestPossibleAction, random, statisticsBestPossibleActionTimes);
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
                 afterState = bestActionPrediction.getAfterState();
@@ -769,7 +769,8 @@ class TDLambdaLearning {
                             nextTurnState,
                             currentAlpha,
                             concurrencyInLayer,
-                            computeParallelBestPossibleAction, random,
+                            computeParallelBestPossibleAction,
+                            random,
                             statisticsBestPossibleActionTimes,
                             statisticsTrainingTimes);
                     break;

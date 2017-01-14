@@ -17,6 +17,7 @@ class ObjectPool< E > {
 
     protected
     ObjectPool() {
+        super();
         size = 0;
         maxSize = 0;
     }
@@ -76,6 +77,7 @@ class ObjectPool< E > {
                 final Node< E > prev,
                 final E item
         ) {
+            super();
             this.item = item;
             this.prev = prev;
         }

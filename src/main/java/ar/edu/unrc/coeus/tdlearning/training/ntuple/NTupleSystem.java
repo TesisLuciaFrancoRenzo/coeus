@@ -62,6 +62,7 @@ class NTupleSystem {
             final Function< Double, Double > derivedActivationFunction,
             final boolean concurrency
     ) {
+        super();
         mapSamplePointValuesIndex = new HashMap<>(allSamplePointPossibleValues.size());
         for ( int spvIndex = 0; spvIndex < allSamplePointPossibleValues.size(); spvIndex++ ) {
             mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(spvIndex), spvIndex);
@@ -304,13 +305,13 @@ class NTupleSystem {
         // descomprimimos
         final GZIPInputStream gz = new GZIPInputStream(inputStream);
         // leemos le objeto utilizando ObjectInputStream
-        Object obj;
+        final Object obj;
         try ( ObjectInputStream obj_in = new ObjectInputStream(gz) ) {
             // creamos el objeto
             obj = obj_in.readObject();
         }
         //intentamos cargarlo en la variable correspondiente
-        if ( ( obj != null ) && ( obj instanceof double[] ) ) {
+        if ( obj instanceof double[] ) {
             lut = (double[]) obj;
         } else {
             throw new IllegalArgumentException("Unsupported file format");

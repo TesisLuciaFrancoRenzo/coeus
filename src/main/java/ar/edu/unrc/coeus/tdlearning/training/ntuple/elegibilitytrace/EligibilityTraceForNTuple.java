@@ -57,6 +57,7 @@ class EligibilityTraceForNTuple {
             final int maxEligibilityTraceLength,
             final boolean replaceEligibilityTraces
     ) {
+        super();
         this.nTupleSystem = nTupleSystem;
         eligibilityTrace = new ValueUsagePair[nTupleSystem.getLut().length];
         this.replaceEligibilityTraces = replaceEligibilityTraces;
