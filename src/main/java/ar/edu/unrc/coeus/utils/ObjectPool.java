@@ -1,7 +1,5 @@
 package ar.edu.unrc.coeus.utils;
 
-import com.sun.istack.internal.NotNull;
-
 import java.util.NoSuchElementException;
 
 /**
@@ -26,7 +24,7 @@ class ObjectPool< E > {
      * Puts the specified object in the pool, making it eligible to be returned by {@link #obtain()}.
      */
     public synchronized
-    void free( @NotNull final E object ) {
+    void free( final E object ) {
         if ( object == null ) { throw new IllegalArgumentException("object cannot be null."); }
         last = new Node<>(last, object);
         ++size;
