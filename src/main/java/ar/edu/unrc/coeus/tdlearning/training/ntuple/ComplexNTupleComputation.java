@@ -26,9 +26,9 @@ package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 public
 class ComplexNTupleComputation {
 
-    private double derivedOutput;
-    private int[]  indexes;
-    private double output;
+    private double derivedOutput = 0.0;
+    private int[]  indexes       = null;
+    private double output        = 0.0;
 
     /**
      * @return la derivada de la salida de la red neuronal.

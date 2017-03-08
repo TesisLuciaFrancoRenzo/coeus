@@ -57,6 +57,7 @@ class EligibilityTraceForNTuple {
             final int maxEligibilityTraceLength,
             final boolean replaceEligibilityTraces
     ) {
+        super();
         this.nTupleSystem = nTupleSystem;
         eligibilityTrace = new ValueUsagePair[nTupleSystem.getLut().length];
         this.replaceEligibilityTraces = replaceEligibilityTraces;
@@ -112,7 +113,7 @@ class EligibilityTraceForNTuple {
      */
     public
     void reset() {
-        for ( Integer traceIndex : usedTraces ) {
+        for ( final Integer traceIndex : usedTraces ) {
             eligibilityTrace[traceIndex].reset();
         }
         usedTraces.clear();
@@ -143,7 +144,7 @@ class EligibilityTraceForNTuple {
             final double gradientOutput
     ) {
         final ValueUsagePair trace = eligibilityTrace[weightIndex];
-        trace.setValue(( replaceEligibilityTraces ) ? gradientOutput : ( trace.getValue() * lambda * gamma ) + gradientOutput);
+        trace.setValue(( replaceEligibilityTraces ) ? gradientOutput : ( ( trace.getValue() * lambda * gamma ) + gradientOutput ));
         trace.setUsagesLeft(maxEligibilityTraceLength + 1);
         usedTraces.add(weightIndex);
         return trace.getValue();

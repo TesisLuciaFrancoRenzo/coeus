@@ -60,20 +60,21 @@ class TDTrainerNTupleSystem
             final boolean replaceEligibilityTraces,
             final double gamma
     ) {
+        super();
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;
-        if ( lambda != 0 ) {
-            eligibilityTrace = new EligibilityTraceForNTuple(nTupleSystem, gamma, lambda, maxEligibilityTraceLength, replaceEligibilityTraces);
-        } else {
-            eligibilityTrace = null;
-        }
+        eligibilityTrace = ( lambda > 0.0d ) ? new EligibilityTraceForNTuple(nTupleSystem,
+                gamma,
+                lambda,
+                maxEligibilityTraceLength,
+                replaceEligibilityTraces) : null;
     }
 
     @Override
     public
     void reset() {
-        if ( lambda != 0 ) {
+        if ( lambda != 0.0d ) {
             assert eligibilityTrace != null;
             eligibilityTrace.reset();
         }
@@ -95,23 +96,18 @@ class TDTrainerNTupleSystem
         final double                   nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDError
-        final double partialError;
-        final double tdError;
-        if ( !nextTurnState.isTerminalState() ) {
-            //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
-            tdError = nextTurnStateBoardReward + gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) - output;
-        } else {
-            //falta la multiplicación por la neurona de entrada, pero al ser 1 se ignora
-            tdError = nextTurnStateBoardReward - output;
-        }
-        partialError = alpha[0] * tdError;
-
-        for ( int weightIndex = 0; weightIndex < normalizedStateOutput.getIndexes().length; weightIndex++ ) {
+        final double tdError = ( ( nextTurnState.isTerminalState()
+                                   ? nextTurnStateBoardReward
+                                   : ( nextTurnStateBoardReward + ( gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) ) ) ) -
+                                 output );
+        final double partialError             = alpha[0] * tdError;
+        final int normalizedStateOutputLength = normalizedStateOutput.getIndexes().length;
+        for ( int weightIndex = 0; weightIndex < normalizedStateOutputLength; weightIndex++ ) {
             final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
             final double currentEligibilityTrace;
 
             // usamos solo el gradiente y no la salida de la entrada, ya que siempre es 1 en NTuplas.
-            if ( lambda > 0 ) {
+            if ( lambda > 0.0d ) {
                 assert eligibilityTrace != null;
                 currentEligibilityTrace = eligibilityTrace.updateTrace(activeIndex, gradientOutput);
             } else {
@@ -120,11 +116,11 @@ class TDTrainerNTupleSystem
 
             final double finalError = partialError * currentEligibilityTrace;
 
-            if ( finalError != 0d ) {
+            if ( finalError != 0.0d ) {
                 nTupleSystem.addCorrectionToWeight(activeIndex, finalError);
             }
         }
-        if ( lambda > 0 ) {
+        if ( lambda > 0.0d ) {
             assert eligibilityTrace != null;
             eligibilityTrace.processNotUsedTraces(partialError);
         }

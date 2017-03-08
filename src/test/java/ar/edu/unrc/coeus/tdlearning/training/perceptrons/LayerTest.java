@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,57 +33,18 @@ public
 class LayerTest {
 
     /**
-     *
-     */
-    public
-    LayerTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of getNeuron method, of class Layer.
      */
     @Test
     public
     void testGetNeuron() {
         System.out.println("getNeuron");
-        int    neuronIndex = 0;
-        Layer  instance    = new Layer(1);
-        Neuron expResult   = new Neuron(1, 1);
+        final int    neuronIndex = 0;
+        final Layer  instance    = new Layer(1);
+        final Neuron expResult   = new Neuron(1, 1);
         instance.setNeuron(0, expResult);
 
-        Neuron result = instance.getNeuron(neuronIndex);
+        final Neuron result = instance.getNeuron(neuronIndex);
         assertThat(result, is(expResult));
     }
 
@@ -94,12 +55,12 @@ class LayerTest {
     public
     void testGetNeurons() {
         System.out.println("getNeurons");
-        Layer instance = new Layer(2);
+        final Layer instance = new Layer(2);
         instance.setNeuron(0, new Neuron(1, 1));
-        List< Neuron > expResult = new ArrayList<>(1);
+        final List< Neuron > expResult = new ArrayList<>(1);
         expResult.add(new Neuron(1, 1));
         expResult.add(new Neuron(1, 1));
-        List< Neuron > result = instance.getNeurons();
+        final List< Neuron > result = instance.getNeurons();
         assertThat(result.size(), is(expResult.size()));
     }
 
@@ -110,9 +71,9 @@ class LayerTest {
     public
     void testSetNeuron() {
         System.out.println("setNeuron");
-        int    neuronIndex = 0;
-        Neuron neuron      = new Neuron(1, 1);
-        Layer  instance    = new Layer(1);
+        final int    neuronIndex = 0;
+        final Neuron neuron      = new Neuron(1, 1);
+        final Layer  instance    = new Layer(1);
         instance.setNeuron(neuronIndex, neuron);
         assertThat(instance.getNeuron(0), is(neuron));
     }

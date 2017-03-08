@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,54 +34,15 @@ public
 class NeuronTest {
 
     /**
-     *
-     */
-    public
-    NeuronTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of clearGradients method, of class Neuron.
      */
     @Test
     public
     void testClearDeltas() {
         System.out.println("clearGradients");
-        Neuron instance = new Neuron(1, 1);
+        final Neuron instance = new Neuron(1, 1);
         instance.clearGradients();
-        Double result = instance.getGradient(0);
+        final Double result = instance.getGradient(0);
         assertThat(result, nullValue());
     }
 
@@ -92,10 +53,10 @@ class NeuronTest {
     public
     void testGetBias() {
         System.out.println("getBias");
-        Neuron instance = new Neuron(1, 1);
+        final Neuron instance = new Neuron(1, 1);
         instance.setBias(1.325);
-        Double expResult = 1.325;
-        Double result    = instance.getBias();
+        final Double expResult = 1.325;
+        final Double result    = instance.getBias();
         assertThat(result, is(expResult));
     }
 
@@ -106,11 +67,11 @@ class NeuronTest {
     public
     void testGetDelta() {
         System.out.println("getGradient");
-        int    outputNeuronIndex = 0;
-        Neuron instance          = new Neuron(1, 1);
-        instance.setGradient(0, 1d);
-        Double expResult = 1d;
-        Double result    = instance.getGradient(0);
+        final int    outputNeuronIndex = 0;
+        final Neuron instance          = new Neuron(1, 1);
+        instance.setGradient(0, 1.0d);
+        final Double expResult = 1.0d;
+        final Double result    = instance.getGradient(0);
         assertThat(result, is(expResult));
     }
 
@@ -121,11 +82,11 @@ class NeuronTest {
     public
     void testGetDeltas() {
         System.out.println("getGradient");
-        Neuron         instance  = new Neuron(2, 2);
-        List< Double > expResult = new ArrayList<>(2);
+        final Neuron         instance  = new Neuron(2, 2);
+        final List< Double > expResult = new ArrayList<>(2);
         expResult.add(null);
         expResult.add(null);
-        List< Double > result = instance.getGradient();
+        final List< Double > result = instance.getGradient();
         assertThat(result.size(), is(expResult.size()));
     }
 
@@ -136,10 +97,10 @@ class NeuronTest {
     public
     void testGetDerivedOutput() {
         System.out.println("getDerivedOutput");
-        Neuron instance = new Neuron(1, 1);
+        final Neuron instance = new Neuron(1, 1);
         instance.setDerivedOutput(0.33);
-        Double expResult = 0.33;
-        Double result    = instance.getDerivedOutput();
+        final Double expResult = 0.33;
+        final Double result    = instance.getDerivedOutput();
         assertThat(result, is(expResult));
     }
 
@@ -150,10 +111,10 @@ class NeuronTest {
     public
     void testGetOutput() {
         System.out.println("getOutput");
-        Neuron instance = new Neuron(1, 1);
+        final Neuron instance = new Neuron(1, 1);
         instance.setOutput(0.5);
-        Double expResult = 0.5;
-        Double result    = instance.getOutput();
+        final Double expResult = 0.5;
+        final Double result    = instance.getOutput();
         assertThat(result, is(expResult));
     }
 
@@ -164,11 +125,11 @@ class NeuronTest {
     public
     void testGetWeight() {
         System.out.println("getWeight");
-        int    previousLayerNeuronIndex = 0;
-        Neuron instance                 = new Neuron(1, 1);
+        final int    previousLayerNeuronIndex = 0;
+        final Neuron instance                 = new Neuron(1, 1);
         instance.setWeight(0, 0.356);
-        Double expResult = 0.356;
-        Double result    = instance.getWeight(previousLayerNeuronIndex);
+        final Double expResult = 0.356;
+        final Double result    = instance.getWeight(previousLayerNeuronIndex);
         assertThat(result, is(expResult));
     }
 
@@ -179,13 +140,13 @@ class NeuronTest {
     public
     void testGetWeights() {
         System.out.println("getWeights");
-        Neuron instance = new Neuron(1, 1);
+        final Neuron instance = new Neuron(1, 1);
         instance.setWeight(0, 0.3);
         instance.setWeight(1, 0.4);
-        List< Double > expResult = new ArrayList<>(1);
+        final List< Double > expResult = new ArrayList<>(1);
         expResult.add(0.3);
         expResult.add(0.4);
-        List< Double > result = instance.getWeights();
+        final List< Double > result = instance.getWeights();
         assertThat(result.get(0), is(expResult.get(0)));
         assertThat(result.get(1), is(expResult.get(1)));
     }
@@ -197,8 +158,8 @@ class NeuronTest {
     public
     void testSetBias() {
         System.out.println("setBias");
-        Double newBias  = 0.356;
-        Neuron instance = new Neuron(1, 1);
+        final Double newBias  = 0.356;
+        final Neuron instance = new Neuron(1, 1);
         instance.setBias(newBias);
         assertThat(instance.getBias(), is(newBias));
     }
@@ -210,9 +171,9 @@ class NeuronTest {
     public
     void testSetDelta() {
         System.out.println("setGradient");
-        int    outputNeuronIndex = 0;
-        Double gradient          = 0.33;
-        Neuron instance          = new Neuron(1, 1);
+        final int    outputNeuronIndex = 0;
+        final Double gradient          = 0.33;
+        final Neuron instance          = new Neuron(1, 1);
         instance.setGradient(outputNeuronIndex, gradient);
         assertThat(instance.getGradient().get(outputNeuronIndex), is(gradient));
     }
@@ -224,8 +185,8 @@ class NeuronTest {
     public
     void testSetDerivedOutput() {
         System.out.println("setDerivedOutput");
-        Double derivedOutput = 0.365;
-        Neuron instance      = new Neuron(1, 1);
+        final Double derivedOutput = 0.365;
+        final Neuron instance      = new Neuron(1, 1);
         instance.setDerivedOutput(derivedOutput);
         assertThat(instance.getDerivedOutput(), is(derivedOutput));
     }
@@ -237,8 +198,8 @@ class NeuronTest {
     public
     void testSetOutput() {
         System.out.println("setOutput");
-        Double output   = 0.1111;
-        Neuron instance = new Neuron(1, 1);
+        final Double output   = 0.1111;
+        final Neuron instance = new Neuron(1, 1);
         instance.setOutput(output);
         assertThat(instance.getOutput(), is(output));
     }
@@ -250,9 +211,9 @@ class NeuronTest {
     public
     void testSetWeight() {
         System.out.println("setWeight");
-        int    previousLayerNeuronIndex = 0;
-        Double weight                   = 0.256;
-        Neuron instance                 = new Neuron(1, 1);
+        final int    previousLayerNeuronIndex = 0;
+        final Double weight                   = 0.256;
+        final Neuron instance                 = new Neuron(1, 1);
         instance.setWeight(previousLayerNeuronIndex, weight);
         assertThat(instance.getWeight(0), is(weight));
     }

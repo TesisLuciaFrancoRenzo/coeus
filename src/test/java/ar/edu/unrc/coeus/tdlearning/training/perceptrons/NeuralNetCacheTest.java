@@ -18,7 +18,7 @@
  */
 package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
-import org.junit.*;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,56 +30,17 @@ public
 class NeuralNetCacheTest {
 
     /**
-     *
-     */
-    public
-    NeuralNetCacheTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of getLayer method, of class NeuralNetworkCache.
      */
     @Test
     public
     void testGetLayer() {
         System.out.println("getLayer");
-        int                layerIndex = 0;
-        NeuralNetworkCache instance   = new NeuralNetworkCache(1);
-        Layer              expResult  = new Layer(1);
+        final int                layerIndex = 0;
+        final NeuralNetworkCache instance   = new NeuralNetworkCache(1);
+        final Layer              expResult  = new Layer(1);
         instance.setLayer(layerIndex, expResult);
-        Layer result = instance.getLayer(layerIndex);
+        final Layer result = instance.getLayer(layerIndex);
         assertThat(result, is(expResult));
     }
 
@@ -90,14 +51,14 @@ class NeuralNetCacheTest {
     public
     void testGetNeuron() {
         System.out.println("getNeuron");
-        int                layerIndex  = 0;
-        int                neuronIndex = 0;
-        NeuralNetworkCache instance    = new NeuralNetworkCache(1);
-        Layer              layer       = new Layer(1);
-        Neuron             expResult   = new Neuron(1, 1);
+        final int                layerIndex  = 0;
+        final int                neuronIndex = 0;
+        final NeuralNetworkCache instance    = new NeuralNetworkCache(1);
+        final Layer              layer       = new Layer(1);
+        final Neuron             expResult   = new Neuron(1, 1);
         layer.setNeuron(neuronIndex, expResult);
         instance.setLayer(layerIndex, layer);
-        Neuron result = instance.getLayer(layerIndex).getNeuron(neuronIndex);
+        final Neuron result = instance.getLayer(layerIndex).getNeuron(neuronIndex);
         assertThat(result, is(expResult));
     }
 
@@ -108,12 +69,12 @@ class NeuralNetCacheTest {
     public
     void testGetOutputLayerIndex() {
         System.out.println("getOutputLayerIndex");
-        NeuralNetworkCache instance = new NeuralNetworkCache(1);
-        Layer              layer    = new Layer(1);
+        final NeuralNetworkCache instance = new NeuralNetworkCache(1);
+        final Layer              layer    = new Layer(1);
         instance.setLayer(0, layer);
         instance.isOutputLayer(1);
-        int expResult = 0;
-        int result    = instance.getOutputLayerIndex();
+        final int expResult = 0;
+        final int result    = instance.getOutputLayerIndex();
         assertThat(result, is(expResult));
     }
 
@@ -124,13 +85,13 @@ class NeuralNetCacheTest {
     public
     void testIsNextToLastLayer() {
         System.out.println("isNextToLastLayer");
-        int                layerIndex = 0;
-        NeuralNetworkCache instance   = new NeuralNetworkCache(2);
+        final int                layerIndex = 0;
+        final NeuralNetworkCache instance   = new NeuralNetworkCache(2);
         instance.setLayer(layerIndex, new Layer(1));
         instance.setLayer(1, new Layer(1));
-        boolean expResult = true;
+        final boolean expResult = true;
         System.out.println("isNextToLastLayer" + instance.getOutputLayerIndex());
-        boolean result = instance.isNextToLastLayer(0);
+        final boolean result = instance.isNextToLastLayer(0);
         assertThat(result, is(expResult));
     }
 
@@ -141,12 +102,12 @@ class NeuralNetCacheTest {
     public
     void testIsOutputLayer() {
         System.out.println("isOutputLayer");
-        int                layerIndex = 0;
-        NeuralNetworkCache instance   = new NeuralNetworkCache(2);
+        final int                layerIndex = 0;
+        final NeuralNetworkCache instance   = new NeuralNetworkCache(2);
         instance.setLayer(layerIndex, new Layer(1));
         instance.setLayer(1, new Layer(1));
-        boolean expResult = true;
-        boolean result    = instance.isOutputLayer(1);
+        final boolean expResult = true;
+        final boolean result    = instance.isOutputLayer(1);
         assertThat(result, is(expResult));
     }
 
@@ -157,9 +118,9 @@ class NeuralNetCacheTest {
     public
     void testSetLayer() {
         System.out.println("setLayer");
-        int                layerIndex = 0;
-        NeuralNetworkCache instance   = new NeuralNetworkCache(2);
-        Layer              layer      = new Layer(1);
+        final int                layerIndex = 0;
+        final NeuralNetworkCache instance   = new NeuralNetworkCache(2);
+        final Layer              layer      = new Layer(1);
         instance.setLayer(layerIndex, layer);
         instance.setLayer(1, new Layer(1));
         assertThat(instance.getLayer(layerIndex), is(layer));

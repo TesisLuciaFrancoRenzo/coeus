@@ -19,7 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 
 import ar.edu.unrc.coeus.utils.FunctionUtils;
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,45 +36,6 @@ public
 class NTupleSystemTest {
 
     /**
-     *
-     */
-    public
-    NTupleSystemTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of getNeuron method, of class Layer.
      */
     @Test
@@ -82,21 +43,21 @@ class NTupleSystemTest {
     void testFuseLut() {
         System.out.println("fuseLut");
 
-        Function< Double, Double > activationFunction        = FunctionUtils.LINEAR;
-        Function< Double, Double > derivedActivationFunction = FunctionUtils.LINEAR_DERIVED;
-        int                        maxTile                   = 2;
+        final Function< Double, Double > activationFunction        = FunctionUtils.LINEAR;
+        final Function< Double, Double > derivedActivationFunction = FunctionUtils.LINEAR_DERIVED;
+        final int                        maxTile                   = 2;
 
-        int[] nTuplesLength = new int[2];
+        final int[] nTuplesLength = new int[2];
         for ( int i = 0; i < 2; i++ ) {
             nTuplesLength[i] = 2;
         }
 
-        List< SamplePointValue > allSamplePointPossibleValues = new ArrayList<>();
+        final List< SamplePointValue > allSamplePointPossibleValues = new ArrayList<>();
         for ( int i = 0; i <= maxTile; i++ ) {
             allSamplePointPossibleValues.add(new CustomTile(i));
         }
 
-        List< NTupleSystem > nTupleSystems = new ArrayList<>(2);
+        final List< NTupleSystem > nTupleSystems = new ArrayList<>(2);
         nTupleSystems.add(new NTupleSystem(allSamplePointPossibleValues, nTuplesLength, activationFunction, derivedActivationFunction, false));
         nTupleSystems.add(new NTupleSystem(allSamplePointPossibleValues, nTuplesLength, activationFunction, derivedActivationFunction, false));
 
@@ -104,7 +65,7 @@ class NTupleSystemTest {
         nTupleSystems.get(1).setWeights(new double[] { 15, 11, 0, -20, 50, 9.9, 10, 15, 11, 0, -20, 50, 9.9, 10, 15, 11, 0, -20 });
 
         NTupleSystem.fuseLut(nTupleSystems);
-        double[] expResult = new double[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+        final double[] expResult = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
         assertThat("NTupleSystem 0 ", nTupleSystems.get(0).getLut(), is(expResult));
         assertThat("NTupleSystem 1 ", nTupleSystems.get(1).getLut(), is(expResult));
     }
@@ -117,29 +78,16 @@ class NTupleSystemTest {
         private final int gameValue;
 
         /**
-         *
-         */
-        public
-        CustomTile() {
-            this(0);
-        }
-
-        /**
          * @param num numero del tablero en base 2.
          */
-        public
-        CustomTile( int num ) {
+        CustomTile( final int num ) {
             code = num;
-            if ( code == 0 ) {
-                gameValue = 0;
-            } else {
-                gameValue = (int) pow(2, code);
-            }
+            gameValue = ( code == 0 ) ? 0 : (int) pow(2, code);
         }
 
         @Override
         public
-        boolean equals( Object obj ) {
+        boolean equals( final Object obj ) {
             if ( obj == null ) {
                 return false;
             }
@@ -171,7 +119,7 @@ class NTupleSystemTest {
         public
         int hashCode() {
             int hash = 7;
-            hash = 37 * hash + code;
+            hash = ( 37 * hash ) + code;
             return hash;
         }
 

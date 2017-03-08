@@ -29,10 +29,10 @@ enum ENeuralNetworkType {
     /**
      * Redes neuronales genéricas. Soporte de múltiples capas.
      */
-    perceptron,
-    //FIXME perceptron usa capa intermedia???
+    PERCEPTRON,
+
     /**
      * Redes neuronales NTuplas. No soporta múltiples capas.
      */
-    nTuple
+    N_TUPLE
 }
