@@ -128,7 +128,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -154,7 +154,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -433,7 +433,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -459,7 +459,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -804,7 +804,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -830,7 +830,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -1167,7 +1167,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -1193,7 +1193,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -1475,7 +1475,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -1502,7 +1502,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -1566,32 +1566,29 @@ class TDTrainerTest {
         //W(k,J)
         double trazaT0   = deltaIJ[0] * fNetK[0]; //trazaT0 = (double) 0.003592589632991708
         double trazaT1   = deltaIJ[1] * fNetK[1]; //trazaT1 = (double) 0.005042135188521667
-        double sumatoria = ( Math.pow(lambda, (double) ( 2 - 1 )) * trazaT0 ) +
-                           ( Math.pow(lambda, (double) ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.007556947931615862
+        double sumatoria =
+                ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.007556947931615862
         expectedNewWKJ = ( error * sumatoria ) + wKJ[1]; //expectedNewWKJ = (double) 0.10000021201860962
         assertThat("expectedNewWKJ segunda actualización", expectedNewWKJ, is(wKJ[2]));
 
         //W(J,I)
         trazaT0 = deltaII[0] * fNetJ[0]; //trazaT0 = (double) 0.17390479362330252
         trazaT1 = deltaII[1] * fNetJ[1]; //trazaT1 = (double) 0.17433161534722577
-        sumatoria = ( Math.pow(lambda, (double) ( 2 - 1 )) * trazaT0 ) +
-                    ( Math.pow(lambda, (double) ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.29606497088353756
+        sumatoria = ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.29606497088353756
         expectedNewWJI = ( error * sumatoria ) + wJI[1]; //expectedNewWJI = (double) 0.33000879273802003
         assertThat("expectedNewWJI segunda actualización", expectedNewWJI, is(wJI[2]));
 
         //bias(j)
         trazaT0 = deltaIJ[0]; //trazaT0 = (double) 0.016329952877235036
         trazaT1 = deltaIJ[1]; //trazaT1 = (double) 0.016264952221037635
-        sumatoria = ( Math.pow(lambda, (double) ( 2 - 1 )) * trazaT0 ) +
-                    ( Math.pow(lambda, (double) ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.02769591923510216
+        sumatoria = ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.02769591923510216
         expectedNewBiasJ = ( error * sumatoria ) + biasJ[1]; //expectedNewBiasJ = (double) 0.9000008234374944
         assertThat("expectedNewBiasJ segunda actualización", expectedNewBiasJ, is(biasJ[2]));
 
         //bias(I)
         trazaT0 = deltaII[0]; //trazaT0 = (double) 0.24307069499125544
         trazaT1 = deltaII[1]; //trazaT1 = (double) 0.24304603463087834
-        sumatoria = ( Math.pow(lambda, (double) ( 2 - 1 )) * trazaT0 ) +
-                    ( Math.pow(lambda, (double) ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.4131955211247571
+        sumatoria = ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.4131955211247571
         expectedNewBiasI = ( error * sumatoria ) + biasI[1]; //expectedNewBiasI = (double) 0.10001227671277943
         assertThat("expectedNewBiasI segunda actualización", expectedNewBiasI, is(biasI[2]));
 
@@ -1608,7 +1605,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -1635,7 +1632,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -1694,8 +1691,8 @@ class TDTrainerTest {
         trazaT0 = deltaIJ[0] * fNetK[0]; //
         trazaT1 = deltaIJ[1] * fNetK[1]; //
         double trazaT2 = deltaIJ[2] * fNetK[2]; //
-        sumatoria = ( Math.pow(lambda, (double) ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, (double) ( 3 - 2 )) * trazaT1 ) +
-                    ( Math.pow(lambda, (double) ( 3 - 3 )) * trazaT2 ); //
+        sumatoria =
+                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
         expectedNewWKJ = ( error * sumatoria ) + wKJ[2]; //
         assertThat("expectedNewWKJ tercera actualización", expectedNewWKJ, is(wKJ[3]));
 
@@ -1703,8 +1700,8 @@ class TDTrainerTest {
         trazaT0 = deltaII[0] * fNetJ[0]; //
         trazaT1 = deltaII[1] * fNetJ[1]; //
         trazaT2 = deltaII[2] * fNetJ[2]; //
-        sumatoria = ( Math.pow(lambda, (double) ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, (double) ( 3 - 2 )) * trazaT1 ) +
-                    ( Math.pow(lambda, (double) ( 3 - 3 )) * trazaT2 ); //
+        sumatoria =
+                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
         expectedNewWJI = ( error * sumatoria ) + wJI[2]; //
         assertThat("expectedNewWJI tercera actualización", expectedNewWJI, is(wJI[3]));
 
@@ -1712,8 +1709,8 @@ class TDTrainerTest {
         trazaT0 = deltaIJ[0]; //
         trazaT1 = deltaIJ[1]; //
         trazaT2 = deltaIJ[2]; //
-        sumatoria = ( Math.pow(lambda, (double) ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, (double) ( 3 - 2 )) * trazaT1 ) +
-                    ( Math.pow(lambda, (double) ( 3 - 3 )) * trazaT2 ); //
+        sumatoria =
+                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
         expectedNewBiasJ = ( error * sumatoria ) + biasJ[2]; //
         assertThat("expectedNewBiasJ tercera actualización", expectedNewBiasJ, is(biasJ[3]));
 
@@ -1721,8 +1718,8 @@ class TDTrainerTest {
         trazaT0 = deltaII[0]; //
         trazaT1 = deltaII[1]; //
         trazaT2 = deltaII[2]; //
-        sumatoria = ( Math.pow(lambda, (double) ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, (double) ( 3 - 2 )) * trazaT1 ) +
-                    ( Math.pow(lambda, (double) ( 3 - 3 )) * trazaT2 ); //
+        sumatoria =
+                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
         expectedNewBiasI = ( error * sumatoria ) + biasI[2]; //
         assertThat("expectedNewBiasI tercera actualización", expectedNewBiasI, is(biasI[3]));
     }
@@ -1766,7 +1763,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -1792,7 +1789,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -2058,7 +2055,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -2085,7 +2082,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -2146,16 +2143,15 @@ class TDTrainerTest {
         //W(k,J)
         double trazaT0   = deltaIJ[0] * fNetK[0]; //trazaT0 = (double) 0.003592589632991708
         double trazaT1   = deltaIJ[1] * fNetK[1]; //trazaT1 = (double) 0.005042135188521667
-        double sumatoria = ( Math.pow(lambda, (double) ( 2 - 1 )) * trazaT0 ) +
-                           ( Math.pow(lambda, (double) ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.007556947931615862
+        double sumatoria =
+                ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.007556947931615862
         expectedNewWKJ = ( error * sumatoria ) + wKJ[1]; //expectedNewWKJ = (double) 0.10000021201860962
         assertThat("expectedNewWKJ segunda actualización", expectedNewWKJ, is(wKJ[2]));
 
         //W(J,I)
         trazaT0 = deltaII[0] * fNetJ[0]; //trazaT0 = (double) 0.17390479362330252
         trazaT1 = deltaII[1] * fNetJ[1]; //trazaT1 = (double) 0.17433161534722577
-        sumatoria = ( Math.pow(lambda, (double) ( 2 - 1 )) * trazaT0 ) +
-                    ( Math.pow(lambda, (double) ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.29606497088353756
+        sumatoria = ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.29606497088353756
         expectedNewWJI = ( error * sumatoria ) + wJI[1]; //expectedNewWJI = (double) 0.33000879273802003
         assertThat("expectedNewWJI segunda actualización", expectedNewWJI, is(wJI[2]));
 
@@ -2172,7 +2168,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -2199,7 +2195,7 @@ class TDTrainerTest {
             @Override
             public
             double getStateReward( final int outputNeuron ) {
-                return (double) 0;
+                return 0;
             }
 
             @Override
@@ -2255,8 +2251,8 @@ class TDTrainerTest {
         trazaT0 = deltaIJ[0] * fNetK[0]; //
         trazaT1 = deltaIJ[1] * fNetK[1]; //
         double trazaT2 = deltaIJ[2] * fNetK[2]; //
-        sumatoria = ( Math.pow(lambda, (double) ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, (double) ( 3 - 2 )) * trazaT1 ) +
-                    ( Math.pow(lambda, (double) ( 3 - 3 )) * trazaT2 ); //
+        sumatoria =
+                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
         expectedNewWKJ = ( error * sumatoria ) + wKJ[2]; //
         assertThat("expectedNewWKJ tercera actualización", wKJ[3], is(expectedNewWKJ));
 
@@ -2264,8 +2260,8 @@ class TDTrainerTest {
         trazaT0 = deltaII[0] * fNetJ[0]; //
         trazaT1 = deltaII[1] * fNetJ[1]; //
         trazaT2 = deltaII[2] * fNetJ[2]; //
-        sumatoria = ( Math.pow(lambda, (double) ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, (double) ( 3 - 2 )) * trazaT1 ) +
-                    ( Math.pow(lambda, (double) ( 3 - 3 )) * trazaT2 ); //
+        sumatoria =
+                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
         expectedNewWJI = ( error * sumatoria ) + wJI[2]; //
         assertThat("expectedNewWJI tercera actualización", wJI[3], is(expectedNewWJI));
     }

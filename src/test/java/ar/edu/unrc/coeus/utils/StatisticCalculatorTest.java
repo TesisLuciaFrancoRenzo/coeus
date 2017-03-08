@@ -47,7 +47,7 @@ class StatisticCalculatorTest {
         sc.addSample(2.698);
         sc.addSample(5.4678);
         sc.addSample(-26.5);
-        sc.addSample((double) 0);
+        sc.addSample(0);
         assertThat(sc.getAverage(), is(2.027633333333334d));
     }
 
@@ -76,7 +76,7 @@ class StatisticCalculatorTest {
 
         estimator = new StatisticCalculator(30, 2);
         for ( int i = 0; i < 29; i++ ) {
-            estimator.addSample((double) 0);
+            estimator.addSample(0);
         }
         estimator.addSample(3.2);
         assertThat(estimator.printableFullCapacityAverage(), is("0,11"));
