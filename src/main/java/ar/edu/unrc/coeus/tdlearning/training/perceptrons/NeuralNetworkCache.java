@@ -39,6 +39,7 @@ class NeuralNetworkCache {
      */
     public
     NeuralNetworkCache( final int layerQuantity ) {
+        super();
         layers = new ArrayList<>(layerQuantity);
         for ( int i = 0; i < layerQuantity; i++ ) {
             layers.add(null);
@@ -72,7 +73,7 @@ class NeuralNetworkCache {
      */
     public
     boolean isNextToLastLayer( final int layerIndex ) {
-        return layerIndex == getOutputLayerIndex() - 1;
+        return layerIndex == ( getOutputLayerIndex() - 1 );
     }
 
     /**
@@ -83,7 +84,7 @@ class NeuralNetworkCache {
      */
     public
     boolean isOutputLayer( final int layerIndex ) {
-        return layerIndex == layers.size() - 1;
+        return layerIndex == ( layers.size() - 1 );
     }
 
     /**

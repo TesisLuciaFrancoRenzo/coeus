@@ -20,6 +20,7 @@ package ar.edu.unrc.coeus.tdlearning.learning;
 
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
 import ar.edu.unrc.coeus.tdlearning.interfaces.IState;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Tupla que contiene una acción y la predicción que calcula la red neuronal sobre la recompensa final del problema, si
@@ -50,6 +51,7 @@ class ActionPrediction
             final Double numericRepresentation,
             final IState afterState
     ) {
+        super();
         this.action = action;
         this.numericRepresentation = numericRepresentation;
         this.afterState = afterState;
@@ -57,8 +59,8 @@ class ActionPrediction
 
     @Override
     public
-    int compareTo( final ActionPrediction other ) {
-        return numericRepresentation.compareTo(other.getNumericRepresentation());
+    int compareTo( @NotNull final ActionPrediction other ) {
+        return numericRepresentation.compareTo(other.numericRepresentation);
     }
 
     /**

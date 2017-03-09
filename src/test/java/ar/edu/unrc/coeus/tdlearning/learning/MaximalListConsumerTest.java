@@ -20,7 +20,7 @@ package ar.edu.unrc.coeus.tdlearning.learning;
 
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
 import ar.edu.unrc.coeus.utils.MaximalActionPredictionConsumer;
-import org.junit.*;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,38 +32,6 @@ public
 class MaximalListConsumerTest {
 
     /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of accept method, of class MaximalActionPredictionConsumer.
      */
     @Test
@@ -71,18 +39,18 @@ class MaximalListConsumerTest {
     void testAccept() {
         System.out.println("accept");
         //lista vacía
-        ActionPrediction                actionPrediction = new ActionPrediction(new IAction() {}, 2d, null);
+        ActionPrediction                actionPrediction = new ActionPrediction(new IAction() {}, 2.0d, null);
         MaximalActionPredictionConsumer instance         = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         assertThat(instance.getList().size(), is(1));
 
         //lista con un elemento
-        actionPrediction = new ActionPrediction(new IAction() {}, 2d, null);
+        actionPrediction = new ActionPrediction(new IAction() {}, 2.0d, null);
         instance.accept(actionPrediction);
         assertThat(instance.getList().size(), is(2));
         //lista con un valor numérico mas grande que el que esta en la lista.
 
-        actionPrediction = new ActionPrediction(new IAction() {}, 2d, null);
+        actionPrediction = new ActionPrediction(new IAction() {}, 2.0d, null);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         assertThat(instance.getList().size(), is(1));
@@ -102,21 +70,21 @@ class MaximalListConsumerTest {
         assertThat(instance.getList().size(), is(0));
         //lista con un elemento
         other = new MaximalActionPredictionConsumer();
-        ActionPrediction actionPrediction = new ActionPrediction(new IAction() {}, 2d, null);
+        ActionPrediction actionPrediction = new ActionPrediction(new IAction() {}, 2.0d, null);
         other.accept(actionPrediction);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
         assertThat(instance.getList().size(), is(2));
         //con un elemento mas grande
-        actionPrediction = new ActionPrediction(new IAction() {}, 3d, null);
+        actionPrediction = new ActionPrediction(new IAction() {}, 3.0d, null);
         other.accept(actionPrediction);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);
         instance.combine(other);
         assertThat(instance.getList().size(), is(2));
         //con un elemento mas chico
-        actionPrediction = new ActionPrediction(new IAction() {}, 1d, null);
+        actionPrediction = new ActionPrediction(new IAction() {}, 1.0d, null);
         other.accept(actionPrediction);
         instance = new MaximalActionPredictionConsumer();
         instance.accept(actionPrediction);

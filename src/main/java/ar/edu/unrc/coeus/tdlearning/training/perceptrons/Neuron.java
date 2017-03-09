@@ -31,8 +31,8 @@ class Neuron {
 
     private final List< Double > gradient;
     private final List< Double > weights;
-    private       Double         derivedOutput;
-    private       Double         output;
+    private Double derivedOutput = null;
+    private Double output        = null;
 
     /**
      * Neurona para una red neuronal genérica.
@@ -45,9 +45,10 @@ class Neuron {
             final int weightsQuantity,
             final int outputLayerNeuronQuantity
     ) {
+        super();
         if ( weightsQuantity > 0 ) {
             weights = new ArrayList<>(weightsQuantity + 1);
-            for ( int i = 0; i < weightsQuantity + 1; i++ ) {
+            for ( int i = 0; i < ( weightsQuantity + 1 ); i++ ) {
                 weights.add(null);
             }
         } else {
@@ -68,7 +69,8 @@ class Neuron {
      */
     public
     void clearGradients() {
-        for ( int i = 0; i < gradient.size(); i++ ) {
+        final int gradientSize = gradient.size();
+        for ( int i = 0; i < gradientSize; i++ ) {
             gradient.set(i, null);
         }
     }

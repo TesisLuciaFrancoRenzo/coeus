@@ -18,7 +18,9 @@
  */
 package ar.edu.unrc.coeus.tdlearning.learning;
 
-import org.junit.*;
+import org.junit.Test;
+
+import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -30,55 +32,16 @@ public
 class TDLambdaLearningTest {
 
     /**
-     *
-     */
-    public
-    TDLambdaLearningTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of calculateBestEligibilityTraceLength method, of class TDLambdaLearning.
      */
     @Test
     public
     void testCalculateBestEligibilityTraceLength() {
         System.out.println("calculateBestEligibilityTraceLength");
-        Double  lambda    = 0.7;
-        Integer expResult = 21;
-        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        final Double  lambda = 0.7;
+        final Integer result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         System.out.println("result " + result);
+        final Integer expResult = 21;
         assertThat(result, is(expResult));
     }
 
@@ -91,42 +54,42 @@ class TDLambdaLearningTest {
         System.out.println("calculateBestEligibilityTraceLength");
         Double  lambda    = 0.99;
         Integer expResult = Integer.MAX_VALUE;
-        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        Integer result    = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.975;
         expResult = 274;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.95;
         expResult = 136;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.9;
         expResult = 67;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.8;
         expResult = 32;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
         lambda = 0.6;
         expResult = 15;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
-        lambda = 1d;
+        lambda = 1.0d;
         expResult = Integer.MAX_VALUE;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
 
-        lambda = 0d;
+        lambda = 0.0d;
         expResult = 0;
-        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1);
+        result = TDLambdaLearning.calculateBestEligibilityTraceLength(lambda, 1.0);
         assertThat(result, is(expResult));
     }
 
@@ -137,14 +100,14 @@ class TDLambdaLearningTest {
     public
     void testCalculateLinearInterpolation_Ascending() {
         System.out.println("testCalculateLinearInterpolation");
-        int    t                   = -50;
-        double initialValue        = 0d;
-        double finalValue          = 10d;
-        double startInterpolation  = 0d;
-        double finishInterpolation = 10d;
-        double expResult           = initialValue;
+        int          t                   = -50;
+        final double initialValue        = 0.0d;
+        final double finalValue          = 10.0d;
+        final double startInterpolation  = 0.0d;
+        final double finishInterpolation = 10.0d;
         double result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
+        double expResult = initialValue;
         assertThat(result, is(expResult));
 
         t = 0;
@@ -154,19 +117,19 @@ class TDLambdaLearningTest {
         assertThat(result, is(expResult));
 
         t = 3;
-        expResult = 3d;
+        expResult = 3.0d;
         result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
 
         t = 5;
-        expResult = 5d;
+        expResult = 5.0d;
         result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
 
         t = 8;
-        expResult = 8d;
+        expResult = 8.0d;
         result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
@@ -191,14 +154,14 @@ class TDLambdaLearningTest {
     public
     void testCalculateLinearInterpolation_Descending() {
         System.out.println("testCalculateLinearInterpolation");
-        int    t                   = -50;
-        double initialValue        = 10d;
-        double finalValue          = 0d;
-        double startInterpolation  = 0d;
-        double finishInterpolation = 10d;
-        double expResult           = initialValue;
+        int          t                   = -50;
+        final double initialValue        = 10.0d;
+        final double finalValue          = 0.0d;
+        final double startInterpolation  = 0.0d;
+        final double finishInterpolation = 10.0d;
         double result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
+        double expResult = initialValue;
         assertThat(result, is(expResult));
 
         t = 0;
@@ -208,19 +171,19 @@ class TDLambdaLearningTest {
         assertThat(result, is(expResult));
 
         t = 3;
-        expResult = 7d;
+        expResult = 7.0d;
         result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
 
         t = 5;
-        expResult = 5d;
+        expResult = 5.0d;
         result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
 
         t = 8;
-        expResult = 2d;
+        expResult = 2.0d;
         result = TDLambdaLearning.calculateLinearInterpolation(t, initialValue, finalValue, startInterpolation, finishInterpolation);
         System.out.println("result=" + result);
         assertThat(result, is(expResult));
@@ -245,11 +208,10 @@ class TDLambdaLearningTest {
     public
     void testRandomBetween() {
         System.out.println("randomBetween");
-        boolean expResult = true;
-        boolean result1   = false;
-        boolean result2   = false;
+        boolean       result1   = false;
+        boolean       result2   = false;
         for ( int i = 0; i < 500; i++ ) {
-            int value = TDLambdaLearning.randomBetween(5, 6);
+            final int value = TDLambdaLearning.randomBetween(5, 6, new Random());
             if ( value == 6 ) {
                 result2 = true;
             }
@@ -258,7 +220,8 @@ class TDLambdaLearningTest {
             }
         }
         System.out.println("results 1=" + result1 + " 2=" + result2);
-        boolean finalResult = result1 && result2;
+        final boolean finalResult = result1 && result2;
+        final boolean expResult   = true;
         assertThat(finalResult, is(expResult));
     }
 

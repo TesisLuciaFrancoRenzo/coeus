@@ -19,7 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.learning;
 
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
-import org.junit.*;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,58 +31,19 @@ public
 class ActionPredictionTest {
 
     /**
-     *
-     */
-    public
-    ActionPredictionTest() {
-    }
-
-    /**
-     *
-     */
-    @BeforeClass
-    public static
-    void setUpClass() {
-    }
-
-    /**
-     *
-     */
-    @AfterClass
-    public static
-    void tearDownClass() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public
-    void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public
-    void tearDown() {
-    }
-
-    /**
      * Test of compareTo method, of class ActionPrediction.
      */
     @Test
     public
     void testCompareTo() {
         System.out.println("compareTo iguales");
-        ActionPrediction other     = new ActionPrediction(new IAction() {}, 10d, null);
-        ActionPrediction instance  = new ActionPrediction(new IAction() {}, 10d, null);
-        int              expResult = 0;
-        int              result    = instance.compareTo(other);
+        final ActionPrediction other     = new ActionPrediction(new IAction() {}, 10.0d, null);
+        ActionPrediction       instance  = new ActionPrediction(new IAction() {}, 10.0d, null);
+        int                    expResult = 0;
+        int                    result    = instance.compareTo(other);
         assertThat(result, is(expResult));
         System.out.println("compareTo distintos");
-        instance = new ActionPrediction(new IAction() {}, 1d, null);
+        instance = new ActionPrediction(new IAction() {}, 1.0d, null);
         expResult = -1;
         result = instance.compareTo(other);
         assertThat(result, is(expResult));

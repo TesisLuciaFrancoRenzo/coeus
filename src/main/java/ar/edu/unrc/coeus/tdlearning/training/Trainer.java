@@ -32,12 +32,12 @@ class Trainer {
     /**
      * Tasa de descuento, entre [0,1].
      */
-    protected double gamma;
+    protected double gamma = 0.0;
 
     /**
      * escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
      */
-    protected double lambda;
+    protected double lambda = 0.0;
 
     /**
      * Reinicia el entrenador.
