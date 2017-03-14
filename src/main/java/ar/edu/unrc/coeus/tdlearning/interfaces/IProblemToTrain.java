@@ -44,7 +44,7 @@ interface IProblemToTrain
      * <ol> <li>Crear un estado que llamaremos 'nextState', que comienza siendo igual a {@code afterState}, el cual ya contiene la acciones
      * determinísticas aplicada. <li>Modificar 'nextState' aplicándole las acciones no determinísticas hasta que llegue al próximo estado.
      * <li>retornar 'nextState' </ol>
-     * <p>
+     * </p>
      *
      * @param afterState estado de transición, luego de aplicar una acción determinística.
      *
