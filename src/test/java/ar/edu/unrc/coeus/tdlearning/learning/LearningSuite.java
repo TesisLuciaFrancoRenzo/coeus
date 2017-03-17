@@ -28,7 +28,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith( Suite.class )
 @SuiteClasses( {
                        TDLambdaLearningTest.class, ActionPredictionTest.class, MaximalListConsumerTest.class
-                     } )
+               } )
 public
 class LearningSuite {
 

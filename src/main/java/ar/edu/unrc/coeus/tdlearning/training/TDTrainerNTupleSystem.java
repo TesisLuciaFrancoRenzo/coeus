@@ -64,11 +64,9 @@ class TDTrainerNTupleSystem
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;
-        eligibilityTrace = ( lambda > 0.0d ) ? new EligibilityTraceForNTuple(nTupleSystem,
-                gamma,
-                lambda,
-                maxEligibilityTraceLength,
-                replaceEligibilityTraces) : null;
+        eligibilityTrace = ( lambda > 0.0d )
+                           ? new EligibilityTraceForNTuple(nTupleSystem, gamma, lambda, maxEligibilityTraceLength, replaceEligibilityTraces)
+                           : null;
     }
 
     @Override
@@ -100,8 +98,8 @@ class TDTrainerNTupleSystem
                                    ? nextTurnStateBoardReward
                                    : ( nextTurnStateBoardReward + ( gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) ) ) ) -
                                  output );
-        final double partialError             = alpha[0] * tdError;
-        final int normalizedStateOutputLength = normalizedStateOutput.getIndexes().length;
+        final double partialError                = alpha[0] * tdError;
+        final int    normalizedStateOutputLength = normalizedStateOutput.getIndexes().length;
         for ( int weightIndex = 0; weightIndex < normalizedStateOutputLength; weightIndex++ ) {
             final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
             final double currentEligibilityTrace;

@@ -455,8 +455,7 @@ class TDLambdaLearning {
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem, ELearningStyle.AFTER_STATE,
                     nextTurnState,
                     possibleActionsNextTurn,
-                    problem.getActorToTrain(),
-                    computeParallelBestPossibleAction, random,
+                    problem.getActorToTrain(), computeParallelBestPossibleAction, random,
                     bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
@@ -741,9 +740,14 @@ class TDLambdaLearning {
             } else {
                 // evaluamos cada acción aplicada al estado inicial y elegimos la mejor
                 // de éstas basada en las predicciones de recompensas final del problema
-                final ActionPrediction bestActionPrediction = computeBestPossibleAction(problem, learningStyle,
+                final ActionPrediction bestActionPrediction = computeBestPossibleAction(problem,
+                        learningStyle,
                         turnInitialState,
-                        possibleActions, problem.getActorToTrain(), computeParallelBestPossibleAction, random, statisticsBestPossibleActionTimes);
+                        possibleActions,
+                        problem.getActorToTrain(),
+                        computeParallelBestPossibleAction,
+                        random,
+                        statisticsBestPossibleActionTimes);
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
                 // y obtenemos su estado de transición determinístico.
                 afterState = bestActionPrediction.getAfterState();

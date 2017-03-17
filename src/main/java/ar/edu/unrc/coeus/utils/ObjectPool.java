@@ -10,8 +10,8 @@ public abstract
 class ObjectPool< E > {
 
     private transient Node< E > last = null;
-    private transient int       maxSize;
-    private transient int       size;
+    private transient int maxSize;
+    private transient int size;
 
     protected
     ObjectPool() {

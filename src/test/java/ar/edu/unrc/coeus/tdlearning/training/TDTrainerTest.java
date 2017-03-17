@@ -1564,32 +1564,32 @@ class TDTrainerTest {
 
         double error = alpha[0] * ( fNetI[2] - fNetI[1] ); //error = (double) 2.1083069642169328E-5
         //W(k,J)
-        double trazaT0   = deltaIJ[0] * fNetK[0]; //trazaT0 = (double) 0.003592589632991708
-        double trazaT1   = deltaIJ[1] * fNetK[1]; //trazaT1 = (double) 0.005042135188521667
-        double sumatoria =
-                ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.007556947931615862
-        expectedNewWKJ = ( error * sumatoria ) + wKJ[1]; //expectedNewWKJ = (double) 0.10000021201860962
+        double traceT0 = deltaIJ[0] * fNetK[0]; //trazaT0 = (double) 0.003592589632991708
+        double traceT1 = deltaIJ[1] * fNetK[1]; //trazaT1 = (double) 0.005042135188521667
+        double sum =
+                ( Math.pow(lambda, ( 2 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * traceT1 ); //sumatoria = (double) 0.007556947931615862
+        expectedNewWKJ = ( error * sum ) + wKJ[1]; //expectedNewWKJ = (double) 0.10000021201860962
         assertThat("expectedNewWKJ segunda actualización", expectedNewWKJ, is(wKJ[2]));
 
         //W(J,I)
-        trazaT0 = deltaII[0] * fNetJ[0]; //trazaT0 = (double) 0.17390479362330252
-        trazaT1 = deltaII[1] * fNetJ[1]; //trazaT1 = (double) 0.17433161534722577
-        sumatoria = ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.29606497088353756
-        expectedNewWJI = ( error * sumatoria ) + wJI[1]; //expectedNewWJI = (double) 0.33000879273802003
+        traceT0 = deltaII[0] * fNetJ[0]; //trazaT0 = (double) 0.17390479362330252
+        traceT1 = deltaII[1] * fNetJ[1]; //trazaT1 = (double) 0.17433161534722577
+        sum = ( Math.pow(lambda, ( 2 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * traceT1 ); //sumatoria = (double) 0.29606497088353756
+        expectedNewWJI = ( error * sum ) + wJI[1]; //expectedNewWJI = (double) 0.33000879273802003
         assertThat("expectedNewWJI segunda actualización", expectedNewWJI, is(wJI[2]));
 
         //bias(j)
-        trazaT0 = deltaIJ[0]; //trazaT0 = (double) 0.016329952877235036
-        trazaT1 = deltaIJ[1]; //trazaT1 = (double) 0.016264952221037635
-        sumatoria = ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.02769591923510216
-        expectedNewBiasJ = ( error * sumatoria ) + biasJ[1]; //expectedNewBiasJ = (double) 0.9000008234374944
+        traceT0 = deltaIJ[0]; //trazaT0 = (double) 0.016329952877235036
+        traceT1 = deltaIJ[1]; //trazaT1 = (double) 0.016264952221037635
+        sum = ( Math.pow(lambda, ( 2 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * traceT1 ); //sumatoria = (double) 0.02769591923510216
+        expectedNewBiasJ = ( error * sum ) + biasJ[1]; //expectedNewBiasJ = (double) 0.9000008234374944
         assertThat("expectedNewBiasJ segunda actualización", expectedNewBiasJ, is(biasJ[2]));
 
         //bias(I)
-        trazaT0 = deltaII[0]; //trazaT0 = (double) 0.24307069499125544
-        trazaT1 = deltaII[1]; //trazaT1 = (double) 0.24304603463087834
-        sumatoria = ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.4131955211247571
-        expectedNewBiasI = ( error * sumatoria ) + biasI[1]; //expectedNewBiasI = (double) 0.10001227671277943
+        traceT0 = deltaII[0]; //trazaT0 = (double) 0.24307069499125544
+        traceT1 = deltaII[1]; //trazaT1 = (double) 0.24304603463087834
+        sum = ( Math.pow(lambda, ( 2 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * traceT1 ); //sumatoria = (double) 0.4131955211247571
+        expectedNewBiasI = ( error * sum ) + biasI[1]; //expectedNewBiasI = (double) 0.10001227671277943
         assertThat("expectedNewBiasI segunda actualización", expectedNewBiasI, is(biasI[2]));
 
         //=============== calculamos un tercer turno ==============================
@@ -1688,39 +1688,35 @@ class TDTrainerTest {
         error = alpha[0] * ( fNetIFinal - fNetI[2] ); //
 
         //W(k,J)
-        trazaT0 = deltaIJ[0] * fNetK[0]; //
-        trazaT1 = deltaIJ[1] * fNetK[1]; //
-        double trazaT2 = deltaIJ[2] * fNetK[2]; //
-        sumatoria =
-                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
-        expectedNewWKJ = ( error * sumatoria ) + wKJ[2]; //
+        traceT0 = deltaIJ[0] * fNetK[0]; //
+        traceT1 = deltaIJ[1] * fNetK[1]; //
+        double traceT2 = deltaIJ[2] * fNetK[2]; //
+        sum = ( Math.pow(lambda, ( 3 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * traceT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * traceT2 ); //
+        expectedNewWKJ = ( error * sum ) + wKJ[2]; //
         assertThat("expectedNewWKJ tercera actualización", expectedNewWKJ, is(wKJ[3]));
 
         //W(J,I)
-        trazaT0 = deltaII[0] * fNetJ[0]; //
-        trazaT1 = deltaII[1] * fNetJ[1]; //
-        trazaT2 = deltaII[2] * fNetJ[2]; //
-        sumatoria =
-                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
-        expectedNewWJI = ( error * sumatoria ) + wJI[2]; //
+        traceT0 = deltaII[0] * fNetJ[0]; //
+        traceT1 = deltaII[1] * fNetJ[1]; //
+        traceT2 = deltaII[2] * fNetJ[2]; //
+        sum = ( Math.pow(lambda, ( 3 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * traceT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * traceT2 ); //
+        expectedNewWJI = ( error * sum ) + wJI[2]; //
         assertThat("expectedNewWJI tercera actualización", expectedNewWJI, is(wJI[3]));
 
         //bias(j)
-        trazaT0 = deltaIJ[0]; //
-        trazaT1 = deltaIJ[1]; //
-        trazaT2 = deltaIJ[2]; //
-        sumatoria =
-                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
-        expectedNewBiasJ = ( error * sumatoria ) + biasJ[2]; //
+        traceT0 = deltaIJ[0]; //
+        traceT1 = deltaIJ[1]; //
+        traceT2 = deltaIJ[2]; //
+        sum = ( Math.pow(lambda, ( 3 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * traceT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * traceT2 ); //
+        expectedNewBiasJ = ( error * sum ) + biasJ[2]; //
         assertThat("expectedNewBiasJ tercera actualización", expectedNewBiasJ, is(biasJ[3]));
 
         //bias(I)
-        trazaT0 = deltaII[0]; //
-        trazaT1 = deltaII[1]; //
-        trazaT2 = deltaII[2]; //
-        sumatoria =
-                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
-        expectedNewBiasI = ( error * sumatoria ) + biasI[2]; //
+        traceT0 = deltaII[0]; //
+        traceT1 = deltaII[1]; //
+        traceT2 = deltaII[2]; //
+        sum = ( Math.pow(lambda, ( 3 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * traceT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * traceT2 ); //
+        expectedNewBiasI = ( error * sum ) + biasI[2]; //
         assertThat("expectedNewBiasI tercera actualización", expectedNewBiasI, is(biasI[3]));
     }
 
@@ -2141,18 +2137,18 @@ class TDTrainerTest {
 
         double error = alpha[0] * ( fNetI[2] - fNetI[1] ); //error = (double) 2.1083069642169328E-5
         //W(k,J)
-        double trazaT0   = deltaIJ[0] * fNetK[0]; //trazaT0 = (double) 0.003592589632991708
-        double trazaT1   = deltaIJ[1] * fNetK[1]; //trazaT1 = (double) 0.005042135188521667
-        double sumatoria =
-                ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.007556947931615862
-        expectedNewWKJ = ( error * sumatoria ) + wKJ[1]; //expectedNewWKJ = (double) 0.10000021201860962
+        double traceT0 = deltaIJ[0] * fNetK[0]; //trazaT0 = (double) 0.003592589632991708
+        double traceT1 = deltaIJ[1] * fNetK[1]; //trazaT1 = (double) 0.005042135188521667
+        double sum =
+                ( Math.pow(lambda, ( 2 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * traceT1 ); //sumatoria = (double) 0.007556947931615862
+        expectedNewWKJ = ( error * sum ) + wKJ[1]; //expectedNewWKJ = (double) 0.10000021201860962
         assertThat("expectedNewWKJ segunda actualización", expectedNewWKJ, is(wKJ[2]));
 
         //W(J,I)
-        trazaT0 = deltaII[0] * fNetJ[0]; //trazaT0 = (double) 0.17390479362330252
-        trazaT1 = deltaII[1] * fNetJ[1]; //trazaT1 = (double) 0.17433161534722577
-        sumatoria = ( Math.pow(lambda, ( 2 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * trazaT1 ); //sumatoria = (double) 0.29606497088353756
-        expectedNewWJI = ( error * sumatoria ) + wJI[1]; //expectedNewWJI = (double) 0.33000879273802003
+        traceT0 = deltaII[0] * fNetJ[0]; //trazaT0 = (double) 0.17390479362330252
+        traceT1 = deltaII[1] * fNetJ[1]; //trazaT1 = (double) 0.17433161534722577
+        sum = ( Math.pow(lambda, ( 2 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 2 - 2 )) * traceT1 ); //sumatoria = (double) 0.29606497088353756
+        expectedNewWJI = ( error * sum ) + wJI[1]; //expectedNewWJI = (double) 0.33000879273802003
         assertThat("expectedNewWJI segunda actualización", expectedNewWJI, is(wJI[2]));
 
         //=============== calculamos un tercer turno ==============================
@@ -2248,21 +2244,19 @@ class TDTrainerTest {
         error = alpha[0] * ( fNetIFinal - fNetI[2] ); //
 
         //W(k,J)
-        trazaT0 = deltaIJ[0] * fNetK[0]; //
-        trazaT1 = deltaIJ[1] * fNetK[1]; //
-        double trazaT2 = deltaIJ[2] * fNetK[2]; //
-        sumatoria =
-                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
-        expectedNewWKJ = ( error * sumatoria ) + wKJ[2]; //
+        traceT0 = deltaIJ[0] * fNetK[0]; //
+        traceT1 = deltaIJ[1] * fNetK[1]; //
+        double traceT2 = deltaIJ[2] * fNetK[2]; //
+        sum = ( Math.pow(lambda, ( 3 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * traceT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * traceT2 ); //
+        expectedNewWKJ = ( error * sum ) + wKJ[2]; //
         assertThat("expectedNewWKJ tercera actualización", wKJ[3], is(expectedNewWKJ));
 
         //W(J,I)
-        trazaT0 = deltaII[0] * fNetJ[0]; //
-        trazaT1 = deltaII[1] * fNetJ[1]; //
-        trazaT2 = deltaII[2] * fNetJ[2]; //
-        sumatoria =
-                ( Math.pow(lambda, ( 3 - 1 )) * trazaT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * trazaT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * trazaT2 ); //
-        expectedNewWJI = ( error * sumatoria ) + wJI[2]; //
+        traceT0 = deltaII[0] * fNetJ[0]; //
+        traceT1 = deltaII[1] * fNetJ[1]; //
+        traceT2 = deltaII[2] * fNetJ[2]; //
+        sum = ( Math.pow(lambda, ( 3 - 1 )) * traceT0 ) + ( Math.pow(lambda, ( 3 - 2 )) * traceT1 ) + ( Math.pow(lambda, ( 3 - 3 )) * traceT2 ); //
+        expectedNewWJI = ( error * sum ) + wJI[2]; //
         assertThat("expectedNewWJI tercera actualización", wJI[3], is(expectedNewWJI));
     }
 

@@ -31,9 +31,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith( Suite.class )
 @SuiteClasses( {
-                       LearningSuite.class, InterfacesSuite.class, TrainingSuite.class,
-                             UtilsSuite.class
-                     } )
+                       LearningSuite.class, InterfacesSuite.class, TrainingSuite.class, UtilsSuite.class
+               } )
 public
 class TDLearningSuite {
 

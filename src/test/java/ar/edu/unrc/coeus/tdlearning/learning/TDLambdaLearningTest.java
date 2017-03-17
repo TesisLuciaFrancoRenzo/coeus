@@ -208,8 +208,8 @@ class TDLambdaLearningTest {
     public
     void testRandomBetween() {
         System.out.println("randomBetween");
-        boolean       result1   = false;
-        boolean       result2   = false;
+        boolean result1 = false;
+        boolean result2 = false;
         for ( int i = 0; i < 500; i++ ) {
             final int value = TDLambdaLearning.randomBetween(5, 6, new Random());
             if ( value == 6 ) {

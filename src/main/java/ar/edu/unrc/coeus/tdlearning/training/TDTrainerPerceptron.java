@@ -42,8 +42,8 @@ class TDTrainerPerceptron
     /**
      * Red neuronal a entrenar.
      */
-    private final INeuralNetworkInterface                neuralNetwork;
-    private final boolean                                replaceEligibilityTraces;
+    private final INeuralNetworkInterface neuralNetwork;
+    private final boolean                 replaceEligibilityTraces;
     private double[]  alpha              = null;
     private boolean[] concurrencyInLayer = null;
     /**
@@ -55,13 +55,13 @@ class TDTrainerPerceptron
      * <li>Quinta componente: turno (m) de la traza de elegibilidad.
      * </ul>
      */
-    private       List< List< List< List< Double > > > > eligibilityTraces;
+    private List< List< List< List< Double > > > > eligibilityTraces;
     /**
      * Indica si es el primer turno.
      */
-    private       boolean                                firstTurn;
+    private boolean                                firstTurn;
     private List< Double > nextTurnOutputs = null;
-    private       NeuralNetworkCache                     nextTurnStateCache;
+    private NeuralNetworkCache nextTurnStateCache;
     /**
      * Problema a solucionar.
      */
@@ -73,7 +73,7 @@ class TDTrainerPerceptron
     /**
      * Cache utilizada para reciclar cálculos y soluciones previas.
      */
-    private       NeuralNetworkCache                     turnCurrentStateCache;
+    private NeuralNetworkCache turnCurrentStateCache;
 
     /**
      * @param lambda                   escala de tiempo del decaimiento exponencial de la traza de elegibilidad, entre [0,1].
@@ -255,8 +255,7 @@ class TDTrainerPerceptron
                     concurrencyInLayer[turnCurrentStateCache.getOutputLayerIndex()] ? lastLayerStream.parallel() : lastLayerStream.sequential();
 
             return lastLayerStream.mapToDouble(outputNeuronIndex -> alpha[layerIndexJ] * tDError.get(outputNeuronIndex) * computeEligibilityTrace(
-                    outputNeuronIndex,
-                    layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK)).sum();
+                    outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK)).sum();
         }
     }
 
