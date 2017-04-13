@@ -2,7 +2,7 @@ group 'ar.edu.unrc'
 version '1.0.0'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.4.1'
+    gradleVersion = '3.5'
 }
 
 //https://docs.gradle.org/current/userguide/standard_plugins.html
@@ -44,13 +44,13 @@ allprojects {
 //create a single Jar with all dependencies
 task finalFatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': rootProject.name,
+        attributes ('Implementation-Title': rootProject.name,
                 'Application-Name': 'Coeus',
                 'Implementation-Version': version,
                 'Built-By': 'Lucia Bressan, Renzo Bianchini, Franco Gastón Pellegrini',
                 'Built-Date': new Date(),
                 'Built-Java': System.getProperty('java.version'),
-                'Sealed': 'true'
+                'Sealed': 'true')
     }
     baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
