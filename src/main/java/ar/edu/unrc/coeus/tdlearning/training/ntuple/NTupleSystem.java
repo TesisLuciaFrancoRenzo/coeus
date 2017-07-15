@@ -31,6 +31,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
+ * Red neuronal para usos de NTuplas.
+ *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
 public
