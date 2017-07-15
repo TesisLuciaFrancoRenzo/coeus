@@ -19,7 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
- * Representación de un estado del problema, especializado para NTuplas. Un estado debe poder ser traducido a entradas
+ * Representación de un estado del problema, especializado para Perceptrones. Un estado debe poder ser traducido a entradas
  * de una Red Neuronal mediante alguna fórmula.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
