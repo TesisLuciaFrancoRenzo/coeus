@@ -19,8 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
- * Debe ser extendido por las clases que pueden hacer uso de los algoritmos provistos en esta librería con el objetivo
- * de entrenar redes neuronales.
+ * Debe ser extendido por las clases que pueden hacer uso de los algoritmos provistos en esta librería con el objetivo de entrenar redes neuronales.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -39,12 +38,9 @@ interface IProblemToTrain
     boolean canExploreThisTurn( long currentTurn );
 
     /**
-     * Este método debe:
-     * <p>
-     * <ol> <li>Crear un estado que llamaremos 'nextState', que comienza siendo igual a {@code afterState}, el cual ya contiene la acciones
-     * determinísticas aplicada. <li>Modificar 'nextState' aplicándole las acciones no determinísticas hasta que llegue al próximo estado.
+     * Este método debe: <ol> <li>Crear un estado que llamaremos 'nextState', que comienza siendo igual a {@code afterState}, el cual ya contiene
+     * la acciones determinísticas aplicada. <li>Modificar 'nextState' aplicándole las acciones no determinísticas hasta que llegue al próximo estado.
      * <li>retornar 'nextState' </ol>
-     * </p>
      *
      * @param afterState estado de transición, luego de aplicar una acción determinística.
      *
@@ -53,16 +49,14 @@ interface IProblemToTrain
     IState computeNextTurnStateFromAfterState( final IState afterState );
 
     /**
-     * En caso de que un problema se resuelva entre varios actores, esta función debe retornar al actor del turno
-     * corriente del entrenamiento.
+     * En caso de que un problema se resuelva entre varios actores, esta función debe retornar al actor del turno corriente del entrenamiento.
      *
      * @return el Actor que se va a entrenar en el turno actual.
      */
     IActor getActorToTrain();
 
     /**
-     * Se debe inicializar el problema y avanzar hasta el punto en el que el {@code actor} le toque actuar por primera
-     * vez
+     * Se debe inicializar el problema y avanzar hasta el punto en el que el {@code actor} le toque actuar por primera vez
      *
      * @param actor que se va a entrenar durante el problema.
      *
@@ -71,8 +65,8 @@ interface IProblemToTrain
     IState initialize( final IActor actor );
 
     /**
-     * Normaliza {@code value} entre los valores permitidos para la salida de la red neuronal, asumiendo que todas las
-     * neuronas de salida utilizan la misma función de normalización.
+     * Normaliza {@code value} entre los valores permitidos para la salida de la red neuronal, asumiendo que todas las neuronas de salida utilizan la
+     * misma función de normalización.
      *
      * @param value a normalizar.
      *
@@ -81,9 +75,8 @@ interface IProblemToTrain
     double normalizeValueToPerceptronOutput( final Object value );
 
     /**
-     * Modifica el estado del problema para que el nuevo estado sea {@code nextTurnState}. En otras palabras, simboliza
-     * el final del turno anterior y se hacen efectivos todos los movimientos de la IA y de las acciones no
-     * determinísticas que se aplicaron al calcular.
+     * Modifica el estado del problema para que el nuevo estado sea {@code nextTurnState}. En otras palabras, simboliza el final del turno anterior y
+     * se hacen efectivos todos los movimientos de la IA y de las acciones no determinísticas que se aplicaron al calcular.
      *
      * @param nextTurnState nuevo estado inicial
      */

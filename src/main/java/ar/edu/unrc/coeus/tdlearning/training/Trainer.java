@@ -46,9 +46,9 @@ class Trainer {
     void reset();
 
     /**
-     * Entrenamos la red neuronal con un turno. Incluye la actualización de las bias. Es necesario invocar el método
-     * {@code train} desde el turno 1. Esto significa que si llamamos a este método desde el turno 6, primero hay que
-     * llamarlo desde el turno 5. Para llamarlo desde el turno 5, primero hay que invocarlo desde el turno 4, etc.
+     * Entrenamos la red neuronal con un turno. Incluye la actualización de las bias. Es necesario invocar el método {@code train} desde el turno 1.
+     * Esto significa que si llamamos a este método desde el turno 6, primero hay que llamarlo desde el turno 5. Para llamarlo desde el turno 5,
+     * primero hay que invocarlo desde el turno 4, etc.
      *
      * @param problem            problema a solucionar.
      * @param state              estado del problema en el turno {@code currentTurn}

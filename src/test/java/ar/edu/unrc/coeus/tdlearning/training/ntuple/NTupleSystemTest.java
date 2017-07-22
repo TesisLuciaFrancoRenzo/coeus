@@ -81,6 +81,7 @@ class NTupleSystemTest {
          * @param num numero del tablero en base 2.
          */
         CustomTile( final int num ) {
+            super();
             code = num;
             gameValue = ( code == 0 ) ? 0 : (int) pow(2, code);
         }

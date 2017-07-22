@@ -763,8 +763,8 @@ class TDTrainerTest {
     }
 
     /**
-     * Test básico con caso de prueba numero 2 informe, class TDTrainerPerceptron. Se utilizaron las mismas formulas
-     * pero el campo de las bias se forzó el valor cero.
+     * Test básico con caso de prueba numero 2 informe, class TDTrainerPerceptron. Se utilizaron las mismas formulas pero el campo de las bias se
+     * forzó el valor cero.
      */
     @Test
     public

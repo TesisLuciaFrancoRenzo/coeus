@@ -21,8 +21,7 @@ package ar.edu.unrc.coeus.interfaces;
 import java.util.function.Function;
 
 /**
- * interfaz que se debe implementar con el objetivo de comunicar la red neuronal utilizada con los métodos de
- * entrenamiento de esta librería.
+ * interfaz que se debe implementar con el objetivo de comunicar la red neuronal utilizada con los métodos de entrenamiento de esta librería.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -39,8 +38,7 @@ interface INeuralNetworkInterface {
     Function< Double, Double > getActivationFunction( final int layerIndex );
 
     /**
-     * Bias asociada a la neurona {@code neuronIndex} en la capa {@code layerIndex}. Las capas de entrada no deberían
-     * tener bias.
+     * Bias asociada a la neurona {@code neuronIndex} en la capa {@code layerIndex}. Las capas de entrada no deberían tener bias.
      *
      * @param layerIndex  índice de una capa de neuronas
      * @param neuronIndex índice de una neurona
@@ -53,15 +51,11 @@ interface INeuralNetworkInterface {
     );
 
     /**
-     * Derivada de la función de activación de las neuronas de la red neuronal en la capa {@code layerIndex}. Tener en
-     * cuenta que por motivos de optimización, el parámetro de la función debe tener aplicada la función sin derivar.
-     * Por ejemplo, si la función sigmoideo es:<br>
-     * "(value) -> 1d / (1d + exp(-value))"<br>
-     * la función derivada debería ser:<br>
-     * "(fValue) -> fValue * (1 - fValue)"<br>
-     * siendo fValue un valor, con previa función sigmoideo ya aplicada. No debería ser:<br>
-     * "(value) -> sigmoid.apply(value) * (1 - sigmoid.apply(value))"<br>
-     * ya que de esta ultima manera, recalculamos 2 veces sigmoideo en lugar de una vez.
+     * Derivada de la función de activación de las neuronas de la red neuronal en la capa {@code layerIndex}. Tener en cuenta que por motivos de
+     * optimización, el parámetro de la función debe tener aplicada la función sin derivar. Por ejemplo, si la función sigmoideo es:<br> "(value) ->
+     * 1d / (1d + exp(-value))"<br> la función derivada debería ser:<br> "(fValue) -> fValue * (1 - fValue)"<br> siendo fValue un valor, con previa
+     * función sigmoideo ya aplicada. No debería ser:<br> "(value) -> sigmoid.apply(value) * (1 - sigmoid.apply(value))"<br> ya que de esta ultima
+     * manera, recalculamos 2 veces sigmoideo en lugar de una vez.
      *
      * @param layerIndex índice de la capa.
      *
@@ -84,10 +78,9 @@ interface INeuralNetworkInterface {
     int getNeuronQuantityInLayer( final int layerIndex );
 
     /**
-     * Peso de la conexión entre dos neuronas. Las dos neuronas deben estar en capas contiguas y la primera coordenada
-     * introducida corresponde a la neurona que este en la capa mas cercana a la salida de la red neuronal. Ya que las
-     * coordenadas de la segunda neurona corresponden a una capa anterior, solo se pide como parámetro el índice de la
-     * neurona y no el de su capa.
+     * Peso de la conexión entre dos neuronas. Las dos neuronas deben estar en capas contiguas y la primera coordenada introducida corresponde a la
+     * neurona que este en la capa mas cercana a la salida de la red neuronal. Ya que las coordenadas de la segunda neurona corresponden a una capa
+     * anterior, solo se pide como parámetro el índice de la neurona y no el de su capa.
      *
      * @param layerIndex               índice de la capa de la neurona de mas cercana a la capa de salida.
      * @param neuronIndex              índice de la neurona de mas cercana a la capa de salida.
@@ -109,8 +102,7 @@ interface INeuralNetworkInterface {
     boolean hasBias( final int layerIndex );
 
     /**
-     * Cambia el valor de la bias de la neurona {@code neuronIndex} en la capa {@code layerIndex} con el valor de
-     * {@code newBias}
+     * Cambia el valor de la bias de la neurona {@code neuronIndex} en la capa {@code layerIndex} con el valor de {@code newBias}
      *
      * @param layerIndex  índice de una capa de neuronas
      * @param neuronIndex índice de una neurona
@@ -123,9 +115,8 @@ interface INeuralNetworkInterface {
     );
 
     /**
-     * Cambia el peso entre la neurona {@code neuronIndex} en la capa {@code layerIndex} (la mas cercana a la capa de
-     * salida) y la neurona {@code neuronIndexPreviousLayer} de la capa mas alejada a capa de salida, con el valor de
-     * {@code newWeight}.
+     * Cambia el peso entre la neurona {@code neuronIndex} en la capa {@code layerIndex} (la mas cercana a la capa de salida) y la neurona {@code
+     * neuronIndexPreviousLayer} de la capa mas alejada a capa de salida, con el valor de {@code newWeight}.
      *
      * @param layerIndex               índice de la capa de la neurona de mas cercana a la capa de salida.
      * @param neuronIndex              índice de la neurona de mas cercana a la capa de salida.

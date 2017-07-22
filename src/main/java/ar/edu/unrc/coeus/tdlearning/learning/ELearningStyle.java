@@ -32,8 +32,7 @@ enum ELearningStyle {
     STATE,
 
     /**
-     * Utiliza el estado intermedio (luego de las acciones determinísticas) para predecir la recompensa final del
-     * problema.
+     * Utiliza el estado intermedio (luego de las acciones determinísticas) para predecir la recompensa final del problema.
      */
     AFTER_STATE
 }

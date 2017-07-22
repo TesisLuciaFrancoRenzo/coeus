@@ -21,8 +21,8 @@ package ar.edu.unrc.coeus.tdlearning.interfaces;
 import java.util.List;
 
 /**
- * Debe ser extendido por las clases que pueden hacer uso de los algoritmos provistos en esta librería con el objetivo
- * de hacer simulaciones una vez entrenada la red neuronal.
+ * Debe ser extendido por las clases que pueden hacer uso de los algoritmos provistos en esta librería con el objetivo de hacer simulaciones una vez
+ * entrenada la red neuronal.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -30,10 +30,9 @@ public
 interface IProblemRunner {
 
     /**
-     * Calcula el estado intermedio del turno, que es el estado al que se llega inmediatamente luego de aplicar la
-     * acción determinística {@code action}, pero antes de aplicar las acciones no determinísticas. Tras computar el
-     * afterState, se debe almacenar la recompensa parcial obtenida dentro del {@code IState} retornado para ser
-     * utilizado en diferentes algoritmos.
+     * Calcula el estado intermedio del turno, que es el estado al que se llega inmediatamente luego de aplicar la acción determinística {@code
+     * action}, pero antes de aplicar las acciones no determinísticas. Tras computar el afterState, se debe almacenar la recompensa parcial obtenida
+     * dentro del {@code IState} retornado para ser utilizado en diferentes algoritmos.
      *
      * @param turnInitialState estado inicial (no se debe modificar, hay que retornar un nuevo objeto)
      * @param action           acción determinística para aplicar
@@ -47,9 +46,8 @@ interface IProblemRunner {
     );
 
     /**
-     * Calcula una representación numérica de la salida de la red neuronal. Este valor es utilizado para comparar
-     * diferentes {@code IState} y elegir el mejor. Mientras mas grande el valor, mas importante se considerará el
-     * {@code IState}.
+     * Calcula una representación numérica de la salida de la red neuronal. Este valor es utilizado para comparar diferentes {@code IState} y elegir
+     * el mejor. Mientras mas grande el valor, mas importante se considerará el {@code IState}.
      *
      * @param output salida de la red neuronal desnormalizada.
      * @param actor  actor corriente que necesita interpretar {@code output} desde su punto de vista.
@@ -62,8 +60,8 @@ interface IProblemRunner {
     );
 
     /**
-     * Desnormaliza el valor {@code value} que es el resultado obtenido en una de las neuronas de salida. Se asume que
-     * las neuronas de la capa de salida utilizan la misma función de normalización.
+     * Desnormaliza el valor {@code value} que es el resultado obtenido en una de las neuronas de salida. Se asume que las neuronas de la capa de
+     * salida utilizan la misma función de normalización.
      *
      * @param value resultado de una neurona de salida, tras evaluar la red neuronal.
      *

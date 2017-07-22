@@ -19,9 +19,9 @@
 package ar.edu.unrc.coeus.tdlearning.learning;
 
 /**
- * Establece como aumenta, disminuye o se mantiene la probabilidad de exploración durante el entrenamiento. Los valores
- * de probabilidad de exploración van desde 0.0 a 1.0 y representan las probabilidades de que la acción actual sea tomada al azar en lugar de ser una
- * acción calculada por la red neuronal.
+ * Establece como aumenta, disminuye o se mantiene la probabilidad de exploración durante el entrenamiento. Los valores de probabilidad de exploración
+ * van desde 0.0 a 1.0 y representan las probabilidades de que la acción actual sea tomada al azar en lugar de ser una acción calculada por la red
+ * neuronal.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */

@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Estructura de datos utilizada para almacenar cálculos temporales y optimizar tiempos de resultados de una red
- * neuronal genérica.
+ * Estructura de datos utilizada para almacenar cálculos temporales y optimizar tiempos de resultados de una red neuronal genérica.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */

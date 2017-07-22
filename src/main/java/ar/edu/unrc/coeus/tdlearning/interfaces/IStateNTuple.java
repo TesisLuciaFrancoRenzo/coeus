@@ -21,8 +21,8 @@ package ar.edu.unrc.coeus.tdlearning.interfaces;
 import ar.edu.unrc.coeus.tdlearning.training.ntuple.SamplePointValue;
 
 /**
- * Representación de un estado del problema, especializado para NTuplas. Un estado debe poder ser traducido a entradas
- * de una Red Neuronal mediante alguna fórmula relacionada con NTuplas.
+ * Representación de un estado del problema, especializado para NTuplas. Un estado debe poder ser traducido a entradas de una Red Neuronal mediante
+ * alguna fórmula relacionada con NTuplas.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */

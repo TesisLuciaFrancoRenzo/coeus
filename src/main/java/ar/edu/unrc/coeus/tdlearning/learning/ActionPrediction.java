@@ -23,8 +23,7 @@ import ar.edu.unrc.coeus.tdlearning.interfaces.IState;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Tupla que contiene una acción y la predicción que calcula la red neuronal sobre la recompensa final del problema, si
- * es que se toma dicha acción.
+ * Tupla que contiene una acción y la predicción que calcula la red neuronal sobre la recompensa final del problema, si es que se toma dicha acción.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -37,9 +36,9 @@ class ActionPrediction
     private final Double  numericRepresentation;
 
     /**
-     * Tupla que relaciona la salida de una red neuronal a una representación numérica {@code numericRepresentation}
-     * (útil en caso de que existan varias neuronas de salida). Mientras mayor se el valor de
-     * {@code numericRepresentation}, mas importancia se le dará a esta tupla a la hora de ser elegida.
+     * Tupla que relaciona la salida de una red neuronal a una representación numérica {@code numericRepresentation} (útil en caso de que existan
+     * varias neuronas de salida). Mientras mayor se el valor de {@code numericRepresentation}, mas importancia se le dará a esta tupla a la hora de
+     * ser elegida.
      *
      * @param action                acción relacionada a {@code prediction}
      * @param numericRepresentation para comparar diferentes {@code ActionPrediction} cuando hay varias neuronas de salida

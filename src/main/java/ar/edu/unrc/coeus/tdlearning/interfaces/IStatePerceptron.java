@@ -19,8 +19,8 @@
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
 /**
- * Representación de un estado del problema, especializado para Perceptrones. Un estado debe poder ser traducido a entradas
- * de una Red Neuronal mediante alguna fórmula.
+ * Representación de un estado del problema, especializado para Perceptrones. Un estado debe poder ser traducido a entradas de una Red Neuronal
+ * mediante alguna fórmula.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -29,9 +29,8 @@ interface IStatePerceptron
         extends IState {
 
     /**
-     * Codifica un Estado del Problema como entradas a la red neuronal utilizada, y devuelve el valor de la neurona de
-     * entrada con el índice {@code neuronIndex}. Recordar normalizar las entradas y salidas de la red neuronal de ser
-     * necesario.
+     * Codifica un Estado del Problema como entradas a la red neuronal utilizada, y devuelve el valor de la neurona de entrada con el índice {@code
+     * neuronIndex}. Recordar normalizar las entradas y salidas de la red neuronal de ser necesario.
      *
      * @param neuronIndex neurona de la capa de entrada (la neurona 0 es la primera)
      *

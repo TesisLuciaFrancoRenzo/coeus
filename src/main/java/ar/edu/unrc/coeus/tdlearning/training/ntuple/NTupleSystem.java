@@ -89,8 +89,7 @@ class NTupleSystem {
     }
 
     /**
-     * Dado la NTupla número {@code nTupleIndex} extraída de {@code state}, esta función calcula a que peso corresponde
-     * dentro de la red neuronal.
+     * Dado la NTupla número {@code nTupleIndex} extraída de {@code state}, esta función calcula a que peso corresponde dentro de la red neuronal.
      *
      * @param nTupleIndex               NTupla observada en {@code state}.
      * @param nTuplesLength             longitudes de las NTuplas.
@@ -115,8 +114,7 @@ class NTupleSystem {
     }
 
     /**
-     * Dado la NTupla número {@code nTupleIndex} extraída de {@code state}, esta función calcula a que peso corresponde
-     * dentro de la red neuronal.
+     * Dado la NTupla número {@code nTupleIndex} extraída de {@code state}, esta función calcula a que peso corresponde dentro de la red neuronal.
      *
      * @param nTupleIndex               NTupla observada en {@code state}.
      * @param nTuplesLength             longitudes de las NTuplas.
@@ -151,7 +149,6 @@ class NTupleSystem {
         }
         final double[] currentLut = nTupleSystems.get(0).lut;
         IntStream.range(0, currentLut.length).parallel().forEach(index -> {
-            //Todo parametrize this to add parallel computation if needed
             for ( int j = 1; j < nTupleSystems.size(); j++ ) {
                 currentLut[index] += nTupleSystems.get(j).lut[index];
             }

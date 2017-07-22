@@ -32,8 +32,7 @@ interface IState {
     IState getCopy();
 
     /**
-     * Retorna la recompensa parcial calculada tras realizar las acciones deterministas, según la neurona de salida
-     * {@code outputNeuron}.
+     * Retorna la recompensa parcial calculada tras realizar las acciones deterministas, según la neurona de salida {@code outputNeuron}.
      *
      * @param outputNeuron neurona de salida
      *

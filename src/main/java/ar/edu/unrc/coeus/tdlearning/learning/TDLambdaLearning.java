@@ -34,9 +34,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * Este método de aprendizaje de TD lambda learning necesita Trazas de elegibilidad como método de asignación de crédito
- * temporal, el cual puede ser ajustado a preferencia. Utiliza redes neuronales para recordar los patrones aprendidos
- * durante la solución del problema.
+ * Este método de aprendizaje de TD lambda learning necesita Trazas de elegibilidad como método de asignación de crédito temporal, el cual puede ser
+ * ajustado a preferencia. Utiliza redes neuronales para recordar los patrones aprendidos durante la solución del problema.
  *
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
@@ -233,8 +232,8 @@ class TDLambdaLearning {
     }
 
     /**
-     * Calcula un valor de "enfriamiento" o "recocido" (nombrado diferente dependiendo la bibliografía) sobre el valor
-     * inicial {@code initialAlphaValue} en el tiempo {@code t}.
+     * Calcula un valor de "enfriamiento" o "recocido" (nombrado diferente dependiendo la bibliografía) sobre el valor inicial {@code
+     * initialAlphaValue} en el tiempo {@code t}.
      *
      * @param initialAlphaValue valor inicial.
      * @param t                 valor de {@code T} actual.
@@ -292,9 +291,8 @@ class TDLambdaLearning {
     }
 
     /**
-     * Dada la Interpolación Lineal entre los puntos (-Infinito, {@code initialValue}) , ({@code startInterpolation},
-     * {@code initialValue}), ({@code finishInterpolation}, {@code finalValue}) y (Infinito, {@code finalValue}) calcula
-     * el valor en el tiempo {@code t}.
+     * Dada la Interpolación Lineal entre los puntos (-Infinito, {@code initialValue}) , ({@code startInterpolation}, {@code initialValue}), ({@code
+     * finishInterpolation}, {@code finalValue}) y (Infinito, {@code finalValue}) calcula el valor en el tiempo {@code t}.
      *
      * @param t                   tiempo actual.
      * @param initialValue        valor inicial.
@@ -325,8 +323,7 @@ class TDLambdaLearning {
     }
 
     /**
-     * Computa la mejor {@code IAction} posible a realizar dado un {@code IState} utilizando la red neuronal. No invocar
-     * sobre estados finales.
+     * Computa la mejor {@code IAction} posible a realizar dado un {@code IState} utilizando la red neuronal. No invocar sobre estados finales.
      *
      * @param problem                                problema a resolver.
      * @param learningStyle                          estilo de aprendizaje utilizado.
@@ -373,8 +370,8 @@ class TDLambdaLearning {
     }
 
     /**
-     * Calcula una predicción de la recompensa final del juego utilizando un {@code IState} obtenido tras de aplicar
-     * {@code action} en {@code turnInitialState}.
+     * Calcula una predicción de la recompensa final del juego utilizando un {@code IState} obtenido tras de aplicar {@code action} en {@code
+     * turnInitialState}.
      *
      * @param problem          problema a resolver.
      * @param turnInitialState estado del problema al comienzo del turno.
@@ -455,7 +452,9 @@ class TDLambdaLearning {
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem, ELearningStyle.AFTER_STATE,
                     nextTurnState,
                     possibleActionsNextTurn,
-                    problem.getActorToTrain(), computeParallelBestPossibleAction, random,
+                    problem.getActorToTrain(),
+                    computeParallelBestPossibleAction,
+                    random,
                     bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
             // siguiente 'nextState', y obtenemos el estado de transición
@@ -573,12 +572,11 @@ class TDLambdaLearning {
     }
 
     /**
-     * Si mantenemos el valor de alpha fijo, las fluctuaciones de la red previenen que en lugar de converger en un
-     * mínimo local, terminemos danzando al azar alrededor. Para alcanzar el mínimo, y quedarnos ahí, debemos utilizar
-     * técnicas de templado (disminuir gradualmente) la tasa de aprendizaje "alpha". Una técnica simple es la de
-     * mantener constante alpha durante un {@code alphaAnnealingT} entrenamientos, permitiendo a la red encontrar el
-     * mínimo local, antes de empezar a disminuir muy lentamente, lo cual esta demostrado por teoría que garantiza
-     * convergencia en un mínimo. Los valores de {@code T} se determinan por prueba y error.
+     * Si mantenemos el valor de alpha fijo, las fluctuaciones de la red previenen que en lugar de converger en un mínimo local, terminemos danzando
+     * al azar alrededor. Para alcanzar el mínimo, y quedarnos ahí, debemos utilizar técnicas de templado (disminuir gradualmente) la tasa de
+     * aprendizaje "alpha". Una técnica simple es la de mantener constante alpha durante un {@code alphaAnnealingT} entrenamientos, permitiendo a la
+     * red encontrar el mínimo local, antes de empezar a disminuir muy lentamente, lo cual esta demostrado por teoría que garantiza convergencia en un
+     * mínimo. Los valores de {@code T} se determinan por prueba y error.
      *
      * @param alphaAnnealingT valor T ({@code alphaAnnealingT}) que indica el momento en el entrenamiento que alpha = initialAlpha/2 utilizado en
      *                        {@code calculateAnnealing}.
@@ -593,8 +591,8 @@ class TDLambdaLearning {
     }
 
     /**
-     * Establece una tasa de exploración fija. El valor elegido es la probabilidad de que el movimiento elegido sea al
-     * azar, en lugar de calculado mediante la red neuronal.
+     * Establece una tasa de exploración fija. El valor elegido es la probabilidad de que el movimiento elegido sea al azar, en lugar de calculado
+     * mediante la red neuronal.
      *
      * @param value tasa de exploración.
      */
@@ -617,8 +615,8 @@ class TDLambdaLearning {
     }
 
     /**
-     * Establece una tasa de exploración variable con el tiempo, la cual comienza a decrementarse en el turno
-     * {@code startDecrementing} y finaliza en {@code finishDecrementing}.
+     * Establece una tasa de exploración variable con el tiempo, la cual comienza a decrementarse en el turno {@code startDecrementing} y finaliza en
+     * {@code finishDecrementing}.
      *
      * @param initialValue
      * @param startDecrementing
@@ -646,8 +644,8 @@ class TDLambdaLearning {
     }
 
     /**
-     * Entrena la red neuronal con lo que aprende de la experiencia de resolver una sola vez {@code problem} de comienzo
-     * a fin, durante 1 o mas turnos hasta alcanzar su objetivo o fracasar.
+     * Entrena la red neuronal con lo que aprende de la experiencia de resolver una sola vez {@code problem} de comienzo a fin, durante 1 o mas turnos
+     * hasta alcanzar su objetivo o fracasar.
      *
      * @param problem                          problema a resolver
      * @param solveAndTrainOnceExecutionNumber cantidad de veces que se ejecutó {@code solveAndTrainOnce}

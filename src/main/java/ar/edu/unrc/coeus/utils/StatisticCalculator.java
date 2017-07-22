@@ -40,7 +40,7 @@ class StatisticCalculator {
             }
             formatter = new DecimalFormat("#." + pattern);
         } else if ( outputDecimals == 0 ) {
-            formatter = new DecimalFormat("#"); //TODO testear
+            formatter = new DecimalFormat("#");
         } else {
             formatter = null;
         }

@@ -47,13 +47,9 @@ class TDTrainerPerceptron
     private double[]  alpha              = null;
     private boolean[] concurrencyInLayer = null;
     /**
-     * <ul>
-     * <li>Primer componente: índice de la capa de la neurona.
-     * <li>Segunda componente: índice de la neurona.
-     * <li>Tercera componente: índice de la segunda neurona involucrada en el calculo del peso.
-     * <li>Cuarta componente: índice de la neurona de salida con respecto de la cual se esta actualizando el peso.
-     * <li>Quinta componente: turno (m) de la traza de elegibilidad.
-     * </ul>
+     * <ul> <li>Primer componente: índice de la capa de la neurona. <li>Segunda componente: índice de la neurona. <li>Tercera componente: índice de la
+     * segunda neurona involucrada en el calculo del peso. <li>Cuarta componente: índice de la neurona de salida con respecto de la cual se esta
+     * actualizando el peso. <li>Quinta componente: turno (m) de la traza de elegibilidad. </ul>
      */
     private List< List< List< List< Double > > > > eligibilityTraces;
     /**
@@ -255,7 +251,11 @@ class TDTrainerPerceptron
                     concurrencyInLayer[turnCurrentStateCache.getOutputLayerIndex()] ? lastLayerStream.parallel() : lastLayerStream.sequential();
 
             return lastLayerStream.mapToDouble(outputNeuronIndex -> alpha[layerIndexJ] * tDError.get(outputNeuronIndex) * computeEligibilityTrace(
-                    outputNeuronIndex, layerIndexJ, neuronIndexJ, layerIndexK, neuronIndexK)).sum();
+                    outputNeuronIndex,
+                    layerIndexJ,
+                    neuronIndexJ,
+                    layerIndexK,
+                    neuronIndexK)).sum();
         }
     }
 
@@ -475,7 +475,6 @@ class TDTrainerPerceptron
 
             IntStream layerJStream = IntStream.range(0, currentLayer.getNeurons().size());
             layerJStream = concurrencyInLayer[layerIndexJ] ? layerJStream.parallel() : layerJStream.sequential();
-            //TODO hacer TEST para mostrar equivalencia entre NTuple y Perceptron trainers
             layerJStream.forEach(neuronIndexJ -> {
                 final Neuron currentNeuron = currentLayer.getNeuron(neuronIndexJ);
                 IntStream    layerKStream  = IntStream.rangeClosed(0, maxIndexK);
@@ -503,8 +502,7 @@ class TDTrainerPerceptron
     }
 
     /**
-     * Actualiza la traza de elegibilidad solamente. Útil para casos en que se realizo una acción al azar en lugar de
-     * evaluar con la red neuronal.
+     * Actualiza la traza de elegibilidad solamente. Útil para casos en que se realizo una acción al azar en lugar de evaluar con la red neuronal.
      *
      * @param layerIndexJ  índice de la capa de neuronas de mas cercana a la capa de salida.
      * @param neuronIndexJ índice de la neurona mas cercana a la capa de salida.

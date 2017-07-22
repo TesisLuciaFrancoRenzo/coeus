@@ -73,6 +73,7 @@ class IProblemTest {
                 final int x,
                 final int y
         ) {
+            super();
             this.x = x;
             this.y = y;
         }
@@ -134,6 +135,7 @@ class IProblemTest {
          */
         public
         BestOf3one2one( final BasicNetwork encogPerceptron ) {
+            super();
             this.encogPerceptron = encogPerceptron;
             //initializeEncogPerceptron();
             resetGame();
