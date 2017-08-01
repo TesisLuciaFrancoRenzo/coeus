@@ -303,7 +303,7 @@ class TDLambdaLearning {
      * @param startInterpolation  tiempo {@code t} donde se comienza a disminuir el valor {@code initialValue}
      * @param finishInterpolation tiempo {@code t} donde deja de disminuir el valor {@code initialValue}
      *
-     * @return
+     * @return resultado de la interpolación lineal.
      */
     public static
     double calculateLinearInterpolation(
@@ -331,11 +331,11 @@ class TDLambdaLearning {
      * @param problem                                problema a resolver.
      * @param learningStyle                          estilo de aprendizaje utilizado.
      * @param turnInitialState                       estado del problema al comienzo del turno actual.
-     * @param allPossibleActionsFromTurnInitialState todas las posibles acciones que {@code actor} puede tomar en {@code turnInitialState}.
+     * @param allPossibleActionsFromTurnInitialState todas las posibles acciones que la IA puede tomar en {@code turnInitialState}.
      * @param computeParallelBestPossibleAction      true si la solución se debe computar concurrentemente.
      * @param bestPossibleActionTimes                para almacenar estadísticas de tiempos demorados. Si no se desea utilizar, debe ser null.
      *
-     * @return la mejor {@code IAction} de todas las posibles para el {@code actor} en el {@code turnInitialState} actual.
+     * @return la mejor {@code IAction} de todas las posibles para la IA en el {@code turnInitialState} actual.
      */
     public static
     ActionPrediction computeBestPossibleAction(
@@ -409,8 +409,6 @@ class TDLambdaLearning {
      *                                          null si no se utiliza.
      * @param trainingTimes                     tiempos de respuestas al entrenar la red neuronal, para realizar estadísticas. Debe ser null si no se
      *                                          utiliza.
-     *
-     * @currentState
      */
     public static
     void learnEvaluationAfterState(
@@ -615,10 +613,10 @@ class TDLambdaLearning {
      * Establece una tasa de exploración variable con el tiempo, la cual comienza a decrementarse en el turno {@code startDecrementing} y finaliza en
      * {@code finishDecrementing}.
      *
-     * @param initialValue
-     * @param startDecrementing
-     * @param finalValue
-     * @param finishDecrementing
+     * @param initialValue valor inicial (antes de la interpolación)
+     * @param startDecrementing desde cuándo se comienza la interpolación
+     * @param finalValue valor final (luego de la interpolación)
+     * @param finishDecrementing desde cuándo se finaliza la interpolación.
      */
     public
     void setLinearExplorationRate(

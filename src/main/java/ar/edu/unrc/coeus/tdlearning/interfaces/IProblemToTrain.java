@@ -49,9 +49,7 @@ interface IProblemToTrain
     IState computeNextTurnStateFromAfterState( final IState afterState );
 
     /**
-     * Se debe inicializar el problema y avanzar hasta el punto en el que el {@code actor} le toque actuar por primera vez
-     *
-     * @return estado inicial del problema en el momento que le toque actual al {@code actor}.
+     * Se debe inicializar el problema y avanzar hasta que le toque actuar por primera vez a la IA.
      */
     IState initialize();
 
