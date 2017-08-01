@@ -747,7 +747,7 @@ class TDLambdaLearning {
 
             // hacemos que el problema aplique la acción 'bestAction' de la red neuronal,
             // y retorne el estado del turno siguiente, luego de aplicar acciones
-            // no determinísticas pertinentes para terminar el turno
+            // estocásticas pertinentes para terminar el turno
             final IState nextTurnState = problem.computeNextTurnStateFromAfterState(afterState);
 
             // hacemos efectivo los cambios realizados por la IA en la lógica del problema

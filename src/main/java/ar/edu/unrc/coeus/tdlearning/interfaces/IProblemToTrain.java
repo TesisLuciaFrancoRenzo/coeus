@@ -39,12 +39,12 @@ interface IProblemToTrain
 
     /**
      * Este método debe: <ol> <li>Crear un estado que llamaremos 'nextState', que comienza siendo igual a {@code afterState}, el cual ya contiene
-     * la acciones determinísticas aplicada. <li>Modificar 'nextState' aplicándole las acciones no determinísticas hasta que llegue al próximo estado.
+     * la acciones determinísticas aplicada. <li>Modificar 'nextState' aplicándole las acciones estocásticas hasta que llegue al próximo estado.
      * <li>retornar 'nextState' </ol>
-     *
+     * En caso de existir multiples jugadores, considerar todas las jugadas de los contrincantes de la IA dentro de la acciones es estocásticas.
      * @param afterState estado de transición, luego de aplicar una acción determinística.
      *
-     * @return el estado 'nextState', que representa el siguiente turno o siguiente estado inicial, tras aplicar acciones no determinísticas.
+     * @return el estado 'nextState', que representa el siguiente turno o siguiente estado inicial, tras aplicar acciones estocásticas.
      */
     IState computeNextTurnStateFromAfterState( final IState afterState );
 
@@ -65,7 +65,7 @@ interface IProblemToTrain
 
     /**
      * Modifica el estado del problema para que el nuevo estado sea {@code nextTurnState}. En otras palabras, simboliza el final del turno anterior y
-     * se hacen efectivos todos los movimientos de la IA y de las acciones no determinísticas que se aplicaron al calcular.
+     * se hacen efectivos todos los movimientos de la IA y de las acciones estocásticas que se aplicaron al calcular.
      *
      * @param nextTurnState nuevo estado inicial
      */

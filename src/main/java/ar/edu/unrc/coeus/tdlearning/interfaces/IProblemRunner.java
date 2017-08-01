@@ -31,7 +31,7 @@ interface IProblemRunner {
 
     /**
      * Calcula el estado intermedio del turno, que es el estado al que se llega inmediatamente luego de aplicar la acción determinística {@code
-     * action}, pero antes de aplicar las acciones no determinísticas. Tras computar el afterState, se debe almacenar la recompensa parcial obtenida
+     * action}, pero antes de aplicar las acciones estocásticas. Tras computar el afterState, se debe almacenar la recompensa parcial obtenida
      * dentro del {@code IState} retornado para ser utilizado en diferentes algoritmos.
      *
      * @param turnInitialState estado inicial (no se debe modificar, hay que retornar un nuevo objeto)
