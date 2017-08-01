@@ -76,7 +76,7 @@ interface IProblemRunner {
      *
      * @return predicción realizada por la red neuronal, normalizada (si es que la función de activación fue normalizada).
      */
-    Object[] evaluateBoardWithPerceptron( final IState state );
+    Object[] evaluateStateWithPerceptron( final IState state );
 
     /**
      * Lista todas las posibles acciones validas aplicables al estado {@code turnInitialState}.

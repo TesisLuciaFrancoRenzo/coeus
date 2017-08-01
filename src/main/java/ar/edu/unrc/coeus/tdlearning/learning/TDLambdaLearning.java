@@ -389,7 +389,7 @@ class TDLambdaLearning {
             final IActor actor
     ) {
         final IState   afterState   = problem.computeAfterState(turnInitialState, action);
-        final Object[] output       = problem.evaluateBoardWithPerceptron(afterState);
+        final Object[] output       = problem.evaluateStateWithPerceptron(afterState);
         final int      outputLength = output.length;
         for ( int i = 0; i < outputLength; i++ ) {
             output[i] = problem.deNormalizeValueFromPerceptronOutput(output[i]) + afterState.getStateReward(i);

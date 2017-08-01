@@ -303,7 +303,7 @@ class TDTrainerTest {
 
             @Override
             public
-            Object[] evaluateBoardWithPerceptron( final IState state ) {
+            Object[] evaluateStateWithPerceptron( final IState state ) {
                 final double[] inputs = new double[neuralNetwork.
                         getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
@@ -618,7 +618,7 @@ class TDTrainerTest {
 
             @Override
             public
-            Object[] evaluateBoardWithPerceptron( final IState state ) {
+            Object[] evaluateStateWithPerceptron( final IState state ) {
                 final double[] inputs = new double[neuralNetwork.
                         getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
@@ -979,7 +979,7 @@ class TDTrainerTest {
 
             @Override
             public
-            Object[] evaluateBoardWithPerceptron( final IState state ) {
+            Object[] evaluateStateWithPerceptron( final IState state ) {
                 final double[] inputs = new double[neuralNetwork.getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
                     inputs[i] = ( (IStatePerceptron) state ).translateToPerceptronInput(i);
@@ -1344,7 +1344,7 @@ class TDTrainerTest {
 
             @Override
             public
-            Object[] evaluateBoardWithPerceptron( final IState state ) {
+            Object[] evaluateStateWithPerceptron( final IState state ) {
                 final double[] inputs = new double[neuralNetwork.
                         getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
@@ -1666,7 +1666,7 @@ class TDTrainerTest {
         assertThat(expResultArrayT_3, is(resultArray));
 
         //calculamos valores que deberían resultar
-        final Object[] evalOutput = problem.evaluateBoardWithPerceptron(stateTp1_3);
+        final Object[] evalOutput = problem.evaluateStateWithPerceptron(stateTp1_3);
         for ( int i = 0; i < evalOutput.length; i++ ) {
             evalOutput[i] = problem.deNormalizeValueFromPerceptronOutput(evalOutput[i]);
         }
@@ -1933,7 +1933,7 @@ class TDTrainerTest {
 
             @Override
             public
-            Object[] evaluateBoardWithPerceptron( final IState state ) {
+            Object[] evaluateStateWithPerceptron( final IState state ) {
                 final double[] inputs = new double[neuralNetwork.getLayerNeuronCount(0)];
                 for ( int i = 0; i < neuralNetwork.getLayerNeuronCount(0); i++ ) {
                     inputs[i] = ( (IStatePerceptron) state ).translateToPerceptronInput(i);
@@ -2225,7 +2225,7 @@ class TDTrainerTest {
         assertThat(expResultArrayT_3, is(resultArray));
 
         //calculamos valores que deberían resultar
-        final Object[] evalOutput = problem.evaluateBoardWithPerceptron(stateTp1_3);
+        final Object[] evalOutput = problem.evaluateStateWithPerceptron(stateTp1_3);
         for ( int i = 0; i < evalOutput.length; i++ ) {
             evalOutput[i] = problem.deNormalizeValueFromPerceptronOutput(evalOutput[i]);
         }

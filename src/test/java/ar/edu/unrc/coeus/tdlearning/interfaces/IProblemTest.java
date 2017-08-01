@@ -194,7 +194,7 @@ class IProblemTest {
 
         @Override
         public
-        Object[] evaluateBoardWithPerceptron( final IState state ) {
+        Object[] evaluateStateWithPerceptron( final IState state ) {
             final double[] inputs = new double[4];
             for ( int i = 0; i < 4; i++ ) {
                 inputs[i] = ( (IStatePerceptron) state ).translateToPerceptronInput(i);
@@ -447,7 +447,7 @@ class IProblemTest {
 
         @Override
         public
-        Object[] evaluateBoardWithPerceptron( final IState state ) {
+        Object[] evaluateStateWithPerceptron( final IState state ) {
             return null;
         }
 
