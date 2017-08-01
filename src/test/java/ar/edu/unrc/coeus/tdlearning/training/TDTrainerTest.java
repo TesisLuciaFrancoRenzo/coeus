@@ -19,7 +19,10 @@
 package ar.edu.unrc.coeus.tdlearning.training;
 
 import ar.edu.unrc.coeus.interfaces.INeuralNetworkInterface;
-import ar.edu.unrc.coeus.tdlearning.interfaces.*;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IProblemToTrain;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IState;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IStatePerceptron;
 import ar.edu.unrc.coeus.tdlearning.training.perceptrons.Layer;
 import ar.edu.unrc.coeus.tdlearning.training.perceptrons.NeuralNetworkCache;
 import ar.edu.unrc.coeus.utils.FunctionUtils;
@@ -289,8 +292,7 @@ class TDTrainerTest {
             @Override
             public
             Double computeNumericRepresentationFor(
-                    final Object[] output,
-                    final IActor actor
+                    final Object[] output
             ) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
@@ -322,13 +324,7 @@ class TDTrainerTest {
 
             @Override
             public
-            IActor getActorToTrain() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            IState initialize( final IActor actor ) {
+            IState initialize() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -604,8 +600,7 @@ class TDTrainerTest {
             @Override
             public
             Double computeNumericRepresentationFor(
-                    final Object[] output,
-                    final IActor actor
+                    final Object[] output
             ) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
@@ -636,13 +631,7 @@ class TDTrainerTest {
 
             @Override
             public
-            IActor getActorToTrain() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            IState initialize( final IActor actor ) {
+            IState initialize() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -965,8 +954,7 @@ class TDTrainerTest {
             @Override
             public
             Double computeNumericRepresentationFor(
-                    final Object[] output,
-                    final IActor actor
+                    final Object[] output
             ) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
@@ -996,13 +984,7 @@ class TDTrainerTest {
 
             @Override
             public
-            IActor getActorToTrain() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            IState initialize( final IActor actor ) {
+            IState initialize() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -1330,8 +1312,7 @@ class TDTrainerTest {
             @Override
             public
             Double computeNumericRepresentationFor(
-                    final Object[] output,
-                    final IActor actor
+                    final Object[] output
             ) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
@@ -1363,13 +1344,7 @@ class TDTrainerTest {
 
             @Override
             public
-            IActor getActorToTrain() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            IState initialize( final IActor actor ) {
+            IState initialize() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -1919,8 +1894,7 @@ class TDTrainerTest {
             @Override
             public
             Double computeNumericRepresentationFor(
-                    final Object[] output,
-                    final IActor actor
+                    final Object[] output
             ) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
@@ -1950,13 +1924,7 @@ class TDTrainerTest {
 
             @Override
             public
-            IActor getActorToTrain() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public
-            IState initialize( final IActor actor ) {
+            IState initialize() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 

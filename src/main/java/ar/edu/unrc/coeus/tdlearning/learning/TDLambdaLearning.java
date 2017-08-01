@@ -19,7 +19,10 @@
 package ar.edu.unrc.coeus.tdlearning.learning;
 
 import ar.edu.unrc.coeus.interfaces.INeuralNetworkInterface;
-import ar.edu.unrc.coeus.tdlearning.interfaces.*;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IProblemRunner;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IProblemToTrain;
+import ar.edu.unrc.coeus.tdlearning.interfaces.IState;
 import ar.edu.unrc.coeus.tdlearning.training.TDTrainerNTupleSystem;
 import ar.edu.unrc.coeus.tdlearning.training.TDTrainerPerceptron;
 import ar.edu.unrc.coeus.tdlearning.training.Trainer;
@@ -329,7 +332,6 @@ class TDLambdaLearning {
      * @param learningStyle                          estilo de aprendizaje utilizado.
      * @param turnInitialState                       estado del problema al comienzo del turno actual.
      * @param allPossibleActionsFromTurnInitialState todas las posibles acciones que {@code actor} puede tomar en {@code turnInitialState}.
-     * @param actor                                  actor en el turno actual.
      * @param computeParallelBestPossibleAction      true si la solución se debe computar concurrentemente.
      * @param bestPossibleActionTimes                para almacenar estadísticas de tiempos demorados. Si no se desea utilizar, debe ser null.
      *
@@ -341,7 +343,6 @@ class TDLambdaLearning {
             final ELearningStyle learningStyle,
             final IState turnInitialState,
             final Collection< IAction > allPossibleActionsFromTurnInitialState,
-            final IActor actor,
             final boolean computeParallelBestPossibleAction,
             final Random random,
             final StatisticCalculator bestPossibleActionTimes
@@ -356,7 +357,7 @@ class TDLambdaLearning {
         final List< ActionPrediction > bestActions = stream.map(possibleAction -> {
             switch ( learningStyle ) {
                 case AFTER_STATE:
-                    return evaluateAfterState(problem, turnInitialState, possibleAction, actor);
+                    return evaluateAfterState(problem, turnInitialState, possibleAction);
                 default:
                     throw new UnsupportedOperationException("Not supported yet.");
             }
@@ -376,8 +377,6 @@ class TDLambdaLearning {
      * @param problem          problema a resolver.
      * @param turnInitialState estado del problema al comienzo del turno.
      * @param action           acción a tomar.
-     * @param actor            actor en el turno actual.
-     *
      * @return Tupla {@code ActionPrediction} que contiene 2 elementos: la acción a tomar {@code action}, y la predicción de la recompensa final del
      * juego asociada a dicha acción.
      */
@@ -385,8 +384,7 @@ class TDLambdaLearning {
     ActionPrediction evaluateAfterState(
             final IProblemRunner problem,
             final IState turnInitialState,
-            final IAction action,
-            final IActor actor
+            final IAction action
     ) {
         final IState   afterState   = problem.computeAfterState(turnInitialState, action);
         final Object[] output       = problem.evaluateStateWithPerceptron(afterState);
@@ -394,7 +392,7 @@ class TDLambdaLearning {
         for ( int i = 0; i < outputLength; i++ ) {
             output[i] = problem.deNormalizeValueFromPerceptronOutput(output[i]) + afterState.getStateReward(i);
         }
-        return new ActionPrediction(action, problem.computeNumericRepresentationFor(output, actor), afterState);
+        return new ActionPrediction(action, problem.computeNumericRepresentationFor(output), afterState);
     }
 
     /**
@@ -452,7 +450,6 @@ class TDLambdaLearning {
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem, ELearningStyle.AFTER_STATE,
                     nextTurnState,
                     possibleActionsNextTurn,
-                    problem.getActorToTrain(),
                     computeParallelBestPossibleAction,
                     random,
                     bestPossibleActionTimes);
@@ -716,7 +713,7 @@ class TDLambdaLearning {
             trainer.reset();
         }
 
-        IState                    turnInitialState = problem.initialize(problem.getActorToTrain());
+        IState                    turnInitialState = problem.initialize();
         long                      startTime        = 0L;
         final StatisticCalculator timePerGame      = new StatisticCalculator();
         long                      currentTurn      = 1L;
@@ -742,7 +739,6 @@ class TDLambdaLearning {
                         learningStyle,
                         turnInitialState,
                         possibleActions,
-                        problem.getActorToTrain(),
                         computeParallelBestPossibleAction,
                         random,
                         statisticsBestPossibleActionTimes);

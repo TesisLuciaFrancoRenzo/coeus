@@ -50,13 +50,10 @@ interface IProblemRunner {
      * el mejor. Mientras mas grande el valor, mas importante se considerará el {@code IState}.
      *
      * @param output salida de la red neuronal desnormalizada.
-     * @param actor  actor corriente que necesita interpretar {@code output} desde su punto de vista.
-     *
      * @return un valor representativo que interpreta la salida de la red neuronal desde el punto de vista del actor {@code player}
      */
     Double computeNumericRepresentationFor(
-            final Object[] output,
-            final IActor actor
+            final Object[] output
     );
 
     /**

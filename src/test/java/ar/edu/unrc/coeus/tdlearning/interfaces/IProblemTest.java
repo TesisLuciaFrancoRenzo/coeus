@@ -167,8 +167,7 @@ class IProblemTest {
         @Override
         public
         Double computeNumericRepresentationFor(
-                final Object[] output,
-                final IActor actor
+                final Object[] output
         ) {
             assert output.length == 1;
             return (Double) output[0];
@@ -208,12 +207,6 @@ class IProblemTest {
             return out;
         }
 
-        @Override
-        public
-        IActor getActorToTrain() {
-            return null;
-        }
-
         /**
          * @return the encogPerceptron
          */
@@ -232,7 +225,7 @@ class IProblemTest {
 
         @Override
         public
-        IState initialize( final IActor actor ) {
+        IState initialize() {
             //initializeEncogPerceptron();
             return currentBoard.getCopy();
         }
@@ -417,25 +410,12 @@ class IProblemTest {
         @Override
         public
         IState computeNextTurnStateFromAfterState( final IState afterState ) {
-            return null;
-        }
-
-        /**
-         * @param output
-         *
-         * @return
-         */
-        public
-        Double computeNumericRepresentationFor( final Object[] output ) {
-            return null;
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public
-        Double computeNumericRepresentationFor(
-                final Object[] output,
-                final IActor actor
-        ) {
+        Double computeNumericRepresentationFor( Object[] output ) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -448,12 +428,6 @@ class IProblemTest {
         @Override
         public
         Object[] evaluateStateWithPerceptron( final IState state ) {
-            return null;
-        }
-
-        @Override
-        public
-        IActor getActorToTrain() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -467,17 +441,9 @@ class IProblemTest {
             return 0.0;
         }
 
-        /**
-         * @return
-         */
-        public
-        IState initialize() {
-            return null;
-        }
-
         @Override
         public
-        IState initialize( final IActor actor ) {
+        IState initialize() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 

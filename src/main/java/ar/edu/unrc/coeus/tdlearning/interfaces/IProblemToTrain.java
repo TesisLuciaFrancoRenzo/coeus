@@ -49,20 +49,11 @@ interface IProblemToTrain
     IState computeNextTurnStateFromAfterState( final IState afterState );
 
     /**
-     * En caso de que un problema se resuelva entre varios actores, esta función debe retornar al actor del turno corriente del entrenamiento.
-     *
-     * @return el Actor que se va a entrenar en el turno actual.
-     */
-    IActor getActorToTrain();
-
-    /**
      * Se debe inicializar el problema y avanzar hasta el punto en el que el {@code actor} le toque actuar por primera vez
-     *
-     * @param actor que se va a entrenar durante el problema.
      *
      * @return estado inicial del problema en el momento que le toque actual al {@code actor}.
      */
-    IState initialize( final IActor actor );
+    IState initialize();
 
     /**
      * Normaliza {@code value} entre los valores permitidos para la salida de la red neuronal, asumiendo que todas las neuronas de salida utilizan la
