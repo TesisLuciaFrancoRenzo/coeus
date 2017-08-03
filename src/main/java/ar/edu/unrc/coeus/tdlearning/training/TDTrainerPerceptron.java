@@ -130,12 +130,12 @@ class TDTrainerPerceptron
         lastLayerStream = concurrencyInLayer[turnCurrentStateCache.getOutputLayerIndex()] ? lastLayerStream.parallel() : lastLayerStream.sequential();
 
         lastLayerStream.forEach(outputNeuronIndex -> {
-            final double output                   = outputLayerCurrentState.getNeuron(outputNeuronIndex).getOutput();
-            final double nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(outputNeuronIndex));
+            final double output              = outputLayerCurrentState.getNeuron(outputNeuronIndex).getOutput();
+            final double nextTurnStateReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(outputNeuronIndex));
             if ( nextTurnState.isTerminalState() ) {
-                tDError.set(outputNeuronIndex, nextTurnStateBoardReward - output);
+                tDError.set(outputNeuronIndex, nextTurnStateReward - output);
             } else {
-                tDError.set(outputNeuronIndex, ( nextTurnStateBoardReward + ( gamma * nextTurnOutputs.get(outputNeuronIndex) ) ) - output);
+                tDError.set(outputNeuronIndex, ( nextTurnStateReward + ( gamma * nextTurnOutputs.get(outputNeuronIndex) ) ) - output);
             }
         });
     }

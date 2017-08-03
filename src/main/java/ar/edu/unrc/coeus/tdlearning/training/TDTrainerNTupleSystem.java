@@ -88,15 +88,15 @@ class TDTrainerNTupleSystem
             final boolean[] concurrencyInLayer
     ) {
         //computamos
-        final ComplexNTupleComputation normalizedStateOutput    = nTupleSystem.getComplexComputation((IStateNTuple) state);
-        final double                   output                   = normalizedStateOutput.getOutput();
-        final double                   gradientOutput           = normalizedStateOutput.getDerivedOutput();
-        final double                   nextTurnStateBoardReward = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
+        final ComplexNTupleComputation normalizedStateOutput = nTupleSystem.getComplexComputation((IStateNTuple) state);
+        final double                   output                = normalizedStateOutput.getOutput();
+        final double                   gradientOutput        = normalizedStateOutput.getDerivedOutput();
+        final double                   nextTurnStateReward   = problem.normalizeValueToPerceptronOutput(nextTurnState.getStateReward(0));
 
         //calculamos el TDError
         final double tdError = ( ( nextTurnState.isTerminalState()
-                                   ? nextTurnStateBoardReward
-                                   : ( nextTurnStateBoardReward + ( gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) ) ) ) -
+                                   ? nextTurnStateReward
+                                   : ( nextTurnStateReward + ( gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) ) ) ) -
                                  output );
         final double partialError                = alpha[0] * tdError;
         final int    normalizedStateOutputLength = normalizedStateOutput.getIndexes().length;
