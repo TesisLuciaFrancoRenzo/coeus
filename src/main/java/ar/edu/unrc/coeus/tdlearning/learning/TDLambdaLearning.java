@@ -115,6 +115,7 @@ class TDLambdaLearning {
             throw new IllegalArgumentException("learningStyle = STATE is not implemented, yet");
         }
         this.random = random;
+        random.setSeed(System.currentTimeMillis());
         this.learningStyle = learningStyle;
 
         if ( alpha == null ) {
