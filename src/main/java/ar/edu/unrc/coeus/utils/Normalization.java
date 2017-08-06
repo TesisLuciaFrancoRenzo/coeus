@@ -26,7 +26,6 @@ class Normalization {
 
     private
     Normalization() {
-        super();
     }
 
     /**

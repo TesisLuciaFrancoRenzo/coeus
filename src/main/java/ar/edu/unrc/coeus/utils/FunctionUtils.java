@@ -61,6 +61,5 @@ class FunctionUtils {
 
     private
     FunctionUtils() {
-        super();
     }
 }

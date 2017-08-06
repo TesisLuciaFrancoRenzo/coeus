@@ -40,7 +40,6 @@ class MaximalActionPredictionConsumer
      */
     public
     MaximalActionPredictionConsumer() {
-        super();
         list = new ArrayList<>();
     }
 

@@ -84,7 +84,6 @@ class TDTrainerPerceptron
             final boolean replaceEligibilityTraces,
             final double gamma
     ) {
-        super();
         this.neuralNetwork = neuralNetwork;
         this.replaceEligibilityTraces = replaceEligibilityTraces;
         firstTurn = true;

@@ -37,8 +37,8 @@ class ActionPredictionTest {
     public
     void testCompareTo() {
         System.out.println("compareTo iguales");
-        final ActionPrediction other     = new ActionPrediction(new IAction() {}, 10.0d, null);
-        ActionPrediction       instance  = new ActionPrediction(new IAction() {}, 10.0d, null);
+        final ActionPrediction other     = new ActionPrediction(new MyIAction(), 10.0d, null);
+        ActionPrediction       instance  = new ActionPrediction(new MyIAction(), 10.0d, null);
         int                    expResult = 0;
         int                    result    = instance.compareTo(other);
         assertThat(result, is(expResult));
@@ -49,4 +49,7 @@ class ActionPredictionTest {
         assertThat(result, is(expResult));
     }
 
+    private static
+    class MyIAction
+            implements IAction {}
 }

@@ -47,7 +47,7 @@ import static org.junit.Assert.fail;
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
  */
-@SuppressWarnings( "PointlessArithmeticExpression" )
+@SuppressWarnings( { "PointlessArithmeticExpression", "AnonymousInnerClassMayBeStatic" } )
 public
 class TDTrainerTest {
 

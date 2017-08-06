@@ -38,7 +38,6 @@ class NeuralNetworkCache {
      */
     public
     NeuralNetworkCache( final int layerQuantity ) {
-        super();
         layers = new ArrayList<>(layerQuantity);
         for ( int i = 0; i < layerQuantity; i++ ) {
             layers.add(null);

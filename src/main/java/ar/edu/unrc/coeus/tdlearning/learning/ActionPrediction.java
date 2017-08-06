@@ -50,7 +50,6 @@ class ActionPrediction
             final Double numericRepresentation,
             final IState afterState
     ) {
-        super();
         this.action = action;
         this.numericRepresentation = numericRepresentation;
         this.afterState = afterState;
@@ -58,7 +57,7 @@ class ActionPrediction
 
     @Override
     public
-    int compareTo( @NotNull final ActionPrediction other ) {
+    int compareTo( final @NotNull ActionPrediction other ) {
         return numericRepresentation.compareTo(other.numericRepresentation);
     }
 

@@ -64,7 +64,6 @@ class NTupleSystem {
             final Function< Double, Double > derivedActivationFunction,
             final boolean concurrency
     ) {
-        super();
         mapSamplePointValuesIndex = new HashMap<>(allSamplePointPossibleValues.size());
         for ( int spvIndex = 0; spvIndex < allSamplePointPossibleValues.size(); spvIndex++ ) {
             mapSamplePointValuesIndex.put(allSamplePointPossibleValues.get(spvIndex), spvIndex);
@@ -152,7 +151,7 @@ class NTupleSystem {
             for ( int j = 1; j < nTupleSystems.size(); j++ ) {
                 currentLut[index] += nTupleSystems.get(j).lut[index];
             }
-            currentLut[index] /= nTupleSystems.size();
+            currentLut[index] = currentLut[index] / nTupleSystems.size();
         });
         for ( int i = 1; i < nTupleSystems.size(); i++ ) {
             nTupleSystems.get(i).lut = currentLut.clone();

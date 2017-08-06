@@ -175,12 +175,12 @@ class IPerceptronInterfaceTest {
     /**
      *
      */
-    public
+    public static
     class IPerceptronInterfaceImpl
             implements INeuralNetworkInterface {
-        final boolean[] bias                  = { false, true, false, true };
-        final int       layerQuantity         = 3;
-        final int       neuronQuantityInLayer = 3;
+        static final int       layerQuantity         = 3;
+        static final int       neuronQuantityInLayer = 3;
+        final        boolean[] bias                  = { false, true, false, true };
         double biasB  = 0.0;
         double weight = 0.0;
 

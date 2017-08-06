@@ -35,7 +35,6 @@ class ValueUsagePair {
      */
     public
     ValueUsagePair() {
-        super();
         value = 0.0d;
         usagesLeft = 0;
     }

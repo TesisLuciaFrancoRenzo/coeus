@@ -21,7 +21,6 @@ class StatisticCalculator {
             final int capacity,
             final int outputDecimals
     ) {
-        super();
 
         this.outputDecimals = outputDecimals;
         average = 0.0d;

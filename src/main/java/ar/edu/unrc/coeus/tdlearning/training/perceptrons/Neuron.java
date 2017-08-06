@@ -45,7 +45,6 @@ class Neuron {
             final int weightsQuantity,
             final int outputLayerNeuronQuantity
     ) {
-        super();
         if ( weightsQuantity > 0 ) {
             weights = new ArrayList<>(weightsQuantity + 1);
             for ( int i = 0; i < ( weightsQuantity + 1 ); i++ ) {

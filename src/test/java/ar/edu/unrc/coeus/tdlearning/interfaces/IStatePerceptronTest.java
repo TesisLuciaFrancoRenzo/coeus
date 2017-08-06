@@ -34,7 +34,7 @@ class IStatePerceptronTest {
     /**
      *
      */
-    public static final NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize, null, 15, 6, 1, 0);
+    public static final NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize, null, 15.0, 6.0, 1.0, 0);
     private final       boolean[][]     board      = { { false, false }, { false, false }, { false, false }, { false, false } };
 
     /**

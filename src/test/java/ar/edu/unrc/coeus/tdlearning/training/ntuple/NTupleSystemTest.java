@@ -61,16 +61,20 @@ class NTupleSystemTest {
         nTupleSystems.add(new NTupleSystem(allSamplePointPossibleValues, nTuplesLength, activationFunction, derivedActivationFunction, false));
         nTupleSystems.add(new NTupleSystem(allSamplePointPossibleValues, nTuplesLength, activationFunction, derivedActivationFunction, false));
 
-        nTupleSystems.get(0).setWeights(new double[] { 5, 9, 20, 40, -30, 10.1, 10, 5, 9, 20, 40, -30, 10.1, 10, 5, 9, 20, 40 });
-        nTupleSystems.get(1).setWeights(new double[] { 15, 11, 0, -20, 50, 9.9, 10, 15, 11, 0, -20, 50, 9.9, 10, 15, 11, 0, -20 });
+        nTupleSystems.get(0).setWeights(new double[] {
+                5.0, 9.0, 20.0, 40.0, -30.0, 10.1, 10.0, 5.0, 9.0, 20.0, 40.0, -30.0, 10.1, 10.0, 5.0, 9.0, 20.0, 40.0
+        });
+        nTupleSystems.get(1).setWeights(new double[] {
+                15.0, 11.0, 0, -20.0, 50.0, 9.9, 10.0, 15.0, 11.0, 0, -20.0, 50.0, 9.9, 10.0, 15.0, 11.0, 0, -20.0
+        });
 
         NTupleSystem.fuseLut(nTupleSystems);
-        final double[] expResult = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+        final double[] expResult = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0 };
         assertThat("NTupleSystem 0 ", nTupleSystems.get(0).getLut(), is(expResult));
         assertThat("NTupleSystem 1 ", nTupleSystems.get(1).getLut(), is(expResult));
     }
 
-    private
+    private static
     class CustomTile
             implements SamplePointValue {
 
@@ -81,9 +85,8 @@ class NTupleSystemTest {
          * @param num numero del tablero en base 2.
          */
         CustomTile( final int num ) {
-            super();
             code = num;
-            gameValue = ( code == 0 ) ? 0 : (int) pow(2, code);
+            gameValue = ( code == 0 ) ? 0 : (int) pow(2.0, code);
         }
 
         @Override

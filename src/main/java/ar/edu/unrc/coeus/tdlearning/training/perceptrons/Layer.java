@@ -38,7 +38,6 @@ class Layer {
      */
     public
     Layer( final int neuronQuantityInLayer ) {
-        super();
         neurons = new ArrayList<>(neuronQuantityInLayer);
         for ( int i = 0; i < neuronQuantityInLayer; i++ ) {
             neurons.add(null);

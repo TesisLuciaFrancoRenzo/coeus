@@ -60,7 +60,6 @@ class TDTrainerNTupleSystem
             final boolean replaceEligibilityTraces,
             final double gamma
     ) {
-        super();
         this.nTupleSystem = nTupleSystem;
         this.lambda = lambda;
         this.gamma = gamma;

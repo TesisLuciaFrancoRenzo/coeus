@@ -101,7 +101,6 @@ class TDLambdaLearning {
             final Random random,
             final boolean collectStatistics
     ) {
-        super();
         if ( perceptronInterface == null ) {
             throw new IllegalArgumentException("perceptronInterface can't be null");
         }
@@ -184,7 +183,6 @@ class TDLambdaLearning {
             final Random random,
             final boolean collectStatistics
     ) {
-        super();
         if ( nTupleSystem == null ) {
             throw new IllegalArgumentException("nTupleSystem can't be null");
         }
@@ -254,7 +252,7 @@ class TDLambdaLearning {
         if ( ( initialAlphaValue > 1.0d ) || ( initialAlphaValue < 0.0d ) ) {
             throw new IllegalArgumentException("initialAlphaValue=" + initialAlphaValue + " is out of range from a valid [0..1]");
         }
-        return initialAlphaValue / ( 1.0d + ( t / ( (double) T ) ) );
+        return initialAlphaValue / ( 1.0d + ( (double) t / T ) );
     }
 
     /**
@@ -781,7 +779,7 @@ class TDLambdaLearning {
             currentTurn++;
 
             if ( canCollectStatistics ) {
-                timePerGame.addSample(System.currentTimeMillis() - startTime);
+                timePerGame.addSample(( System.currentTimeMillis() - startTime ));
             }
         }
 
