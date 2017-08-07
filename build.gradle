@@ -2,7 +2,7 @@ group 'ar.edu.unrc'
 version '1.0.0'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.0.2'
+    gradleVersion = '4.1'
 }
 
 //https://docs.gradle.org/current/userguide/standard_plugins.html
