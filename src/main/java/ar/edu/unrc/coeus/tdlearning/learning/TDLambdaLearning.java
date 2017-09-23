@@ -60,15 +60,15 @@ class TDLambdaLearning {
     private final INeuralNetworkInterface perceptronInterface;
     private final Random                  random;
     private final boolean                 replaceEligibilityTraces;
-    private int                        alphaAnnealingT                    = 0;
-    private boolean                    computeParallelBestPossibleAction  = false;
-    private double                     currentExplorationRate             = 0.0;
-    private int                        eligibilityTraceLength             = 0;
-    private EExplorationRateAlgorithms explorationRate                    = null;
-    private double                     explorationRateFinalValue          = 0.0;
-    private int                        explorationRateFinishInterpolation = 0;
-    private double                     explorationRateInitialValue        = 0.0;
-    private int                        explorationRateStartInterpolation  = 0;
+    private int                        alphaAnnealingT                       = 0;
+    private boolean                    computeBestPossibleActionConcurrently = false;
+    private double                     currentExplorationRate                = 0.0;
+    private int                        eligibilityTraceLength                = 0;
+    private EExplorationRateAlgorithms explorationRate                       = null;
+    private double                     explorationRateFinalValue             = 0.0;
+    private int                        explorationRateFinishInterpolation    = 0;
+    private double                     explorationRateInitialValue           = 0.0;
+    private int                        explorationRateStartInterpolation     = 0;
     private ELearningRateAdaptation    learningRateAdaptation             = null;
     private int randomChoiceCounter;
     private StatisticCalculator statisticsBestPossibleActionTimes = null;
@@ -331,7 +331,7 @@ class TDLambdaLearning {
      * @param learningStyle                          estilo de aprendizaje utilizado.
      * @param turnInitialState                       estado del problema al comienzo del turno actual.
      * @param allPossibleActionsFromTurnInitialState todas las posibles acciones que la IA puede tomar en {@code turnInitialState}.
-     * @param computeParallelBestPossibleAction      true si la solución se debe computar concurrentemente.
+     * @param computeBestPossibleActionConcurrently      true si la solución se debe computar concurrentemente.
      * @param bestPossibleActionTimes                para almacenar estadísticas de tiempos demorados. Si no se desea utilizar, debe ser null.
      *
      * @return la mejor {@code IAction} de todas las posibles para la IA en el {@code turnInitialState} actual.
@@ -342,7 +342,7 @@ class TDLambdaLearning {
             final ELearningStyle learningStyle,
             final IState turnInitialState,
             final Collection< IAction > allPossibleActionsFromTurnInitialState,
-            final boolean computeParallelBestPossibleAction,
+            final boolean computeBestPossibleActionConcurrently,
             final Random random,
             final StatisticCalculator bestPossibleActionTimes
     ) {
@@ -350,7 +350,7 @@ class TDLambdaLearning {
         if ( bestPossibleActionTimes != null ) {
             time = System.currentTimeMillis();
         }
-        final Stream< IAction > stream = computeParallelBestPossibleAction
+        final Stream< IAction > stream = computeBestPossibleActionConcurrently
                                          ? allPossibleActionsFromTurnInitialState.parallelStream()
                                          : allPossibleActionsFromTurnInitialState.stream();
         final List< ActionPrediction > bestActions = stream.map(possibleAction -> {
@@ -403,7 +403,7 @@ class TDLambdaLearning {
      * @param nextTurnState                     estado del problema en el próximo turno, luego de aplicar las acciones/efectos no determinísticos.
      * @param currentAlpha                      alpha actual.
      * @param concurrencyInLayer                capas que deben ser computadas concurrentemente.
-     * @param computeParallelBestPossibleAction true si se deben evaluar las mejores acciones concurrentemente.
+     * @param computeBestPossibleActionConcurrently true si se deben evaluar las mejores acciones concurrentemente.
      * @param bestPossibleActionTimes           tiempos de respuestas al evaluar las mejores acciones posibles, para realizar estadísticas. Debe ser
      *                                          null si no se utiliza.
      * @param trainingTimes                     tiempos de respuestas al entrenar la red neuronal, para realizar estadísticas. Debe ser null si no se
@@ -417,7 +417,7 @@ class TDLambdaLearning {
             final IState nextTurnState,
             final double[] currentAlpha,
             final boolean[] concurrencyInLayer,
-            final boolean computeParallelBestPossibleAction,
+            final boolean computeBestPossibleActionConcurrently,
             final Random random,
             final StatisticCalculator bestPossibleActionTimes,
             final StatisticCalculator trainingTimes
@@ -447,7 +447,7 @@ class TDLambdaLearning {
             final ActionPrediction bestActionForNextTurn = computeBestPossibleAction(problem, ELearningStyle.AFTER_STATE,
                     nextTurnState,
                     possibleActionsNextTurn,
-                    computeParallelBestPossibleAction,
+                    computeBestPossibleActionConcurrently,
                     random,
                     bestPossibleActionTimes);
             // Aplicamos la acción 'bestActionForNextTurn' al estado (turno)
@@ -549,20 +549,20 @@ class TDLambdaLearning {
      * @return true si se esta calculando la mejor acción concurrentemente.
      */
     public
-    boolean isComputeParallelBestPossibleAction() {
-        return computeParallelBestPossibleAction;
+    boolean isComputeBestPossibleActionConcurrently() {
+        return computeBestPossibleActionConcurrently;
     }
 
     /**
      * Establece si el cálculo de la mejor acción debe realizarse concurrentemente.
      *
-     * @param computeParallelBestPossibleAction true si las evaluaciones deben ejecutarse en paralelo.
+     * @param computeBestPossibleActionConcurrently true si las evaluaciones deben ejecutarse en paralelo.
      */
     public
-    void setComputeParallelBestPossibleAction(
-            final boolean computeParallelBestPossibleAction
+    void setComputeBestPossibleActionConcurrently(
+            final boolean computeBestPossibleActionConcurrently
     ) {
-        this.computeParallelBestPossibleAction = computeParallelBestPossibleAction;
+        this.computeBestPossibleActionConcurrently = computeBestPossibleActionConcurrently;
     }
 
     /**
@@ -735,8 +735,7 @@ class TDLambdaLearning {
                 final ActionPrediction bestActionPrediction = computeBestPossibleAction(problem,
                         learningStyle,
                         turnInitialState,
-                        possibleActions,
-                        computeParallelBestPossibleAction,
+                        possibleActions, computeBestPossibleActionConcurrently,
                         random,
                         statisticsBestPossibleActionTimes);
                 // aplicamos la acción 'bestAction' al estado actual 'currentState',
@@ -763,8 +762,7 @@ class TDLambdaLearning {
                             afterState,
                             nextTurnState,
                             currentAlpha,
-                            concurrencyInLayer,
-                            computeParallelBestPossibleAction,
+                            concurrencyInLayer, computeBestPossibleActionConcurrently,
                             random,
                             statisticsBestPossibleActionTimes,
                             statisticsTrainingTimes);
