@@ -95,12 +95,11 @@ class TDTrainerNTupleSystem
         //calculamos el TDError
         final double tdError = ( ( nextTurnState.isTerminalState()
                                    ? nextTurnStateReward
-                                   : ( nextTurnStateReward + ( gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) ) ) ) -
-                                 output );
-        final double partialError                = alpha[0] * tdError;
-        final int    normalizedStateOutputLength = normalizedStateOutput.getIndexes().length;
-        for ( int weightIndex = 0; weightIndex < normalizedStateOutputLength; weightIndex++ ) {
-            final int    activeIndex = normalizedStateOutput.getIndexes()[weightIndex];
+                                   : ( nextTurnStateReward + ( gamma * nTupleSystem.getComputation((IStateNTuple) nextTurnState) ) ) ) - output );
+        final double partialError = alpha[0] * tdError;
+        final int[]  indexes      = normalizedStateOutput.getIndexes();
+        for ( int weightIndex = 0, normalizedStateOutputLength = indexes.length; weightIndex < normalizedStateOutputLength; weightIndex++ ) {
+            final int    activeIndex = indexes[weightIndex];
             final double currentEligibilityTrace;
 
             // usamos solo el gradiente y no la salida de la entrada, ya que siempre es 1 en NTuplas.
