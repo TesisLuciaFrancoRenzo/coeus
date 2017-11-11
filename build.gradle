@@ -10,7 +10,7 @@ apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-apply plugin: 'findbugs'
+//apply plugin: 'findbugs'
 apply plugin: 'java-library-distribution'
 apply plugin: 'signing'
 apply plugin: 'project-report'
@@ -44,7 +44,7 @@ allprojects {
 //create a single Jar with all dependencies
 task finalFatJar(type: Jar) {
     manifest {
-        attributes ('Implementation-Title': rootProject.name,
+        attributes('Implementation-Title': rootProject.name,
                 'Application-Name': 'Coeus',
                 'Implementation-Version': version,
                 'Built-By': 'Lucia Bressan, Renzo Bianchini, Franco Gastón Pellegrini',
