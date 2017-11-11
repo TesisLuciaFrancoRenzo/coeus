@@ -1,13 +1,13 @@
 # Coeus
-Es una librería que permite crear redes neuronales utilizando 
-aprendizaje automático para su entrenamiento (TD Lambda Learning). 
-Provee una implementación de Redes NTuplas y además una API para 
-conectarse con librerías que proveen otras implementaciones de 
-redes neuronales como por ejemplo Encog, Neuroph, etc.
+Es una librería que permite entrenar redes neuronales utilizando 
+aprendizaje automático. 
 Para el aprendizaje, utiliza el método de TDLambda learning el cual 
 hace uso de las Trazas de Elegibilidad como método de asignación de 
 crédito temporal, el cual puede ser ajustado configurando sus 
-diferentes parámetros. 
+diferentes parámetros.
+Provee una implementación de Redes NTuplas y además una API para 
+conectarse con librerías que proveen otras implementaciones de 
+redes neuronales como por ejemplo Encog, Neuroph, etc.
 
 ## Instalación
 El proyecto esta construido utilizando Gradle (incorporado en el 
