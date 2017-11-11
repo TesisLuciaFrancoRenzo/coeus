@@ -1,3 +1,7 @@
+<h1 align="center">
+	<img src="https://i.imgur.com/rqOh0KW.png" alt="IA">
+</h1>
+
 # Coeus
 Es una librería que permite entrenar redes neuronales utilizando 
 aprendizaje automático. 
