@@ -12,6 +12,7 @@ diferentes parámetros.
 Provee una implementación de Redes NTuplas y además una API para 
 conectarse con librerías que proveen otras implementaciones de 
 redes neuronales como por ejemplo Encog, Neuroph, etc.
+Para mas detalles referirse al [Informe](https://docs.google.com/document/d/1arNnKmmV7xc9qDrgPNbtxQXO8b81HknmJQKCshfAzUU/edit?usp=sharing) del mismo.
 
 ## Instalación
 El proyecto esta construido utilizando Gradle (incorporado en el 
