@@ -42,7 +42,7 @@ class ActionPrediction
      *
      * @param action                acción relacionada a {@code prediction}
      * @param numericRepresentation para comparar diferentes {@code ActionPrediction} cuando hay varias neuronas de salida
-     * @param afterState
+     * @param afterState            a utilizar
      */
     public
     ActionPrediction(

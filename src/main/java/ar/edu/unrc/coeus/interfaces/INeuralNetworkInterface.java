@@ -52,10 +52,10 @@ interface INeuralNetworkInterface {
 
     /**
      * Derivada de la función de activación de las neuronas de la red neuronal en la capa {@code layerIndex}. Tener en cuenta que por motivos de
-     * optimización, el parámetro de la función debe tener aplicada la función sin derivar. Por ejemplo, si la función sigmoideo es:<br> <code>
-     * (value) -&gt; \frac{1d}{1d +e^{-value}} </code> <br> la función derivada debería ser:<br> <code> (fValue) -&gt; fValue * (1 - fValue) </code>
-     * siendo fValue un valor, con previa función sigmoideo ya aplicada. No debería ser:<br> <code> (value) -&gt; sigmoid.apply(value) * (1 -
-     * sigmoid.apply(value)) </code> <br> ya que de esta ultima manera, recalculamos 2 veces sigmoideo en lugar de una vez.
+     * optimización, el parámetro de la función debe tener aplicada la función sin derivar. Por ejemplo, si la función sigmoideo es:<br> {@code
+     * (value) -> \frac{1d}{1d +e^{-value}} } <br> la función derivada debería ser:<br> <code> (fValue) -&gt; fValue * (1 - fValue) </code> siendo
+     * fValue un valor, con previa función sigmoideo ya aplicada. No debería ser:<br> {@code (value) -> sigmoid.apply(value) * (1 -
+     * sigmoid.apply(value)) } <br> ya que de esta ultima manera, recalculamos 2 veces sigmoideo en lugar de una vez.
      *
      * @param layerIndex índice de la capa.
      *

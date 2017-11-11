@@ -33,7 +33,7 @@ interface IStateNTuple
     /**
      * Calcula la NTupla con el índice {@code nTupleIndex} del estado.
      *
-     * @param nTupleIndex
+     * @param nTupleIndex índice de la NTupla.
      *
      * @return cálculo de la NTupla con el índice {@code nTupleIndex}
      */

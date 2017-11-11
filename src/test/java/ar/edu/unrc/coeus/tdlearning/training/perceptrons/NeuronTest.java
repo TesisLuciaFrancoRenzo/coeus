@@ -67,7 +67,6 @@ class NeuronTest {
     public
     void testGetDelta() {
         System.out.println("getGradient");
-        final int    outputNeuronIndex = 0;
         final Neuron instance          = new Neuron(1, 1);
         instance.setGradient(0, 1.0d);
         final Double expResult = 1.0d;

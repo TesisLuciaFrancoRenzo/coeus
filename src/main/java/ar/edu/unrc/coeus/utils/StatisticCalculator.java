@@ -12,7 +12,6 @@ class StatisticCalculator {
     private final int             capacity;
     private final DecimalFormat   formatter;
     private final Queue< Double > history;
-    private final int             outputDecimals;
     private       double          average;
     private       int             itemCounter;
 
@@ -22,7 +21,6 @@ class StatisticCalculator {
             final int outputDecimals
     ) {
 
-        this.outputDecimals = outputDecimals;
         average = 0.0d;
         itemCounter = 0;
         if ( capacity > 0 ) {
@@ -50,11 +48,6 @@ class StatisticCalculator {
         this(0, -1);
     }
 
-    public
-    StatisticCalculator( final int outputDecimals ) {
-        this(0, outputDecimals);
-    }
-
     public synchronized
     void addSample( final double sample ) {
         if ( history != null ) {
@@ -77,11 +70,6 @@ class StatisticCalculator {
         return average / ( itemCounter * 1.0d );
     }
 
-    public
-    int getCapacity() {
-        return capacity;
-    }
-
     public synchronized
     Double getFullCapacityAverage() {
         return ( itemCounter == capacity ) ? getAverage() : null;
@@ -90,11 +78,6 @@ class StatisticCalculator {
     public synchronized
     int getItemCounter() {
         return itemCounter;
-    }
-
-    public
-    int getOutputDecimals() {
-        return outputDecimals;
     }
 
     public synchronized

@@ -64,10 +64,6 @@ class IProblemTest {
         private int x;
         private int y;
 
-        /**
-         * @param x
-         * @param y
-         */
         public
         Action(
                 final int x,
@@ -86,14 +82,6 @@ class IProblemTest {
         }
 
         /**
-         * @param x the x to set
-         */
-        public
-        void setX( final int x ) {
-            this.x = x;
-        }
-
-        /**
          * @return the y
          */
         public
@@ -101,17 +89,6 @@ class IProblemTest {
             return y;
         }
 
-        /**
-         * @param y the y to set
-         */
-        public
-        void setY( final int y ) {
-            this.y = y;
-        }
-
-        /**
-         * @return
-         */
         @Override
         public
         String toString() {
@@ -177,9 +154,6 @@ class IProblemTest {
             return count == 3;
         }
 
-        /**
-         * @return
-         */
         @Override
         public
         String toString() {
@@ -254,16 +228,6 @@ class IProblemTest {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
-        /**
-         * @param outputNeuron
-         *
-         * @return
-         */
-        public
-        double getFinalReward( final int outputNeuron ) {
-            return 0.0;
-        }
-
         @Override
         public
         IState initialize() {
@@ -298,9 +262,6 @@ class IProblemTest {
         private BoardOne2one currentBoard;
         private BasicNetwork encogPerceptron;
 
-        /**
-         * @param encogPerceptron
-         */
         public
         BestOf3one2one( final BasicNetwork encogPerceptron ) {
             this.encogPerceptron = encogPerceptron;

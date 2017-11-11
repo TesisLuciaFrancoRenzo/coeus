@@ -70,9 +70,9 @@ class EligibilityTraceForNTuple {
     }
 
     /**
-     * @param traceIndex
+     * @param traceIndex índice en la traza de elegibilidad
      *
-     * @return
+     * @return valor de la traza de elegibilidad
      */
     public
     ValueUsagePair getTrace( final int traceIndex ) {
@@ -135,7 +135,7 @@ class EligibilityTraceForNTuple {
      * @param weightIndex    índice del peso a actualizar en la traza.
      * @param gradientOutput valor de actual de la derivada de la neurona de salida multiplicado por la salida de la misma neurona.
      *
-     * @return
+     * @return valor actualizado en la traza luego de aplicar los cálculos pertinentes.
      */
     public synchronized
     double updateTrace(

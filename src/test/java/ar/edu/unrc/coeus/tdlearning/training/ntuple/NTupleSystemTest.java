@@ -102,22 +102,6 @@ class NTupleSystemTest {
             return code == other.code;
         }
 
-        /**
-         * @return código del valor del tile en base 2.
-         */
-        public
-        int getCode() {
-            return code;
-        }
-
-
-        /**
-         * @return valor del tile.
-         */
-        public
-        int getGameValue() {
-            return gameValue;
-        }
 
         @Override
         public
@@ -127,13 +111,6 @@ class NTupleSystemTest {
             return hash;
         }
 
-        /**
-         * @return true si el tile esta vacío.
-         */
-        public
-        boolean isEmpty() {
-            return code == 0;
-        }
     }
 
 }

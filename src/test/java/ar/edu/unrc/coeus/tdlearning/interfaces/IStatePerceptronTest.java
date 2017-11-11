@@ -18,8 +18,6 @@
  */
 package ar.edu.unrc.coeus.tdlearning.interfaces;
 
-import org.encog.util.arrayutil.NormalizationAction;
-import org.encog.util.arrayutil.NormalizedField;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -31,10 +29,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public
 class IStatePerceptronTest {
 
-    /**
-     *
-     */
-    public static final NormalizedField normOutput = new NormalizedField(NormalizationAction.Normalize, null, 15.0, 6.0, 1.0, 0);
     private final       boolean[][]     board      = { { false, false }, { false, false }, { false, false }, { false, false } };
 
     /**

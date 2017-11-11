@@ -43,9 +43,6 @@ class MaximalActionPredictionConsumer
         list = new ArrayList<>();
     }
 
-    /**
-     * @param actionPrediction
-     */
     @Override
     public
     void accept( final ActionPrediction actionPrediction ) {
