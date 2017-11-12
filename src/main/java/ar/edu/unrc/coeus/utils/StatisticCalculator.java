@@ -1,6 +1,7 @@
 package ar.edu.unrc.coeus.utils;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
@@ -35,7 +36,10 @@ class StatisticCalculator {
             for ( int i = 0; i < outputDecimals; i++ ) {
                 pattern.append('#');
             }
-            formatter = new DecimalFormat("#." + pattern);
+            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+            otherSymbols.setDecimalSeparator(',');
+            otherSymbols.setGroupingSeparator('.');
+            formatter = new DecimalFormat("#." + pattern, otherSymbols);
         } else if ( outputDecimals == 0 ) {
             formatter = new DecimalFormat("#");
         } else {
