@@ -19,7 +19,7 @@
 package ar.edu.unrc.coeus.tdlearning.training.ntuple;
 
 import ar.edu.unrc.coeus.utils.FunctionUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.function.Function;
 
 import static java.lang.Math.pow;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini

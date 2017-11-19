@@ -27,7 +27,7 @@ repositorio).
 - `gradlew build`: compila el proyecto.
 - `gradlew finalFatJar`: crea un jar con la librería lista para 
 usar.  
-- `gradlew test`:  ejecuta los test de JUnit.
+- `gradlew junitPlatformTest`:  ejecuta los test de JUnit.
 - `gradlew javadoc`:  compila javadoc.
 
 ## Licencia

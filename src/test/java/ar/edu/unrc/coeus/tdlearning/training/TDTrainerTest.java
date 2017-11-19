@@ -31,8 +31,8 @@ import org.encog.ml.data.MLData;
 import org.encog.ml.data.basic.BasicMLData;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +42,7 @@ import java.util.function.Function;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini
@@ -79,7 +79,7 @@ class TDTrainerTest {
     /**
      *
      */
-    @BeforeClass
+    @BeforeAll
     public static
     void setUpClass() {
         activationFunctionOutput = FunctionUtils.SIGMOID;

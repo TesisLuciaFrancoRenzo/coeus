@@ -18,13 +18,13 @@
  */
 package ar.edu.unrc.coeus.tdlearning.training.perceptrons;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author lucia bressan, franco pellegrini, renzo bianchini

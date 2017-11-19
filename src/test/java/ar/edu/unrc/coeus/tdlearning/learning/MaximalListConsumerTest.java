@@ -20,7 +20,7 @@ package ar.edu.unrc.coeus.tdlearning.learning;
 
 import ar.edu.unrc.coeus.tdlearning.interfaces.IAction;
 import ar.edu.unrc.coeus.utils.MaximalActionPredictionConsumer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
