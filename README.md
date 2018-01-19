@@ -3,15 +3,7 @@
 </h1>
 
 # Coeus
-Es una librería que permite entrenar redes neuronales utilizando 
-aprendizaje automático. 
-Para el aprendizaje, utiliza el método de TDLambda learning el cual 
-hace uso de las Trazas de Elegibilidad como método de asignación de 
-crédito temporal, el cual puede ser ajustado configurando sus 
-diferentes parámetros.
-Provee una implementación de Redes NTuplas y además una API para 
-conectarse con librerías que proveen otras implementaciones de 
-redes neuronales como por ejemplo Encog, Neuroph, etc.
+Es una librería que permite entrenar redes neuronales utilizando aprendizaje automático, sin tutor o bases de datos. Utiliza el método de TDLambda learning el cual hace uso de las Trazas de Elegibilidad como método de asignación de crédito temporal, y puede ser ajustado configurando sus diferentes parámetros. Provee una implementación de Redes NTuplas y además una API para conectarse con librerías que proveen otras implementaciones de redes neuronales como por ejemplo Encog, Neuroph, etc.
 Para mas detalles referirse al [Informe](https://docs.google.com/document/d/1arNnKmmV7xc9qDrgPNbtxQXO8b81HknmJQKCshfAzUU/edit?usp=sharing) del mismo.
 
 ## Instalación
